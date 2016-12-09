@@ -12,6 +12,7 @@
 
 unsigned char counter_1ms;
 unsigned char counter_25ms;
+unsigned char counter_250ms;
 unsigned char counter_1s;
 
 static code char led_scan[6] = 
@@ -55,10 +56,15 @@ static void timer1_ISR (void) interrupt 5 using 1
      refresh_led();
    }   
    if((counter_1ms % 25) == 0) {
-     counter_25ms = (counter_25ms + 1) % 250;
      set_task(EV_SCAN_KEY); 
-     if((counter_25ms % 40) == 0) {
-       counter_1s = (counter_1s  + 1) % 250;
+     counter_25ms = (counter_25ms + 1) % 250;
+     if((counter_25ms % 10) == 0) {
+       set_task(EV_250MS); 
+       counter_250ms = (counter_250ms  + 1) % 250;
+       if((counter_250ms % 4) == 0) {
+         counter_1s = (counter_1s + 1) % 250;
+         set_task(EV_1S); 
+       }
      }
    }
  }
@@ -72,6 +78,7 @@ void timer_initialize (float fclk)
   
    counter_1ms = 0;  // initialize state counter
 	 counter_25ms = 0;
+   counter_250ms = 0;
    counter_1s = 0;
   
 	// initialization T2CON:

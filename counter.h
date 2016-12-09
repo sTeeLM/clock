@@ -3,7 +3,7 @@
 
 #include "task.h"
 
-void count_down_initialize(void);
-void count_down_proc(enum task_events ev);
+void counter_initialize(void);
+void counter_proc(enum task_events ev);
 
 #endif

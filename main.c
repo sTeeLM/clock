@@ -9,7 +9,7 @@
 #include "led.h"
 #include "alarm.h"
 #include "power.h"
-#include "count_down.h"
+#include "counter.h"
 #include "debug.h"
 
 void main(void)
@@ -23,6 +23,6 @@ void main(void)
 	led_initialize();
   power_initialize();
   alarm_initialize();
-  count_down_initialize();
+  counter_initialize();
   run_task();                                   // run task procs
  }

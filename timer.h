@@ -4,6 +4,7 @@
 void timer_initialize (float fclk);
 extern unsigned char counter_1ms;
 extern unsigned char counter_25ms;
+extern unsigned char counter_250ms;
 extern unsigned char counter_1s;
 
 #endif

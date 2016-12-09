@@ -407,14 +407,49 @@
               <FilePath>.\power.c</FilePath>
             </File>
             <File>
-              <FileName>count_down.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\count_down.c</FilePath>
-            </File>
-            <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>counter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\counter.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_mod_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_mod_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_mod_alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_mod_alarm.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_mod_global_flag.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_mod_global_flag.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_pac_hit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_pac_hit.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_counter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_counter.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_timer.c</FilePath>
             </File>
           </Files>
         </Group>

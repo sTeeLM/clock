@@ -54,7 +54,7 @@ static code char led_code[] =
    0x0C, //0001100  P
    0xFF, //         Q
    0xFF, //         R
-   0xFF, //         S
+   0x12, //0010010  S
    0xFF, //         T
    0x41, //1000001  U
    0xFF, //         V
