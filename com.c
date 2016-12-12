@@ -1,4 +1,4 @@
-#include <REGX52.H>
+#include <STC89C5xRC.H>
 #include <stdio.h>
 
 #define    XTAL 11059200                        // CPU Oscillator Frequency

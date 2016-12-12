@@ -1,4 +1,4 @@
-#include <REGX52.H>
+#include <STC89C5xRC.H>
 #include <string.h>
 
 #include "led.h"
@@ -7,10 +7,10 @@
 #include "timer.h"
 #include "debug.h"
 
-char led_data[6];
-char led_blink;
-char led_index;
-unsigned char scan_loop_cnt;
+static char led_data[6];
+static char led_blink;
+static char led_index;
+static unsigned char scan_loop_cnt;
 
 static code char led_code[] =
 {
@@ -64,6 +64,43 @@ static code char led_code[] =
    0xFF, //         Z ascii 0x5A
 };
 
+static code char led_scan[6] = 
+{
+  0xFE,
+  0xFD,
+  0xFB,
+  0xF7,
+  0xEF,
+  0xDF,
+};
+
+#pragma NOAREGS
+
+// 在时钟中断中调用！
+void refresh_led(void)
+{
+  P0 = 0xFF;
+  
+  if(led_blink & (1 << led_index)) { // 如果要求闪阿闪
+    if(scan_loop_cnt > 15) {   // 不显示数字，只显示点，如果有点的话
+      P0 = (led_data[led_index] & 0x80) | 0x7F;
+    } else {               //  显示数字和点
+      P0 = led_data[led_index];
+    }
+  } else {                 //  显示数字和点
+    P0 = led_data[led_index];
+  }
+    
+  P2 = led_scan[led_index]; // P2某根线供电
+  
+  led_index ++;
+  if(led_index == 6 ) {
+    led_index = 0;
+    scan_loop_cnt = (scan_loop_cnt + 1) % 32;
+  }
+}
+#pragma AREGS 
+
 void led_initialize (void)
 {
   CDBG("led_initialize\n");
@@ -84,11 +121,17 @@ void led_initialize (void)
   led_set_code(4, '5');
   led_set_code(5, '6');
   
-  led_set_dig(0);
-  led_set_dig(4);
+  led_set_dp(0);
+  led_set_dp(4);
   
   led_set_blink(0);
   led_set_blink(1);  
+}
+
+void led_clear(void)
+{
+  led_blink = 0;
+  memset(led_data, 0xFF, sizeof(led_data));
 }
 
 void led_set_blink(unsigned char i)
@@ -105,20 +148,22 @@ void led_clr_blink(unsigned char i)
   } 
 }
 
-void led_clr_dig(unsigned char i)
+void led_clr_dp(unsigned char i)
 {
   if( i < 6 ) {
     led_data[i] |= 0x80;
   }
 }
 
-void led_set_dig(unsigned char i)
+void led_set_dp(unsigned char i)
 {
   if( i < 6 ) {
     led_data[i] &= ~0x80;
   }
 }
 
+
+// c为ascii码，0为温度的‘度’，255为全黑
 void led_set_code(unsigned char i, char c)
 {
   if( i < 6 ) {

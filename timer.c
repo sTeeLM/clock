@@ -1,4 +1,4 @@
-#include <REGX52.H>
+#include <STC89C5xRC.H>
 #include <stdio.h>
 
 #include "task.h"
@@ -15,41 +15,9 @@ unsigned char counter_25ms;
 unsigned char counter_250ms;
 unsigned char counter_1s;
 
-static code char led_scan[6] = 
-{
-  0xFE,
-  0xFD,
-  0xFB,
-  0xF7,
-  0xEF,
-  0xDF,
-};
-
-static void refresh_led(void)
-{
-  P0 = 0xFF;
-  if(led_blink & (1 << led_index)) { // 如果要求闪阿闪
-    if(scan_loop_cnt > 15) {   // 不显示数字，只显示点，如果有点的话
-      P0 = (led_data[led_index] & 0x80) | 0x7F;
-    } else {               //  显示数字和点
-      P0 = led_data[led_index];
-    }
-  } else {                 //  显示数字和点
-    P0 = led_data[led_index];
-  }
-    
-  P2 = led_scan[led_index]; // P2某根线供电
-  
-  led_index ++;
-  if(led_index == 6 ) {
-    led_index = 0;
-    scan_loop_cnt = (scan_loop_cnt + 1) % 32;
-  }
-}
-
-static void timer1_ISR (void) interrupt 5 using 1
-// Timer2 isr 
- { // Clear interrupt 
+// 每1ms被调用一次
+static void timer1_ISR (void) interrupt 5 using 1 
+ {
    TF2 = 0;
    counter_1ms = (counter_1ms + 1) % 250;
    if((counter_1ms % 7 ) == 0) {

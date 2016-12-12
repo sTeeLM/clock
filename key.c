@@ -1,4 +1,4 @@
-#include <REGX52.H>
+#include <STC89C5xRC.H>
 
 #include "key.h"
 #include "task.h"
@@ -20,8 +20,6 @@ bit mod_press;
 bit set_press;
 bit mod_set_press;
 
-
-
 static void key_ISR (void) interrupt 0 using 1
 {
   IE0 = 0; // 清除中断标志位  
@@ -29,7 +27,6 @@ static void key_ISR (void) interrupt 0 using 1
 
 void scan_key_proc(enum task_events ev)
 {
-  clr_task(EV_SCAN_KEY);
   
   if(!MOD_KEY && !mod_press) {
     delay_ms(2);
@@ -87,6 +84,7 @@ void scan_key_proc(enum task_events ev)
 void mod_proc(enum task_events ev)
 {
   CDBG("mod_proc %bd %bd %bd %bd\n", ev, counter_1s,counter_25ms,counter_1ms);
+
   switch (ev) {
     case EV_KEY_MOD_DOWN:
       CDBG("mod_proc EV_KEY_MOD_DOWN\n");
@@ -101,12 +99,15 @@ void mod_proc(enum task_events ev)
       CDBG("mod_proc EV_KEY_MOD_LPRESS\n");
       break;     
   }
-  clr_task(ev);
+  
+  run_state_machine(ev);
+
 }
 
 void set_proc(enum task_events ev)
 {
   CDBG("set_proc %bd\n", ev);
+  
   switch (ev) {
     case EV_KEY_SET_DOWN:
       CDBG("set_proc EV_KEY_SET_DOWN\n");
@@ -121,12 +122,14 @@ void set_proc(enum task_events ev)
       CDBG("set_proc EV_KEY_SET_LPRESS\n");
       break;     
   }
-  clr_task(ev);
+  
+  run_state_machine(ev);
 }
 
 void mod_set_proc(enum task_events ev)
 {
   CDBG("mod_set_proc %bd\n", ev);
+  
   switch (ev) {
     case EV_KEY_MOD_SET_PRESS:
       CDBG("mod_set_proc EV_KEY_MOD_SET_PRESS\n");
@@ -135,7 +138,8 @@ void mod_set_proc(enum task_events ev)
       CDBG("mod_set_proc EV_KEY_MOD_SET_LPRESS\n");
       break;    
   }
-  clr_task(ev);
+
+  run_state_machine(ev);
 }
 
 void key_initialize (void)

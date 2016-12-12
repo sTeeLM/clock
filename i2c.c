@@ -1,3 +1,4 @@
+#include <STC89C5xRC.H>
 #include <intrins.h>
 #include "i2c.h"
 
@@ -147,7 +148,7 @@ void I2C_PutAck(bit ack)
  I2C_Delay();
 
 }
-
+/*
 bit I2C_Put(unsigned char SlaveAddr, unsigned char SubAddr, char dat)
 {
   SlaveAddr &= 0xFE;
@@ -212,8 +213,8 @@ bit I2C_Get(unsigned char SlaveAddr, unsigned char SubAddr, unsigned char *dat)
   return 0;
 }
 
-/*
-bit I2C_Puts(unsigned char SlaveAddr, unsigned char SubAddr, unsigned char Size, char *dat)
+*/
+bit I2C_Puts(unsigned char SlaveAddr, unsigned char SubAddr, unsigned char Size, unsigned char *dat)
 {
 
  if ( Size == 0 ) return 0;
@@ -307,4 +308,3 @@ bit I2C_Get(unsigned char SlaveAddr, unsigned char SubAddr, unsigned char *dat)
 {
  return I2C_Gets(SlaveAddr,SubAddr,1,dat);
 }
-*/
