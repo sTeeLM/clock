@@ -27,7 +27,6 @@ static void key_ISR (void) interrupt 0 using 1
 
 void scan_key_proc(enum task_events ev)
 {
-  
   if(!MOD_KEY && !mod_press) {
     delay_ms(2);
     if(!MOD_KEY) {
@@ -83,7 +82,7 @@ void scan_key_proc(enum task_events ev)
 
 void mod_proc(enum task_events ev)
 {
-  CDBG("mod_proc %bd %bd %bd %bd\n", ev, counter_1s,counter_25ms,counter_1ms);
+  CDBG("mod_proc %bd %bd %bd %bd %bd\n", ev,counter_1ms, counter_25ms, counter_25ms,counter_1s);
 
   switch (ev) {
     case EV_KEY_MOD_DOWN:
@@ -151,18 +150,7 @@ void key_initialize (void)
 
   last_mod_tmr_count = 0;
   last_set_tmr_count = 0;
-  
-  clr_task(EV_SCAN_KEY);
-  clr_task(EV_KEY_MOD_DOWN); 
-  clr_task(EV_KEY_MOD_UP); 
-  clr_task(EV_KEY_MOD_PRESS); 
-  clr_task(EV_KEY_MOD_LPRESS);   
-  clr_task(EV_KEY_SET_DOWN); 
-  clr_task(EV_KEY_SET_UP); 
-  clr_task(EV_KEY_SET_PRESS); 
-  clr_task(EV_KEY_SET_LPRESS);  
-  clr_task(EV_KEY_MOD_SET_PRESS); 
-  clr_task(EV_KEY_MOD_SET_LPRESS);  
+   
   mod_press = 0; 
   set_press = 0;
 }

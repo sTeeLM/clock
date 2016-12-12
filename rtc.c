@@ -165,6 +165,7 @@ void rtc_write_data(enum rtc_data_type type)
 static unsigned char _rtc_get_hour(unsigned char hour)
 {
   unsigned char ret;
+  CDBG("FUCK %bd\n", hour);
   if(hour & 0x40) { // 是12小时表示
     ret = hour & 0x0F + ((hour & 0x10) >> 4) * 10;
     if( hour & 0x20 ) { // 是PM
@@ -199,7 +200,7 @@ static void _rtc_set_hour(unsigned char hour, unsigned char * dat)
   }  
 }
 
-static _rtc_set_hour_12(unsigned char enable, unsigned char * dat)
+static void _rtc_set_hour_12(unsigned char enable, unsigned char * dat)
 {
   unsigned char hour;
   hour = _rtc_get_hour(* dat);

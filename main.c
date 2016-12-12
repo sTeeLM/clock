@@ -16,7 +16,6 @@ void main(void)
  {	 
 	EA = 1;                                       // enable global interrupts
   com_initialize();                             // initialize interrupt driven serial I/O
-	task_initialize();
   timer_initialize(12e6);												// initialize timer
 	rtc_initialize();
 	key_initialize();
@@ -24,5 +23,6 @@ void main(void)
   power_initialize();
   alarm_initialize();
   counter_initialize();
+  task_initialize();
   run_task();                                   // run task procs
  }

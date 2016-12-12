@@ -6,23 +6,23 @@
 #include "cext.h"
 #include "led.h"
 #include "misc.h"
+#include "timer.h"
 
 // interrupt period (1 msec)
 #define  TMR_TIME  1e-3 
 
-unsigned char counter_1ms;
-unsigned char counter_25ms;
-unsigned char counter_250ms;
-unsigned char counter_1s;
+unsigned char idata counter_1ms;
+unsigned char idata counter_25ms;
+unsigned char idata counter_250ms;
+unsigned char idata counter_1s;
 
 // 每1ms被调用一次
 static void timer1_ISR (void) interrupt 5 using 1 
  {
-   TF2 = 0;
    counter_1ms = (counter_1ms + 1) % 250;
    if((counter_1ms % 7 ) == 0) {
      refresh_led();
-   }   
+   }
    if((counter_1ms % 25) == 0) {
      set_task(EV_SCAN_KEY); 
      counter_25ms = (counter_25ms + 1) % 250;
@@ -35,6 +35,7 @@ static void timer1_ISR (void) interrupt 5 using 1
        }
      }
    }
+   TF2 = 0;
  }
 
 void timer_initialize (float fclk)

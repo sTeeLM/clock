@@ -37,7 +37,7 @@ void alarm_proc(enum task_events ev)
     rtc_write_data(RTC_TYPE_ALARM1);
   }
   
-  // run 状态机
+  // run 状态机，状态机转移函数会判断alarm0_hit/alarm1_hit
   run_state_machine(EV_ALARM);
   
   // 清除标志

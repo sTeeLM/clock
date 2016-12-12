@@ -33,7 +33,7 @@ enum sm_states
   SM_COUNTER            = 6  // 倒计时功能
 };
 
-extern unsigned int ev_bits;
+extern unsigned int idata ev_bits;
 
 typedef void (*TASK_PROC)(enum task_events);
 typedef void (*SM_PROC)(unsigned char from, unsigned char to, enum task_events ev);
@@ -64,9 +64,7 @@ void task_initialize (void);
   (state & 0x0F)
 
 void run_task(void);
-
-void state_machine_proc(enum task_events);
   
 void run_state_machine(enum task_events);
-
+void state_machine_timer_proc(enum task_events ev);
 #endif

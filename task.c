@@ -60,8 +60,8 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   alarm_proc,
   counter_proc,
   power_proc,
-  state_machine_proc,
-  state_machine_proc  
+  state_machine_timer_proc,
+  state_machine_timer_proc  
 };
 
 // state machine translate defines
@@ -70,7 +70,7 @@ static const struct sm_trans code sm[] =
 {
   /* SM_DISPLAY */
   // 从别的状态切过来，防止误操作
-  {SM_DISPLAY<<4|SM_DISPLAY_INIT, EV_KEY_MOD_UP, SM_MODIFY_TIME<<4|SM_DISPLAY_HHMMSS, sm_display},  
+  {SM_DISPLAY<<4|SM_DISPLAY_INIT, EV_KEY_MOD_UP, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},  
   // 按mod0显示年月日
   {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, sm_display},
   // 每250ms读取下rtc
@@ -84,7 +84,7 @@ static const struct sm_trans code sm[] =
   // 该进入节电模式了
   {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_POWER_SAVE, SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, sm_pac_hit},
   // 进入跑表功能
-  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_KEY_SET_LPRESS, SM_TIMER<<4|SM_TIMER_INIT, sm_display},
+  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_KEY_SET_LPRESS, SM_TIMER<<4|SM_TIMER_INIT, sm_timer},
 
   // 按mod0显示星期几
   {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_WEEK, sm_display},
@@ -326,14 +326,15 @@ static const struct sm_trans code sm[] =
 
 
 
-unsigned int ev_bits;
-unsigned char sm_state; // hi 4 bits : state, lo 4 bits: sub-state 
+unsigned int idata ev_bits;
+static unsigned char sm_state; // hi 4 bits : state, lo 4 bits: sub-state 
 
 void task_initialize (void)
 {
   CDBG("task_initialize\n");
   ev_bits = 0;
-  sm_state = SM_DISPLAY|SM_DISPLAY_HHMMSS;
+  sm_state = SM_DISPLAY|SM_DISPLAY_INIT;
+  set_task(EV_KEY_MOD_UP);
 }
 
 void run_task(void)
@@ -349,12 +350,25 @@ void run_task(void)
   }
 }
 
-void state_machine_proc(enum task_events ev)
+void state_machine_timer_proc(enum task_events ev)
 {
-  
+  run_state_machine(ev);
 }
-  
+
 void run_state_machine(enum task_events ev)
 {
+  unsigned char c;
+  
+  CDBG("run_state_machine %bd %bd|%bd\n", ev, get_sm_state(sm_state), get_sm_ss_state(sm_state));
+  for (c = 0 ; c < sizeof(sm)/sizeof(struct sm_trans) ; c++) {
+    if(sm_state == sm[c].from_state && ev == sm[c].event) {
+      CDBG("SM: %bd %bd %bd|%bd -> %bd|%bd\n", c, ev,
+        get_sm_state(sm_state), get_sm_ss_state(sm_state), 
+        get_sm_state(sm[c].to_state), get_sm_ss_state(sm[c].to_state));
+      sm[c].sm_proc(sm_state, sm[c].to_state, ev);
+      sm_state = sm[c].to_state;
+      break;
+    }
+  }
   
 }

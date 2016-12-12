@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <WORKSPACE>
  <FRAME activewindow="0">
-  <PLACEMENT>2c00000002000000030000000083ffff0083ffffffffffffffffffff080000007700000023050000c0030000</PLACEMENT>
+  <PLACEMENT>2c00000000000000010000000083ffff0083ffffffffffffffffffff080000001e0000002305000067030000</PLACEMENT>
   <WINDOW type="default" module="ISIS"/>
  </FRAME>
  <MODULE name="VSMDEBUG">
@@ -45,7 +45,7 @@
      <ITEM name="TopLineAddress">00000000</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="8" x="1044" flags="0000800b" y="29" h="16" pid="2" iid="3">
+   <POPUP w="8" x="1044" flags="0000000b" y="29" h="16" pid="2" iid="3">
     <PROPERTIES>
      <ITEM name="DataType">2</ITEM>
      <ITEM name="DispChars">Yes</ITEM>
@@ -55,10 +55,10 @@
      <ITEM name="TopLineAddress">00000080</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="20" x="137" flags="00000000" y="228" h="3" pid="1" iid="22">
+   <POPUP w="20" x="137" flags="00000001" y="228" h="3" pid="1" iid="22">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="8" x="171" flags="00000008" y="335" h="32" pid="2" iid="22">
+   <POPUP w="8" x="171" flags="00000009" y="335" h="32" pid="2" iid="22">
     <PROPERTIES>
      <ITEM name="DataType">2</ITEM>
      <ITEM name="DispChars">Yes</ITEM>
@@ -99,7 +99,7 @@
      <ITEM name="HexMode">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="450" x="185" flags="00000022" y="595" h="250" pid="0" iid="18">
+   <POPUP w="450" x="905" flags="00008023" y="229" h="250" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -107,6 +107,22 @@
    </POPUP>
    <POPUP w="695" x="494" flags="00000000" y="333" h="453" pid="0" iid="19">
     <PROPERTIES/>
+   </POPUP>
+   <POPUP w="450" x="37" flags="00000022" y="128" h="250" pid="0" iid="20">
+    <PROPERTIES>
+     <ITEM name="ComboBox1000">S</ITEM>
+     <ITEM name="ComboBox1001">Sr</ITEM>
+     <ITEM name="ComboBox1002">P</ITEM>
+     <ITEM name="ComboBox1003">A</ITEM>
+     <ITEM name="ComboBox1004">N</ITEM>
+     <ITEM name="ComboBox1005">S</ITEM>
+     <ITEM name="ComboBox1006">Sr</ITEM>
+     <ITEM name="ComboBox1007">P</ITEM>
+     <ITEM name="ComboBox1008">A</ITEM>
+     <ITEM name="ComboBox1009">N</ITEM>
+     <ITEM name="HSplitter1Pos">100</ITEM>
+     <ITEM name="VSplitter1Pos">238</ITEM>
+    </PROPERTIES>
    </POPUP>
   </PWI>
  </MODULE>

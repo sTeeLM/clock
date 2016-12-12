@@ -16,6 +16,9 @@ void rtc_initialize (void);
 void rtc_read_data(enum rtc_data_type type);
 void rtc_write_data(enum rtc_data_type type);
 
+void rtc_read_data(enum rtc_data_type type);
+void rtc_write_data(enum rtc_data_type type);
+
 // 在read_rtc_data(RTC_TYPE_TIME)之后调用
 unsigned char rtc_time_get_hour(void);
 void rtc_time_set_hour(unsigned char hour);
