@@ -1,4 +1,3 @@
-#include "task.h"
 #include "sm_display.h"
 #include "led.h"
 #include "rtc.h"
@@ -37,19 +36,20 @@ static void display_hhmmss(void)
 
 void sm_display(unsigned char from, unsigned char to, enum task_events ev)
 {
+
   CDBG("sm_display %bd %bd %bd\n", from, to, ev);
-  
+
   // 空操作
   if(get_sm_ss_state(from) == SM_DISPLAY_INIT && ev == EV_KEY_MOD_UP) {
     return;
   }
-  
+     
   // 刷新时分秒显示
   if(get_sm_ss_state(to) == SM_DISPLAY_HHMMSS && ev == EV_250MS) {
     display_hhmmss();
     return;
   }
-  
+  /*
   // 切换到显示年月日
   if(get_sm_ss_state(to) == SM_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
     return;
@@ -93,5 +93,5 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_TEMP && ev == EV_1S) {
     return;
   }
-  
+  */
 }

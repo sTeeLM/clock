@@ -1,7 +1,7 @@
 #ifndef __CLOCK_SM_MOD_TIME_H__
 #define __CLOCK_SM_MOD_TIME_H__
 
-#include "task.h"
+#include "sm.h"
 
 enum sm_mod_time_ss {
   SM_MODIFY_TIME_INIT = 0, // ³õÊ¼×´Ì¬

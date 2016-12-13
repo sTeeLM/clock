@@ -1,7 +1,7 @@
 #ifndef __CLOCK_SM_COUNTER_H__
 #define __CLOCK_SM_COUNTER_H__
 
-#include "task.h"
+#include "sm.h"
 
 enum sm_counter_ss {
   SM_COUNTER_INIT       = 0, // ³õÊ¼×´Ì¬

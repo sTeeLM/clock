@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "task.h"
+#include "sm.h"
 #include "com.h"
 #include "timer.h"
 #include "rtc.h"
@@ -24,5 +25,6 @@ void main(void)
   alarm_initialize();
   counter_initialize();
   task_initialize();
+  sm_initialize();
   run_task();                                   // run task procs
  }

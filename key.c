@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "debug.h"
 #include "misc.h"
+#include "sm.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
 #define KEY_LPRESS_DELAY 3 // 长按时间，3s

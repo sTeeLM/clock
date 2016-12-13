@@ -1,7 +1,7 @@
 #ifndef __CLOCK_SM_TIMER_H__
 #define __CLOCK_SM_TIMER_H__
 
-#include "task.h"
+#include "sm.h"
 
 enum sm_timer_ss {
   SM_TIMER_INIT     = 0, //³õÊ¼×´Ì¬

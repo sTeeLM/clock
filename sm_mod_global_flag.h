@@ -1,7 +1,7 @@
 #ifndef __CLOCK_SM_MOD_GLOBAL_FLAG_H__
 #define __CLOCK_SM_MOD_GLOBAL_FLAG_H__
 
-#include "task.h"
+#include "sm.h"
 
 enum sm_mod_global_flag_ss {
   SM_MODIFY_GLOBAL_FLAG_INIT   = 0, // ³õÊ¼×´Ì¬

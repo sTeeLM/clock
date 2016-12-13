@@ -1,6 +1,7 @@
 #include "alarm.h"
 #include "rtc.h"
 #include "debug.h"
+#include "sm.h"
 
 bit alarm0_hit;
 bit alarm1_hit;

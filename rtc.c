@@ -417,5 +417,6 @@ bit rtc_test_alarm_int(unsigned char index)
     return (rtc_data[1] & 1) == 1;
   } else if(index == 1) {
     return (rtc_data[1] & 2) == 2;
-  }   
+  }
+  return 0;
 }

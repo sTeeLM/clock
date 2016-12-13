@@ -1,6 +1,8 @@
 #ifndef __CLOCK_SM_DISPLAY_H__
 #define __CLOCK_SM_DISPLAY_H__
 
+#include "sm.h"
+
 enum sm_display_ss {
   SM_DISPLAY_INIT   = 0, // 初始状态
   SM_DISPLAY_HHMMSS = 1, // 显示时分秒

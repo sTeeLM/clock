@@ -1,7 +1,7 @@
 #ifndef __CLOCK_SM_MOD_ALARM_H__
 #define __CLOCK_SM_MOD_ALARM_H__
 
-#include "task.h"
+#include "sm.h"
 
 enum sm_mod_alarm_ss {
   SM_MODIFY_ALARM_INIT= 0, // ³õÊ¼×´Ì¬
