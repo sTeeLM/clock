@@ -56,15 +56,14 @@ void rtc_initialize (void)
     
   memset(rtc_data, 0, sizeof(rtc_data));
 
-  
   // 初始化
-  // 初始时钟设置为 12小时格式，2014-08-19, 12:10：00 AM
+  // 初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
   rtc_read_data(RTC_TYPE_TIME);
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
   rtc_time_set_hour_12(1);
   rtc_time_set_hour(12);
   rtc_time_set_min(10);
-  rtc_time_set_sec(0); 
+  rtc_time_set_sec(30); 
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);
   
@@ -72,7 +71,8 @@ void rtc_initialize (void)
   CDBG("before date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_date_set_year(14);
   rtc_date_set_month(8);
-  rtc_date_set_day(19);
+  rtc_date_set_date(19);
+  rtc_date_set_day(2);
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
 
@@ -102,6 +102,7 @@ void rtc_initialize (void)
   I2C_Get(RTC_I2C_ADDRESS, 0x0E, &count);
   count |= 0x7; // INCN,A1E,A2E = 111
   I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);
+  
   
   IT1 = 1; // 设置为边沿触发
   EX1 = 1; // 开中断
@@ -165,14 +166,13 @@ void rtc_write_data(enum rtc_data_type type)
 static unsigned char _rtc_get_hour(unsigned char hour)
 {
   unsigned char ret;
-  CDBG("FUCK %bd\n", hour);
   if(hour & 0x40) { // 是12小时表示
-    ret = hour & 0x0F + ((hour & 0x10) >> 4) * 10;
+    ret = (hour & 0x0F) + ((hour & 0x10) >> 4) * 10;
     if( hour & 0x20 ) { // 是PM
       ret += 12;
     }
   } else { // 是24小时表示
-      ret =  hour & 0x0F + ((hour & 0x30) >> 4) * 10;
+      ret =  (hour & 0x0F) + ((hour & 0x30) >> 4) * 10;
   }
   return ret;
 }
@@ -283,7 +283,7 @@ void rtc_date_set_year(unsigned char year)
 
 unsigned char rtc_date_get_month()
 {
-  return (rtc_data[2] & 0x0F) + ((rtc_data[2] & 0x70) >> 4) * 10;
+  return (rtc_data[2] & 0x0F) + ((rtc_data[2] & 0x10) >> 4) * 10;
 }
 
 void rtc_date_set_month(unsigned char month)
@@ -294,50 +294,71 @@ void rtc_date_set_month(unsigned char month)
   rtc_data[2] |= (month / 10) << 4;  
 }
 
-unsigned char rtc_date_get_day()
+unsigned char rtc_date_get_date()
 {
   return (rtc_data[1] & 0x0F) + ((rtc_data[1] & 0xF0) >> 4) * 10;
 }
 
-// 此函数需要检查合法性！！
-bit rtc_date_set_day(unsigned char day)
+unsigned char rtc_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date)
 {
-  char mon = rtc_date_get_month();
-  int year = 2000 + rtc_date_get_year();
-  bit leap;
-  
+  // 2000-1-1 is 6 (saturday)
+  unsigned int d,m,y;
+  d = date;
+  m = mon;
+  y = 2000 + year;
+  return (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400) % 7 + 1;
+}
+
+// 0 ~ 99
+bit rtc_is_leap_year(unsigned char y)
+{
+  int year = 2000 + y;
   if((year % 100) != 0 && (year % 4) == 0
   || (year % 400) == 0) {
-    leap = 1;
+    return 1;
   } else {
-    leap = 0;
+    return 0;
   }
+}
+
+// 此函数需要检查合法性！！
+bit rtc_date_set_date(unsigned char date)
+{
+  char mon = rtc_date_get_month();
+  
   CDBG("rtc_date_set_day, valid check...\n");
   if(mon == 1 || mon == 3 || mon == 5 || mon == 7 
     || mon == 8 || mon == 10 || mon == 12) {
-    if(day > 32) return 1;
+    if(date > 32) return 1;
   } else {
-    if(day > 31) return 1;
-    if(mon == 2 && leap) {
-      if(day > 30) return 1;
-    } else if(mon == 2 && !leap) {
-      if(day > 29) return 1;
+    if(date > 31) return 1;
+    if(mon == 2 && rtc_is_leap_year(rtc_date_get_year())) {
+      if(date > 30) return 1;
+    } else if(mon == 2 && !rtc_is_leap_year(rtc_date_get_year())) {
+      if(date > 29) return 1;
     }
   }
   
   CDBG("rtc_date_set_day, valid check...OK\n");
   
   rtc_data[1] &= 0xF0;
-  rtc_data[1] |= day % 10;
+  rtc_data[1] |= date % 10;
   rtc_data[1] &= 0x0F;
-  rtc_data[1] |= (day / 10) << 4; 
+  rtc_data[1] |= (date / 10) << 4; 
 
   return 0;  
 }
 
-unsigned char rtc_date_get_week()
+unsigned char rtc_date_get_day()
 {
   return rtc_data[0];
+}
+
+void rtc_date_set_day(unsigned char day)
+{
+  if (day >= 1 && day <= 7) {
+    rtc_data[0] = day;
+  }
 }
 
 // 在rtc_read_data(RTC_TYPE_ALARM0)或者RTC_TYPE_ALARM1之后调用
@@ -377,18 +398,39 @@ void rtc_alarm_set_min( unsigned char min)
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 {
   float ret = 0;
-  bit sign = (rtc_data[0] &  0x8) >> 7;
-  *integer = (rtc_data[0] & ~0x8); // 清除sign
-  if((rtc_data[1] & 0xC) == 0xC) {
-    flt = 75;
-  } else if((rtc_data[1] & 0xC) == 0x8) { 
-    flt = 50;
-  } else if((rtc_data[1] & 0xC) == 0x4) { 
-    flt = 25;
+  bit sign = ((rtc_data[0] &  0x80) != 0);
+
+  
+  if(sign) { // 是负数
+    rtc_data[0] = ~rtc_data[0];
+    rtc_data[1] &= 0xC0;
+    rtc_data[1] >>= 6;
+    rtc_data[1] = ~rtc_data[1] + 1;
+    rtc_data[1] &= 0x03;
+    if(rtc_data[1] == 0) {
+      rtc_data[0] ++;
+    }
+  } else { //是正数
+    rtc_data[1] &= 0xC0;
+    rtc_data[1] >>= 6;
+  }
+  
+  CDBG("SHIT %bx %bx\n", rtc_data[1], rtc_data[0]);
+  
+  *integer = rtc_data[0];
+  
+  if((rtc_data[1] & 0x3) == 0x3) {
+    *flt = 75;
+  } else if((rtc_data[1] & 0x3) == 0x2) { 
+    *flt = 50;
+  } else if((rtc_data[1] & 0x3) == 0x1) { 
+    *flt = 25;
   } else {
-    flt = 0;
+    *flt = 0;
   }
 
+  if(*integer > 99) *integer = 99;
+ 
   return sign;
 }
 
@@ -396,13 +438,29 @@ bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 void rtc_enable_alarm_int(bit enable, unsigned char index)
 {
   if(index == 0) {
-    rtc_data[0] &= ~(enable? 1:0);
+    if(!enable)
+      rtc_data[0] &= ~1;
+    else
+      rtc_data[0] |= 1;
   } else if(index == 1) {
-    rtc_data[0] &= ~(enable? 2:0);    
+    if(!enable)
+      rtc_data[0] &= ~2;
+    else
+      rtc_data[0] |= 2;
   }
 }
 
-void rtc_clr_alarm_int(unsigned char index)
+bit rtc_test_alarm_int(unsigned char index)
+{
+  if(index == 0) {
+    return (rtc_data[0] & 1) == 1;
+  } else if(index == 1) {
+    return (rtc_data[0] & 2) == 2;
+  }
+  return 0;
+}
+
+void rtc_clr_alarm_int_flag(unsigned char index)
 {
   if(index == 0) {
     rtc_data[1] &= ~1;
@@ -411,7 +469,7 @@ void rtc_clr_alarm_int(unsigned char index)
   } 
 }
 
-bit rtc_test_alarm_int(unsigned char index)
+bit rtc_test_alarm_int_flag(unsigned char index)
 {
   if(index == 0) {
     return (rtc_data[1] & 1) == 1;

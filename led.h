@@ -3,6 +3,10 @@
 
 #include "task.h"
 
+
+#define LED_CODE_BLACK 0xFF
+#define LED_CODE_CEL   0 // degree Celsius
+
 void led_initialize (void);
 
 void led_clear(void);

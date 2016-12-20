@@ -23,7 +23,7 @@ void I2C_Init()
 
 void I2C_Start()
 {
- EA=0;
+ //EA=0;
 
  I2C_SCL = 1;
  I2C_Delay();
@@ -48,7 +48,9 @@ void I2C_Stop()
  I2C_Delay();
  I2C_SDA = 1;
  I2C_Delay();
- EA=1;
+  
+ //EA=1;
+ 
  while ( --t != 0 );
 }
 

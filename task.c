@@ -16,28 +16,30 @@
 /*
 enum task_events
 {
-  EV_SCAN_KEY         = 0, // 扫描按键
-  EV_KEY_MOD_DOWN     = 1, // mod键按下
-  EV_KEY_MOD_UP       = 2, // mod键抬起
-  EV_KEY_MOD_PRESS    = 3, // mod键短按
-  EV_KEY_MOD_LPRESS   = 4, // mod键长按  
-  EV_KEY_SET_DOWN     = 5, // set键按下
-  EV_KEY_SET_UP       = 6, // set键抬起
-  EV_KEY_SET_PRESS    = 7, // set键短按
-  EV_KEY_SET_LPRESS   = 8, // set键长按
-  EV_KEY_MOD_SET_PRESS    = 9, // mod set键同时短按
-  EV_KEY_MOD_SET_LPRESS   = 10, // mod set 键同时长按    
-  EV_ALARM            = 11, // 闹钟应该响起
-  EV_COUNTER          = 12, // 计时器到时间
-  EV_POWER_SAVE       = 13, // 应该进入PS状态 
-  EV_250MS            = 14, // 大约每250ms转一下
-  EV_1S               = 15, // 大约每1s转一下
+  EV_250MS            = 0, // 大约每250ms转一下
+  EV_1S               = 1, // 大约每1s转一下  
+  EV_SCAN_KEY         = 2, // 扫描按键
+  EV_KEY_MOD_DOWN     = 3, // mod键按下
+  EV_KEY_MOD_UP       = 4, // mod键抬起
+  EV_KEY_MOD_PRESS    = 5, // mod键短按
+  EV_KEY_MOD_LPRESS   = 6, // mod键长按  
+  EV_KEY_SET_DOWN     = 7, // set键按下
+  EV_KEY_SET_UP       = 8, // set键抬起
+  EV_KEY_SET_PRESS    = 9, // set键短按
+  EV_KEY_SET_LPRESS   = 10, // set键长按
+  EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
+  EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按    
+  EV_ALARM            = 13, // 闹钟应该响起
+  EV_COUNTER          = 14, // 计时器到时间
+  EV_POWER_SAVE       = 15, // 应该进入PS状态 
   EV_COUNT  
 };
 */
 
 static const TASK_PROC code task_procs[EV_COUNT] = 
 {
+  state_machine_timer_proc,
+  state_machine_timer_proc,
   scan_key_proc,
   mod_proc,
   mod_proc,
@@ -51,9 +53,7 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   mod_set_proc,  
   alarm_proc,
   counter_proc,
-  power_proc,
-  state_machine_timer_proc,
-  state_machine_timer_proc  
+  power_proc  
 };
 
 

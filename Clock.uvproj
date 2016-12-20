@@ -451,6 +451,16 @@
               <FileType>1</FileType>
               <FilePath>.\sm_timer.c</FilePath>
             </File>
+            <File>
+              <FileName>sm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm.c</FilePath>
+            </File>
+            <File>
+              <FileName>mod_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\mod_common.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

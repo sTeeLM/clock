@@ -33,5 +33,6 @@ struct sm_trans
 
 void run_state_machine(enum task_events);
 void state_machine_timer_proc(enum task_events ev);
-void sm_initialize (void) ;
+void sm_initialize (void);
+void display_logo(unsigned char fun);
 #endif

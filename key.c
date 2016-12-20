@@ -8,8 +8,8 @@
 #include "sm.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
-#define KEY_LPRESS_DELAY 3 // 长按时间，3s
-#define KEY_2_KEY_LPRESS_DELAY 2 // 同时按下长按时间，2s
+#define KEY_LPRESS_DELAY 2 // 长按时间，2s
+#define KEY_2_KEY_LPRESS_DELAY 1 // 同时按下长按时间，1s
 
 static unsigned char last_mod_tmr_count; 
 static unsigned char last_set_tmr_count;
@@ -32,12 +32,12 @@ void scan_key_proc(enum task_events ev)
     delay_ms(2);
     if(!MOD_KEY) {
       set_task(EV_KEY_MOD_DOWN);
-      set_task(EV_KEY_MOD_PRESS);      
+//      set_task(EV_KEY_MOD_PRESS);      
       mod_press = 1;
       last_mod_tmr_count = counter_1s;
-      if(set_press) {
-        set_task(EV_KEY_MOD_SET_PRESS);    
-      }
+//      if(mod_press) {
+//        set_task(EV_KEY_MOD_SET_PRESS);    
+//      }       
     }
   } else if(!MOD_KEY && mod_press){
     if(counter_1s < last_mod_tmr_count 
@@ -46,6 +46,13 @@ void scan_key_proc(enum task_events ev)
     }
   } else if(MOD_KEY && mod_press) {
     set_task(EV_KEY_MOD_UP);
+    if(counter_1s < last_mod_tmr_count 
+      || counter_1s - last_mod_tmr_count <= KEY_LPRESS_DELAY) {
+      set_task(EV_KEY_MOD_PRESS);
+      if(set_press) {
+        set_task(EV_KEY_MOD_SET_PRESS);    
+      }        
+    }
     mod_press = 0;
   }
 
@@ -53,12 +60,12 @@ void scan_key_proc(enum task_events ev)
     delay_ms(2);
     if(!SET_KEY) {
       set_task(EV_KEY_SET_DOWN);
-      set_task(EV_KEY_SET_PRESS);      
+      //set_task(EV_KEY_SET_PRESS);      
       set_press = 1;
       last_set_tmr_count = counter_1s;
-      if(mod_press) {
-        set_task(EV_KEY_MOD_SET_PRESS);    
-      }      
+//      if(mod_press) {
+//        set_task(EV_KEY_MOD_SET_PRESS);    
+//      }      
     }
   } else if(!SET_KEY && set_press){
     if(counter_1s < last_set_tmr_count
@@ -68,6 +75,13 @@ void scan_key_proc(enum task_events ev)
   } else if(SET_KEY && set_press) {
     set_task(EV_KEY_SET_UP);
     set_press = 0;
+    if(counter_1s < last_set_tmr_count
+      || counter_1s - last_set_tmr_count <= KEY_LPRESS_DELAY) {
+      set_task(EV_KEY_SET_PRESS);
+      if(mod_press) {
+        set_task(EV_KEY_MOD_SET_PRESS);    
+      }         
+    }    
   }
   
   if(!SET_KEY && set_press 

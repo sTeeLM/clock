@@ -15,7 +15,7 @@ static unsigned char scan_loop_cnt;
 static code char led_code[] =
 {
         /* GFEDCBA */
-   0x1C, //0011100  o  assume ascii 0!!
+   0x1C, //0011100  o  degree Celsius assume ascii 0!!
    0x3F, //0111111  -  ascii: 0x2D
    0xFF, //         .
    0xFF, //         /
@@ -113,6 +113,7 @@ void led_initialize (void)
   P0 = 0xFF;  
   P2 = 0xFF;
 
+  /*
   // for test
   led_set_code(0, '1');
   led_set_code(1, '2');  
@@ -125,7 +126,8 @@ void led_initialize (void)
   led_set_dp(4);
   
   led_set_blink(0);
-  led_set_blink(1);  
+  led_set_blink(1); 
+  */  
 }
 
 void led_clear(void)
@@ -173,6 +175,8 @@ void led_set_code(unsigned char i, char c)
     }
     else if(c <= 'Z' && c >= '-') {
       led_data[i] |= led_code[c - '-' + 1];
+    } else {
+      led_data[i] |= 0x7F;
     }
   }
 }

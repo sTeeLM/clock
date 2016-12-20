@@ -17,15 +17,17 @@ void alarm_proc(enum task_events ev)
 {
   unsigned char hour;
   
+  CDBG("alarm HIT!\n");
+  
   // 判断是alarm0还是alarm1,清除RTC中的中断标志位
   rtc_read_data(RTC_TYPE_CTL);
-  if(rtc_test_alarm_int(0)) {
+  if(rtc_test_alarm_int_flag(0)) {
     alarm0_hit = 1;
-    rtc_clr_alarm_int(0);
+    rtc_clr_alarm_int_flag(0);
     CDBG("alarm0 HIT!\n");
-  } else if(rtc_test_alarm_int(1)) {
+  } else if(rtc_test_alarm_int_flag(1)) {
     alarm1_hit = 1;
-    rtc_clr_alarm_int(1);
+    rtc_clr_alarm_int_flag(1);
     CDBG("alarm1 HIT!\n");
   }
   rtc_write_data(RTC_TYPE_CTL);

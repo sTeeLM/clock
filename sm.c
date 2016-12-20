@@ -1,5 +1,6 @@
 #include "sm.h"
 #include "debug.h"
+#include "led.h"
 
 /* state machine */
 #include "sm_display.h"
@@ -114,11 +115,11 @@ static const struct sm_trans code sm[] =
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, EV_KEY_SET_LPRESS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, sm_mod_time},
   // 抬起set停止年++并写入rtc
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, EV_KEY_SET_UP, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, sm_mod_time},
-  // 每秒读取一次rtc  
-  {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, EV_1S, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, sm_mod_time},
+  // 每250ms读取一次rtc  
+  {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, EV_250MS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, sm_mod_time},
   // mod1 进入修改闹钟模式  
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_YY, EV_KEY_MOD_LPRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_INIT, sm_mod_alarm}, 
-  // mod0 进入修改月模式
+  // mod0 进入修改日模式
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_KEY_MOD_PRESS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, sm_mod_time},
   // set0 月++
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_KEY_SET_PRESS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, sm_mod_time},
@@ -126,8 +127,8 @@ static const struct sm_trans code sm[] =
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_KEY_SET_LPRESS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, sm_mod_time}, 
   // 抬起set停止月++并写入rtc
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_KEY_SET_UP, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, sm_mod_time}, 
-  // 每1s读取一下rtc
-  {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_1S, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, sm_mod_time},
+  // 每250ms读取一下rtc
+  {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_250MS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, sm_mod_time},
   // mod1 进入修改闹钟模式  
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_MO, EV_KEY_MOD_LPRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_INIT, sm_mod_alarm},   
   // mod0 进入修改小时模式
@@ -138,8 +139,8 @@ static const struct sm_trans code sm[] =
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_KEY_SET_LPRESS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, sm_mod_time},
   // set抬起停止日++写入rtc  
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_KEY_SET_UP, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, sm_mod_time},
-  // 每1s读取一下rtc
-  {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_1S, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, sm_mod_time}, 
+  // 每250ms读取一下rtc
+  {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_250MS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, sm_mod_time}, 
   // mod1 进入修改闹钟模式
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_KEY_MOD_LPRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_INIT, sm_mod_alarm},
 
@@ -156,8 +157,8 @@ static const struct sm_trans code sm[] =
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, EV_KEY_MOD_PRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, sm_mod_alarm},
   // mod1进入修改全局状态模式
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, EV_KEY_MOD_LPRESS, SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_INIT, sm_mod_global_flag},
-  // 每1s读取一下rtc
-  {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, EV_1S, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, sm_mod_time}, 
+  // 每250ms读取一下rtc
+  {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, EV_250MS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, sm_mod_alarm}, 
   // set0分钟++
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, EV_KEY_SET_PRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, sm_mod_alarm},
   // set1分钟持续++
@@ -168,10 +169,14 @@ static const struct sm_trans code sm[] =
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, EV_KEY_MOD_PRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_ON, sm_mod_alarm}, 
   // mod1进入修改全局状态模式  
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, EV_KEY_MOD_LPRESS, SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_INIT, sm_mod_global_flag},
+  // 每250ms读取一下rtc
+  {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, EV_250MS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_MM, sm_mod_alarm}, 
   // set0 调整打开关闭，并写入rtc
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_ON, EV_KEY_SET_PRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_ON, sm_mod_alarm},  
   // mod1进入修改全局状态模式  
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_ON, EV_KEY_MOD_LPRESS, SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_INIT, sm_mod_global_flag}, 
+  // 每250ms读取一下rtc
+  {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_ON, EV_250MS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_ON, sm_mod_alarm}, 
   
   /* SM_MODIFY_GLOBAL_FLAG */
   // 防止误操作
@@ -281,24 +286,33 @@ void run_state_machine(enum task_events ev)
 {
   unsigned char c;
   unsigned char newstate;
-  
-  CDBG("run_state_machine %bd %bd|%bd\n", ev, get_sm_state(sm_state), get_sm_ss_state(sm_state));
   for (c = 0 ; c < sizeof(sm)/sizeof(struct sm_trans) ; c++) {
     if(sm_state == sm[c].from_state && ev == sm[c].event) {
       newstate = sm[c].to_state;
-//      CDBG("SM: %bd %bd %bd|%bd -> %bd|%bd\n", c, ev,
-//        get_sm_state(sm_state), get_sm_ss_state(sm_state), 
-//        get_sm_state(sm[c].to_state), get_sm_ss_state(sm[c].to_state));
+      CDBG("SM: %bd %bd %bd|%bd -> %bd|%bd\n", c, ev,
+        get_sm_state(sm_state), get_sm_ss_state(sm_state), 
+        get_sm_state(sm[c].to_state), get_sm_ss_state(sm[c].to_state));
       sm[c].sm_proc(sm_state, sm[c].to_state, ev);
       sm_state = sm[c].to_state;
       break;
     }
   }
-  
 }
 
 void sm_initialize (void) 
 {
+  CDBG("sm_initialize\n");
   sm_state = SM_DISPLAY|SM_DISPLAY_INIT;
   set_task(EV_KEY_MOD_UP);
+}
+
+
+void display_logo(unsigned char fun)
+{
+  CDBG("display_logo\n");
+  led_clear();
+  led_set_code(5, 'F');
+  led_set_code(4, 'U');
+  led_set_code(1, (fun / 10) + 0x30);
+  led_set_code(0, (fun % 10) + 0x30);  
 }

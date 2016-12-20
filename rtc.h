@@ -34,9 +34,10 @@ unsigned char rtc_date_get_year();
 void rtc_date_set_year(unsigned char year);
 unsigned char rtc_date_get_month();
 void rtc_date_set_month(unsigned char month);
+unsigned char rtc_date_get_date();
+bit rtc_date_set_date(unsigned char date);
 unsigned char rtc_date_get_day();
-bit rtc_date_set_day(unsigned char day);
-unsigned char rtc_date_get_week();
+void rtc_date_set_day(unsigned char day);
 
 // 在rtc_read_data(RTC_TYPE_ALARM0)或者RTC_TYPE_ALARM1之后调用
 unsigned char rtc_alarm_get_hour();
@@ -50,7 +51,13 @@ void rtc_alarm_set_min( unsigned char min);
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt);
 
 // 在rtc_read_data（RTC_TYPE_CTL）之后调用
-bit rtc_test_alarm_int(unsigned char index);
+bit rtc_test_alarm_int_flag(unsigned char index);
 void rtc_enable_alarm_int(bit enable, unsigned char index);
-void rtc_clr_alarm_int(unsigned char index);
+bit rtc_test_alarm_int(unsigned char index);
+void rtc_clr_alarm_int_flag(unsigned char index);
+
+
+// 辅助函数
+bit rtc_is_leap_year(unsigned char year);
+unsigned char rtc_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date);
 #endif
