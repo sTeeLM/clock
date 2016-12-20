@@ -17,8 +17,6 @@ void alarm_proc(enum task_events ev)
 {
   unsigned char hour;
   
-  CDBG("alarm HIT!\n");
-  
   // 判断是alarm0还是alarm1,清除RTC中的中断标志位
   rtc_read_data(RTC_TYPE_CTL);
   if(rtc_test_alarm_int_flag(0)) {

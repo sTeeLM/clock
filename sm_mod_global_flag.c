@@ -1,6 +1,7 @@
 #include "sm_mod_global_flag.h"
 #include "mod_common.h"
 #include "led.h"
+#include "rtc.h"
 #include "debug.h"
 
 static void display_global_flag(unsigned char what)
@@ -35,6 +36,9 @@ static void display_global_flag(unsigned char what)
     case IS_MUSIC:
       led_set_code(5, 'A');
       led_set_code(4, 'L');
+      led_set_code(3, 'B');
+      led_set_code(2, 'E');
+      led_set_code(1, 'P');    
       led_set_code(0, alarm_music_index + 1 + 0x30);
       break;
     case IS_1224:
@@ -72,6 +76,12 @@ static void inc_only(unsigned char what)
       break;
     case IS_1224:
       is_24 = is_24 ? 0:1;
+      rtc_read_data(RTC_TYPE_TIME);
+      rtc_time_set_hour_12(is_24 ? 0 : 1);
+      rtc_write_data(RTC_TYPE_TIME);
+      rtc_read_data(RTC_TYPE_ALARM0);
+      rtc_alarm_set_hour_12(is_24 ? 0 : 1);
+      rtc_write_data(RTC_TYPE_ALARM0);
       break;
   }
 }

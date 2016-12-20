@@ -119,8 +119,16 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
 
   CDBG("sm_display %bd %bd %bd\n", from, to, ev);
 
+  // 按mod1进入修改全局标志位模式
+  if(get_sm_ss_state(to) == SM_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
+    display_logo(0);
+    return;
+  }
+  
   // 切换到时间显示大模式
-  if(get_sm_ss_state(from) == SM_DISPLAY_INIT && ev == EV_KEY_MOD_UP) {
+  if(get_sm_ss_state(from) == SM_DISPLAY_INIT 
+    && get_sm_ss_state(to) == SM_DISPLAY_HHMMSS
+    && ev == EV_KEY_MOD_UP) {
     display_hhmmss();
     return;
   }

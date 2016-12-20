@@ -317,6 +317,7 @@ void display_logo(unsigned char fun)
   led_clear();
   led_set_code(5, 'F');
   led_set_code(4, 'U');
+  led_set_code(3, 'N');
   led_set_code(1, (fun / 10) + 0x30);
   led_set_code(0, (fun % 10) + 0x30);  
 }
