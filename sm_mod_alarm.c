@@ -152,6 +152,7 @@ static void inc_write(unsigned char what)
 void sm_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_mod_alarm %bd %bd %bd\n", from, to, ev);
+  
   // 按mod1进入修改闹钟模式
   if(get_sm_ss_state(to) == SM_MODIFY_ALARM_INIT && ev == EV_KEY_MOD_LPRESS) {
     display_logo(2);

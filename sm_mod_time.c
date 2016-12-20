@@ -291,6 +291,7 @@ static void enter_yymmdd(unsigned char what) // blink year:0, month:1, day:2
 void sm_mod_time(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_mod_time %bd %bd %bd\n", from, to, ev);
+  
   // 按mod1进入修改时间模式
   if(get_sm_ss_state(to) == SM_MODIFY_TIME_INIT && ev == EV_KEY_MOD_LPRESS) {
     display_logo(1);
