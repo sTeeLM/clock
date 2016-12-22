@@ -31,4 +31,7 @@
 #define  LF             0x0A
 #define  ESC            0x1B
 
+#define  time_diff(from,to) \
+(char)((unsigned char)from - (unsigned char)to)
+
 #endif

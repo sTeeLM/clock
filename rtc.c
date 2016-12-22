@@ -23,12 +23,12 @@ sbit RTC_RESET = P1 ^ 5;
 
 static void rtc_ISR (void) interrupt 2 using 1
 {
-  set_task(EV_ALARM);
+  set_task(EV_ALARM0); // 这里是EV_ALARM0或者EV_ALARM1都可以
   IE1 = 0; // 清除中断标志位
 }
 
 static unsigned char rtc_data[4];
-
+static unsigned char last_read;
 
 static void dump_rtc(void)
 {
@@ -62,7 +62,7 @@ void rtc_initialize (void)
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
   rtc_time_set_hour_12(1);
   rtc_time_set_hour(12);
-  rtc_time_set_min(10);
+  rtc_time_set_min(59);
   rtc_time_set_sec(30); 
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);
@@ -76,22 +76,27 @@ void rtc_initialize (void)
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
 
-  // 闹钟0：一般闹钟，设置为12小时，00:00:00 PM
-  count = 0;
-  I2C_Put(RTC_I2C_ADDRESS, 0x07, count);
-  I2C_Put(RTC_I2C_ADDRESS, 0x08, count);
-  count = 0x40;
-  I2C_Put(RTC_I2C_ADDRESS, 0x09, count);
-  count = 0x80;  
-  I2C_Put(RTC_I2C_ADDRESS, 0x0A, count);
+  // 闹钟0：一般闹钟，设置为12小时，12:00:00 AM
+  rtc_read_data(RTC_TYPE_ALARM0);
+  rtc_data[3] = 0x80; // A1M4 = 1
+  rtc_data[2] = 0; // A1M3 = 0
+  rtc_data[1] = 0; // A1M2 = 0
+  rtc_data[0] = 0; // A1M1 = 0
+  rtc_alarm_set_hour_12(1);
+  rtc_alarm_set_hour(12);
+  rtc_alarm_set_min(0);
+  rtc_write_data(RTC_TYPE_ALARM0);  
   
-  // 闹钟1：整点报时闹钟，设置为12小时，1:00：00 AM
-  count = 0;
-  I2C_Put(RTC_I2C_ADDRESS, 0x0B, count);
-  count = 0x41;
-  I2C_Put(RTC_I2C_ADDRESS, 0x0C, count);
-  count = 0x80;  
-  I2C_Put(RTC_I2C_ADDRESS, 0x0D, count);
+  
+  // 闹钟1：整点报时闹钟，设置为12小时，1:00：00 PM
+  rtc_read_data(RTC_TYPE_ALARM1);
+  rtc_data[2] = 0x80; // A2M3 = 1
+  rtc_data[1] = 0;    // A2M2 = 0
+  rtc_data[0] = 0;    // A2M1 = 0
+  rtc_alarm_set_hour_12(1);
+  rtc_alarm_set_hour(13);
+  rtc_alarm_set_min(0);
+  rtc_write_data(RTC_TYPE_ALARM1);  
 
   // 清除中断标志位
   I2C_Get(RTC_I2C_ADDRESS, 0x0F, &count);
@@ -109,7 +114,6 @@ void rtc_initialize (void)
   
   dump_rtc();
   
-  clr_task(EV_ALARM);
 }
 
 
@@ -134,6 +138,8 @@ void rtc_read_data(enum rtc_data_type type)
     case RTC_TYPE_USR1:
       offset = RTC_USR1_OFFSET; break;     
   }
+  
+  last_read = type;
   
   I2C_Gets(RTC_I2C_ADDRESS, offset, sizeof(rtc_data), rtc_data);
   
@@ -200,7 +206,7 @@ static void _rtc_set_hour(unsigned char hour, unsigned char * dat)
   }  
 }
 
-static void _rtc_set_hour_12(unsigned char enable, unsigned char * dat)
+static void _rtc_set_hour_12(bit enable, unsigned char * dat)
 {
   unsigned char hour;
   hour = _rtc_get_hour(* dat);
@@ -212,9 +218,22 @@ static void _rtc_set_hour_12(unsigned char enable, unsigned char * dat)
   _rtc_set_hour(hour, dat);  
 }
 
-static unsigned char _rtc_get_hour_12(unsigned char hour)
+static bit _rtc_get_hour_12(unsigned char hour)
 {
   return ((hour & 0x40) != 0);
+}
+
+static unsigned char _rtc_get_min_sec(unsigned char min)
+{
+  return (min & 0x0F) + ((min & 0x70) >> 4) * 10;
+}
+
+static void _rtc_set_min_sec(unsigned char min, unsigned char * dat)
+{
+  *dat &= 0xF0;
+  *dat |= min % 10;
+  *dat &= 0x8F;
+  *dat |= (min / 10) << 4;
 }
 
 // 在read_rtc_data(RTC_TYPE_TIME)之后调用
@@ -231,40 +250,34 @@ void rtc_time_set_hour(unsigned char hour)
   _rtc_set_hour(hour, &rtc_data[2]);
 }
 
-void rtc_time_set_hour_12(unsigned char enable)
+void rtc_time_set_hour_12(bit enable)
 {
   _rtc_set_hour_12(enable, &rtc_data[2]);
 }
 
-unsigned char rtc_time_get_hour_12()
+bit rtc_time_get_hour_12()
 {
   return _rtc_get_hour_12(rtc_data[2]);
 }
 
 unsigned char rtc_time_get_min(void)
 {
-  return (rtc_data[1] & 0x0F) + ((rtc_data[1] & 0xF0) >> 4) * 10;
+  return _rtc_get_min_sec(rtc_data[1]);
 }
 
 void rtc_time_set_min(unsigned char min)
 {
-  rtc_data[1] &= 0xF0;
-  rtc_data[1] |= min % 10;
-  rtc_data[1] &= 0x0F;
-  rtc_data[1] |= (min / 10) << 4;
+  _rtc_set_min_sec(min, &rtc_data[1]);
 }
 
 unsigned char rtc_time_get_sec(void)
 {
-  return (rtc_data[0] & 0x0F) + ((rtc_data[0] & 0xF0) >> 4) * 10;
+  return _rtc_get_min_sec(rtc_data[0]);
 }
 
 void rtc_time_set_sec(unsigned char sec)
 {
-  rtc_data[0] &= 0xF0;
-  rtc_data[0] |= sec % 10;
-  rtc_data[0] &= 0x0F;
-  rtc_data[0] |= (sec / 10) << 4;
+  _rtc_set_min_sec(sec, &rtc_data[0]);
 }
 
 // 在rtc_read_data(RTC_TYPE_DATE)之后调用
@@ -364,35 +377,32 @@ void rtc_date_set_day(unsigned char day)
 // 在rtc_read_data(RTC_TYPE_ALARM0)或者RTC_TYPE_ALARM1之后调用
 unsigned char rtc_alarm_get_hour()
 {
-  return _rtc_get_hour(rtc_data[2]);
+  return _rtc_get_hour(last_read == RTC_TYPE_ALARM0 ? rtc_data[2]:rtc_data[1]);
 }
 
-unsigned char rtc_alarm_get_hour_12()
+bit rtc_alarm_get_hour_12()
 {
-  return _rtc_get_hour_12(rtc_data[2]);
+  return _rtc_get_hour_12(last_read == RTC_TYPE_ALARM0 ? rtc_data[2] : rtc_data[1]);
 }
 
-void rtc_alarm_set_hour_12(unsigned char enable)
+void rtc_alarm_set_hour_12(bit enable)
 {
-  _rtc_set_hour_12(enable, &rtc_data[2]);
+  _rtc_set_hour_12(enable, last_read == RTC_TYPE_ALARM0 ? &rtc_data[2] : &rtc_data[1]);
 }
 
 void rtc_alarm_set_hour(unsigned char hour)
 {
-  _rtc_set_hour(hour, &rtc_data[2]);
+  _rtc_set_hour(hour, last_read == RTC_TYPE_ALARM0 ? &rtc_data[2] : &rtc_data[1]);
 }
 
 unsigned char rtc_alarm_get_min()
 {
-  return (rtc_data[1] & 0x0F) + ((rtc_data[1] & 0x70) >> 4) * 10;
+  return _rtc_get_min_sec(last_read == RTC_TYPE_ALARM0 ? rtc_data[1] : rtc_data[0]);
 }
 
 void rtc_alarm_set_min( unsigned char min)
 {
-  rtc_data[1] &= 0x0F;
-  rtc_data[1] |= min % 10;
-  rtc_data[1] &= 0x7F;
-  rtc_data[1] |= (min / 10) << 4;  
+  _rtc_set_min_sec(min, last_read == RTC_TYPE_ALARM0 ? &rtc_data[1] : &rtc_data[0]); 
 }
 // 在rtc_read_data(RTC_TYPE_TEMP)之后调用
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
@@ -414,8 +424,6 @@ bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
     rtc_data[1] &= 0xC0;
     rtc_data[1] >>= 6;
   }
-  
-  CDBG("SHIT %bx %bx\n", rtc_data[1], rtc_data[0]);
   
   *integer = rtc_data[0];
   
@@ -477,4 +485,14 @@ bit rtc_test_alarm_int_flag(unsigned char index)
     return (rtc_data[1] & 2) == 2;
   }
   return 0;
+}
+
+void rtc_enter_powersave(void)
+{
+  
+}
+
+void rtc_leave_powersave(void)
+{
+  
 }

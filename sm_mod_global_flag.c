@@ -2,22 +2,37 @@
 #include "mod_common.h"
 #include "led.h"
 #include "rtc.h"
+#include "beeper.h"
+#include "power.h"
 #include "debug.h"
 
 static void display_global_flag(unsigned char what)
 {
+  bit baoshi,is_24;
+  unsigned char alarm_music_index, powersave_to_s;
+
+  rtc_read_data(RTC_TYPE_CTL);
+  baoshi = rtc_test_alarm_int(1);
+  
+  rtc_read_data(RTC_TYPE_TIME);
+  is_24 = !rtc_time_get_hour_12();
+  
+  alarm_music_index = beeper_get_music_index();
+  
+  powersave_to_s = get_powersave_to_s();
+  
   led_clear();
   switch(what) {
     case IS_PS:
       led_set_code(5, 'P');
       led_set_code(4, 'S');
-      if(powersave_timeout == 0) {
+      if(powersave_to_s == 0) {
         led_set_code(2, 'O');
         led_set_code(1, 'F');
         led_set_code(0, 'F');
       } else {
-        led_set_code(1, (powersave_timeout / 10) + 0x30);
-        led_set_code(0, (powersave_timeout % 10) + 0x30);
+        led_set_code(1, (powersave_to_s / 10) + 0x30);
+        led_set_code(0, (powersave_to_s % 10) + 0x30);
       }
       break;
     case IS_BS:
@@ -56,27 +71,35 @@ static void display_global_flag(unsigned char what)
   }
 }
 
-static void inc_only(unsigned char what)
+static void inc_write(unsigned char what)
 {
+  bit baoshi,is_24;
+  unsigned char alarm_music_index ,powersave_to;
+
   switch(what) {
     case IS_PS:
-      powersave_timeout += POWERSAVE_TIMEOUT_INTERVAL;
-      if(powersave_timeout > MAX_POWERSAVE_TIMEOUT) {
-        powersave_timeout = 0;
-      }
+      powersave_to = (get_powersave_to() + 1) % POWERSAVE_CNT;
+      set_powersave_to(powersave_to);
       break;
     case IS_BS:
+      rtc_read_data(RTC_TYPE_CTL);
+      baoshi = rtc_test_alarm_int(1);
       baoshi = baoshi ? 0:1;
+      rtc_enable_alarm_int(baoshi, 1);
+      rtc_write_data(RTC_TYPE_CTL);
       break;
     case IS_MUSIC:
+      alarm_music_index = beeper_get_music_index();
       alarm_music_index ++;
-      if(alarm_music_index >= ALARM_MUSIC_CNT) {
+      if(alarm_music_index >= BEEPER_MUSIC_CNT) {
         alarm_music_index = 0;
       }
+      beeper_set_music_index(alarm_music_index);
       break;
     case IS_1224:
-      is_24 = is_24 ? 0:1;
       rtc_read_data(RTC_TYPE_TIME);
+      is_24 = !rtc_time_get_hour_12();
+      is_24 = is_24 ? 0:1;
       rtc_time_set_hour_12(is_24 ? 0 : 1);
       rtc_write_data(RTC_TYPE_TIME);
       rtc_read_data(RTC_TYPE_ALARM0);
@@ -107,7 +130,7 @@ void sm_mod_global_flag(unsigned char from, unsigned char to, enum task_events e
 
   // set0 省电模式超时时间设置
   if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_PS && ev == EV_KEY_SET_PRESS) {
-    inc_only(IS_PS);
+    inc_write(IS_PS);
     display_global_flag(IS_PS);
     return;
   }
@@ -120,7 +143,7 @@ void sm_mod_global_flag(unsigned char from, unsigned char to, enum task_events e
   
   // set0 整点报时on/off
   if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_BS && ev == EV_KEY_SET_PRESS) {
-    inc_only(IS_BS);
+    inc_write(IS_BS);
     display_global_flag(IS_BS);
     return;
   }  
@@ -133,7 +156,7 @@ void sm_mod_global_flag(unsigned char from, unsigned char to, enum task_events e
 
   // set0 闹铃音乐设置
   if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_ALARM_BEEP && ev == EV_KEY_SET_PRESS) {
-    inc_only(IS_MUSIC);
+    inc_write(IS_MUSIC);
     display_global_flag(IS_MUSIC);
     return;
   }
@@ -146,7 +169,7 @@ void sm_mod_global_flag(unsigned char from, unsigned char to, enum task_events e
   
   // set0 1224模式切换
   if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_1224 && ev == EV_KEY_SET_PRESS) {
-    inc_only(IS_1224);
+    inc_write(IS_1224);
     display_global_flag(IS_1224);
     return;
   }

@@ -4,6 +4,8 @@
 #include "task.h"
 
 void alarm_initialize (void);
+void alarm_enter_powersave(void);
+void alarm_leave_powersave(void);
 void alarm_proc(enum task_events ev);
 
 #endif

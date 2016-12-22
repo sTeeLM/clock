@@ -29,9 +29,10 @@ enum task_events
   EV_KEY_SET_LPRESS   = 10, // set键长按
   EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按    
-  EV_ALARM            = 13, // 闹钟应该响起
-  EV_COUNTER          = 14, // 计时器到时间
-  EV_POWER_SAVE       = 15, // 应该进入PS状态 
+  EV_ALARM0           = 13, // 闹钟0应该响起
+  EV_ALARM1           = 14, // 闹钟1应该响起
+  EV_COUNTER          = 15, // 计时器到时间
+  EV_POWER_SAVE       = 16, // 应该进入PS状态 
   EV_COUNT  
 };
 */
@@ -52,17 +53,20 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   mod_set_proc,
   mod_set_proc,  
   alarm_proc,
+  alarm_proc,
   counter_proc,
   power_proc  
 };
 
 
-unsigned int idata ev_bits;
+unsigned int idata ev_bits0;
+unsigned int idata ev_bits1;
 
 void task_initialize (void)
 {
   CDBG("task_initialize\n");
-  ev_bits = 0;
+  ev_bits0 = 0;
+  ev_bits1 = 0;
 }
 
 void run_task(void)

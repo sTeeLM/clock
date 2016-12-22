@@ -1,6 +1,8 @@
 #include <STC89C5xRC.H>
 #include <stdio.h>
 
+#include "com.h"
+
 #define    XTAL 11059200                        // CPU Oscillator Frequency
 #define    baudrate 9600                        // 9600 bps communication baudrate
 
@@ -126,3 +128,14 @@ char _getkey (void) {
   return (c);
 }
 
+void com_enter_powersave(void)
+{
+  REN = 0;
+  ES = 0;
+}
+
+void com_leave_powersave(void)
+{
+  REN = 1;
+  ES = 1;
+}

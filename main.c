@@ -11,20 +11,23 @@
 #include "alarm.h"
 #include "power.h"
 #include "counter.h"
+#include "beeper.h"
 #include "debug.h"
+#include "cext.h"
 
 void main(void)
  {	 
 	EA = 1;                                       // enable global interrupts
   com_initialize();                             // initialize interrupt driven serial I/O
   timer_initialize(12e6);												// initialize timer
-	rtc_initialize();
-	key_initialize();
-	led_initialize();
-  power_initialize();
-  alarm_initialize();
-  counter_initialize();
-  task_initialize();
-  sm_initialize();
-  run_task();                                   // run task procs
+  rtc_initialize();                             // initialize rtc
+  key_initialize();                             // initialize keys
+  led_initialize();                             // initialize led display
+  power_initialize();                           // initialize power manager
+  alarm_initialize();                           // initialize power alarm manager
+  counter_initialize();                         // initialize counter
+  beeper_initialize();                          // initialize beeper
+  task_initialize();                            // initialize task manager
+  sm_initialize();                              // initialize state machine
+  run_task();                                   // run task procs, loop forever
  }

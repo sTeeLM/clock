@@ -8,7 +8,8 @@
 #define LED_CODE_CEL   0 // degree Celsius
 
 void led_initialize (void);
-
+void led_enter_powersave(void);
+void led_leave_powersave(void);
 void led_clear(void);
 void led_set_blink(unsigned char i);
 void led_clr_blink(unsigned char i);

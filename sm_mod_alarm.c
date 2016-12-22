@@ -98,7 +98,10 @@ static void write_only(unsigned char what)
       break;
     case IS_MIN:
       if(lpress_lock_month_min == 1) {
+        CDBG("Fuck3 %bd\n", month_min);
         rtc_alarm_set_min(month_min);
+        month_min = rtc_alarm_get_min();
+        CDBG("Fuck4 %bd\n", month_min);
         rtc_write_data(RTC_TYPE_ALARM0);
         lpress_lock_month_min = 0;
         led_set_blink(1);
@@ -133,7 +136,9 @@ static void inc_only(unsigned char what)
         rtc_read_data(RTC_TYPE_ALARM0);
         month_min = rtc_alarm_get_min();
       }
+      CDBG("Fuck1 %bd\n", month_min);
       month_min = (month_min + 1) % 60;
+      CDBG("Fuck2 %bd\n", month_min);
       break;
     case IS_ONOFF:
       enabled = rtc_test_alarm_int(0);

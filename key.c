@@ -6,6 +6,7 @@
 #include "debug.h"
 #include "misc.h"
 #include "sm.h"
+#include "cext.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
 #define KEY_LPRESS_DELAY 2 // 长按时间，2s
@@ -23,7 +24,7 @@ bit mod_set_press;
 
 static void key_ISR (void) interrupt 0 using 1
 {
-  IE0 = 0; // 清除中断标志位  
+  IE0 = 0; // 清除中断标志位
 }
 
 void scan_key_proc(enum task_events ev)
@@ -40,14 +41,12 @@ void scan_key_proc(enum task_events ev)
 //      }       
     }
   } else if(!MOD_KEY && mod_press){
-    if(counter_1s < last_mod_tmr_count 
-      || counter_1s - last_mod_tmr_count > KEY_LPRESS_DELAY) {
+    if(time_diff(counter_1s, last_mod_tmr_count) >= KEY_LPRESS_DELAY) {
       set_task(EV_KEY_MOD_LPRESS);
     }
   } else if(MOD_KEY && mod_press) {
     set_task(EV_KEY_MOD_UP);
-    if(counter_1s < last_mod_tmr_count 
-      || counter_1s - last_mod_tmr_count <= KEY_LPRESS_DELAY) {
+    if(time_diff(counter_1s, last_mod_tmr_count) < KEY_LPRESS_DELAY) {
       set_task(EV_KEY_MOD_PRESS);
       if(set_press) {
         set_task(EV_KEY_MOD_SET_PRESS);    
@@ -68,15 +67,13 @@ void scan_key_proc(enum task_events ev)
 //      }      
     }
   } else if(!SET_KEY && set_press){
-    if(counter_1s < last_set_tmr_count
-      || counter_1s - last_set_tmr_count > KEY_LPRESS_DELAY) {
+    if(time_diff(counter_1s, last_set_tmr_count) >= KEY_LPRESS_DELAY) {
       set_task(EV_KEY_SET_LPRESS);
     }
   } else if(SET_KEY && set_press) {
     set_task(EV_KEY_SET_UP);
     set_press = 0;
-    if(counter_1s < last_set_tmr_count
-      || counter_1s - last_set_tmr_count <= KEY_LPRESS_DELAY) {
+    if(time_diff(counter_1s, last_set_tmr_count) < KEY_LPRESS_DELAY) {
       set_task(EV_KEY_SET_PRESS);
       if(mod_press) {
         set_task(EV_KEY_MOD_SET_PRESS);    
@@ -86,10 +83,8 @@ void scan_key_proc(enum task_events ev)
   
   if(!SET_KEY && set_press 
     && !MOD_KEY && mod_press) {
-    if((counter_1s < last_mod_tmr_count 
-      || counter_1s - last_mod_tmr_count > KEY_2_KEY_LPRESS_DELAY)
-      && (counter_1s < last_set_tmr_count 
-      || counter_1s - last_set_tmr_count > KEY_2_KEY_LPRESS_DELAY)) {
+    if(time_diff(counter_1s, last_mod_tmr_count) >= KEY_2_KEY_LPRESS_DELAY
+      && time_diff(counter_1s, last_set_tmr_count) >= KEY_2_KEY_LPRESS_DELAY) {
       set_task(EV_KEY_MOD_SET_LPRESS);
     }
   }
@@ -169,3 +164,14 @@ void key_initialize (void)
   mod_press = 0; 
   set_press = 0;
 }
+
+void key_enter_powersave(void)
+{
+  
+}
+
+void key_leave_powersave(void)
+{
+  
+}
+

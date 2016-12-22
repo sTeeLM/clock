@@ -13,14 +13,18 @@ enum rtc_data_type {
 };
 
 void rtc_initialize (void);
+
+void rtc_enter_powersave(void);
+void rtc_leave_powersave(void);
+
 void rtc_read_data(enum rtc_data_type type);
 void rtc_write_data(enum rtc_data_type type);
 
 // 在read_rtc_data(RTC_TYPE_TIME)之后调用
 unsigned char rtc_time_get_hour(void);
 void rtc_time_set_hour(unsigned char hour);
-void rtc_time_set_hour_12(unsigned char enable);
-unsigned char rtc_time_get_hour_12();
+void rtc_time_set_hour_12(bit enable);
+bit rtc_time_get_hour_12();
 unsigned char rtc_time_get_min(void);
 void rtc_time_set_min(unsigned char min);
 unsigned char rtc_time_get_sec(void);
@@ -38,8 +42,8 @@ void rtc_date_set_day(unsigned char day);
 
 // 在rtc_read_data(RTC_TYPE_ALARM0)或者RTC_TYPE_ALARM1之后调用
 unsigned char rtc_alarm_get_hour();
-unsigned char rtc_alarm_get_hour_12();
-void rtc_alarm_set_hour_12(unsigned char enable);
+bit rtc_alarm_get_hour_12();
+void rtc_alarm_set_hour_12(bit enable);
 void rtc_alarm_set_hour(unsigned char hour);
 unsigned char rtc_alarm_get_min();
 void rtc_alarm_set_min( unsigned char min);

@@ -289,7 +289,7 @@
             <uAregs>0</uAregs>
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
-            <Optimize>8</Optimize>
+            <Optimize>9</Optimize>
             <WarningLevel>2</WarningLevel>
             <SizeSpeed>0</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
@@ -460,6 +460,11 @@
               <FileName>mod_common.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\mod_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>beeper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\beeper.c</FilePath>
             </File>
           </Files>
         </Group>

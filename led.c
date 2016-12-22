@@ -181,3 +181,14 @@ void led_set_code(unsigned char i, char c)
   }
 }
 
+void led_enter_powersave(void)
+{
+  P0 = 0xFF;
+  P2 = 0xFF;
+  led_clear();
+}
+
+void led_leave_powersave(void)
+{
+  
+}

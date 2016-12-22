@@ -3,19 +3,18 @@
 #include "debug.h"
 #include "sm.h"
 
-bit alarm0_hit;
-bit alarm1_hit;
+
 
 void alarm_initialize (void)
 {
   CDBG("alarm_initialize\n");
-  alarm0_hit = 0;
-  alarm1_hit = 0;
 }
 
 void alarm_proc(enum task_events ev)
 {
   unsigned char hour;
+  bit alarm0_hit;
+  bit alarm1_hit;
   
   // 判断是alarm0还是alarm1,清除RTC中的中断标志位
   rtc_read_data(RTC_TYPE_CTL);
@@ -35,13 +34,28 @@ void alarm_proc(enum task_events ev)
     rtc_read_data(RTC_TYPE_ALARM1);
     hour = rtc_alarm_get_hour();
     hour = (hour + 1) % 24;
+    rtc_alarm_set_hour(hour);
     rtc_write_data(RTC_TYPE_ALARM1);
   }
   
-  // run 状态机，状态机转移函数会判断alarm0_hit/alarm1_hit
-  run_state_machine(EV_ALARM);
+  // run 状态机
+  if(alarm0_hit && alarm1_hit) {
+    run_state_machine(EV_ALARM0); // 如果0/1同时hit，忽略1（整点报时）
+  } else {
+      if(alarm0_hit) {
+        run_state_machine(EV_ALARM0);
+      } else if(alarm1_hit){
+        run_state_machine(EV_ALARM1);
+      }
+  }
+}
+
+void alarm_enter_powersave(void)
+{
   
-  // 清除标志
-  alarm0_hit = 0;
-  alarm1_hit = 0;
+}
+
+void alarm_leave_powersave(void)
+{
+  
 }

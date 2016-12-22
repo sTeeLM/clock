@@ -16,26 +16,40 @@ enum task_events
   EV_KEY_SET_LPRESS   = 10, // set键长按
   EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按    
-  EV_ALARM            = 13, // 闹钟应该响起
-  EV_COUNTER          = 14, // 计时器到时间
-  EV_POWER_SAVE       = 15, // 应该进入PS状态 
+  EV_ALARM0           = 13, // 闹钟0应该响起
+  EV_ALARM1           = 14, // 闹钟1应该响起
+  EV_COUNTER          = 15, // 计时器到时间
+  EV_POWER_SAVE       = 16, // 应该进入PS状态 
   EV_COUNT  
 };
 
-extern unsigned int idata ev_bits;
+extern unsigned int idata ev_bits0;
+extern unsigned int idata ev_bits1;
 
 typedef void (code *TASK_PROC)(enum task_events);
 
 void task_initialize (void);
 
-#define set_task(ev1) \
-  do{ev_bits |= 1<<ev1;}while(0)
 
-#define clr_task(ev1) \
-  do{ev_bits &= ~(1<<ev1);}while(0)
+// 这些宏也在中断里被调用，所以不能是带参数函数，职能拿宏实现了
+#define set_task(ev1)             \
+  do{                             \
+    if(ev1 < 16)                  \
+      ev_bits0 |= 1<<ev1;         \
+    else                          \
+      ev_bits1 |= 1<<(ev1 - 16);  \
+  }while(0)
+
+#define clr_task(ev1)               \
+  do{                               \
+    if(ev1 < 16)                    \
+      ev_bits0 &= ~(1<<ev1);        \
+    else                            \
+      ev_bits1 &= ~(1<<(ev1 - 16)); \  
+  }while(0)
     
-#define  test_task(ev1) \
-  (ev_bits & (1<<ev1))
+#define  test_task(ev1)             \
+  (ev1 < 16 ? (ev_bits0 & (1<<ev1)) : (ev_bits1 & (1<<(ev1 - 16))))
 
 void run_task(void);
 
