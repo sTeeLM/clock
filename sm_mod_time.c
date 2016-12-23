@@ -1,6 +1,7 @@
 #include "sm_mod_time.h"
 #include "led.h"
 #include "rtc.h"
+#include "clock.h"
 #include "debug.h"
 
 #include "mod_common.h"
@@ -13,18 +14,12 @@ static void inc_only(unsigned char what)
       if(!lpress_lock_year_hour) {
         lpress_lock_year_hour = 1;
         led_clr_blink(5);
-        led_clr_blink(4);        
-        rtc_read_data(what == IS_HOUR ? RTC_TYPE_TIME:RTC_TYPE_DATE);
-        if(what == IS_HOUR) {
-          year_hour = rtc_time_get_hour();
-        } else {
-          year_hour = rtc_date_get_year();
-        }
+        led_clr_blink(4); 
       }
       if(what == IS_HOUR) {
-        year_hour = (year_hour + 1)% 24;
+        clock_inc_hour();
       } else {
-        year_hour = (year_hour + 1)% 100;
+        clock_inc_year();
       }
       break;
     case IS_MIN:
@@ -33,18 +28,11 @@ static void inc_only(unsigned char what)
         lpress_lock_month_min = 1;
         led_clr_blink(3);
         led_clr_blink(2); 
-        rtc_read_data(what == IS_MIN ? RTC_TYPE_TIME:RTC_TYPE_DATE);
-        if(what == IS_MIN) {
-          month_min = rtc_time_get_min();
-        } else {
-          month_min = rtc_date_get_month();
-        }
       }
       if(what == IS_MIN) {
-        month_min = (month_min + 1) % 60;
+        clock_inc_min();
       } else {
-        month_min = month_min + 1;
-        if(month_min >= 13) month_min = 1;
+        clock_inc_month();
       }
       break;
     case IS_SEC:
@@ -53,28 +41,11 @@ static void inc_only(unsigned char what)
         lpress_lock_day_sec = 1;
         led_clr_blink(1);
         led_clr_blink(0); 
-        rtc_read_data(what == IS_SEC ? RTC_TYPE_TIME:RTC_TYPE_DATE);
-        if(what == IS_SEC) {
-          day_sec = rtc_time_get_sec();
-        } else {
-          day_sec = rtc_date_get_date();
-        }
       }
       if(what == IS_SEC) {
-        day_sec = 0;
+        clock_clr_sec();
       } else {
-        day_sec ++;
-        if(month_min == 1 || month_min == 3 || month_min == 5 || month_min == 7 
-          || month_min == 8 || month_min == 10 || month_min == 12) {
-          if(day_sec >= 32) day_sec = 1;
-        } else {
-          if(day_sec >= 31) day_sec = 1;
-          if(month_min == 2 && rtc_is_leap_year(year_hour)) {
-            if(day_sec >= 30) day_sec = 1;
-          } else if(month_min == 2 && !rtc_is_leap_year(year_hour)) {
-            if(day_sec >= 29) day_sec = 1;
-          }
-        }
+        clock_inc_date();
       }
       break;
   }
@@ -86,8 +57,7 @@ static void write_only(unsigned char what)
   switch(what) {
     case IS_HOUR:
       if(lpress_lock_year_hour == 1) {
-        rtc_time_set_hour(year_hour);
-        rtc_write_data(RTC_TYPE_TIME);
+        clock_sync_to_rtc(CLOCK_SYNC_TIME);
         lpress_lock_year_hour = 0;
         led_set_blink(5);
         led_set_blink(4);
@@ -100,17 +70,15 @@ static void write_only(unsigned char what)
       break;
     case IS_YEAR:
       if(lpress_lock_year_hour == 1) {
-        rtc_date_set_year(year_hour);
-        rtc_write_data(RTC_TYPE_DATE);
+        clock_sync_to_rtc(CLOCK_SYNC_DATE);
         lpress_lock_year_hour = 0;
         led_set_blink(5);
-        led_set_blink(4); 
+        led_set_blink(4);
       }
       break;
     case IS_MIN:
       if(lpress_lock_month_min == 1) {
-        rtc_time_set_min(month_min);
-        rtc_write_data(RTC_TYPE_TIME);
+        clock_sync_to_rtc(CLOCK_SYNC_TIME);
         lpress_lock_month_min = 0;
         led_set_blink(3);
         led_set_blink(2); 
@@ -118,17 +86,15 @@ static void write_only(unsigned char what)
       break;
     case IS_MON:
       if(lpress_lock_month_min == 1) {
-        rtc_date_set_month(month_min);
-        rtc_write_data(RTC_TYPE_DATE);
+        clock_sync_to_rtc(CLOCK_SYNC_DATE);
         lpress_lock_month_min = 0;
         led_set_blink(3);
-        led_set_blink(2); 
+        led_set_blink(2);      
       }
       break;  
     case IS_SEC:
       if(lpress_lock_day_sec == 1) {
-        rtc_time_set_sec(day_sec);
-        rtc_write_data(RTC_TYPE_TIME);
+        clock_sync_to_rtc(CLOCK_SYNC_TIME);
         lpress_lock_day_sec = 0;
         led_set_blink(1);
         led_set_blink(0); 
@@ -136,8 +102,7 @@ static void write_only(unsigned char what)
       break;
     case IS_DAY:
       if(lpress_lock_day_sec == 1) {
-        rtc_date_set_date(day_sec);
-        rtc_write_data(RTC_TYPE_DATE);
+        clock_sync_to_rtc(CLOCK_SYNC_DATE);
         lpress_lock_day_sec = 0;
         led_set_blink(1);
         led_set_blink(0); 
@@ -157,42 +122,24 @@ static void update_hhmmss(void)
 {
   unsigned char hour, min, sec;
   
-  rtc_read_data(RTC_TYPE_TIME);
-  hour = rtc_time_get_hour();
-  min  = rtc_time_get_min();
-  sec  = rtc_time_get_sec();
+  hour = clock_get_hour();
+  min  = clock_get_min();
+  sec  = clock_get_sec();
   
   // 两个“:”号
   led_set_dp(1);
   led_set_dp(2);
   led_set_dp(3);
-  led_set_dp(4);
-  
-  if(lpress_lock_year_hour) {
-    hour = year_hour;
-  } else {
-    year_hour = hour;
-  }
+  led_set_dp(4); 
   
   // 如果是12小时显示，以第一位数字的点表示“PM”
-  if(rtc_time_get_hour_12() && hour > 12) {
+  if(clock_get_hour_12() && hour > 12) {
     led_set_dp(5);
     hour -= 12;
   } else {
     led_clr_dp(5);
   }
   
-  if(lpress_lock_month_min) {
-    min = month_min;
-  } else {
-    month_min = min;
-  }
-  
-  if(lpress_lock_day_sec) {
-    sec = day_sec;
-  } else {
-    day_sec = sec;
-  }
   
   CDBG("update_hhmmss %bd:%bd:%bd\n", hour, min, sec);  
   
@@ -213,31 +160,14 @@ static void update_yymmdd(void)
 {
   unsigned char year, mon, date;
   
-  rtc_read_data(RTC_TYPE_DATE);
   
-  year = rtc_date_get_year();
-  mon  = rtc_date_get_month();
-  date  = rtc_date_get_date();
+  year = clock_get_year();
+  mon  = clock_get_month();
+  date  = clock_get_date();
   
   led_set_dp(2);
   led_set_dp(4);
-  
-  if(lpress_lock_year_hour) {
-    year = year_hour;
-  } else {
-    year_hour = year;
-  }
-  if(lpress_lock_month_min) {
-    mon = month_min;
-  } else {
-    month_min = mon;
-  }
-  if(lpress_lock_day_sec) {
-    date = day_sec;
-  } else {
-    day_sec = date;
-  }
-  
+
   CDBG("update_yymmdd %bd-%bd-%bd\n", year, mon, date);
   
   if((year / 10) != 0) {

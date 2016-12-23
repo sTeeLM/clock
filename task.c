@@ -4,13 +4,13 @@
 #include "sm.h"
 
 /* hardware*/
-#include "timer.h"
+#include "clock.h"
 #include "rtc.h"
 #include "key.h"
 #include "led.h"
 #include "alarm.h"
 #include "power.h"
-#include "counter.h"
+#include "timer.h"
 #include "debug.h"
 
 /*
@@ -54,7 +54,7 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   mod_set_proc,  
   alarm_proc,
   alarm_proc,
-  counter_proc,
+  timer_proc,
   power_proc  
 };
 

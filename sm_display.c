@@ -1,7 +1,7 @@
 #include "sm_display.h"
 #include "led.h"
 #include "rtc.h"
-#include "timer.h"
+#include "clock.h"
 #include "power.h"
 #include "debug.h"
 #include "beeper.h"
@@ -14,8 +14,8 @@ static void display_temp(void)
 {
   unsigned char inti, flt;
   bit sign;
-  rtc_read_data(RTC_TYPE_TEMP);
   
+  rtc_read_data(RTC_TYPE_TEMP);
   sign = rtc_get_temperature(&inti, &flt);
   
   CDBG("display_temp %c%bd.%bd\n", sign? '-':'+', inti, flt);
@@ -35,9 +35,8 @@ static void display_temp(void)
 static void display_week(void)
 {
   unsigned char day;
-  rtc_read_data(RTC_TYPE_DATE); 
-    
-  day = rtc_date_get_day();
+
+  day = clock_get_day();
 
   CDBG("display_week %bd\n", day); 
 
@@ -55,11 +54,9 @@ static void display_yymmdd(void)
 {
   unsigned char year, mon, date;
   
-  rtc_read_data(RTC_TYPE_DATE);
-  
-  year = rtc_date_get_year();
-  mon  = rtc_date_get_month();
-  date  = rtc_date_get_date();
+  year = clock_get_year();
+  mon  = clock_get_month();
+  date  = clock_get_date();
   
   CDBG("display_yymmdd %bd-%bd-%bd\n", year, mon, date);
   
@@ -84,10 +81,9 @@ static void display_hhmmss(void)
 {
   unsigned char hour, min, sec;
   
-  rtc_read_data(RTC_TYPE_TIME);
-  hour = rtc_time_get_hour();
-  min  = rtc_time_get_min();
-  sec  = rtc_time_get_sec();
+  hour = clock_get_hour();
+  min  = clock_get_min();
+  sec  = clock_get_sec();
   
   CDBG("display_hhmmss %bd:%bd:%bd\n", hour, min, sec);
   
@@ -100,7 +96,7 @@ static void display_hhmmss(void)
   led_set_dp(4);
   
   // 如果是12小时显示，以第一位数字的点表示“PM”
-  if(rtc_time_get_hour_12() && hour > 12) {
+  if(clock_get_hour_12() && hour > 12) {
     led_set_dp(5);
     hour -= 12;
   }
@@ -119,13 +115,13 @@ static void display_hhmmss(void)
 
 static void reset_switch(void)
 {
-  last_display_s = counter_1s;
+  last_display_s = clock_get_sec();
 }
 
 
 static void test_autoswitch(void)
 {
-  if(time_diff(counter_1s, last_display_s) >= SM_DISPLAY_SWITCH_S) {
+  if(time_diff(clock_get_sec(), last_display_s) >= SM_DISPLAY_SWITCH_S) {
     CDBG("test_autoswitch time out!\n");
     set_task(EV_KEY_SET_PRESS);
   }

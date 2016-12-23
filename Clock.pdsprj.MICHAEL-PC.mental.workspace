@@ -34,7 +34,7 @@
    <POPUP w="695" x="77" flags="00000000" y="168" h="453" pid="0" iid="19">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="450" x="935" flags="00000023" y="27" h="250" pid="0" iid="18">
+   <POPUP w="450" x="935" flags="00008023" y="27" h="250" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -43,7 +43,7 @@
    <POPUP w="24" x="5" flags="00000008" y="81" h="17" pid="1" iid="3">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="12" x="5" flags="0000800b" y="81" h="26" pid="3" iid="3">
+   <POPUP w="12" x="5" flags="0000000b" y="81" h="26" pid="3" iid="3">
     <PROPERTIES>
      <ITEM name="DataType">2</ITEM>
      <ITEM name="DispChars">Yes</ITEM>
@@ -63,7 +63,7 @@
      <ITEM name="TopLineAddress">00000080</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="20" x="0" flags="00000000" y="0" h="3" pid="1" iid="22">
+   <POPUP w="20" x="0" flags="00000001" y="0" h="3" pid="1" iid="22">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="8" x="5" flags="00000008" y="81" h="32" pid="2" iid="22">
@@ -74,6 +74,34 @@
      <ITEM name="ShowChanges">Yes</ITEM>
      <ITEM name="ShowToolTips">Yes</ITEM>
      <ITEM name="TopLineAddress">00000000</ITEM>
+    </PROPERTIES>
+   </POPUP>
+   <POPUP w="600" x="37" flags="0000002b" y="128" h="400" pid="1000" iid="3">
+    <PROPERTIES>
+     <ITEM name="CaseSensitive">No</ITEM>
+     <ITEM name="DISPADDRS">Yes</ITEM>
+     <ITEM name="DISPLNUMS">No</ITEM>
+     <ITEM name="DISPOPCODES">No</ITEM>
+     <ITEM name="FIXUPBPTS">Yes</ITEM>
+     <ITEM name="WordsOnly">No</ITEM>
+     <ITEM name="nBreakpoints">0</ITEM>
+    </PROPERTIES>
+   </POPUP>
+   <POPUP w="300" x="57" flags="0000000b" y="148" h="300" pid="1001" iid="3">
+    <PROPERTIES>
+     <ITEM name="Address Column Width">94</ITEM>
+     <ITEM name="AutoResize">No</ITEM>
+     <ITEM name="Gridlines">Yes</ITEM>
+     <ITEM name="Name Column Width">94</ITEM>
+     <ITEM name="ShowAddresses">Yes</ITEM>
+     <ITEM name="ShowGlobals">Yes</ITEM>
+     <ITEM name="ShowPreviousValues">No</ITEM>
+     <ITEM name="ShowTypes">No</ITEM>
+     <ITEM name="ShowWatchPoint">No</ITEM>
+     <ITEM name="TriggerMode">0</ITEM>
+     <ITEM name="Value Column Width">94</ITEM>
+     <ITEM name="Version">100</ITEM>
+     <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
    </POPUP>
   </PWI>

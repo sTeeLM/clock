@@ -4,7 +4,7 @@
 #include "led.h"
 #include "task.h"
 #include "misc.h"
-#include "timer.h"
+#include "clock.h"
 #include "debug.h"
 
 static char led_data[6];
@@ -190,5 +190,6 @@ void led_enter_powersave(void)
 
 void led_leave_powersave(void)
 {
-  
+  P0 = 0x0;
+  P2 = 0xFF;
 }

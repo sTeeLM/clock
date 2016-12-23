@@ -1,9 +1,10 @@
 #include "sm_mod_global_flag.h"
 #include "mod_common.h"
 #include "led.h"
-#include "rtc.h"
 #include "beeper.h"
 #include "power.h"
+#include "clock.h"
+#include "alarm.h"
 #include "debug.h"
 
 static void display_global_flag(unsigned char what)
@@ -11,11 +12,9 @@ static void display_global_flag(unsigned char what)
   bit baoshi,is_24;
   unsigned char alarm_music_index, powersave_to_s;
 
-  rtc_read_data(RTC_TYPE_CTL);
-  baoshi = rtc_test_alarm_int(1);
-  
-  rtc_read_data(RTC_TYPE_TIME);
-  is_24 = !rtc_time_get_hour_12();
+  baoshi = alarm1_test_enable();
+
+  is_24 = !clock_get_hour_12();
   
   alarm_music_index = beeper_get_music_index();
   
@@ -73,7 +72,6 @@ static void display_global_flag(unsigned char what)
 
 static void inc_write(unsigned char what)
 {
-  bit baoshi,is_24;
   unsigned char alarm_music_index ,powersave_to;
 
   switch(what) {
@@ -82,11 +80,8 @@ static void inc_write(unsigned char what)
       set_powersave_to(powersave_to);
       break;
     case IS_BS:
-      rtc_read_data(RTC_TYPE_CTL);
-      baoshi = rtc_test_alarm_int(1);
-      baoshi = baoshi ? 0:1;
-      rtc_enable_alarm_int(baoshi, 1);
-      rtc_write_data(RTC_TYPE_CTL);
+      alarm1_set_enable(!alarm1_test_enable());
+      alarm1_sync_to_rtc();
       break;
     case IS_MUSIC:
       alarm_music_index = beeper_get_music_index();
@@ -97,14 +92,10 @@ static void inc_write(unsigned char what)
       beeper_set_music_index(alarm_music_index);
       break;
     case IS_1224:
-      rtc_read_data(RTC_TYPE_TIME);
-      is_24 = !rtc_time_get_hour_12();
-      is_24 = is_24 ? 0:1;
-      rtc_time_set_hour_12(is_24 ? 0 : 1);
-      rtc_write_data(RTC_TYPE_TIME);
-      rtc_read_data(RTC_TYPE_ALARM0);
-      rtc_alarm_set_hour_12(is_24 ? 0 : 1);
-      rtc_write_data(RTC_TYPE_ALARM0);
+      clock_set_hour_12(!clock_get_hour_12());
+      clock_sync_to_rtc(CLOCK_SYNC_TIME);
+      alarm0_set_hour_12(!alarm0_get_hour_12());
+      alarm0_sync_to_rtc();
       break;
   }
 }

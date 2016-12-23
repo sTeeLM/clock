@@ -1,6 +1,7 @@
 #include "sm_mod_alarm.h"
 #include "mod_common.h"
-#include "rtc.h"
+#include "clock.h"
+#include "alarm.h"
 #include "led.h"
 #include "debug.h"
 
@@ -13,20 +14,13 @@ static void update_alarm(unsigned char what)
 
   if(what == IS_HOUR || what == IS_MIN) {
     
-    rtc_read_data(RTC_TYPE_ALARM0);
-    hour = rtc_alarm_get_hour();
-    min  = rtc_alarm_get_min();
+    hour = alarm0_get_hour();
+    min  = alarm0_get_min();
     led_set_dp(1);
     led_set_dp(2);
     
-    if(lpress_lock_year_hour) {
-      hour = year_hour;
-    } else {
-      year_hour = hour;
-    }
-    
     // 如果是12小时显示，以第三位数字的点表示“PM”
-    if(rtc_alarm_get_hour_12() && hour > 12) {
+    if(alarm0_get_hour_12() && hour > 12) {
       led_set_dp(3);
       hour -= 12;
     } else {
@@ -51,9 +45,8 @@ static void update_alarm(unsigned char what)
     led_set_code(0, (min % 10) + 0x30); 
     
   } else {
-    rtc_read_data(RTC_TYPE_CTL);
-     CDBG("update_alarm %s\n", rtc_test_alarm_int(0)? "ON":"OFF");
-    if(rtc_test_alarm_int(0)) {
+     CDBG("update_alarm %s\n", alarm0_test_enable()? "ON":"OFF");
+    if(alarm0_test_enable()) {
       led_set_code(2, LED_CODE_BLACK);
       led_set_code(1, 'O');
       led_set_code(0, 'N');
@@ -86,11 +79,10 @@ static void enter_alarm(unsigned char what)
 
 static void write_only(unsigned char what)
 {
+  alarm0_sync_to_rtc();
   switch(what) {
     case IS_HOUR:
       if(lpress_lock_year_hour == 1) {
-        rtc_alarm_set_hour(year_hour);
-        rtc_write_data(RTC_TYPE_ALARM0);
         lpress_lock_year_hour = 0;
         led_set_blink(3);
         led_set_blink(2); 
@@ -98,51 +90,37 @@ static void write_only(unsigned char what)
       break;
     case IS_MIN:
       if(lpress_lock_month_min == 1) {
-        CDBG("Fuck3 %bd\n", month_min);
-        rtc_alarm_set_min(month_min);
-        month_min = rtc_alarm_get_min();
-        CDBG("Fuck4 %bd\n", month_min);
-        rtc_write_data(RTC_TYPE_ALARM0);
         lpress_lock_month_min = 0;
         led_set_blink(1);
         led_set_blink(0); 
       }
       break;
     case IS_ONOFF:
-      rtc_write_data(RTC_TYPE_CTL);
       break;
   }  
 }
 
 static void inc_only(unsigned char what)
 {
-  bit enabled;
   switch (what) {
     case IS_HOUR:
       if(!lpress_lock_year_hour) {
         lpress_lock_year_hour = 1;
         led_clr_blink(3);
         led_clr_blink(2);        
-        rtc_read_data(RTC_TYPE_ALARM0);
-        year_hour = rtc_alarm_get_hour();
       }
-      year_hour = (year_hour + 1)% 24;
+      alarm0_inc_hour();
       break;
     case IS_MIN:
       if(!lpress_lock_month_min) {
         lpress_lock_month_min = 1;
         led_clr_blink(1);
         led_clr_blink(0); 
-        rtc_read_data(RTC_TYPE_ALARM0);
-        month_min = rtc_alarm_get_min();
       }
-      CDBG("Fuck1 %bd\n", month_min);
-      month_min = (month_min + 1) % 60;
-      CDBG("Fuck2 %bd\n", month_min);
+      alarm0_inc_min();
       break;
     case IS_ONOFF:
-      enabled = rtc_test_alarm_int(0);
-      rtc_enable_alarm_int(enabled ? 0:1, 0);
+      alarm0_set_enable(!alarm0_test_enable());
       break;
   }
 }

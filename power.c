@@ -3,14 +3,13 @@
 #include "power.h"
 #include "task.h"
 #include "sm.h"
-#include "timer.h"
+#include "clock.h"
 #include "com.h"
-#include "timer.h"
 #include "rtc.h"
 #include "key.h"
 #include "led.h"
 #include "alarm.h"
-#include "counter.h"
+#include "timer.h"
 #include "beeper.h"
 #include "debug.h"
 #include "cext.h"
@@ -33,12 +32,12 @@ void power_proc(enum task_events ev)
 void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
-  timer_enter_powersave();
+  clock_enter_powersave();
   rtc_enter_powersave();       
   key_enter_powersave();       
   led_enter_powersave();          
   alarm_enter_powersave();     
-  counter_enter_powersave();   
+  timer_enter_powersave();   
   beeper_enter_powersave();
   com_enter_powersave();
   PCON |= 0x1;
@@ -48,12 +47,12 @@ void power_leave_powersave(void)
 {
   com_leave_powersave(); 
   beeper_leave_powersave(); 
-  counter_leave_powersave(); 
+  timer_leave_powersave(); 
   alarm_leave_powersave();  
   led_leave_powersave(); 
   key_leave_powersave(); 
   rtc_leave_powersave(); 
-  timer_leave_powersave();
+  clock_leave_powersave();
   CDBG("power_leave_powersave\n");
 }
 
@@ -87,7 +86,7 @@ void set_powersave_to(enum powersave_time to)
 bit test_powersave_to(void)
 {
   if(powersave_to_s != 0 
-    && time_diff(counter_1s, last_ps_s) >= powersave_to_s) {
+    && time_diff(clock_get_sec(), last_ps_s) >= powersave_to_s) {
       CDBG("test_powersave_to time out!\n");
       set_task(EV_POWER_SAVE);
       return 1;
@@ -98,5 +97,5 @@ bit test_powersave_to(void)
 
 void reset_powersave_to(void)
 {
-  last_ps_s = counter_1s;
+  last_ps_s = clock_get_sec();
 }

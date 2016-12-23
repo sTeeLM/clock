@@ -289,7 +289,7 @@
             <uAregs>0</uAregs>
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
-            <Optimize>9</Optimize>
+            <Optimize>8</Optimize>
             <WarningLevel>2</WarningLevel>
             <SizeSpeed>0</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
@@ -367,11 +367,6 @@
               <FilePath>.\com.c</FilePath>
             </File>
             <File>
-              <FileName>timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer.c</FilePath>
-            </File>
-            <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\rtc.c</FilePath>
@@ -417,11 +412,6 @@
               <FilePath>.\sm_display.c</FilePath>
             </File>
             <File>
-              <FileName>counter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\counter.c</FilePath>
-            </File>
-            <File>
               <FileName>sm_mod_time.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_mod_time.c</FilePath>
@@ -465,6 +455,16 @@
               <FileName>beeper.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\beeper.c</FilePath>
+            </File>
+            <File>
+              <FileName>clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\timer.c</FilePath>
             </File>
           </Files>
         </Group>

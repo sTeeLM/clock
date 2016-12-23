@@ -1,16 +1,17 @@
 #include "sm_pac_hit.h"
 #include "debug.h"
+#include "alarm.h"
 #include "led.h"
-#include "rtc.h"
 #include "beeper.h"
 #include "power.h"
-#include "timer.h"
+#include "clock.h"
 #include "cext.h"
 #include "mod_common.h"
 
 static void display_pac(unsigned char what)
 {
   unsigned char hour, min;
+  bit is12;
   led_clear();
   switch(what) {
     case IS_ALARM0:
@@ -23,17 +24,17 @@ static void display_pac(unsigned char what)
         led_set_code(4, 'S');
       }
       if(what == IS_ALARM0) {
-        rtc_read_data(RTC_TYPE_ALARM0);
-        hour = rtc_alarm_get_hour();
-        min  = rtc_alarm_get_min();
-      } else { // 闹钟1是整点报时，会被自动设置，读取ALARM1不准确
-        rtc_read_data(RTC_TYPE_TIME);
-        hour = rtc_time_get_hour();
-        min  = rtc_time_get_min();
+        hour = alarm0_get_hour();
+        min  = alarm0_get_min();
+        is12 = alarm0_get_hour_12();
+      } else {
+        hour = alarm1_get_hour();
+        min  = alarm1_get_min();
+        is12 = alarm1_get_hour_12();
       }
       led_set_dp(1);
       led_set_dp(2);
-      if(rtc_alarm_get_hour_12() && hour > 12) {
+      if(is12 && hour > 12) {
         led_set_dp(3);
         hour -= 12;
       } else {
@@ -63,7 +64,7 @@ static void display_pac(unsigned char what)
 
 static void reset_switch(void)
 {
-  last_display_s = counter_1s;
+  last_display_s = clock_get_sec();
 }
 
 static bit test_switch(unsigned char what)
@@ -74,22 +75,12 @@ static bit test_switch(unsigned char what)
     case IS_COUNTER: what = 5; break; 
   }
   
-  if(time_diff(counter_1s, last_display_s) >= what) {
+  if(time_diff(clock_get_sec(), last_display_s) >= what) {
     CDBG("test_autoswitch time out!\n");
     set_task(EV_KEY_SET_PRESS);
     return 1;
   }
   return 0;
-}
-
-static void enter_powersave(void)
-{
-  
-}
-
-static void leave_powersave(void)
-{
-  
 }
 
 void sm_pac_hit(unsigned char from, unsigned char to, enum task_events ev)

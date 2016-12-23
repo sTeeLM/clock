@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "i2c.h"
 #include "rtc.h"
+#include "clock.h"
 #include "task.h"
 
 sbit RTC_RESET = P1 ^ 5;
@@ -21,10 +22,11 @@ sbit RTC_RESET = P1 ^ 5;
 
 #define RTC_CTL_OFFSET 0x0E
 
+
 static void rtc_ISR (void) interrupt 2 using 1
 {
-  set_task(EV_ALARM0); // 这里是EV_ALARM0或者EV_ALARM1都可以
   IE1 = 0; // 清除中断标志位
+  set_task(EV_ALARM0); // 这里0/1都是可以的，在proc里处理
 }
 
 static unsigned char rtc_data[4];
@@ -78,10 +80,7 @@ void rtc_initialize (void)
 
   // 闹钟0：一般闹钟，设置为12小时，12:00:00 AM
   rtc_read_data(RTC_TYPE_ALARM0);
-  rtc_data[3] = 0x80; // A1M4 = 1
-  rtc_data[2] = 0; // A1M3 = 0
-  rtc_data[1] = 0; // A1M2 = 0
-  rtc_data[0] = 0; // A1M1 = 0
+  rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC);
   rtc_alarm_set_hour_12(1);
   rtc_alarm_set_hour(12);
   rtc_alarm_set_min(0);
@@ -90,9 +89,7 @@ void rtc_initialize (void)
   
   // 闹钟1：整点报时闹钟，设置为12小时，1:00：00 PM
   rtc_read_data(RTC_TYPE_ALARM1);
-  rtc_data[2] = 0x80; // A2M3 = 1
-  rtc_data[1] = 0;    // A2M2 = 0
-  rtc_data[0] = 0;    // A2M1 = 0
+  rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_HOUR_MIN);
   rtc_alarm_set_hour_12(1);
   rtc_alarm_set_hour(13);
   rtc_alarm_set_min(0);
@@ -307,31 +304,22 @@ void rtc_date_set_month(unsigned char month)
   rtc_data[2] |= (month / 10) << 4;  
 }
 
+static unsigned char _rtc_get_date(unsigned char date)
+{
+  return (date & 0x0F) + ((date & 0x30) >> 4) * 10;
+}
+
+static void _rtc_set_date(unsigned char date, unsigned char * dat)
+{
+  *dat &= 0xF0;
+  *dat |= date % 10;
+  *dat &= 0xCF;
+  *dat |= (date / 10) << 4; 
+}
+
 unsigned char rtc_date_get_date()
 {
-  return (rtc_data[1] & 0x0F) + ((rtc_data[1] & 0xF0) >> 4) * 10;
-}
-
-unsigned char rtc_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date)
-{
-  // 2000-1-1 is 6 (saturday)
-  unsigned int d,m,y;
-  d = date;
-  m = mon;
-  y = 2000 + year;
-  return (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400) % 7 + 1;
-}
-
-// 0 ~ 99
-bit rtc_is_leap_year(unsigned char y)
-{
-  int year = 2000 + y;
-  if((year % 100) != 0 && (year % 4) == 0
-  || (year % 400) == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return _rtc_get_date(rtc_data[1]);
 }
 
 // 此函数需要检查合法性！！
@@ -345,19 +333,15 @@ bit rtc_date_set_date(unsigned char date)
     if(date > 32) return 1;
   } else {
     if(date > 31) return 1;
-    if(mon == 2 && rtc_is_leap_year(rtc_date_get_year())) {
+    if(mon == 2 && clock_is_leap_year(rtc_date_get_year())) {
       if(date > 30) return 1;
-    } else if(mon == 2 && !rtc_is_leap_year(rtc_date_get_year())) {
+    } else if(mon == 2 && !clock_is_leap_year(rtc_date_get_year())) {
       if(date > 29) return 1;
     }
   }
   
   CDBG("rtc_date_set_day, valid check...OK\n");
-  
-  rtc_data[1] &= 0xF0;
-  rtc_data[1] |= date % 10;
-  rtc_data[1] &= 0x0F;
-  rtc_data[1] |= (date / 10) << 4; 
+  _rtc_set_date(date, &rtc_data[1]);
 
   return 0;  
 }
@@ -404,6 +388,153 @@ void rtc_alarm_set_min( unsigned char min)
 {
   _rtc_set_min_sec(min, last_read == RTC_TYPE_ALARM0 ? &rtc_data[1] : &rtc_data[0]); 
 }
+
+unsigned char rtc_alarm_get_day(void)
+{
+  return last_read == RTC_TYPE_ALARM0 ? (rtc_data[3] & 0x0F) : (rtc_data[2] & 0x0F);
+}
+
+void rtc_alarm_set_day(unsigned char day)
+{
+  if(last_read == RTC_TYPE_ALARM0) {
+    rtc_data[3] &= 0xF0;
+    rtc_data[3] |= day;
+  } else {
+    rtc_data[2] &= 0xF0;
+    rtc_data[2] |= day;
+  }
+}
+
+unsigned char rtc_alarm_get_date(void)
+{
+  return last_read == RTC_TYPE_ALARM0 ?
+    _rtc_get_date(rtc_data[3]) : _rtc_get_date(rtc_data[2]);
+}
+
+void rtc_alarm_set_date(unsigned char date)
+{
+  last_read == RTC_TYPE_ALARM0 ? _rtc_set_date(date, &rtc_data[3]) : 
+    _rtc_set_date(date, &rtc_data[2]);
+}
+
+unsigned char rtc_alarm_get_sec(void)
+{
+  if(last_read == RTC_TYPE_ALARM0) {
+    return (rtc_data[0] & 0x0F) + ((rtc_data[0] & 0x70) >> 4) * 10;
+  }
+  return 0;
+}
+
+
+void rtc_alarm_set_sec( unsigned char sec)
+{
+  if(last_read == RTC_TYPE_ALARM0) {
+    rtc_data[0] &= 0xF0;
+    rtc_data[0] |= sec / 10;
+    rtc_data[0] &= 0x7F;
+    rtc_data[0] |= sec % 10;    
+  }
+}
+// DY A1M4 A1M3 A1M2 A1M1
+// X  1    1    1    1    ALARM0_MOD_PER_SEC                 Alarm once per second
+// X  1    1    1    0    ALARM0_MOD_MATCH_SEC               Alarm when seconds match
+// X  1    1    0    0    ALARM0_MOD_MATCH_MIN_SEC           Alarm when minutes and seconds match
+// X  1    0    0    0    ALARM0_MOD_MATCH_HOUR_MIN_SEC      Alarm when hours, minutes, and seconds match
+// 0  0    0    0    0    ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC Alarm when date, hours, minutes, and seconds match
+// 1  0    0    0    0    ALARM0_MOD_MATCH_DAY_HOUR_MIN_SEC  Alarm when day, hours, minutes, and seconds match
+
+// DY A2M4 A2M3 A1M2
+// X  1    1    1    ALARM1_MOD_PER_MIN                 Alarm once per minute (00 seconds of every minute)
+// X  1    1    0    ALARM1_MOD_MATCH_MIN               Alarm when minutes match
+// X  1    0    0    ALARM1_MOD_MATCH_HOUR_MIN          Alarm when hours and minutes match
+// 0  0    0    0    ALARM1_MOD_MATCH_DATE_HOUR_MIN     Alarm when date, hours, and minutes match
+// 1  0    0    0    ALARM1_MOD_MATCH_DAY_HOUR_MIN      Alarm when day, hours, and minutes match
+
+enum rtc_alarm_mode rtc_alarm_get_mode(void)
+{
+  unsigned char dy, a1m1, a1m2, a1m3, a1m4;
+  if(last_read == RTC_TYPE_ALARM0) {
+    dy = rtc_data[3] & 0x40;
+    a1m1 = rtc_data[0] & 0x80;
+    a1m2 = rtc_data[1] & 0x80;
+    a1m3 = rtc_data[2] & 0x80;
+    a1m4 = rtc_data[3] & 0x80;
+    if(a1m1 && a1m2 && a1m3 && a1m4) {
+      return RTC_ALARM0_MOD_PER_SEC;
+    } else if(!a1m1 && a1m2 && a1m3 && a1m4) {
+      return RTC_ALARM0_MOD_MATCH_SEC;
+    } else if(!a1m1 && !a1m2 && a1m3  && a1m4) {
+      return RTC_ALARM0_MOD_MATCH_MIN_SEC;
+    } else if(!a1m1 && !a1m2 && !a1m3  && a1m4) {
+      return RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC;
+    } else if(!a1m1 && !a1m2 && !a1m3  && !a1m4 && !dy) {
+      return RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC;
+    } else {
+      return RTC_ALARM0_MOD_MATCH_DAY_HOUR_MIN_SEC;
+    }
+  } else if(last_read == RTC_TYPE_ALARM1){
+    dy = rtc_data[2] & 0x40;
+    a1m2 = rtc_data[0] & 0x80;
+    a1m3 = rtc_data[1] & 0x80;
+    a1m4 = rtc_data[2] & 0x80;
+    if(a1m2 && a1m3 && a1m4) {
+      return RTC_ALARM1_MOD_PER_MIN;
+    } else if(!a1m2 && a1m3 && a1m4) {
+      return RTC_ALARM1_MOD_MATCH_MIN;
+    } else if(!a1m2 && !a1m3  && a1m4) {
+      return RTC_ALARM1_MOD_MATCH_HOUR_MIN;
+    } else if(!a1m2 && !a1m3  && !a1m4) {
+      return RTC_ALARM1_MOD_MATCH_DATE_HOUR_MIN;
+    } else if(!a1m2 && !a1m3  && !a1m4 && !dy) {
+      return RTC_ALARM1_MOD_MATCH_DATE_HOUR_MIN;
+    } else {
+      return RTC_ALARM1_MOD_MATCH_DAY_HOUR_MIN;
+    }
+  }
+  return RTC_ALARM0_MOD_CNT;
+}
+void rtc_alarm_set_mode(enum rtc_alarm_mode mode)
+{
+  if(mode < RTC_ALARM0_MOD_CNT && last_read == RTC_TYPE_ALARM0) {
+    rtc_data[0] &= ~0x80;
+    rtc_data[1] &= ~0x80;
+    rtc_data[2] &= ~0x80;
+    rtc_data[3] &= ~0x80; 
+    rtc_data[3] &= ~0x40;    
+    switch(mode) {
+      case RTC_ALARM0_MOD_PER_SEC:
+        rtc_data[0] |=  0x80;
+      case RTC_ALARM0_MOD_MATCH_SEC:
+        rtc_data[1] |=  0x80;
+      case RTC_ALARM0_MOD_MATCH_MIN_SEC:
+        rtc_data[2] |=  0x80;
+      case RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC:
+        rtc_data[3] |=  0x80;
+      case RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC:
+        break;
+      case RTC_ALARM0_MOD_MATCH_DAY_HOUR_MIN_SEC:
+        rtc_data[3] |= 0x40;
+    }
+  } else if(mode > RTC_ALARM0_MOD_CNT && last_read == RTC_TYPE_ALARM1) {
+    rtc_data[0] &= ~0x80;
+    rtc_data[1] &= ~0x80;
+    rtc_data[2] &= ~0x80;
+    rtc_data[2] &= ~0x40;
+    switch (mode) {
+      case RTC_ALARM1_MOD_PER_MIN:
+        rtc_data[0] |=  0x80;
+      case RTC_ALARM1_MOD_MATCH_MIN:
+        rtc_data[1] |=  0x80;
+      case RTC_ALARM1_MOD_MATCH_HOUR_MIN:
+        rtc_data[2] |=  0x80;
+      case RTC_ALARM1_MOD_MATCH_DATE_HOUR_MIN:
+        break;
+      case RTC_ALARM1_MOD_MATCH_DAY_HOUR_MIN:
+        rtc_data[2] |= 0x40;
+    }
+  }
+}
+
 // 在rtc_read_data(RTC_TYPE_TEMP)之后调用
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 {
@@ -490,9 +621,19 @@ bit rtc_test_alarm_int_flag(unsigned char index)
 void rtc_enter_powersave(void)
 {
   
+  // 停止32KHZ输出
+  rtc_read_data(RTC_TYPE_CTL);
+  rtc_data[1] &= ~0x48;
+  rtc_write_data(RTC_TYPE_CTL);
+  
 }
 
 void rtc_leave_powersave(void)
 {
+  
+  // 启动32KHZ输出
+  rtc_read_data(RTC_TYPE_CTL);
+  rtc_data[1] |= 0x48;
+  rtc_write_data(RTC_TYPE_CTL);
   
 }

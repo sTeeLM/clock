@@ -2,7 +2,7 @@
 
 #include "key.h"
 #include "task.h"
-#include "timer.h"
+#include "clock.h"
 #include "debug.h"
 #include "misc.h"
 #include "sm.h"
@@ -35,18 +35,18 @@ void scan_key_proc(enum task_events ev)
       set_task(EV_KEY_MOD_DOWN);
 //      set_task(EV_KEY_MOD_PRESS);      
       mod_press = 1;
-      last_mod_tmr_count = counter_1s;
+      last_mod_tmr_count = clock_get_sec();
 //      if(mod_press) {
 //        set_task(EV_KEY_MOD_SET_PRESS);    
 //      }       
     }
   } else if(!MOD_KEY && mod_press){
-    if(time_diff(counter_1s, last_mod_tmr_count) >= KEY_LPRESS_DELAY) {
+    if(time_diff(clock_get_sec(), last_mod_tmr_count) >= KEY_LPRESS_DELAY) {
       set_task(EV_KEY_MOD_LPRESS);
     }
   } else if(MOD_KEY && mod_press) {
     set_task(EV_KEY_MOD_UP);
-    if(time_diff(counter_1s, last_mod_tmr_count) < KEY_LPRESS_DELAY) {
+    if(time_diff(clock_get_sec(), last_mod_tmr_count) < KEY_LPRESS_DELAY) {
       set_task(EV_KEY_MOD_PRESS);
       if(set_press) {
         set_task(EV_KEY_MOD_SET_PRESS);    
@@ -61,19 +61,19 @@ void scan_key_proc(enum task_events ev)
       set_task(EV_KEY_SET_DOWN);
       //set_task(EV_KEY_SET_PRESS);      
       set_press = 1;
-      last_set_tmr_count = counter_1s;
+      last_set_tmr_count = clock_get_sec();
 //      if(mod_press) {
 //        set_task(EV_KEY_MOD_SET_PRESS);    
 //      }      
     }
   } else if(!SET_KEY && set_press){
-    if(time_diff(counter_1s, last_set_tmr_count) >= KEY_LPRESS_DELAY) {
+    if(time_diff(clock_get_sec(), last_set_tmr_count) >= KEY_LPRESS_DELAY) {
       set_task(EV_KEY_SET_LPRESS);
     }
   } else if(SET_KEY && set_press) {
     set_task(EV_KEY_SET_UP);
     set_press = 0;
-    if(time_diff(counter_1s, last_set_tmr_count) < KEY_LPRESS_DELAY) {
+    if(time_diff(clock_get_sec(), last_set_tmr_count) < KEY_LPRESS_DELAY) {
       set_task(EV_KEY_SET_PRESS);
       if(mod_press) {
         set_task(EV_KEY_MOD_SET_PRESS);    
@@ -83,8 +83,8 @@ void scan_key_proc(enum task_events ev)
   
   if(!SET_KEY && set_press 
     && !MOD_KEY && mod_press) {
-    if(time_diff(counter_1s, last_mod_tmr_count) >= KEY_2_KEY_LPRESS_DELAY
-      && time_diff(counter_1s, last_set_tmr_count) >= KEY_2_KEY_LPRESS_DELAY) {
+    if(time_diff(clock_get_sec(), last_mod_tmr_count) >= KEY_2_KEY_LPRESS_DELAY
+      && time_diff(clock_get_sec(), last_set_tmr_count) >= KEY_2_KEY_LPRESS_DELAY) {
       set_task(EV_KEY_MOD_SET_LPRESS);
     }
   }
@@ -92,7 +92,7 @@ void scan_key_proc(enum task_events ev)
 
 void mod_proc(enum task_events ev)
 {
-  CDBG("mod_proc %bd %bd %bd %bd %bd\n", ev,counter_1ms, counter_25ms, counter_25ms,counter_1s);
+  CDBG("mod_proc\n");
 
   switch (ev) {
     case EV_KEY_MOD_DOWN:
