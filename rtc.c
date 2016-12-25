@@ -5,6 +5,7 @@
 #include "rtc.h"
 #include "clock.h"
 #include "task.h"
+#include "alarm.h"
 
 sbit RTC_RESET = P1 ^ 5;
 
@@ -26,7 +27,7 @@ sbit RTC_RESET = P1 ^ 5;
 static void rtc_ISR (void) interrupt 2 using 1
 {
   IE1 = 0; // 清除中断标志位
-  set_task(EV_ALARM0); // 这里0/1都是可以的，在proc里处理
+  alarm_isr();
 }
 
 static unsigned char rtc_data[4];
@@ -64,7 +65,7 @@ void rtc_initialize (void)
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
   rtc_time_set_hour_12(1);
   rtc_time_set_hour(12);
-  rtc_time_set_min(59);
+  rtc_time_set_min(10);
   rtc_time_set_sec(30); 
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);
@@ -78,20 +79,20 @@ void rtc_initialize (void)
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
 
-  // 闹钟0：一般闹钟，设置为12小时，12:00:00 AM
+  // 闹钟0：一般闹钟，设置为12小时，12:11:00 AM
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC);
   rtc_alarm_set_hour_12(1);
   rtc_alarm_set_hour(12);
-  rtc_alarm_set_min(0);
+  rtc_alarm_set_min(12);
   rtc_write_data(RTC_TYPE_ALARM0);  
   
   
-  // 闹钟1：整点报时闹钟，设置为12小时，1:00：00 PM
+  // 闹钟1：整点报时闹钟，设置为12小时，00:00：00 PM
   rtc_read_data(RTC_TYPE_ALARM1);
-  rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_HOUR_MIN);
+  rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_MIN);
   rtc_alarm_set_hour_12(1);
-  rtc_alarm_set_hour(13);
+  rtc_alarm_set_hour(0);
   rtc_alarm_set_min(0);
   rtc_write_data(RTC_TYPE_ALARM1);  
 
@@ -618,9 +619,19 @@ bit rtc_test_alarm_int_flag(unsigned char index)
   return 0;
 }
 
+unsigned char rtc_get_usr_data(unsigned char index)
+{
+  return rtc_data[index];
+}
+void rtc_set_usr_data(unsigned char index, unsigned char dat)
+{
+  rtc_data[index] = dat;
+}
+
 void rtc_enter_powersave(void)
 {
   
+  CDBG("rtc_enter_powersave\n");
   // 停止32KHZ输出
   rtc_read_data(RTC_TYPE_CTL);
   rtc_data[1] &= ~0x48;
@@ -630,7 +641,7 @@ void rtc_enter_powersave(void)
 
 void rtc_leave_powersave(void)
 {
-  
+  CDBG("rtc_leave_powersave\n");
   // 启动32KHZ输出
   rtc_read_data(RTC_TYPE_CTL);
   rtc_data[1] |= 0x48;

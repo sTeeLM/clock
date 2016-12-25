@@ -51,7 +51,8 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   set_proc,
   set_proc,
   mod_set_proc,
-  mod_set_proc,  
+  mod_set_proc, 
+  alarm_test_proc,
   alarm_proc,
   alarm_proc,
   timer_proc,
@@ -69,7 +70,7 @@ void task_initialize (void)
   ev_bits1 = 0;
 }
 
-void run_task(void)
+void run_task()
 {
   unsigned char c;
   while(1) {
@@ -81,4 +82,5 @@ void run_task(void)
     }
   }
 }
+
 

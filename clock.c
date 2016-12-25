@@ -179,7 +179,7 @@ void clock_set_hour_12(bit enable)
 {
   clk_is12 = enable;
 }
-
+#pragma NOAREGS
 unsigned char clock_get_sec(void)
 {
   return clk.sec;
@@ -206,6 +206,7 @@ void clock_inc_hour(void)
 {
   clk.hour = (++ clk.hour) % 24;
 }
+#pragma AREGS 
 
 unsigned char clock_get_date(void)
 {
@@ -217,10 +218,13 @@ void clock_inc_date(void)
   clk.day = (++ clk.day) % 7;
 }
 
+#pragma NOAREGS
 unsigned char clock_get_day(void)
 {
   return clk.day + 1;
 }
+#pragma AREGS 
+
 
 unsigned char clock_get_month(void)
 {
@@ -248,7 +252,7 @@ void clock_sync_from_rtc(enum clock_sync_type type)
     clk.hour = rtc_time_get_hour();   // 0 - 23
     clk.min  = rtc_time_get_min();    // 0 - 59
     clk.sec  = rtc_time_get_sec();    // 0 - 59
-    clk.ms39 = 0;   // 0 - 255
+    clk.ms39 = 250;   // 0 - 255
     clk_is12     = rtc_time_get_hour_12();
   } else if(type == CLOCK_SYNC_DATE) {
     rtc_read_data(RTC_TYPE_DATE);
@@ -338,6 +342,7 @@ void clock_initialize(void)
   PT0 = 1; // 最高优先级 
   ET0 = 1; // 开中断
   TR0 = 1; //开始了
+
   clock_dump();
 }
 

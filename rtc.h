@@ -82,4 +82,7 @@ bit rtc_test_alarm_int(unsigned char index);
 bit rtc_test_alarm_int_flag(unsigned char index);
 void rtc_clr_alarm_int_flag(unsigned char index);
 
+// 在rtc_read_data（RTC_TYPE_USR0/RTC_TYPE_USR1）之后调用
+unsigned char rtc_get_usr_data(unsigned char index);
+void rtc_set_usr_data(unsigned char index, unsigned char dat);
 #endif

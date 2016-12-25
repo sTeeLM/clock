@@ -29,5 +29,5 @@ void main(void)
   beeper_initialize();                          // initialize beeper
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
-  run_task();                                   // run task procs, loop forever
+  run_task();                                  // run task procs, loop forever
  }

@@ -15,11 +15,12 @@ enum task_events
   EV_KEY_SET_PRESS    = 9, // set键短按
   EV_KEY_SET_LPRESS   = 10, // set键长按
   EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
-  EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按    
-  EV_ALARM0           = 13, // 闹钟0应该响起
-  EV_ALARM1           = 14, // 闹钟1应该响起
-  EV_COUNTER          = 15, // 计时器到时间
-  EV_POWER_SAVE       = 16, // 应该进入PS状态 
+  EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
+  EV_ALARM_TEST       = 13, // // 闹钟响起，但是不知道是哪一个  
+  EV_ALARM0           = 14, // 闹钟0应该响起
+  EV_ALARM1           = 15, // 闹钟1应该响起
+  EV_COUNTER          = 16, // 计时器到时间
+  EV_POWER_SAVE       = 17, // 应该进入PS状态 
   EV_COUNT  
 };
 

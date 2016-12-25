@@ -13,14 +13,17 @@
 #include "beeper.h"
 #include "debug.h"
 #include "cext.h"
+#include "misc.h"
 
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
+bit powersave_enabled;
 
 void power_initialize(void)
 {
   CDBG("power_initialize\n");
   powersave_to_s = 15;
+  powersave_enabled = 0;
 }
 
 void power_proc(enum task_events ev)
@@ -32,6 +35,7 @@ void power_proc(enum task_events ev)
 void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
+  powersave_enabled = 1;
   clock_enter_powersave();
   rtc_enter_powersave();       
   key_enter_powersave();       
@@ -40,7 +44,14 @@ void power_enter_powersave(void)
   timer_enter_powersave();   
   beeper_enter_powersave();
   com_enter_powersave();
-  PCON |= 0x1;
+  while(powersave_enabled) {
+    PCON |= 0x1;
+    alarm_test_proc(EV_ALARM_TEST);
+    clr_task(EV_ALARM_TEST);
+    if(!powersave_enabled) {
+      break;
+    }
+  }
 }
 
 void power_leave_powersave(void)

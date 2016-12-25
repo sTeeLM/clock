@@ -22,4 +22,6 @@ void reset_powersave_to(void);
 
 void power_proc(enum task_events ev);
 
+extern bit powersave_enabled;
+
 #endif

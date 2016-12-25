@@ -7,6 +7,7 @@
 #include "misc.h"
 #include "sm.h"
 #include "cext.h"
+#include "power.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
 #define KEY_LPRESS_DELAY 2 // 长按时间，2s
@@ -18,13 +19,18 @@ static unsigned char last_set_tmr_count;
 sbit SET_KEY = P2 ^ 7;
 sbit MOD_KEY = P2 ^ 6;
 
-bit mod_press;
-bit set_press;
-bit mod_set_press;
+static bit mod_press;
+static bit set_press;
+
+static bit key_isr_hit;
 
 static void key_ISR (void) interrupt 0 using 1
 {
   IE0 = 0; // 清除中断标志位
+  if(powersave_enabled) {
+    powersave_enabled = 0;
+    set_task(EV_KEY_MOD_PRESS); // 为了能唤醒
+  }
 }
 
 void scan_key_proc(enum task_events ev)
@@ -163,15 +169,16 @@ void key_initialize (void)
    
   mod_press = 0; 
   set_press = 0;
+  key_isr_hit = 0;
 }
 
 void key_enter_powersave(void)
 {
-  
+  CDBG("key_enter_powersave\n");
 }
 
 void key_leave_powersave(void)
 {
-  
+  CDBG("key_leave_powersave\n");
 }
 

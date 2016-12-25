@@ -7,7 +7,7 @@
 #define IS_YEAR  3
 #define IS_MON   4
 #define IS_DAY   5
-#define IS_ONOFF 6
+#define IS_DAY_ONOFF 6
 
 #define IS_PS    0
 #define IS_BS    1

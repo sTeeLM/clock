@@ -28,9 +28,9 @@ static void display_pac(unsigned char what)
         min  = alarm0_get_min();
         is12 = alarm0_get_hour_12();
       } else {
-        hour = alarm1_get_hour();
-        min  = alarm1_get_min();
-        is12 = alarm1_get_hour_12();
+        hour = clock_get_hour();
+        min  = clock_get_min();
+        is12 = clock_get_hour_12();
       }
       led_set_dp(1);
       led_set_dp(2);

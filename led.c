@@ -183,6 +183,7 @@ void led_set_code(unsigned char i, char c)
 
 void led_enter_powersave(void)
 {
+  CDBG("led_enter_powersave\n");
   P0 = 0xFF;
   P2 = 0xFF;
   led_clear();
@@ -190,6 +191,8 @@ void led_enter_powersave(void)
 
 void led_leave_powersave(void)
 {
+  CDBG("led_leave_powersave\n");
   P0 = 0x0;
   P2 = 0xFF;
+  led_clear();
 }
