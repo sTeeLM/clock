@@ -11,7 +11,7 @@ enum clock_sync_type
   CLOCK_SYNC_DATE = 1
 };
 
-struct clock 
+struct clock_struct 
 {
   unsigned char year;   // 0 - 99 (2000 ~ 2099)
   unsigned char mon;    // 0 - 11

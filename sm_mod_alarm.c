@@ -26,13 +26,7 @@ static void update_alarm(unsigned char what, unsigned char day)
     } else {
       led_clr_dp(3);
     }
-    
-    if(lpress_lock_month_min) {
-      min = month_min;
-    } else {
-      month_min = min;
-    }
-    
+ 
     CDBG("update_alarm %bd:%bd\n", hour, min);
       
     if((hour / 10) != 0) {

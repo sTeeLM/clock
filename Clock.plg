@@ -2717,3 +2717,3542 @@ linking...
 Program Size: data=123.6 xdata=0 code=16593
 creating hex file from "Clock"...
 "Clock" - 0 Error(s), 17 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(7): warning C206: 'display_logo': missing function-prototype
+sm_timer.c(7): error C267: 'display_logo': requires ANSI-style prototype
+sm_timer.c(26): error C202: 'EV_25MS': undefined identifier
+compiling sm.c...
+sm.c(297): error C202: 'EV_25MS': undefined identifier
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(8): warning C280: 'ev': unreferenced local variable
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+task.c(59): error C202: 'timer_proc': undefined identifier
+task.c(80): error C211: call not to a function
+task.c(80): error C208: 'function': too many actual parameters
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(7): warning C206: 'display_logo': missing function-prototype
+sm_timer.c(7): error C267: 'display_logo': requires ANSI-style prototype
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(5): warning C206: 'CDBG': missing function-prototype
+timer.c(5): error C267: 'CDBG': requires ANSI-style prototype
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+task.c(59): error C202: 'timer_proc': undefined identifier
+task.c(80): error C211: call not to a function
+task.c(80): error C208: 'function': too many actual parameters
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(7): warning C206: 'display_logo': missing function-prototype
+sm_timer.c(7): error C267: 'display_logo': requires ANSI-style prototype
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(21): warning C280: 'mode': unreferenced local variable
+timer.c(31): warning C280: 'slot': unreferenced local variable
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(11): warning C280: 'ev': unreferenced local variable
+timer.c(26): warning C280: 'mode': unreferenced local variable
+timer.c(36): warning C280: 'slot': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** APPLICATION REQUIRES RE-TRANSLATIONS! ***
+Program Size: data=125.6 xdata=0 code=16654
+Global register optimization - pass #1
+compiling main.c...
+compiling sm.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+Program Size: data=125.6 xdata=0 code=16654
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 34 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(13): warning C280: 'ev': unreferenced local variable
+timer.c(28): warning C280: 'enable': unreferenced local variable
+timer.c(33): warning C280: 'mode': unreferenced local variable
+timer.c(43): warning C280: 'slot': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+Program Size: data=129.7 xdata=0 code=16655
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 23 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(22): warning C280: 'ev': unreferenced local variable
+timer.c(37): warning C280: 'enable': unreferenced local variable
+timer.c(42): warning C280: 'mode': unreferenced local variable
+timer.c(52): warning C280: 'slot': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** APPLICATION REQUIRES RE-TRANSLATIONS! ***
+Program Size: data=129.7 xdata=0 code=16836
+Global register optimization - pass #1
+compiling sm_mod_time.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+Program Size: data=129.7 xdata=0 code=16836
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 39 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(90): warning C280: 'ev': unreferenced local variable
+timer.c(125): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?TIMER
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?TIMER
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** APPLICATION REQUIRES RE-TRANSLATIONS! ***
+Program Size: data=215.3 xdata=0 code=17360
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(7): error C141: syntax error near ';', expected ']'
+timer.c(25): error C202: 'tmr': undefined identifier
+timer.c(26): error C202: 'tmr': undefined identifier
+timer.c(27): error C202: 'tmr': undefined identifier
+timer.c(28): error C202: 'tmr': undefined identifier
+timer.c(29): error C202: 'tmr': undefined identifier
+timer.c(31): error C202: 'tmr': undefined identifier
+timer.c(37): error C202: 'tmr': undefined identifier
+timer.c(41): error C202: 'tmr': undefined identifier
+timer.c(42): error C202: 'tmr': undefined identifier
+timer.c(43): error C202: 'tmr': undefined identifier
+timer.c(44): error C202: 'tmr': undefined identifier
+timer.c(44): error C202: 'tmr': undefined identifier
+timer.c(45): error C202: 'tmr': undefined identifier
+timer.c(46): error C202: 'tmr': undefined identifier
+timer.c(47): error C202: 'tmr': undefined identifier
+timer.c(47): error C202: 'tmr': undefined identifier
+timer.c(48): error C202: 'tmr': undefined identifier
+timer.c(49): error C202: 'tmr': undefined identifier
+timer.c(50): error C202: 'tmr': undefined identifier
+timer.c(62): error C202: 'tmr': undefined identifier
+timer.c(64): error C202: 'tmr': undefined identifier
+timer.c(65): error C202: 'tmr': undefined identifier
+timer.c(66): error C202: 'tmr': undefined identifier
+timer.c(67): error C202: 'tmr': undefined identifier
+timer.c(71): error C202: 'tmr': undefined identifier
+timer.c(72): error C202: 'tmr': undefined identifier
+timer.c(73): error C202: 'tmr': undefined identifier
+timer.c(74): error C202: 'tmr': undefined identifier
+timer.c(75): error C202: 'tmr': undefined identifier
+timer.c(76): error C202: 'tmr': undefined identifier
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(30): error C200: left side of '.' requires struct/union
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(93): warning C280: 'ev': unreferenced local variable
+timer.c(128): warning C280: 'slot': unreferenced local variable
+timer.c(140): error C200: left side of '.' requires struct/union
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(93): warning C280: 'ev': unreferenced local variable
+timer.c(128): warning C280: 'slot': unreferenced local variable
+timer.c(140): warning C206: 'memset': missing function-prototype
+timer.c(140): error C267: 'memset': requires ANSI-style prototype
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(94): warning C280: 'ev': unreferenced local variable
+timer.c(129): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_DISPLAY
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+Program Size: data=223.3 xdata=0 code=17363
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(94): warning C280: 'ev': unreferenced local variable
+timer.c(129): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_DISPLAY
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+Program Size: data=219.3 xdata=0 code=17363
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(94): warning C280: 'ev': unreferenced local variable
+timer.c(129): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_DISPLAY
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+Program Size: data=215.3 xdata=0 code=17363
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(93): warning C280: 'ev': unreferenced local variable
+timer.c(128): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_DISPLAY
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_DISPLAY
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+Program Size: data=215.3 xdata=0 code=17358
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+sm_mod_time.c(65): error C202: 'year_hour': undefined identifier
+compiling sm_mod_alarm.c...
+sm_mod_alarm.c(31): error C202: 'month_min': undefined identifier
+sm_mod_alarm.c(33): error C202: 'month_min': undefined identifier
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(93): warning C280: 'ev': unreferenced local variable
+timer.c(128): warning C280: 'slot': unreferenced local variable
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+sm_mod_time.c(56): warning C280: 'bs_hour': unreferenced local variable
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(93): warning C280: 'ev': unreferenced local variable
+timer.c(128): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?COM
+    LENGTH:  0004H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  OEND
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  IEND
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  OSTART
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ISTART
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+Program Size: data=212.3 xdata=0 code=17300
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(93): warning C280: 'ev': unreferenced local variable
+timer.c(128): warning C280: 'slot': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_TIME
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?COM
+    LENGTH:  0004H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+    LENGTH:  0001H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?_TIMER_SAVE?TIMER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  OEND
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  IEND
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  OSTART
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ISTART
+    SEGMENT: ?DT?COM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_TIME
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  ?TIMER_SET_LED_AUTOREFRESH?BYTE
+    SEGMENT: ?DT?TIMER_SET_LED_AUTOREFRESH?TIMER
+Program Size: data=212.3 xdata=0 code=17300
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(87): error C202: 'tmr_display': undefined identifier
+timer.c(88): error C202: 'tmr_countdown_stop': undefined identifier
+timer.c(89): error C202: 'tmr_disp_mmssms': undefined identifier
+timer.c(90): error C202: 'tmr_start': undefined identifier
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  task.obj (TASK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  led.obj (LED)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  power.obj (POWER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_display.obj (SM_DISPLAY)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_time.obj (SM_MOD_TIME)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_alarm.obj (SM_MOD_ALARM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_mod_global_flag.obj (SM_MOD_GLOBAL_FLAG)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm_pac_hit.obj (SM_PAC_HIT)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  sm.obj (SM)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  mod_common.obj (MOD_COMMON)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  clock.obj (CLOCK)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_DATA
+    MODULE:  timer.obj (TIMER)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  LED_BLINK
+    MODULE:  timer.obj (TIMER)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_ALARM
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?SM_PAC_HIT
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?CLOCK
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?TIMER
+    LENGTH:  0007H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?RTC
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?ALARM
+    LENGTH:  0005H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?KEY
+    LENGTH:  0002H
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: ?DT?BEEPER
+    LENGTH:  0001H
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_MIN
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  CLK_SEC
+    SEGMENT: ?DT?ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_ALARM
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_MOD_GLOBAL_FLAG
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?SM_PAC_HIT
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?CLOCK
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_DATA
+    SEGMENT: ?DT?TIMER
+*** ERROR L105: PUBLIC REFERS TO IGNORED SEGMENT
+    SYMBOL:  LED_BLINK
+    SEGMENT: ?DT?TIMER
+Program Size: data=204.6 xdata=0 code=16828
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+Program Size: data=120.6 xdata=0 code=16828
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 14 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(94): warning C280: 'ev': unreferenced local variable
+timer.c(129): warning C280: 'slot': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+Program Size: data=128.3 xdata=0 code=17300
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 22 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(94): warning C280: 'ev': unreferenced local variable
+timer.c(129): warning C280: 'slot': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+Program Size: data=136.3 xdata=0 code=17300
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 22 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_SET_LED_AUTOREFRESH?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SET_MODE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_START?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_SAVE?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_MIN?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_SEC?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_MS10?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_STOP?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_CLR?TIMER
+Program Size: data=135.3 xdata=0 code=17701
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 25 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(9): warning C206: 'led_clr': missing function-prototype
+sm_timer.c(15): warning C206: 'timer_get_min': missing function-prototype
+sm_timer.c(17): warning C206: 'timer_get_sec': missing function-prototype
+sm_timer.c(19): warning C206: 'timer_get_ms10': missing function-prototype
+sm_timer.c(7): warning C280: 'slot': unreferenced local variable
+sm_timer.c(36): error C202: 'TIMER_MODE_INC': undefined identifier
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(10): warning C206: 'led_clr': missing function-prototype
+sm_timer.c(16): warning C209: '_timer_get_min': too few actual parameters
+sm_timer.c(17): warning C209: '_timer_get_min': too few actual parameters
+sm_timer.c(18): warning C209: '_timer_get_sec': too few actual parameters
+sm_timer.c(19): warning C209: '_timer_get_sec': too few actual parameters
+sm_timer.c(20): warning C209: '_timer_get_ms10': too few actual parameters
+sm_timer.c(21): warning C209: '_timer_get_ms10': too few actual parameters
+sm_timer.c(8): warning C280: 'slot': unreferenced local variable
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  LED_CLR
+    MODULE:  sm_timer.obj (SM_TIMER)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  LED_CLR
+    MODULE:  sm_timer.obj (SM_TIMER)
+    ADDRESS: 2FB1H
+Program Size: data=135.2 xdata=0 code=17998
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 26 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(10): warning C206: 'led_clr': missing function-prototype
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  LED_CLR
+    MODULE:  sm_timer.obj (SM_TIMER)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  LED_CLR
+    MODULE:  sm_timer.obj (SM_TIMER)
+    ADDRESS: 2FB1H
+Program Size: data=135.2 xdata=0 code=18010
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 19 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER_INC_MS39?TIMER
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18010
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 16 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18013
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18012
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(44): warning C206: 'CDBG': missing function-prototype
+sm_timer.c(44): error C267: 'CDBG': requires ANSI-style prototype
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18079
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18079
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18085
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18085
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18140
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+sm_timer.c(66): error C141: syntax error near '}'
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+Target not created
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18143
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18157
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18157
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18157
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling com.c...
+compiling rtc.c...
+compiling i2c.c...
+compiling key.c...
+key.c(36): warning C280: 'ev': unreferenced local variable
+compiling task.c...
+compiling led.c...
+compiling alarm.c...
+alarm.c(23): warning C280: 'ev': unreferenced local variable
+compiling power.c...
+compiling misc.c...
+compiling sm_display.c...
+compiling sm_mod_time.c...
+compiling sm_mod_alarm.c...
+compiling sm_mod_global_flag.c...
+compiling sm_pac_hit.c...
+compiling sm_counter.c...
+sm_counter.c(3): warning C280: 'from': unreferenced local variable
+sm_counter.c(3): warning C280: 'to': unreferenced local variable
+sm_counter.c(3): warning C280: 'ev': unreferenced local variable
+compiling sm_timer.c...
+compiling sm.c...
+compiling mod_common.c...
+compiling beeper.c...
+compiling clock.c...
+compiling timer.c...
+timer.c(95): warning C280: 'ev': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETKEY?COM
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DAY?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_RTC_ALARM_SET_DATE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_SEC?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RTC_ALARM_GET_MODE?RTC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MISC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_TIMER_GET_HOUR?TIMER
+Program Size: data=135.2 xdata=0 code=18157
+creating hex file from "Clock"...
+"Clock" - 0 Error(s), 15 Warning(s).

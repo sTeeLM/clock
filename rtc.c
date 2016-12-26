@@ -65,7 +65,7 @@ void rtc_initialize (void)
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
   rtc_time_set_hour_12(1);
   rtc_time_set_hour(12);
-  rtc_time_set_min(10);
+  rtc_time_set_min(59);
   rtc_time_set_sec(30); 
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);

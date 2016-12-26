@@ -20,10 +20,6 @@
 
 #define LPRESS_INC_DELAY 5
 
-extern unsigned char year_hour;
-extern unsigned char month_min;
-extern unsigned char day_sec;
-
 extern bit lpress_lock_year_hour;
 extern bit lpress_lock_month_min;
 extern bit lpress_lock_day_sec;

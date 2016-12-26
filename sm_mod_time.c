@@ -53,7 +53,6 @@ static void inc_only(unsigned char what)
 
 static void write_only(unsigned char what)
 {
-  unsigned char bs_hour;
   switch(what) {
     case IS_HOUR:
       if(lpress_lock_year_hour == 1) {
@@ -61,11 +60,6 @@ static void write_only(unsigned char what)
         lpress_lock_year_hour = 0;
         led_set_blink(5);
         led_set_blink(4);
-        // 这里我们还得设置整点报时闹钟，时间推后一个小时
-        bs_hour = (year_hour + 1) % 24;
-        rtc_read_data(RTC_TYPE_ALARM1);
-        rtc_alarm_set_hour(bs_hour);
-        rtc_write_data(RTC_TYPE_ALARM1);
       }
       break;
     case IS_YEAR:

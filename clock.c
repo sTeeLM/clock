@@ -8,6 +8,7 @@
 #include "misc.h"
 #include "clock.h"
 #include "rtc.h"
+#include "timer.h"
 
 // ISR里不能调带参数函数。。。
 // 2000~2099年
@@ -115,7 +116,7 @@ static unsigned char code date_table[100][12] =
 {31,28,31,30,31,30,31,31,30,31,30,31,}
 };
 
-static struct clock idata clk;
+static struct clock_struct idata clk;
 static bit clk_is12;
 
 #pragma NOAREGS
@@ -128,7 +129,7 @@ static void clock_inc_ms39(void)
   
   if((clk.ms39 % 6 ) == 0) {
      set_task(EV_SCAN_KEY); 
-  }
+  } 
   
   if((clk.ms39 % 64) == 0) {
     set_task(EV_250MS);
@@ -171,6 +172,20 @@ void clock_dump(void)
   CDBG("clk.is12 = %s\n", clk_is12 ? "ON" : "OFF"); 
 }
 
+// 计算某年某月某日星期几
+// year 0-99
+// mon 0-11
+// date 0-30
+// return 0-6
+static unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date)
+{
+  unsigned int d,m,y;
+  d = date + 1;
+  m = mon + 1;
+  y = CLOCK_YEAR_BASE + year;
+  return (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400) % 7;
+}
+
 bit clock_get_hour_12(void)
 {
   return clk_is12;
@@ -179,7 +194,7 @@ void clock_set_hour_12(bit enable)
 {
   clk_is12 = enable;
 }
-#pragma NOAREGS
+
 unsigned char clock_get_sec(void)
 {
   return clk.sec;
@@ -206,7 +221,7 @@ void clock_inc_hour(void)
 {
   clk.hour = (++ clk.hour) % 24;
 }
-#pragma AREGS 
+
 
 unsigned char clock_get_date(void)
 {
@@ -215,16 +230,13 @@ unsigned char clock_get_date(void)
 void clock_inc_date(void)
 {
   clk.date = (clk.date ++) % clock_get_mon_date(clk.year, clk.mon);
-  clk.day = (++ clk.day) % 7;
+  clk.day = clock_yymmdd_to_day(clk.year, clk.mon, clk.date);
 }
 
-#pragma NOAREGS
 unsigned char clock_get_day(void)
 {
   return clk.day + 1;
 }
-#pragma AREGS 
-
 
 unsigned char clock_get_month(void)
 {
@@ -233,6 +245,7 @@ unsigned char clock_get_month(void)
 void clock_inc_month(void)
 {
   clk.mon = (++ clk.mon) % 12;
+  clk.day = clock_yymmdd_to_day(clk.year, clk.mon, clk.date);
 }
 
 unsigned char clock_get_year(void)
@@ -242,6 +255,7 @@ unsigned char clock_get_year(void)
 void clock_inc_year(void)
 {
   clk.year = (++ clk.year) % 100;
+  clk.day = clock_yymmdd_to_day(clk.year, clk.mon, clk.date);
 }
 
 void clock_sync_from_rtc(enum clock_sync_type type)
@@ -285,6 +299,7 @@ void clock_sync_to_rtc(enum clock_sync_type type)
 static void clock0_ISR (void) interrupt 1 using 1
 {
   clock_inc_ms39();
+  timer_inc_ms39();
   TF0 = 0;
 }
 

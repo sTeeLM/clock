@@ -7,12 +7,12 @@
 #include "clock.h"
 #include "debug.h"
 
-static char led_data[6];
-static char led_blink;
-static char led_index;
+unsigned char led_data[6];
+unsigned char led_blink;
+static unsigned char led_index;
 static unsigned char scan_loop_cnt;
 
-static code char led_code[] =
+unsigned char code led_code[] =
 {
         /* GFEDCBA */
    0x1C, //0011100  o  degree Celsius assume ascii 0!!

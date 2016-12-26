@@ -44,10 +44,14 @@ void alarm_test_proc(enum task_events ev)
   }
   
   if(alarm1_hit) {
-    if(powersave_enabled) {
-      powersave_enabled = 0;
+    rtc_read_data(RTC_TYPE_TIME);
+    if(rtc_time_get_min() == 0 
+      && rtc_time_get_sec() == 0) {
+      if(powersave_enabled) {
+        powersave_enabled = 0;
+      }
+      set_task(EV_ALARM1);
     }
-    set_task(EV_ALARM1);
   }
 }
 
