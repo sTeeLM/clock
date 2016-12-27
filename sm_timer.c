@@ -35,6 +35,8 @@ static void display_slot(unsigned char slot)
 
 void sm_timer(unsigned char from, unsigned char to, enum task_events ev)
 {
+  CDBG("sm_timer %bd %bd %bd\n", from, to, ev);
+  
   // 按set1跑表大模式
   if(get_sm_ss_state(to) == SM_TIMER_INIT && ev == EV_KEY_SET_LPRESS) {
     display_logo(4);

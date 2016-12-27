@@ -285,7 +285,7 @@ static const struct sm_trans code sm[] =
   /* SM_TIMER */
   // 防止误操作
   {SM_TIMER<<4|SM_TIMER_INIT, EV_KEY_SET_UP, SM_TIMER<<4|SM_TIMER_CLEAR, sm_timer},
-  // mod1进入计时器模式
+  // set1进入倒计时器模式
   {SM_TIMER<<4|SM_TIMER_CLEAR, EV_KEY_SET_LPRESS, SM_COUNTER<<4|SM_COUNTER_INIT, sm_counter},
   // mod0跑表开始跑
   {SM_TIMER<<4|SM_TIMER_CLEAR, EV_KEY_MOD_DOWN, SM_TIMER<<4|SM_TIMER_RUNNING, sm_timer}, 
@@ -313,6 +313,8 @@ static const struct sm_trans code sm[] =
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, EV_KEY_SET_UP, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},   
   // mod1切回时间显示
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, EV_KEY_MOD_LPRESS, SM_DISPLAY<<4|SM_DISPLAY_INIT, sm_display},
+  // 每250ms刷新显示
+  {SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, EV_250MS, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},
   // mod0进入修改秒状态
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, sm_counter},
   // set0 分钟++
@@ -323,6 +325,8 @@ static const struct sm_trans code sm[] =
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, EV_KEY_SET_UP, SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, sm_counter},
   // mod1 回到时间显示  
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, EV_KEY_MOD_LPRESS, SM_DISPLAY<<4|SM_DISPLAY_INIT, sm_display},  
+  // 每250ms刷新显示
+  {SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, EV_250MS, SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, sm_counter},
   // mod0 开始倒计时
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_RUNNING, sm_counter},
   // set0 秒++
@@ -333,12 +337,14 @@ static const struct sm_trans code sm[] =
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, EV_KEY_SET_UP, SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, sm_counter},
   // mod1回到时间显示  
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, EV_KEY_MOD_LPRESS, SM_DISPLAY<<4|SM_DISPLAY_INIT, sm_display},
+  // 每250ms刷新显示
+  {SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, EV_250MS, SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, sm_counter},
   // set0 暂停倒计时
   {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_KEY_SET_PRESS, SM_COUNTER<<4|SM_COUNTER_STOP, sm_counter}, 
   // set0 继续倒计时
   {SM_COUNTER<<4|SM_COUNTER_STOP, EV_KEY_SET_PRESS, SM_COUNTER<<4|SM_COUNTER_RUNNING, sm_counter},
   // mod0 清除
-  {SM_COUNTER<<4|SM_COUNTER_STOP, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_MODIFY_MM, sm_counter},
+  {SM_COUNTER<<4|SM_COUNTER_STOP, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},
   // 倒计时结束
   {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
 };
@@ -357,7 +363,7 @@ void run_state_machine(enum task_events ev)
   for (c = 0 ; c < sizeof(sm)/sizeof(struct sm_trans) ; c++) {
     if(sm_state == sm[c].from_state && ev == sm[c].event) {
       newstate = sm[c].to_state;
-      CDBG("SM: %bd %bd %bd|%bd -> %bd|%bd\n", c, ev,
+      CDBG("SM: %bu %bd %bd|%bd -> %bd|%bd\n", c, ev,
         get_sm_state(sm_state), get_sm_ss_state(sm_state), 
         get_sm_state(sm[c].to_state), get_sm_ss_state(sm[c].to_state));
       sm[c].sm_proc(sm_state, sm[c].to_state, ev);

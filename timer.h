@@ -10,7 +10,7 @@ void timer_proc(enum task_events ev);
 void timer_inc_ms39(void);
 enum timer_mode {
   TIMER_MODE_INC = 0,
-  TIMER_MODE_DEC = 0,  
+  TIMER_MODE_DEC = 1,  
 };
 
 enum timer_display_mode
@@ -33,8 +33,11 @@ void timer_set_mode(enum timer_mode mode);
 void timer_start(void);
 void timer_save(unsigned char slot);
 unsigned char timer_get_hour(unsigned char slot);
+void timer_inc_hour(unsigned char slot);
 unsigned char timer_get_min(unsigned char slot);
+void timer_inc_min(unsigned char slot);
 unsigned char timer_get_sec(unsigned char slot);
+void timer_inc_sec(unsigned char slot);
 unsigned char timer_get_ms10(unsigned char slot);
 void timer_stop(void);
 void timer_clr(void);

@@ -95,11 +95,16 @@ void timer_initialize(void)
 void timer_proc(enum task_events ev)
 {
   CDBG("timer_proc\n");
+  timer_stop();
+  timer_clr();
+  timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
+  run_state_machine(ev);
 }
 
 void timer_enter_powersave(void)
 {
   CDBG("timer_enter_powersave\n");
+  timer_clr(); // 一旦进入节点模式，自动清0，节电模式无法用！
 }
 
 void timer_leave_powersave(void)
@@ -124,6 +129,8 @@ void timer_set_mode(enum timer_mode mode)
 
 void timer_start(void)
 {
+  CDBG("timer_start mode is %bd\n", tmr_mode);
+  tmr_countdown_stop = 0;
   tmr_start = 1;
 }
 
@@ -141,6 +148,12 @@ unsigned char timer_get_hour(unsigned char slot)
   }
   return 0;
 }
+void timer_inc_hour(unsigned char slot)
+{
+  if(slot >= 0 && slot < TIMER_SLOT_CNT) {
+    tmr[slot].hour = (++tmr[slot].hour) % 100;
+  }
+}
 
 unsigned char timer_get_min(unsigned char slot)
 {
@@ -149,6 +162,13 @@ unsigned char timer_get_min(unsigned char slot)
   }
   return 0;
 }
+void timer_inc_min(unsigned char slot)
+{
+  if(slot >= 0 && slot < TIMER_SLOT_CNT) {
+    tmr[slot].min = (++tmr[slot].min) % 60;
+  }
+}
+
 
 unsigned char timer_get_sec(unsigned char slot)
 {
@@ -156,6 +176,12 @@ unsigned char timer_get_sec(unsigned char slot)
     return tmr[slot].sec;
   }
   return 0;
+}
+void timer_inc_sec(unsigned char slot)
+{
+  if(slot >= 0 && slot < TIMER_SLOT_CNT) {
+    tmr[slot].sec = (++ tmr[slot].sec) % 60;
+  }
 }
 
 unsigned char timer_get_ms10(unsigned char slot)
@@ -181,3 +207,4 @@ void timer_clr(void)
   tmr_disp_mmssms = 0;
   tmr_start = 0;
 }
+

@@ -7,6 +7,7 @@
 #include "clock.h"
 #include "cext.h"
 #include "mod_common.h"
+#include "timer.h"
 
 static void display_pac(unsigned char what)
 {
@@ -50,14 +51,12 @@ static void display_pac(unsigned char what)
       led_set_code(0, (min % 10) + 0x30); 
       break;
     case IS_COUNTER:
-        led_set_dp(1);
-        led_set_dp(2);
         led_set_code(5, 'C');
-        led_set_code(4, 'U');
-        led_set_code(3, '0');
-        led_set_code(2, '0');
-        led_set_code(3, '0');
-        led_set_code(2, '0');
+        led_set_code(4, 'O');
+        led_set_code(3, 'U');
+        led_set_code(2, 'N');
+        led_set_code(1, '0');
+        led_set_code(0, '0');
       break; 
   }
 }
@@ -122,6 +121,7 @@ void sm_pac_hit(unsigned char from, unsigned char to, enum task_events ev)
 
   // 倒计时到了
   if(get_sm_ss_state(to) == SM_PAC_HIT_COUNTER && ev == EV_COUNTER) {
+    timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     display_pac(IS_COUNTER);
     reset_switch();
     beeper_beep();
