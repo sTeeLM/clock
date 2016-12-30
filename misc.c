@@ -1,28 +1,16 @@
 #include <intrins.h>
 #include "misc.h"
 
-void delay_us(unsigned char c)
+//本语句执行一次需5us的时间
+void delay_5us(unsigned char t) 
 {
-  while( c --) {
-    _nop_();
-  }
+  while(--t);
 }
 
-void delay_ms(unsigned char c)
-{
-  unsigned char i;
-  while( c --) {
-    for (i = 0 ; i < 200; i++) {
-      _nop_();
-    }
-    for (i = 0 ; i < 200; i++) {
-      _nop_();
-    }
-    for (i = 0 ; i < 200; i++) {
-      _nop_();
-    }
-    for (i = 0 ; i < 200; i++) {
-      _nop_();
-    }
-  }
+void delay_ms(unsigned char t) 
+{    
+  unsigned char j;   
+  while(t--) {      
+      for(j=0;j<200;j++);   //延时1ms   
+  } 
 }

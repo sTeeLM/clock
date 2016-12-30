@@ -10,28 +10,23 @@
 static void display_global_flag(unsigned char what)
 {
   bit baoshi,is_24;
-  unsigned char alarm_music_index, powersave_to_s;
 
   baoshi = alarm1_test_enable();
 
   is_24 = !clock_get_hour_12();
-  
-  alarm_music_index = beeper_get_music_index();
-  
-  powersave_to_s = get_powersave_to_s();
   
   led_clear();
   switch(what) {
     case IS_PS:
       led_set_code(5, 'P');
       led_set_code(4, 'S');
-      if(powersave_to_s == 0) {
+      if(power_get_powersave_to_s() == 0) {
         led_set_code(2, 'O');
         led_set_code(1, 'F');
         led_set_code(0, 'F');
       } else {
-        led_set_code(1, (powersave_to_s / 10) + 0x30);
-        led_set_code(0, (powersave_to_s % 10) + 0x30);
+        led_set_code(1, (power_get_powersave_to_s() / 10) + 0x30);
+        led_set_code(0, (power_get_powersave_to_s() % 10) + 0x30);
       }
       break;
     case IS_BS:
@@ -48,12 +43,26 @@ static void display_global_flag(unsigned char what)
       }
       break;
     case IS_MUSIC:
-      led_set_code(5, 'A');
-      led_set_code(4, 'L');
-      led_set_code(3, 'B');
-      led_set_code(2, 'E');
-      led_set_code(1, 'P');    
-      led_set_code(0, alarm_music_index + 1 + 0x30);
+      led_set_code(5, 'S');
+      led_set_code(4, 'O');
+      led_set_code(3, 'U');
+      led_set_code(2, 'N');
+      led_set_code(1, 'D');    
+      led_set_code(0, beeper_get_music_index() + 1 + 0x30);
+      break;
+    case IS_BEEP:
+      led_set_code(5, 'B');
+      led_set_code(4, 'E');
+      led_set_code(3, 'P');
+      if(beeper_get_beep_enable()) {
+        led_set_code(2, LED_CODE_BLACK);
+        led_set_code(1, 'O');
+        led_set_code(0, 'N');        
+      } else {
+        led_set_code(2, 'O');
+        led_set_code(1, 'F');
+        led_set_code(0, 'F');
+      }
       break;
     case IS_1224:
       led_set_code(5, 'D');
@@ -72,24 +81,20 @@ static void display_global_flag(unsigned char what)
 
 static void inc_write(unsigned char what)
 {
-  unsigned char alarm_music_index ,powersave_to;
-
   switch(what) {
     case IS_PS:
-      powersave_to = (get_powersave_to() + 1) % POWERSAVE_CNT;
-      set_powersave_to(powersave_to);
+      power_inc_powersave_to();
       break;
     case IS_BS:
       alarm1_set_enable(!alarm1_test_enable());
       alarm1_sync_to_rtc();
       break;
     case IS_MUSIC:
-      alarm_music_index = beeper_get_music_index();
-      alarm_music_index ++;
-      if(alarm_music_index >= BEEPER_MUSIC_CNT) {
-        alarm_music_index = 0;
-      }
-      beeper_set_music_index(alarm_music_index);
+      beeper_inc_music_index();
+      beeper_play_music();
+      break;
+    case IS_BEEP:
+      beeper_set_beep_enable(!beeper_get_beep_enable());
       break;
     case IS_1224:
       clock_set_hour_12(!clock_get_hour_12());
@@ -140,17 +145,30 @@ void sm_mod_global_flag(unsigned char from, unsigned char to, enum task_events e
   }  
   
   // mod0 进入闹铃音乐选择
-  if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_ALARM_BEEP && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_ALARM_MUSIC && ev == EV_KEY_MOD_PRESS) {
     display_global_flag(IS_MUSIC);
     return;
   }
 
   // set0 闹铃音乐设置
-  if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_ALARM_BEEP && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_ALARM_MUSIC && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_MUSIC);
     display_global_flag(IS_MUSIC);
     return;
   }
+  
+  // mod0 进入按键音打开关闭
+  if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_BEEP && ev == EV_KEY_MOD_PRESS) {
+    display_global_flag(IS_BEEP);
+    return;
+  } 
+
+  // set0 按键音打开关闭
+  if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_BEEP && ev == EV_KEY_SET_PRESS) {
+    inc_write(IS_BEEP);
+    display_global_flag(IS_BEEP);
+    return;
+  }  
   
   // mod0 进入1224小时设置状态
   if(get_sm_ss_state(to) == SM_MODIFY_GLOBAL_FLAG_1224 && ev == EV_KEY_MOD_PRESS) {

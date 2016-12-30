@@ -22,7 +22,7 @@ bit powersave_enabled;
 void power_initialize(void)
 {
   CDBG("power_initialize\n");
-  powersave_to_s = 15;
+  powersave_to_s = 0;
   powersave_enabled = 0;
 }
 
@@ -67,12 +67,12 @@ void power_leave_powersave(void)
   CDBG("power_leave_powersave\n");
 }
 
-unsigned char get_powersave_to_s(void)
+unsigned char power_get_powersave_to_s(void)
 {
   return powersave_to_s;
 }
 
-enum powersave_time get_powersave_to(void)
+enum powersave_time power_get_powersave_to(void)
 {
   switch(powersave_to_s) {
     case 0:  return POWERSAVE_OFF;
@@ -82,19 +82,19 @@ enum powersave_time get_powersave_to(void)
   return POWERSAVE_OFF;
 }
 
-void set_powersave_to(enum powersave_time to)
+void power_inc_powersave_to(void)
 {
-  switch(to) {
-    case POWERSAVE_OFF:
-      powersave_to_s = 0;  break;
-    case POWERSAVE_15S: 
-      powersave_to_s = 15; break;
-    case POWERSAVE_30S: 
+  switch(powersave_to_s) {
+    case 0:
+      powersave_to_s = 15;  break;
+    case 15: 
       powersave_to_s = 30; break;
+    case 30: 
+      powersave_to_s = 0; break;
   }
 }
 
-bit test_powersave_to(void)
+bit power_test_powersave_to(void)
 {
   if(powersave_to_s != 0 
     && time_diff(clock_get_sec(), last_ps_s) >= powersave_to_s) {
@@ -106,7 +106,7 @@ bit test_powersave_to(void)
 }
 
 
-void reset_powersave_to(void)
+void power_reset_powersave_to(void)
 {
   last_ps_s = clock_get_sec();
 }

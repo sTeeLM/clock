@@ -58,7 +58,6 @@ void sm_timer(unsigned char from, unsigned char to, enum task_events ev)
     timer_set_led_autorefresh(1, TIMER_DISP_MODE_MMSSMM);
     timer_start();
     slot = 1;
-    beeper_beep();
     return;
   }
   
@@ -76,7 +75,6 @@ void sm_timer(unsigned char from, unsigned char to, enum task_events ev)
       timer_set_led_autorefresh(1, TIMER_DISP_MODE_MMSSMM);
       timer_save(slot);
       slot ++;
-      beeper_beep();
     }
     return;
   }  
@@ -87,7 +85,6 @@ void sm_timer(unsigned char from, unsigned char to, enum task_events ev)
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_MMSSMM);
     display_slot(0);
     slot = 1;
-    beeper_beep();
     return;
   }
   
@@ -95,7 +92,6 @@ void sm_timer(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_TIMER_CLEAR && ev == EV_KEY_MOD_DOWN) {
     timer_clr();
     display_slot(0);
-    beeper_beep();
     return;
   }
   
@@ -108,7 +104,6 @@ void sm_timer(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_TIMER_STOP && ev == EV_KEY_SET_UP) {
     display_slot(slot);
     slot = (++ slot) % TIMER_SLOT_CNT;
-    beeper_beep();
     return;
   }
   

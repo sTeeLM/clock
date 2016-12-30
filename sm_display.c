@@ -143,14 +143,14 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
     && get_sm_ss_state(to) == SM_DISPLAY_HHMMSS
     && ev == EV_KEY_MOD_UP) {
     display_hhmmss();
-    reset_powersave_to();
+    power_reset_powersave_to();
     return;
   }
   
   // 刷新时分秒显示
   if(get_sm_ss_state(to) == SM_DISPLAY_HHMMSS && ev == EV_250MS) {
     display_hhmmss();
-    test_powersave_to();
+    power_test_powersave_to();
     return;
   }
 
@@ -158,7 +158,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
     display_yymmdd();
     reset_switch();
-    reset_powersave_to();
+    power_reset_powersave_to();
     return;
   } 
   
@@ -166,7 +166,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_WEEK && ev == EV_KEY_MOD_PRESS) {
     display_week();
     reset_switch();;
-    reset_powersave_to();
+    power_reset_powersave_to();
     return;
   }
   
@@ -174,7 +174,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_YYMMDD && ev == EV_1S) {
     display_yymmdd();
     test_autoswitch();
-    test_powersave_to();
+    power_test_powersave_to();
     return;
   }
   
@@ -183,7 +183,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
     (ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
     beeper_stop_music();
     display_hhmmss();
-    reset_powersave_to();
+    power_reset_powersave_to();
     return;
   }
   
@@ -191,7 +191,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_TEMP && ev == EV_KEY_MOD_PRESS) {
     display_temp();
     reset_switch();;
-    reset_powersave_to();
+    power_reset_powersave_to();
     return;
   }  
   
@@ -199,7 +199,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_WEEK && ev == EV_1S) {
     display_week();
     test_autoswitch();
-    test_powersave_to();
+    power_test_powersave_to();
     return;
   }  
    
@@ -207,7 +207,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   // 切换回时分秒显示
   if(get_sm_ss_state(to) == SM_DISPLAY_HHMMSS && ev == EV_KEY_MOD_PRESS) {
     display_hhmmss();
-    reset_powersave_to();
+    power_reset_powersave_to();
     return;
   }  
 
@@ -215,7 +215,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_DISPLAY_TEMP && ev == EV_1S) {
     display_temp();
     test_autoswitch();
-    test_powersave_to();    
+    power_test_powersave_to();    
     return;
   }
 }

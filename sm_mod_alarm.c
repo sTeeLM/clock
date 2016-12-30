@@ -101,7 +101,7 @@ static void write_only(unsigned char what)
       break;
     case IS_DAY_ONOFF:
       break;
-  }  
+  } 
 }
 
 static void inc_only(unsigned char what)
@@ -124,13 +124,13 @@ static void inc_only(unsigned char what)
       alarm0_inc_min();
       break;
   }
+  update_alarm(what, 0);
 }
 
 static void inc_write(unsigned char what)
 {
   inc_only(what);
   write_only(what);
-  update_alarm(what, 0);
 }
 
 

@@ -331,13 +331,13 @@ static void clock0_ISR (void) interrupt 1 using 1
 // 辅助函数
 bit clock_is_leap_year(unsigned char year)
 {
-  if(year >= 99) year = 99;
+  if(year >= 100) year = 99;
   return date_table[year][1] == 29;
 }
 
 unsigned char clock_get_mon_date(unsigned char year, unsigned char mon)
 {
-  if(year >= 99) year = 99;
+  if(year >= 100) year = 99;
   if(mon >= 12) mon = 11;
   return date_table[year][mon];
 }
@@ -356,7 +356,7 @@ void clock_initialize(void)
   TH0 = (256 - 128);
   PT0 = 1; // 最高优先级 
   ET0 = 1; // 开中断
-  TR0 = 1; //开始了
+  TR0 = 1; // 开始了
 
   clock_dump();
 }
@@ -405,8 +405,6 @@ void clock_enter_powersave(void)
 void clock_leave_powersave(void)
 {
   ET0 = 1;
-  clock_sync_from_rtc(CLOCK_SYNC_TIME);
-  clock_sync_from_rtc(CLOCK_SYNC_DATE); 
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
   clock_sync_from_rtc(CLOCK_SYNC_DATE);   
 }

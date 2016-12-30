@@ -12,7 +12,8 @@
 #define IS_PS    0
 #define IS_BS    1
 #define IS_MUSIC 2
-#define IS_1224  3
+#define IS_BEEP  3
+#define IS_1224  4
 
 #define IS_ALARM0 0
 #define IS_ALARM1 1

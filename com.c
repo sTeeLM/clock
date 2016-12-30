@@ -22,7 +22,7 @@ bit sendactive;                                 // flag: marks transmitter activ
 /*--------------------------------------------------------------------------------
  * Serial Interrupt Service Routine
  *------------------------------------------------------------------------------*/
-static void com_isr (void) interrupt 4 using 1 
+static void com_isr (void) interrupt 4 using 2
 {
 char c;
 

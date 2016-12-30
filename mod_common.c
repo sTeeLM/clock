@@ -22,5 +22,5 @@ void display_logo(unsigned char fun)
   led_set_code(3, 'N');
   led_set_code(1, (fun / 10) + 0x30);
   led_set_code(0, (fun % 10) + 0x30);
-  beeper_beep();
+  beeper_beep_beep_always();
 }

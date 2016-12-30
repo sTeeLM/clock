@@ -143,11 +143,10 @@ static void update_hhmmss(void)
     led_set_code(5, LED_CODE_BLACK);
   }
   led_set_code(4, (hour % 10) + 0x30);
-  led_set_code(3, (min / 10)+ 0x30);
+  led_set_code(3, (min / 10)  + 0x30);
   led_set_code(2, (min % 10) + 0x30);
   led_set_code(1, (sec / 10) + 0x30);
   led_set_code(0, (sec % 10) + 0x30);
-
 }
 
 static void update_yymmdd(void)

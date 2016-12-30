@@ -32,6 +32,6 @@
 #define  ESC            0x1B
 
 #define  time_diff(from,to) \
-(char)((unsigned char)from - (unsigned char)to)
+(unsigned char)((unsigned char)from - (unsigned char)to)
 
 #endif

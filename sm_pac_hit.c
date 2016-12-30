@@ -61,52 +61,28 @@ static void display_pac(unsigned char what)
   }
 }
 
-static void reset_switch(void)
-{
-  last_display_s = clock_get_sec();
-}
-
-static bit test_switch(unsigned char what)
-{
-  switch(what) {
-    case IS_ALARM0:  what = 30; break;
-    case IS_ALARM1:  what = 5; break; 
-    case IS_COUNTER: what = 5; break; 
-  }
-  
-  if(time_diff(clock_get_sec(), last_display_s) >= what) {
-    CDBG("test_autoswitch time out!\n");
-    set_task(EV_KEY_SET_PRESS);
-    return 1;
-  }
-  return 0;
-}
-
 void sm_pac_hit(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_pac_hit %bd %bd %bd\n", from, to, ev);
   
   // 到时间切换到时间显示模式
   if(get_sm_ss_state(to) == SM_PAC_HIT_ALARM0 && ev == EV_1S) {
-    if(test_switch(IS_ALARM0)) {
-      beeper_stop_music();
-    }
+    set_task(EV_KEY_SET_PRESS);
   }
   
   // 到时间切换到时间显示模式
   if(get_sm_ss_state(to) == SM_PAC_HIT_ALARM1 && ev == EV_1S) {
-    test_switch(IS_ALARM1);
+    set_task(EV_KEY_SET_PRESS);
   }
   
   // 到时间切换到时间显示模式
   if(get_sm_ss_state(to) == SM_PAC_HIT_COUNTER && ev == EV_1S) {
-    test_switch(IS_COUNTER);
+    set_task(EV_KEY_SET_PRESS);
   }
   
   // 闹钟0到时间了
   if(get_sm_ss_state(to) == SM_PAC_HIT_ALARM0 && ev == EV_ALARM0) {
     display_pac(IS_ALARM0);
-    reset_switch();
     beeper_play_music();
     return;
   }
@@ -114,8 +90,7 @@ void sm_pac_hit(unsigned char from, unsigned char to, enum task_events ev)
   // 闹钟1到时间了
   if(get_sm_ss_state(to) == SM_PAC_HIT_ALARM1 && ev == EV_ALARM1) {
     display_pac(IS_ALARM1);
-    reset_switch();
-    beeper_beep();
+    beeper_beep_beep_always();
     return;
   }
 
@@ -123,14 +98,13 @@ void sm_pac_hit(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_PAC_HIT_COUNTER && ev == EV_COUNTER) {
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     display_pac(IS_COUNTER);
-    reset_switch();
-    beeper_beep();
+    beeper_beep_beep_always();
     return;
   } 
 
   // 该进入节电模式了
   if(get_sm_ss_state(to) == SM_PAC_HIT_POWERSAVE && ev == EV_POWER_SAVE) {
-    beeper_beep();
+    beeper_beep_beep_always();
     power_enter_powersave();
     power_leave_powersave();
     return;
