@@ -8,8 +8,6 @@ enum rtc_data_type {
   RTC_TYPE_ALARM1  = 3, // 闹钟1
   RTC_TYPE_TEMP    = 4, // 温度
   RTC_TYPE_CTL     = 5,
-  RTC_TYPE_USR0    = 6, // 用户自定义0
-  RTC_TYPE_USR1    = 7, // 用户自定义1
 };
 
 enum rtc_alarm_mode
@@ -29,6 +27,10 @@ enum rtc_alarm_mode
 };
 
 void rtc_initialize (void);
+
+bit rtc_is_lt_timer(void);
+void rtc_set_lt_timer(bit enable);
+void scan_rtc(void);
 
 void rtc_enter_powersave(void);
 void rtc_leave_powersave(void);
@@ -82,7 +84,4 @@ bit rtc_test_alarm_int(unsigned char index);
 bit rtc_test_alarm_int_flag(unsigned char index);
 void rtc_clr_alarm_int_flag(unsigned char index);
 
-// 在rtc_read_data（RTC_TYPE_USR0/RTC_TYPE_USR1）之后调用
-unsigned char rtc_get_usr_data(unsigned char index);
-void rtc_set_usr_data(unsigned char index, unsigned char dat);
 #endif

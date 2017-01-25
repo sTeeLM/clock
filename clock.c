@@ -128,7 +128,7 @@ static void clock_inc_ms39(void)
   }
   
   if((clk.ms39 % 6 ) == 0) {
-     set_task(EV_SCAN_KEY); 
+     set_task(EV_SCAN_KEY);
   } 
   
   if((clk.ms39 % 64) == 0) {

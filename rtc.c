@@ -6,6 +6,7 @@
 #include "clock.h"
 #include "task.h"
 #include "alarm.h"
+#include "serial_hub.h"
 
 sbit RTC_RESET = P1 ^ 5;
 
@@ -18,20 +19,12 @@ sbit RTC_RESET = P1 ^ 5;
 #define RTC_ALARM1_OFFSET 0x0B
 #define RTC_CTL_OFFSET 0x0E
 #define RTC_TEMP_OFFSET 0x11
-#define RTC_USR0_OFFSET 0x14
-#define RTC_USR1_OFFSET 0x08
 
 #define RTC_CTL_OFFSET 0x0E
 
-
-static void rtc_ISR (void) interrupt 2 using 1
-{
-  IE1 = 0; // 清除中断标志位
-  alarm_isr();
-}
-
 static unsigned char rtc_data[4];
 static unsigned char last_read;
+static bit is_lt_timer_mode;
 
 static void dump_rtc(void)
 {
@@ -44,11 +37,43 @@ static void dump_rtc(void)
 	}
 }
 
+bit rtc_is_lt_timer(void)
+{
+  return is_lt_timer_mode;
+}
+
+void rtc_set_lt_timer(bit enable)
+{
+  is_lt_timer_mode = enable;
+}
+
+void scan_rtc(void)
+{ 
+  if(serial_test_state_bit(SERIAL_BIT_RTC_HIT)) // 没有RTC中断
+    return;
+  
+  if(!is_lt_timer_mode) { // 正常闹钟模式
+    scan_alarm();
+  } else { // 长期定时器模式
+    
+    
+  }
+  
+  if(!serial_test_state_bit(SERIAL_BIT_RTC_HIT)) {
+    // 有RTC中断，需要清除中断
+    // 我们已经调用了rtc_clr_alarm_int_flag
+    // 重新serial一遍标志位
+    serial_state_in();
+  }
+}
+
 void rtc_initialize (void)
 {
 	unsigned char count = RTC_RESET_PULSE_DELAY;
 
 	CDBG("rtc_initialize\n");
+  
+  is_lt_timer_mode = 0;
 	
 	I2C_Init();
 
@@ -79,6 +104,7 @@ void rtc_initialize (void)
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
 
+/*
   // 闹钟0：一般闹钟，设置为12小时，12:11:00 AM
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC);
@@ -95,6 +121,7 @@ void rtc_initialize (void)
   rtc_alarm_set_hour(0);
   rtc_alarm_set_min(0);
   rtc_write_data(RTC_TYPE_ALARM1);  
+*/
 
   // 清除中断标志位
   I2C_Get(RTC_I2C_ADDRESS, 0x0F, &count);
@@ -105,10 +132,6 @@ void rtc_initialize (void)
   I2C_Get(RTC_I2C_ADDRESS, 0x0E, &count);
   count |= 0x7; // INCN,A1E,A2E = 111
   I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);
-  
-  
-  IT1 = 1; // 设置为边沿触发
-  EX1 = 1; // 开中断
   
   dump_rtc();
   
@@ -130,11 +153,7 @@ void rtc_read_data(enum rtc_data_type type)
     case RTC_TYPE_TEMP:
       offset = RTC_TEMP_OFFSET; break; 
     case RTC_TYPE_CTL:
-      offset = RTC_CTL_OFFSET; break;
-    case RTC_TYPE_USR0:
-      offset = RTC_USR0_OFFSET; break; 
-    case RTC_TYPE_USR1:
-      offset = RTC_USR1_OFFSET; break;     
+      offset = RTC_CTL_OFFSET; break;     
   }
   
   last_read = type;
@@ -158,11 +177,7 @@ void rtc_write_data(enum rtc_data_type type)
     case RTC_TYPE_TEMP:
       offset = RTC_TEMP_OFFSET; break; 
     case RTC_TYPE_CTL:
-      offset = RTC_CTL_OFFSET; break;    
-    case RTC_TYPE_USR0:
-      offset = RTC_USR0_OFFSET; break; 
-    case RTC_TYPE_USR1:
-      offset = RTC_USR1_OFFSET; break;     
+      offset = RTC_CTL_OFFSET; break;       
   }
   I2C_Puts(RTC_I2C_ADDRESS, offset, sizeof(rtc_data), rtc_data);  
 }
@@ -619,14 +634,6 @@ bit rtc_test_alarm_int_flag(unsigned char index)
   return 0;
 }
 
-unsigned char rtc_get_usr_data(unsigned char index)
-{
-  return rtc_data[index];
-}
-void rtc_set_usr_data(unsigned char index, unsigned char dat)
-{
-  rtc_data[index] = dat;
-}
 
 void rtc_enter_powersave(void)
 {

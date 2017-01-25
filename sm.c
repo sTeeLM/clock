@@ -2,6 +2,8 @@
 #include "debug.h"
 #include "led.h"
 #include "beeper.h"
+#include "alarm.h"
+#include "lt_timer.h"
 
 /* state machine */
 #include "sm_display.h"
@@ -12,9 +14,11 @@
 #include "sm_counter.h"
 #include "sm_timer.h"
 
+static unsigned char sm_index;
+
 // state machine translate defines
 // 超级复杂变态
-static const struct sm_trans code sm[] = 
+static const struct sm_trans code sm_clock[] = 
 {
   /* SM_DISPLAY */
   // 从别的状态切过来，防止误操作
@@ -355,6 +359,22 @@ static const struct sm_trans code sm[] =
   {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
 };
 
+
+static const struct sm_trans code sm_fuse[] = {
+  {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
+};  
+
+struct sm_trans_table
+{
+  struct sm_trans * table;
+  unsigned char cnt;
+};
+
+static const struct sm_trans_table code sm[SM_INDEX_CNT] = {
+  {sm_clock, sizeof(sm_clock)/ sizeof(struct sm_trans)},
+  {sm_fuse,sizeof(sm_fuse)/ sizeof(struct sm_trans)},
+};
+
 static unsigned char sm_state; // hi 4 bits : state, lo 4 bits: sub-state 
 
 void state_machine_timer_proc(enum task_events ev)
@@ -366,22 +386,40 @@ void run_state_machine(enum task_events ev)
 {
   unsigned char c;
   unsigned char newstate;
-  for (c = 0 ; c < sizeof(sm)/sizeof(struct sm_trans) ; c++) {
-    if(sm_state == sm[c].from_state && ev == sm[c].event) {
-      newstate = sm[c].to_state;
-      CDBG("SM: %bu %bd %bd|%bd -> %bd|%bd\n", c, ev,
+  for (c = 0 ; c < sm[sm_index].cnt ; c++) {
+    if(sm_state == sm[sm_index].table[c].from_state && ev == sm[sm_index].table[c].event) {
+      newstate = sm[sm_index].table[c].to_state;
+      CDBG("SM: [%bu] [%bu] ev = %bd state %bd|%bd -> %bd|%bd\n", sm_index, c, ev,
         get_sm_state(sm_state), get_sm_ss_state(sm_state), 
-        get_sm_state(sm[c].to_state), get_sm_ss_state(sm[c].to_state));
-      sm[c].sm_proc(sm_state, sm[c].to_state, ev);
-      sm_state = sm[c].to_state;
+        get_sm_state(sm[sm_index].table[c].to_state), get_sm_ss_state(sm[sm_index].table[c].to_state));
+      sm[sm_index].table[c].sm_proc(sm_state, sm[sm_index].table[c].to_state, ev);
+      sm_state = sm[sm_index].table[c].to_state;
       break;
     }
   }
 }
 
+void sm_set_index(enum sm_indeies index)
+{
+  if(index >= SM_INDEX_CNT)
+    index = SM_INDEX_CLOCK;
+  
+  sm_index = index;
+}
+
+enum sm_indeies sm_get_index(void)
+{
+  return sm_index;
+}
+
 void sm_initialize (void) 
 {
   CDBG("sm_initialize\n");
+  sm_index = SM_INDEX_CLOCK;
   sm_state = SM_DISPLAY|SM_DISPLAY_INIT;
+  
+  alarm_switch_on();
+  lt_timer_switch_off();
+  
   set_task(EV_KEY_MOD_UP);
 }

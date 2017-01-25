@@ -7,7 +7,6 @@ void alarm_initialize (void);
 void alarm_enter_powersave(void);
 void alarm_leave_powersave(void);
 void alarm_proc(enum task_events ev);
-void alarm_test_proc(enum task_events ev);
 void alarm_dump(void);
 
 
@@ -34,7 +33,7 @@ bit alarm1_test_enable(void);
 void alarm1_set_enable(bit enable);
 void alarm1_sync_from_rtc(void);
 void alarm1_sync_to_rtc(void);
-
-
-void alarm_isr(void);
+void scan_alarm(void);
+void alarm_switch_on(void);
+void alarm_switch_off(void);
 #endif

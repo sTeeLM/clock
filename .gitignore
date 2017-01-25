@@ -39,3 +39,6 @@
 # Backup files
 *.pdsbak
 *.bak
+*.tmp
+
+.DS_Store

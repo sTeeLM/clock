@@ -104,7 +104,7 @@ void sm_pac_hit(unsigned char from, unsigned char to, enum task_events ev)
 
   // 该进入节电模式了
   if(get_sm_ss_state(to) == SM_PAC_HIT_POWERSAVE && ev == EV_POWER_SAVE) {
-    beeper_beep_beep_always();
+    // 进入睡眠
     power_enter_powersave();
     power_leave_powersave();
     return;

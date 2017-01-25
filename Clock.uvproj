@@ -466,6 +466,46 @@
               <FileType>1</FileType>
               <FilePath>.\timer.c</FilePath>
             </File>
+            <File>
+              <FileName>int_hub.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\int_hub.c</FilePath>
+            </File>
+            <File>
+              <FileName>fuse.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\fuse.c</FilePath>
+            </File>
+            <File>
+              <FileName>hg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gyro.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\gyro.c</FilePath>
+            </File>
+            <File>
+              <FileName>lt_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lt_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial_hub.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\serial_hub.c</FilePath>
+            </File>
+            <File>
+              <FileName>thermo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\thermo.c</FilePath>
+            </File>
+            <File>
+              <FileName>tripwire.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\tripwire.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

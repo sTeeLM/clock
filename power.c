@@ -11,19 +11,20 @@
 #include "alarm.h"
 #include "timer.h"
 #include "beeper.h"
+#include "int_hub.h"
 #include "debug.h"
 #include "cext.h"
 #include "misc.h"
 
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
-bit powersave_enabled;
+bit powersave_flag;
 
 void power_initialize(void)
 {
   CDBG("power_initialize\n");
   powersave_to_s = 0;
-  powersave_enabled = 0;
+  powersave_flag = 0;
 }
 
 void power_proc(enum task_events ev)
@@ -35,7 +36,7 @@ void power_proc(enum task_events ev)
 void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
-  powersave_enabled = 1;
+  powersave_flag = 1;
   clock_enter_powersave();
   rtc_enter_powersave();       
   key_enter_powersave();       
@@ -44,11 +45,10 @@ void power_enter_powersave(void)
   timer_enter_powersave();   
   beeper_enter_powersave();
   com_enter_powersave();
-  while(powersave_enabled) {
+  while(powersave_flag) {
     PCON |= 0x1;
-    alarm_test_proc(EV_ALARM_TEST);
-    clr_task(EV_ALARM_TEST);
-    if(!powersave_enabled) {
+    scan_int_hub_proc(EV_SCAN_INT_HUB);
+    if(!powersave_flag) {
       break;
     }
   }
@@ -105,6 +105,20 @@ bit power_test_powersave_to(void)
   return 0;
 }
 
+bit power_test_flag(void)
+{
+  return powersave_flag;
+}
+
+void power_set_flag(void)
+{
+  powersave_flag = 1;
+}
+
+void power_clr_flag(void)
+{
+  powersave_flag = 0;
+}
 
 void power_reset_powersave_to(void)
 {

@@ -16,11 +16,20 @@ enum task_events
   EV_KEY_SET_LPRESS   = 10, // set键长按
   EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
-  EV_ALARM_TEST       = 13, // // 闹钟响起，但是不知道是哪一个  
-  EV_ALARM0           = 14, // 闹钟0应该响起
-  EV_ALARM1           = 15, // 闹钟1应该响起
-  EV_COUNTER          = 16, // 计时器到时间
-  EV_POWER_SAVE       = 17, // 应该进入PS状态 
+  EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
+  EV_FUSE0_SHORT_BROKE = 14, // fuse被剪断或者短路
+  EV_FUSE1_SHORT_BROKE = 15, // fuse被剪断或者短路
+  EV_HG            = 16, // hg检测出来倾斜状态改变
+  EV_GYRO          = 17, // gyro检测出来倾斜状态改变
+  EV_THERMO_LO     = 18, // 温度太低
+  EV_THERMO_HI     = 19, // 温度太高
+  EV_FUSE0_TRIGGER     = 20, // fuse应该被触发 
+  EV_FUSE1_TRIGGER     = 21,
+  EV_TRIPWIRE         = 22,
+  EV_ALARM0           = 23, // 闹钟0应该响起
+  EV_ALARM1           = 24, // 闹钟1应该响起
+  EV_COUNTER          = 25, // 计时器到时间
+  EV_POWER_SAVE       = 26, // 应该进入PS状态 
   EV_COUNT  
 };
 

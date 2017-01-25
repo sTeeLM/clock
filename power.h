@@ -22,6 +22,9 @@ void power_reset_powersave_to(void);
 
 void power_proc(enum task_events ev);
 
-extern bit powersave_enabled;
+void power_set_flag(void);
+void power_clr_flag(void);
+
+bit power_test_flag(void);
 
 #endif

@@ -99,7 +99,8 @@ static unsigned char * code music_table[] = {
   music_table3
 };
 
-sbit beeper_out = P1 ^ 4;
+sbit beeper_out = P0 ^ 0;
+
 static bit idata beeper_stop;
 static bit beep_enable;
 static unsigned char pai;
@@ -146,7 +147,7 @@ void beeper_initialize (void)
    beeper_music_to = BEEPER_MUSIC_TO_30;
    beeper_music_to_s = 30;
    beep_enable = 1;
-   beeper_out  =1;
+   beeper_out  = 0;
 }
 
 void beeper_enter_powersave(void)
@@ -210,7 +211,7 @@ static void _beeper_stop_play(void)
   ET2 = 0;
   pai = 0;
   beeper_stop = 1;
-  beeper_out =1;
+  beeper_out = 0;
 }
 
 static void _beepler_play(unsigned char * music, bit once)
@@ -249,13 +250,14 @@ static void _beepler_play(unsigned char * music, bit once)
       default:   
         tune=music[cm++];             
         pai=music[cm++];             
-        beeper_out =1;            
+        beeper_out = 0;            
         TR2 = 1;
         ET2 = 1;
         while (pai!=0 && !beeper_stop) { 
           beeper_out=~beeper_out; 
           delay_5us(4 * tune); 
         }
+        beeper_out = 0; 
     }
   }
   _beeper_stop_play();
@@ -267,18 +269,19 @@ void beeper_beep(void)
   CDBG("beeper_beep!\n");
   if(!beep_enable)
     return;
-  beeper_out =1;
+  beeper_out =0;
   while(c --) {
     beeper_out=~beeper_out;
     delay_5us(4 * 0x13); 
   }
-  beeper_out = 1;
+  beeper_out = 0;
 }
 
 void beeper_beep_beep_always(void)
 {
   unsigned char c = 30;
   CDBG("beeper_beep_beep_always!\n");
+  beeper_out = 0;
   while(c --) {
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
@@ -290,7 +293,7 @@ void beeper_beep_beep_always(void)
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
   }
-  beeper_out = 1;
+  beeper_out = 0;
 }
 
 void beeper_beep_beep(void)
@@ -299,7 +302,7 @@ void beeper_beep_beep(void)
   CDBG("beeper_beep_beep!\n");
   if(!beep_enable)
     return;
-  beeper_out =1;
+  beeper_out =0;
   while(c --) {
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
@@ -311,7 +314,7 @@ void beeper_beep_beep(void)
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
   }
-  beeper_out = 1;
+  beeper_out = 0;
 }
 
 void beeper_play_music(void)
