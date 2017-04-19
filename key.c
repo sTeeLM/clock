@@ -23,7 +23,6 @@ sbit MOD_KEY = P2 ^ 6;
 static bit mod_press;
 static bit set_press;
 
-
 static void int0_ISR (void) interrupt 0 using 1
 {
   IE0 = 0; // 清除中断标志位
@@ -161,6 +160,9 @@ void key_initialize (void)
    
   mod_press = 0; 
   set_press = 0;
+  
+  IT0 = 1; // 设置为边沿触发
+  EX0 = 1; // 开中断
 }
 
 void key_enter_powersave(void)

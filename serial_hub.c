@@ -21,23 +21,23 @@ static unsigned char idata state_buffer[2];
 static void serial_dump_ctl(void)
 {
   CDBG("++++++serial_dump_ctl begin++++++\n");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_UNUSED0) ? '1' : '0', "SERIAL_BIT_UNUSED0");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_UNUSED1) ? '1' : '0', "SERIAL_BIT_UNUSED1");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_UNUSED2) ? '1' : '0', "SERIAL_BIT_UNUSED2");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_UNUSED3) ? '1' : '0', "SERIAL_BIT_UNUSED3");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_UNUSED4) ? '1' : '0', "SERIAL_BIT_UNUSED4");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_UNUSED5) ? '1' : '0', "SERIAL_BIT_UNUSED5");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED0) ? '1' : '0', "SERIAL_BIT_C_UNUSED0");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED1) ? '1' : '0', "SERIAL_BIT_C_UNUSED1");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED2) ? '1' : '0', "SERIAL_BIT_C_UNUSED2");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED3) ? '1' : '0', "SERIAL_BIT_C_UNUSED3");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED4) ? '1' : '0', "SERIAL_BIT_C_UNUSED4");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED5) ? '1' : '0', "SERIAL_BIT_C_UNUSED5");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_TEST");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_LO_TEST) ? '1' : '0', "SERIAL_BIT_THERMO_LO_TEST");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_HI_TEST) ? '1' : '0', "SERIAL_BIT_THERMO_HI_TEST");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_SHORT_TEST");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_BROKE_TEST");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_SHORT_TEST");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_BROKE_TEST");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_HG3_FIX) ? '1' : '0', "SERIAL_BIT_HG3_FIX");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_HG2_FIX) ? '1' : '0', "SERIAL_BIT_HG2_FIX");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_HG1_FIX) ? '1' : '0', "SERIAL_BIT_HG1_FIX");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_HG0_FIX) ? '1' : '0', "SERIAL_BIT_HG0_FIX");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_BROKE_TEST");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_BROKE_TEST");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_SHORT_TEST");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_SHORT_TEST");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGER");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_EN) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_EN");
@@ -51,7 +51,7 @@ static void serial_dump_ctl(void)
 static void serial_dump_state(void)
 {
   CDBG("++++++serial_dump_state begin++++++\n");
-  CDBG("%c %s\n", serial_test_state_bit(SERIAL_BIT_UNUSED6) ? '1' : '0', "SERIAL_BIT_UNUSED6");
+  CDBG("%c %s\n", serial_test_state_bit(SERIAL_BIT_S_UNUSED0) ? '1' : '0', "SERIAL_BIT_S_UNUSED0");
   CDBG("%c %s\n", serial_test_state_bit(SERIAL_BIT_RTC_HIT) ? '1' : '0', "SERIAL_BIT_RTC_HIT");
   CDBG("%c %s\n", serial_test_state_bit(SERIAL_BIT_FUSE1_TRIGGERED) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGERED");
   CDBG("%c %s\n", serial_test_state_bit(SERIAL_BIT_FUSE0_TRIGGERED) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGERED");
@@ -102,13 +102,13 @@ void serial_state_in(void)
   for(i = 0 ; i < sizeof(state_buffer) ; i ++) {
     b = 0;
     for(j = 0; j < 8; j ++) {
-      b |= SR_DATA_OUT;
       b <<= 1;
+      b |= SR_DATA_OUT;
       SR_RCLK = 0;
       delay_5us(1);
       SR_RCLK = 1;
     }
-    state_buffer[i] = b;
+    state_buffer[sizeof(state_buffer) - i - 1] = b;
   }
   serial_dump_state();
 }

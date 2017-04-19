@@ -33,7 +33,7 @@ void scan_hg(void)
     ||!serial_test_state_bit(SERIAL_BIT_HG1_HIT)
     ||!serial_test_state_bit(SERIAL_BIT_HG2_HIT)
     ||!serial_test_state_bit(SERIAL_BIT_HG3_HIT)) {
-      set_task(EV_HG);
+      set_task(EV_ROTATE);
       hg_fix();
       serial_state_in();
     }

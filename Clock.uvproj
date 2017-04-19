@@ -349,8 +349,13 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source Group 1</GroupName>
+          <GroupName>main</GroupName>
           <Files>
+            <File>
+              <FileName>sm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm.c</FilePath>
+            </File>
             <File>
               <FileName>STARTUP.A51</FileName>
               <FileType>2</FileType>
@@ -405,46 +410,6 @@
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\misc.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_display.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_display.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_mod_time.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_mod_time.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_mod_alarm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_mod_alarm.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_mod_global_flag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_mod_global_flag.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_pac_hit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_pac_hit.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_counter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_counter.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>sm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm.c</FilePath>
             </File>
             <File>
               <FileName>mod_common.c</FileName>
@@ -505,6 +470,86 @@
               <FileName>tripwire.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\tripwire.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>clock</GroupName>
+          <Files>
+            <File>
+              <FileName>sm_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_pac_hit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_pac_hit.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_counter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_counter.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_mod_alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_mod_alarm.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_mod_global_flag.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_mod_global_flag.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_mod_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_mod_time.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>fuse</GroupName>
+          <Files>
+            <File>
+              <FileName>sm_fuse_mode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_mode.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_fuse_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_fuse_param.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_param.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_fuse_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_fuse_grenade.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_grenade.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_fuse_detonate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_detonate.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_fuse_powersave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_fuse_powersave.c</FilePath>
             </File>
           </Files>
         </Group>

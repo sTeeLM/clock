@@ -99,7 +99,7 @@ static unsigned char * code music_table[] = {
   music_table3
 };
 
-sbit beeper_out = P0 ^ 0;
+sbit beeper_out = P1 ^ 0;
 
 static bit idata beeper_stop;
 static bit beep_enable;

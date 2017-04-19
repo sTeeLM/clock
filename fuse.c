@@ -18,17 +18,23 @@ void scan_fuse(void)
   
   // 如果还没有trigger
   if(serial_test_state_bit(SERIAL_BIT_FUSE0_TRIGGERED)) {
-    if(!serial_test_state_bit(SERIAL_BIT_FUSE0_BROKE)
-      ||!serial_test_state_bit(SERIAL_BIT_FUSE0_SHORT)) {
-        set_task(EV_FUSE0_SHORT_BROKE);
-      }
+    if(!serial_test_state_bit(SERIAL_BIT_FUSE0_BROKE)) {
+      set_task(EV_FUSE0_BROKE);
+    }
+    
+    if(!serial_test_state_bit(SERIAL_BIT_FUSE0_SHORT)) {
+      set_task(EV_FUSE0_SHORT);
+    }
   }
   
   if(serial_test_state_bit(SERIAL_BIT_FUSE1_TRIGGERED)) {
-    if(!serial_test_state_bit(SERIAL_BIT_FUSE1_BROKE)
-      ||!serial_test_state_bit(SERIAL_BIT_FUSE1_SHORT)) {
-        set_task(EV_FUSE1_SHORT_BROKE);
-      }
+    if(!serial_test_state_bit(SERIAL_BIT_FUSE1_BROKE)) {
+      set_task(EV_FUSE1_BROKE);
+    }
+    
+    if(!serial_test_state_bit(SERIAL_BIT_FUSE1_SHORT)) {
+      set_task(EV_FUSE1_SHORT);
+    }
   }
 }
 

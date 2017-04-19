@@ -64,8 +64,8 @@ void alarm_initialize (void)
 {
   CDBG("alarm_initialize\n");
   alarm0.day_mask = 0x7F;
-  alarm0.hour = 8;
-  alarm0.min  = 30;
+  alarm0.hour = 12;
+  alarm0.min  = 12;
   alarm0_is12 = 1;
   alarm1_enable = 1;
   alarm_dump();

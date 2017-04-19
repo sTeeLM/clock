@@ -7,6 +7,8 @@
 #include "beeper.h"
 #include "cext.h"
 #include "mod_common.h"
+#include "alarm.h"
+#include "lt_timer.h"
 
 #define SM_DISPLAY_SWITCH_S 3 // 5s
 
@@ -134,6 +136,9 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
 
   // 按mod1进入显示时间大模式
   if(get_sm_ss_state(to) == SM_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
+    sm_set_index(SM_INDEX_CLOCK);
+    alarm_switch_on();
+    lt_timer_switch_off();
     display_logo(0);
     return;
   }

@@ -11,10 +11,17 @@ enum sm_states
   SM_MODIFY_GLOBAL_FLAG = 3, // 修改全局状态
   SM_PAC_HIT            = 4, // 节电/闹表/倒计时到时间
   SM_TIMER              = 5, // 秒表功能
-  SM_COUNTER            = 6  // 倒计时功能
+  SM_COUNTER            = 6, // 倒计时功能
+  SM_FUSE_TEST          = 7, // fuse测试
+  SM_FUSE_MODE          = 8, // fuse模式选择
+  SM_FUSE_PARAM         = 9, // fuse参数设置
+  SM_FUSE_TIMER         = 10,// fuse定时模式
+  SM_FUSE_GRENADE       = 11,// fuse触碰模式
+  SM_FUSE_DETONATE      = 12,// boom!
+  SM_FUSE_POWERSAVE     = 13,// 省电模式
 };
 
-enum sm_indeies {
+enum sm_function_indeies { // 功能集合
   SM_INDEX_CLOCK = 0,
   SM_INDEX_FUSE  = 1,
   SM_INDEX_CNT
@@ -40,7 +47,7 @@ struct sm_trans
 void run_state_machine(enum task_events);
 void state_machine_timer_proc(enum task_events ev);
 void sm_initialize (void);
-void sm_set_index(enum sm_indeies index);
-enum sm_indeies sm_get_index(void);
+void sm_set_index(enum sm_function_indeies index);
+enum sm_function_indeies sm_get_index(void);
 
 #endif
