@@ -23,11 +23,9 @@
 #include "sm_fuse_detonate.h"
 #include "sm_fuse_powersave.h"
 
-static unsigned char sm_index;
-
 // state machine translate defines
 // 超级复杂变态
-static const struct sm_trans code sm_clock[] = 
+static const struct sm_trans code sm_trans_clock_display[] = 
 {
   /* SM_DISPLAY */
   // 从别的状态切过来，防止误操作
@@ -96,7 +94,9 @@ static const struct sm_trans code sm_clock[] =
   {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_POWER_SAVE, SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, sm_pac_hit},
   // set0回到时分秒显示模式
   {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
+};
 
+static const struct sm_trans code sm_trans_clock_mod_time[] = {
   /* SM_MODIFY_TIME */
   // 从别的状态进入，防止误操作
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_INIT, EV_KEY_MOD_UP, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_HH, sm_mod_time}, 
@@ -168,7 +168,9 @@ static const struct sm_trans code sm_clock[] =
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_250MS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, sm_mod_time}, 
   // mod1 进入修改闹钟模式
   {SM_MODIFY_TIME<<4|SM_MODIFY_TIME_DD, EV_KEY_MOD_LPRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_INIT, sm_mod_alarm},
+};
 
+static const struct sm_trans code sm_trans_clock_mod_alarm[] = {
   /* SM_MODIFY_ALARM */
   // 从别的状态进入，防止误操作
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_INIT, EV_KEY_MOD_UP, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, sm_mod_alarm},
@@ -243,7 +245,9 @@ static const struct sm_trans code sm_clock[] =
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_DAY7, EV_KEY_MOD_PRESS, SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_HH, sm_mod_alarm}, 
   // mod1进入修改全局状态模式  
   {SM_MODIFY_ALARM<<4|SM_MODIFY_ALARM_DAY7, EV_KEY_MOD_LPRESS, SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_INIT, sm_mod_global_flag},  
-  
+};
+
+static const struct sm_trans code sm_trans_clock_mod_global_flag[] = {
   /* SM_MODIFY_GLOBAL_FLAG */
   // 防止误操作
   {SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_INIT, EV_KEY_MOD_UP, SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_PS, sm_mod_global_flag},
@@ -277,7 +281,9 @@ static const struct sm_trans code sm_clock[] =
   {SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_1224, EV_KEY_MOD_PRESS, SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_PS, sm_mod_global_flag}, 
   // mod1 进入显示时间状态
   {SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_1224, EV_KEY_MOD_LPRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
-
+};
+  
+static const struct sm_trans code sm_trans_clock_pac[] = {
   /* SM_PAC_HIT */
   // mod0回到时间显示模式
   {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
@@ -303,7 +309,9 @@ static const struct sm_trans code sm_clock[] =
   {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, EV_1S, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},
   {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, EV_1S, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit},
   {SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, EV_1S, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
+};  
   
+static const struct sm_trans code sm_trans_clock_timer[] = {  
   /* SM_TIMER */
   // 防止误操作
   {SM_TIMER<<4|SM_TIMER_INIT, EV_KEY_SET_UP, SM_TIMER<<4|SM_TIMER_CLEAR, sm_timer},
@@ -321,7 +329,9 @@ static const struct sm_trans code sm_clock[] =
   // set0逐次显示计次
   {SM_TIMER<<4|SM_TIMER_STOP, EV_KEY_SET_DOWN, SM_TIMER<<4|SM_TIMER_STOP, sm_timer},
   {SM_TIMER<<4|SM_TIMER_STOP, EV_KEY_SET_UP, SM_TIMER<<4|SM_TIMER_STOP, sm_timer},  
-  
+};  
+
+static const struct sm_trans code sm_trans_clock_counter[] = {  
   /* SM_COUNTER */
   // 防止误操作
   {SM_COUNTER<<4|SM_COUNTER_INIT, EV_KEY_SET_UP, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},
@@ -372,7 +382,7 @@ static const struct sm_trans code sm_clock[] =
 };
 
 
-static const struct sm_trans code sm_fuse[] = {
+static const struct sm_trans code sm_trans_fuse_test[] = {  
   /* SM_FUSE_TEST */
   // 从别的状态切过来，防止误操作
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_UP, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
@@ -495,7 +505,9 @@ static const struct sm_trans code sm_fuse[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_SET_LPRESS, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
    // modset1 切换到参数设置
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_LPRESS, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
-  
+};
+
+static const struct sm_trans code sm_trans_fuse_mode[] = {  
   /* SM_FUSE_MODE */
   // 从别的状态切过来，防止误操作
   {SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, EV_KEY_MOD_UP, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, sm_fuse_mode},
@@ -511,7 +523,9 @@ static const struct sm_trans code sm_fuse[] = {
   {SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, EV_KEY_MOD_PRESS, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, sm_fuse_mode},
   // EV_FUSE_SEL  进入armed
   {SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, EV_FUSE_SEL0, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, sm_fuse_grenade},
-  
+};
+
+static const struct sm_trans code sm_trans_fuse_param[] = { 
   /* SM_FUSE_PARAM */
   {SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, EV_KEY_MOD_UP, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},
   // set0 调整年
@@ -578,7 +592,9 @@ static const struct sm_trans code sm_fuse[] = {
   {SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_FUSE_SEL0, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},  
   // mod1 跳转电路测试
   {SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_SET_LPRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test}, 
+};
 
+static const struct sm_trans code sm_trans_fuse_timer[] = { 
   /* SM_FUSE_TIMER */ 
   // 过1秒进入armed状态
   {SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, EV_1S, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},
@@ -614,7 +630,9 @@ static const struct sm_trans code sm_fuse[] = {
   {SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_TRIPWIRE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
   // 超时，进入节电
   {SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_POWER_SAVE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_INIT, sm_fuse_powersave},
-  
+};
+
+static const struct sm_trans code sm_trans_fuse_grenade[] = { 
   /* SM_FUSE_GRENADE */
   // 过1秒进入pre-armed状态
   {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, EV_1S, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, sm_fuse_grenade},
@@ -630,7 +648,9 @@ static const struct sm_trans code sm_fuse[] = {
   {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, EV_ACC, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, sm_fuse_grenade},
   // 落地/触碰,触发
   {SM_FUSE_PARAM<<4|SM_FUSE_GRENADE_ARMED, EV_FUSE_SEL0, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
-  
+};
+
+static const struct sm_trans code sm_trans_fuse_detonate[] = { 
   /* SM_FUSE_DETONATE */
   // 过250ms进入charge状态
   {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, EV_250MS, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
@@ -638,7 +658,9 @@ static const struct sm_trans code sm_fuse[] = {
   {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_1S, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
   // 进入电路测试
   {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_FUSE_SEL0, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  
+};
+
+static const struct sm_trans code sm_trans_fuse_powersave[] = { 
   /* SM_FUSE_POWERSAVE */
   // 过250ms进入powersave
   {SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_INIT, EV_250MS, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, sm_fuse_powersave},
@@ -674,9 +696,21 @@ struct sm_trans_table
   unsigned char cnt;
 };
 
-static const struct sm_trans_table code sm[SM_INDEX_CNT] = {
-  {sm_clock, sizeof(sm_clock)/ sizeof(struct sm_trans)},
-  {sm_fuse,sizeof(sm_fuse)/ sizeof(struct sm_trans)},
+static const struct sm_trans_table code sm[] = {
+  {sm_trans_clock_display, sizeof(sm_trans_clock_display)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_mod_time,sizeof(sm_trans_clock_mod_time)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_mod_alarm,sizeof(sm_trans_clock_mod_alarm)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_mod_global_flag,sizeof(sm_trans_clock_mod_global_flag)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_pac,sizeof(sm_trans_clock_pac)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_timer,sizeof(sm_trans_clock_timer)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_counter,sizeof(sm_trans_clock_counter)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_test,sizeof(sm_trans_fuse_test)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_mode,sizeof(sm_trans_fuse_mode)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_param,sizeof(sm_trans_fuse_param)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_timer,sizeof(sm_trans_fuse_timer)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_grenade,sizeof(sm_trans_fuse_grenade)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_detonate,sizeof(sm_trans_fuse_detonate)/ sizeof(struct sm_trans)},
+  {sm_trans_fuse_powersave,sizeof(sm_trans_fuse_powersave)/ sizeof(struct sm_trans)},
 };
 
 static unsigned char sm_state; // hi 4 bits : state, lo 4 bits: sub-state 
@@ -690,36 +724,27 @@ void run_state_machine(enum task_events ev)
 {
   unsigned char c;
   unsigned char newstate;
-  for (c = 0 ; c < sm[sm_index].cnt ; c++) {
-    if(sm_state == sm[sm_index].table[c].from_state && ev == sm[sm_index].table[c].event) {
-      newstate = sm[sm_index].table[c].to_state;
-      CDBG("SM: [%bu] [%bu] ev = %bd state %bd|%bd -> %bd|%bd\n", sm_index, c, ev,
+  unsigned char index;
+  
+  index = get_sm_state(sm_state);
+  
+  for (c = 0 ; c < sm[index].cnt ; c++) {
+    if(sm_state == sm[index].table[c].from_state && ev == sm[index].table[c].event) {
+      newstate = sm[index].table[c].to_state;
+      CDBG("SM: [table %bu][slot %bu] ev = %bd %bd|%bd -> %bd|%bd\n", index, c, ev,
         get_sm_state(sm_state), get_sm_ss_state(sm_state), 
-        get_sm_state(sm[sm_index].table[c].to_state), get_sm_ss_state(sm[sm_index].table[c].to_state));
-      sm[sm_index].table[c].sm_proc(sm_state, sm[sm_index].table[c].to_state, ev);
-      sm_state = sm[sm_index].table[c].to_state;
+        get_sm_state(sm[index].table[c].to_state), get_sm_ss_state(sm[index].table[c].to_state));
+      sm[index].table[c].sm_proc(sm_state, sm[index].table[c].to_state, ev);
+      sm_state = sm[index].table[c].to_state;
       break;
     }
   }
 }
 
-void sm_set_index(enum sm_function_indeies index)
-{
-  if(index >= SM_INDEX_CNT)
-    index = SM_INDEX_CLOCK;
-  
-  sm_index = index;
-}
-
-enum sm_function_indeies sm_get_index(void)
-{
-  return sm_index;
-}
 
 void sm_initialize (void) 
 {
   CDBG("sm_initialize\n");
-  sm_index = SM_INDEX_CLOCK;
   sm_state = SM_DISPLAY|SM_DISPLAY_INIT;
   
   alarm_switch_on();

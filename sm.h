@@ -21,11 +21,6 @@ enum sm_states
   SM_FUSE_POWERSAVE     = 13,// 省电模式
 };
 
-enum sm_function_indeies { // 功能集合
-  SM_INDEX_CLOCK = 0,
-  SM_INDEX_FUSE  = 1,
-  SM_INDEX_CNT
-};
 
 typedef void (code *SM_PROC)(unsigned char from, unsigned char to, enum task_events ev);
 
@@ -47,7 +42,5 @@ struct sm_trans
 void run_state_machine(enum task_events);
 void state_machine_timer_proc(enum task_events ev);
 void sm_initialize (void);
-void sm_set_index(enum sm_function_indeies index);
-enum sm_function_indeies sm_get_index(void);
 
 #endif
