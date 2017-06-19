@@ -9,7 +9,8 @@ enum sm_counter_ss {
   SM_COUNTER_MODIFY_MM  = 2, // …Ë÷√∑÷
   SM_COUNTER_MODIFY_SS  = 3, // …Ë÷√√Î
   SM_COUNTER_RUNNING    = 4, // µπº∆ ±◊¥Ã¨
-  SM_COUNTER_STOP       = 5, // Õ£÷π/‘›Õ£◊¥Ã¨
+  SM_COUNTER_PAUSE      = 5, // ‘›Õ£◊¥Ã¨
+  SM_COUNTER_STOP       = 6, // Õ£÷π/œÏ¡Â◊¥Ã¨
 };
 
 void sm_counter(unsigned char from, unsigned char to, enum task_events);

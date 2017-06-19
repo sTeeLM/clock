@@ -38,9 +38,3 @@ void scan_hg(void)
       serial_state_in();
     }
 }
-
-void hg_proc(enum task_events ev)
-{
-  CDBG("hg_proc\n");
-  run_state_machine(ev);
-}

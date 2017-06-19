@@ -3,6 +3,7 @@
 #include "mod_common.h"
 #include "debug.h"
 #include "led.h"
+#include "beeper.h"
 
 static void inc_only(unsigned char what)
 {
@@ -243,7 +244,7 @@ void sm_counter(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // set0 暂停倒计时
-  if(get_sm_ss_state(to) == SM_COUNTER_STOP && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_COUNTER_PAUSE && ev == EV_KEY_SET_PRESS) {
     timer_stop();
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     return;
@@ -256,10 +257,20 @@ void sm_counter(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
+  // 倒计时结束
+  if(get_sm_ss_state(to) == SM_COUNTER_STOP && ev == EV_COUNTER) {
+    timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
+    timer_clr();
+    beeper_beep_beep_always();
+    return;
+  }
+   
+  
   // mod0 清除
   if(get_sm_ss_state(to) == SM_COUNTER_MODIFY_HH && ev == EV_KEY_MOD_PRESS) {
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     timer_clr();
+    enter_hhmmss(IS_HOUR);
     return;
   }
 }

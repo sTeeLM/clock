@@ -23,7 +23,7 @@ bit powersave_flag;
 void power_initialize(void)
 {
   CDBG("power_initialize\n");
-  powersave_to_s = 0;
+  powersave_to_s = 15;
   powersave_flag = 0;
 }
 

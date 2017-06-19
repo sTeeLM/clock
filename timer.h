@@ -6,7 +6,6 @@
 void timer_initialize(void);
 void timer_enter_powersave(void);
 void timer_leave_powersave(void);
-void timer_proc(enum task_events ev);
 void timer_inc_ms39(void);
 enum timer_mode {
   TIMER_MODE_INC = 0,

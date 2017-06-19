@@ -35,7 +35,7 @@ void scan_alarm(void)
   rtc_clr_alarm_int_flag(0);
   rtc_clr_alarm_int_flag(1);
   rtc_write_data(RTC_TYPE_CTL); 
-  
+
   if(alarm0_hit) {
     if(alarm0.day_mask & (1 << clock_get_day() - 1)) {
       if(power_test_flag()) {

@@ -36,50 +36,76 @@
   EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
   EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
-  EV_FUSE0_SHORT_BROKE = 14, // fuse被剪断或者短路
-  EV_FUSE1_SHORT_BROKE = 15, // fuse被剪断或者短路
-  EV_HG            = 16, // hg检测出来倾斜状态改变
-  EV_GYRO          = 17, // gyro检测出来倾斜状态改变
-  EV_THERMO_LO     = 18, // 温度太低
-  EV_THERMO_HI     = 19, // 温度太高
-  EV_FUSE0_TRIGGER     = 20, // fuse应该被触发 
-  EV_FUSE1_TRIGGER     = 21,
-  EV_TRIPWIRE         = 22,
-  EV_ALARM0           = 23, // 闹钟0应该响起
-  EV_ALARM1           = 24, // 闹钟1应该响起
-  EV_COUNTER          = 25, // 计时器到时间
-  EV_POWER_SAVE       = 26, // 应该进入PS状态 
+  EV_FUSE0_SHORT      = 14, // fuse0被短路
+  EV_FUSE0_BROKE      = 15, // fuse0被剪断
+  EV_FUSE1_SHORT      = 16, // fuse0被短路
+  EV_FUSE1_BROKE      = 17, // fuse0被剪断
+  EV_ROTATE            = 18, // 倾斜状态改变
+  EV_ACC           = 19, // 加速度改变
+  EV_THERMO_HI     = 20, // 温度太高
+  EV_THERMO_LO     = 21, // 温度太低
+  EV_FUSE0_TRIGGER    = 22, // fuse0应该被触发 
+  EV_FUSE1_TRIGGER    = 23, // fuse1应该被触发
+  EV_TRIPWIRE         = 24, // tripwire被剪断
+  EV_FUSE_SEL0         = 25, // fuse 虚拟事件0
+  EV_FUSE_SEL1         = 26, // fuse 虚拟事件1
+  EV_ALARM0           = 27, // 闹钟0应该响起
+  EV_ALARM1           = 28, // 闹钟1应该响起
+  EV_COUNTER          = 29, // 计时器到时间
+  EV_POWER_SAVE       = 30, // 应该进入PS状态 
   EV_COUNT  
 */
 
 static const TASK_PROC code task_procs[EV_COUNT] = 
 {
-  state_machine_timer_proc,
-  state_machine_timer_proc,
+  /* EV_250MS            = 0, // 大约每250ms转一下 */
+  null_proc,
+  /* EV_1S               = 1, // 大约每1s转一下   */
+  null_proc,
+  /* EV_SCAN_KEY         = 2, // 扫描按键 */
   scan_key_proc,
+  /* EV_KEY_MOD_XX */
   mod_proc,
   mod_proc,
   mod_proc,
-  mod_proc,  
+  mod_proc,
+  /* EV_KEY_SET_XX */
   set_proc,
   set_proc,
   set_proc,
   set_proc,
+  /* EV_KEY_MOD_SET_XX */
   mod_set_proc,
   mod_set_proc, 
+  /* EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro */
   scan_int_hub_proc,
+  /* EV_FUSE_XX */
   fuse_proc,
   fuse_proc,
-  hg_proc,
-  gyro_proc,
+  fuse_proc,
+  fuse_proc,
+  /* EV_ROTATE */
+  null_proc,
+  /* EV_ACC */
+  null_proc,
+  /* EV_THERMO_XX */
   thermo_proc,
   thermo_proc,  
+  /* EV_FUSE0_TRIGGER    = 22, // fuse0应该被触发 */
   fuse_proc,
+  /* EV_FUSE1_TRIGGER    = 23, // fuse1应该被触发 */
   fuse_proc,
+  /* EV_TRIPWIRE         = 24, // tripwire被剪断 */
   tripwire_proc,
+  /* EV_FUSE_SEL_XX */
+  null_proc,
+  null_proc,
+  /* EV_ALARM_XX */
   alarm_proc,
   alarm_proc,
-  timer_proc,
+  /* EV_COUNTER          = 29, // 计时器到时间 */
+  null_proc,
+  /* EV_POWER_SAVE       = 30, // 应该进入PS状态 */
   power_proc  
 };
 

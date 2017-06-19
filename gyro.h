@@ -3,5 +3,4 @@
 #include "task.h"
 void gyro_initialize (void);
 void scan_gyro(void);
-void gyro_proc(enum task_events ev);
 #endif

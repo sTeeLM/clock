@@ -49,6 +49,9 @@ void rtc_set_lt_timer(bit enable)
 
 void scan_rtc(void)
 { 
+  
+  CDBG("scan_rtc\n");
+  
   if(serial_test_state_bit(SERIAL_BIT_RTC_HIT)) // Ã»ÓÐRTCÖÐ¶Ï
     return;
   

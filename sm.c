@@ -10,9 +10,10 @@
 #include "sm_mod_time.h"
 #include "sm_mod_alarm.h"
 #include "sm_mod_global_flag.h"
-#include "sm_pac_hit.h"
+#include "sm_powersave.h"
 #include "sm_counter.h"
 #include "sm_timer.h"
+#include "sm_alarm.h"
 
 
 #include "sm_fuse_mode.h"
@@ -37,13 +38,11 @@ static const struct sm_trans code sm_trans_clock_display[] =
   // 按mod1进入修改时间模式
   {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_KEY_MOD_LPRESS, SM_MODIFY_TIME<<4|SM_MODIFY_TIME_INIT, sm_mod_time},
   // 闹钟0响了
-  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_ALARM0, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},
+  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_ALARM0, SM_ALARM<<4|SM_ALARM_HIT_ALARM0, sm_alarm},
   // 闹钟1响了
-  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_ALARM1, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit},
-  // 倒计时到了
-  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
+  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_ALARM1, SM_ALARM<<4|SM_ALARM_HIT_ALARM1, sm_alarm},
   // 该进入节电模式了
-  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_POWER_SAVE, SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, sm_pac_hit},
+  {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_POWER_SAVE, SM_POWERSAVE<<4|SM_POWERSAVE_INIT, sm_powersave},
   // 进入跑表功能
   {SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, EV_KEY_SET_LPRESS, SM_TIMER<<4|SM_TIMER_INIT, sm_timer},
 
@@ -54,14 +53,6 @@ static const struct sm_trans code sm_trans_clock_display[] =
   {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_WEEK, sm_display},
   // 每1s读一下rtc
   {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_1S, SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, sm_display},
-  // 闹钟0响了
-  {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_ALARM0, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},
-  // 闹钟1响了
-  {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_ALARM1, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit},
-  // 倒计时到了
-  {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
-  // 该进入节电模式了
-  {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_POWER_SAVE, SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, sm_pac_hit},
   // set0回到时分秒显示模式
   {SM_DISPLAY<<4|SM_DISPLAY_YYMMDD, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
   
@@ -69,14 +60,6 @@ static const struct sm_trans code sm_trans_clock_display[] =
   {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_TEMP, sm_display},
   // 每1s读一下rtc
   {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_1S, SM_DISPLAY<<4|SM_DISPLAY_WEEK, sm_display},
-  // 闹钟0响了
-  {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_ALARM0, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},
-  // 闹钟1响了
-  {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_ALARM1, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit},
-  // 倒计时到了
-  {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
-  // 该进入节电模式了
-  {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_POWER_SAVE, SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, sm_pac_hit},
   // set0回到时分秒显示模式
   {SM_DISPLAY<<4|SM_DISPLAY_WEEK, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
   
@@ -84,14 +67,6 @@ static const struct sm_trans code sm_trans_clock_display[] =
   {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
   // 每1s读一下rtc
   {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_1S, SM_DISPLAY<<4|SM_DISPLAY_TEMP, sm_display},
-  // 闹钟0响了
-  {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_ALARM0, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},
-  // 闹钟1响了
-  {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_ALARM1, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit},
-  // 倒计时到了
-  {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
-  // 该进入节电模式了
-  {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_POWER_SAVE, SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, sm_pac_hit},
   // set0回到时分秒显示模式
   {SM_DISPLAY<<4|SM_DISPLAY_TEMP, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
 };
@@ -283,34 +258,31 @@ static const struct sm_trans code sm_trans_clock_mod_global_flag[] = {
   {SM_MODIFY_GLOBAL_FLAG<<4|SM_MODIFY_GLOBAL_FLAG_1224, EV_KEY_MOD_LPRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
 };
   
-static const struct sm_trans code sm_trans_clock_pac[] = {
-  /* SM_PAC_HIT */
-  // mod0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
-  // set0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display}, 
-  // mod0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
-  // set0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display}, 
-  // mod0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
-  // set0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
+static const struct sm_trans code sm_trans_clock_powersave[] = {
+  /* SM_POWERSAVE */
+  // 250ms后进入睡眠
+  {SM_POWERSAVE<<4|SM_POWERSAVE_INIT, EV_250MS, SM_POWERSAVE<<4|SM_POWERSAVE_PS, sm_powersave},
   // mod0回到时间显示模式 
-  {SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
+  {SM_POWERSAVE<<4|SM_POWERSAVE_PS, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
   // set0回到时间显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
-  // 唤醒PS进入闹钟0显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, EV_ALARM0, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},  
-  // 唤醒PS进入整点报时显示模式
-  {SM_PAC_HIT<<4|SM_PAC_HIT_POWERSAVE, EV_ALARM1, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit}, 
-  // 刷新显示，计时
-  {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, EV_1S, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM0, sm_pac_hit},
-  {SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, EV_1S, SM_PAC_HIT<<4|SM_PAC_HIT_ALARM1, sm_pac_hit},
-  {SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, EV_1S, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
+  {SM_POWERSAVE<<4|SM_POWERSAVE_PS, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
+  // 闹铃响了，唤醒吧
+  {SM_POWERSAVE<<4|SM_POWERSAVE_PS, EV_ALARM0, SM_ALARM<<4|SM_ALARM_HIT_ALARM0, sm_alarm},
+  {SM_POWERSAVE<<4|SM_POWERSAVE_PS, EV_ALARM1, SM_ALARM<<4|SM_ALARM_HIT_ALARM1, sm_alarm},
 };  
-  
+
+static const struct sm_trans code sm_trans_clock_alarm[] = {  
+  /* SM_ALARM */
+  // mod0回到时间显示模式
+  {SM_ALARM<<4|SM_ALARM_HIT_ALARM0, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
+  // set0回到时间显示模式
+  {SM_ALARM<<4|SM_ALARM_HIT_ALARM0, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display}, 
+  // mod0回到时间显示模式
+  {SM_ALARM<<4|SM_ALARM_HIT_ALARM1, EV_KEY_MOD_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display},
+  // set0回到时间显示模式
+  {SM_ALARM<<4|SM_ALARM_HIT_ALARM1, EV_KEY_SET_PRESS, SM_DISPLAY<<4|SM_DISPLAY_HHMMSS, sm_display}, 
+};
+
 static const struct sm_trans code sm_trans_clock_timer[] = {  
   /* SM_TIMER */
   // 防止误操作
@@ -372,13 +344,15 @@ static const struct sm_trans code sm_trans_clock_counter[] = {
   // 每250ms刷新显示
   {SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, EV_250MS, SM_COUNTER<<4|SM_COUNTER_MODIFY_SS, sm_counter},
   // set0 暂停倒计时
-  {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_KEY_SET_PRESS, SM_COUNTER<<4|SM_COUNTER_STOP, sm_counter}, 
+  {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_KEY_SET_PRESS, SM_COUNTER<<4|SM_COUNTER_PAUSE, sm_counter}, 
   // set0 继续倒计时
-  {SM_COUNTER<<4|SM_COUNTER_STOP, EV_KEY_SET_PRESS, SM_COUNTER<<4|SM_COUNTER_RUNNING, sm_counter},
+  {SM_COUNTER<<4|SM_COUNTER_PAUSE, EV_KEY_SET_PRESS, SM_COUNTER<<4|SM_COUNTER_RUNNING, sm_counter},
   // mod0 清除
-  {SM_COUNTER<<4|SM_COUNTER_STOP, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},
-  // 倒计时结束
-  {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_COUNTER, SM_PAC_HIT<<4|SM_PAC_HIT_COUNTER, sm_pac_hit},
+  {SM_COUNTER<<4|SM_COUNTER_PAUSE, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},
+  // 倒计时结束，响铃
+  {SM_COUNTER<<4|SM_COUNTER_RUNNING, EV_COUNTER, SM_COUNTER<<4|SM_COUNTER_STOP, sm_counter},
+  // mod0 停止响铃
+  {SM_COUNTER<<4|SM_COUNTER_STOP, EV_KEY_MOD_PRESS, SM_COUNTER<<4|SM_COUNTER_MODIFY_HH, sm_counter},  
 };
 
 
@@ -701,7 +675,8 @@ static const struct sm_trans_table code sm[] = {
   {sm_trans_clock_mod_time,sizeof(sm_trans_clock_mod_time)/ sizeof(struct sm_trans)},
   {sm_trans_clock_mod_alarm,sizeof(sm_trans_clock_mod_alarm)/ sizeof(struct sm_trans)},
   {sm_trans_clock_mod_global_flag,sizeof(sm_trans_clock_mod_global_flag)/ sizeof(struct sm_trans)},
-  {sm_trans_clock_pac,sizeof(sm_trans_clock_pac)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_powersave,sizeof(sm_trans_clock_powersave)/ sizeof(struct sm_trans)},
+  {sm_trans_clock_alarm,sizeof(sm_trans_clock_alarm)/ sizeof(struct sm_trans)},
   {sm_trans_clock_timer,sizeof(sm_trans_clock_timer)/ sizeof(struct sm_trans)},
   {sm_trans_clock_counter,sizeof(sm_trans_clock_counter)/ sizeof(struct sm_trans)},
   {sm_trans_fuse_test,sizeof(sm_trans_fuse_test)/ sizeof(struct sm_trans)},
@@ -715,7 +690,8 @@ static const struct sm_trans_table code sm[] = {
 
 static unsigned char sm_state; // hi 4 bits : state, lo 4 bits: sub-state 
 
-void state_machine_timer_proc(enum task_events ev)
+/* 不做任何过滤 */
+void null_proc(enum task_events ev)
 {
   run_state_machine(ev);
 }

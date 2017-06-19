@@ -92,15 +92,6 @@ void timer_initialize(void)
   tmr_start = 0;
 }
 
-void timer_proc(enum task_events ev)
-{
-  CDBG("timer_proc\n");
-  timer_stop();
-  timer_clr();
-  timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
-  run_state_machine(ev);
-}
-
 void timer_enter_powersave(void)
 {
   CDBG("timer_enter_powersave\n");

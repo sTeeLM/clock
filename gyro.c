@@ -11,7 +11,3 @@ void scan_gyro(void)
   CDBG("scan_gyro\n");
 }
 
-void gyro_proc(enum task_events ev)
-{
-  CDBG("gyro_proc\n");
-}

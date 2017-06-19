@@ -482,11 +482,6 @@
               <FilePath>.\sm_timer.c</FilePath>
             </File>
             <File>
-              <FileName>sm_pac_hit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_pac_hit.c</FilePath>
-            </File>
-            <File>
               <FileName>sm_counter.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_counter.c</FilePath>
@@ -510,6 +505,16 @@
               <FileName>sm_mod_time.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_mod_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_alarm.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_powersave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_powersave.c</FilePath>
             </File>
           </Files>
         </Group>
