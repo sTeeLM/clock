@@ -33,6 +33,8 @@ void power_proc(enum task_events ev)
   run_state_machine(ev);
 }
 
+sbit TEST_KEY = P1 ^ 4;
+
 void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
@@ -46,8 +48,10 @@ void power_enter_powersave(void)
   beeper_enter_powersave();
   com_enter_powersave();
   while(powersave_flag) {
-    PCON |= 0x1;
+    PCON |= 0x1; // should be 0x2
+		com_leave_powersave(); 
     scan_int_hub_proc(EV_SCAN_INT_HUB);
+		com_enter_powersave();
     if(!powersave_flag) {
       break;
     }
@@ -56,8 +60,9 @@ void power_enter_powersave(void)
 
 void power_leave_powersave(void)
 {
+
   com_leave_powersave(); 
-  beeper_leave_powersave(); 
+  beeper_leave_powersave();
   timer_leave_powersave(); 
   alarm_leave_powersave();  
   led_leave_powersave(); 

@@ -27,6 +27,11 @@ extern bit lpress_lock_day_sec;
 extern unsigned char lpress_start;
 extern unsigned char last_display_s;
 
-void display_logo(unsigned char fun);
+enum display_logo_type {
+	DISPLAY_LOGO_TYPE_CLOCK = 0,
+	DISPLAY_LOGO_TYPE_FUSE  = 1,	
+};
+
+void display_logo(enum display_logo_type type, unsigned char num);
 
 #endif

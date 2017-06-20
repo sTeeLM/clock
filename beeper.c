@@ -152,12 +152,12 @@ void beeper_initialize (void)
 
 void beeper_enter_powersave(void)
 {
-  
+  CDBG("beeper_enter_powersave\n");
 }
 
 void beeper_leave_powersave(void)
 {
-  
+  CDBG("beeper_leave_powersave\n");
 }
 
 bit beeper_get_beep_enable(void)

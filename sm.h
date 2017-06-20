@@ -5,17 +5,17 @@
 
 enum sm_states
 {
-  SM_DISPLAY            = 0, // 一般显示状态
-  SM_MODIFY_TIME        = 1, // 修改时间
-  SM_MODIFY_ALARM       = 2, // 修改闹钟
-  SM_MODIFY_GLOBAL_FLAG = 3, // 修改全局状态
-  SM_POWERSAVE          = 4, // 节电
-  SM_ALARM              = 5, // 闹钟/整点报时
-  SM_TIMER              = 6, // 秒表功能
-  SM_COUNTER            = 7, // 倒计时功能
+  SM_CLOCK_DISPLAY      = 0, // 一般显示状态
+  SM_CLOCK_MODIFY_TIME        = 1, // 修改时间
+  SM_CLOCK_MODIFY_ALARM = 2, // 修改闹钟
+  SM_CLOCK_MODIFY_GLOBAL_FLAG = 3, // 修改全局状态
+  SM_CLOCK_POWERSAVE    = 4, // 节电
+  SM_CLOCK_ALARM        = 5, // 闹钟/整点报时
+  SM_CLOCK_TIMER        = 6, // 秒表功能
+  SM_CLOCK_COUNTER      = 7, // 倒计时功能
   SM_FUSE_TEST          = 8, // fuse测试
   SM_FUSE_MODE          = 9, // fuse模式选择
-  SM_FUSE_PARAM         = 10, // fuse参数设置
+  SM_FUSE_PARAM         = 10,// fuse参数设置
   SM_FUSE_TIMER         = 11,// fuse定时模式
   SM_FUSE_GRENADE       = 12,// fuse触碰模式
   SM_FUSE_DETONATE      = 13,// boom!

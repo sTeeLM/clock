@@ -1,4 +1,4 @@
-#include "sm_alarm.h"
+#include "sm_clock_alarm.h"
 #include "debug.h"
 #include "alarm.h"
 #include "led.h"
@@ -53,19 +53,19 @@ static void display_alarm(unsigned char what)
   }
 }
 
-void sm_alarm(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_alarm %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_alarm %bd %bd %bd\n", from, to, ev);
   
   // 闹钟0到时间了
-  if(get_sm_ss_state(to) == SM_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {
+  if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {
     display_alarm(IS_ALARM0);
     beeper_play_music();
     return;
   }
   
   // 闹钟1到时间了
-  if(get_sm_ss_state(to) == SM_ALARM_HIT_ALARM1 && ev == EV_ALARM1) {
+  if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM1 && ev == EV_ALARM1) {
     display_alarm(IS_ALARM1);
     beeper_beep_beep_always();
     return;

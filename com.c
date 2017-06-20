@@ -1,6 +1,6 @@
 #include <STC89C5xRC.H>
 #include <stdio.h>
-
+#include "debug.h"
 #include "com.h"
 
 #define    XTAL 11059200                        // CPU Oscillator Frequency
@@ -130,6 +130,7 @@ char _getkey (void) {
 
 void com_enter_powersave(void)
 {
+  CDBG("com_enter_powersave\n");
   REN = 0;
   ES = 0;
 }
@@ -138,4 +139,5 @@ void com_leave_powersave(void)
 {
   REN = 1;
   ES = 1;
+  CDBG("com_leave_powersave\n");
 }

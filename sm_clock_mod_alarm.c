@@ -1,4 +1,4 @@
-#include "sm_mod_alarm.h"
+#include "sm_clock_mod_alarm.h"
 #include "mod_common.h"
 #include "clock.h"
 #include "alarm.h"
@@ -134,32 +134,32 @@ static void inc_write(unsigned char what)
 }
 
 
-void sm_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_mod_alarm %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm %bd %bd %bd\n", from, to, ev);
   
   // 按mod1进入修改闹钟模式
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_INIT && ev == EV_KEY_MOD_LPRESS) {
-    display_logo(2);
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_INIT && ev == EV_KEY_MOD_LPRESS) {
+    display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
     return;
   }  
   
   // 切换到修改闹钟
-  if(get_sm_ss_state(from) == SM_MODIFY_ALARM_INIT 
-    && get_sm_ss_state(to) == SM_MODIFY_ALARM_HH
+  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_INIT 
+    && get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_HH
     && ev == EV_KEY_MOD_UP) {
     enter_alarm(IS_HOUR, 0);
     return;
   }
   
   // set0小时++ 
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_HH && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_HH && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_HOUR);
     return;
   }
   
   // set1小时持续++
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_HH && ev == EV_KEY_SET_LPRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_HH && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_HOUR);
     }
@@ -169,27 +169,27 @@ void sm_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // set抬起停止++，写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_HH && ev == EV_KEY_SET_UP) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_HH && ev == EV_KEY_SET_UP) {
     write_only(IS_HOUR);
     lpress_start = 0;
     return;
   }
   
   // mod0进入修改分钟模式
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_MM && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_MM && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_MIN, 0);
     return;
   } 
   
   
   // set0分钟++
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_MM && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_MM && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_MIN);
     return;
   }
   
   // set1分钟持续++
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_MM && ev == EV_KEY_SET_LPRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_MM && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_MIN);
     }
@@ -199,7 +199,7 @@ void sm_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // set抬起停止++，写入rtc 
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_MM && ev == EV_KEY_SET_UP) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_MM && ev == EV_KEY_SET_UP) {
     write_only(IS_MIN);
     lpress_start = 0;
     return;
@@ -207,90 +207,90 @@ void sm_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
   
   
   // mod0进入DAY1打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY1 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY1 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 1);
     return;
   }
   
   // set0 调整DAY1打开关闭，并写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY1 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY1 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(1);
     return;
   }
 
   // mod0进入DAY2打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY2 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY2 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 2);
     return;
   }
   
   // set0 调整DAY2打开关闭，并写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY2 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY2 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(2);
     return;
   }
 
   // mod0进入DAY3打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY3 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY3 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 3);
     return;
   }
   
   // set0 调整DAY1打开关闭，并写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY3 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY3 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(3);
     return;
   }
 
   // mod0进入DAY4打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY4 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY4 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 4);
     return;
   }
   
   // set0 调整DAY4打开关闭，并写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY4 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY4 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(4);
     return;
   }
   
   // mod0进入DAY5打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY5 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY5 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 5);
     return;
   }
   
   // set0 调整DAY5打开关闭，并写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY5 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY5 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(5);
     return;
   }
 
   // mod0进入DAY6打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY6 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY6 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 6);
     return;
   }
   
   // set0 调整DAY6打开关闭，并写入rtc
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY6 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY6 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(6);
     return;
   }
 
   // mod0进入DAY7打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY7 && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY7 && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_DAY_ONOFF, 7);
     return;
   }
   // mod0进入DAY7打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_DAY7 && ev == EV_KEY_SET_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_DAY7 && ev == EV_KEY_SET_PRESS) {
     toggle_alarm(7);
     return;
   }
 
   // mod0进入DAY7打开关闭状态
-  if(get_sm_ss_state(to) == SM_MODIFY_ALARM_HH && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_ALARM_HH && ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_HOUR, 0);
     return;
   }

@@ -12,7 +12,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_FUSE_TEST_INIT && ev == EV_KEY_MOD_SET_LPRESS) {
     alarm_switch_off();
     lt_timer_switch_on();
-    display_logo(10);
+    display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     return;
   }
   

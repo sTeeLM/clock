@@ -1,4 +1,4 @@
-#include "sm_display.h"
+#include "sm_clock_display.h"
 #include "led.h"
 #include "rtc.h"
 #include "clock.h"
@@ -10,7 +10,7 @@
 #include "alarm.h"
 #include "lt_timer.h"
 
-#define SM_DISPLAY_SWITCH_S 3 // 5s
+#define SM_CLOCK_DISPLAY_SWITCH_S 3 // 5s
 
 static void display_temp(void)
 {
@@ -123,28 +123,28 @@ static void reset_switch(void)
 
 static void test_autoswitch(void)
 {
-  if(time_diff(clock_get_sec(), last_display_s) >= SM_DISPLAY_SWITCH_S) {
+  if(time_diff(clock_get_sec(), last_display_s) >= SM_CLOCK_DISPLAY_SWITCH_S) {
     CDBG("test_autoswitch time out!\n");
     set_task(EV_KEY_SET_PRESS);
   }
 }
 
-void sm_display(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
 {
 
-  CDBG("sm_display %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display %bd %bd %bd\n", from, to, ev);
 
   // 按mod1进入显示时间大模式
-  if(get_sm_ss_state(to) == SM_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
     alarm_switch_on();
     lt_timer_switch_off();
-    display_logo(0);
+    display_logo(DISPLAY_LOGO_TYPE_CLOCK, 0);
     return;
   }
   
   // 切换到时间显示大模式
-  if(get_sm_ss_state(from) == SM_DISPLAY_INIT 
-    && get_sm_ss_state(to) == SM_DISPLAY_HHMMSS
+  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
+    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
     && ev == EV_KEY_MOD_UP) {
     display_hhmmss();
     power_reset_powersave_to();
@@ -152,14 +152,14 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // 刷新时分秒显示
-  if(get_sm_ss_state(to) == SM_DISPLAY_HHMMSS && ev == EV_250MS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && ev == EV_250MS) {
     display_hhmmss();
     power_test_powersave_to();
     return;
   }
 
   // 切换到显示年月日
-  if(get_sm_ss_state(to) == SM_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
     display_yymmdd();
     reset_switch();
     power_reset_powersave_to();
@@ -167,7 +167,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   } 
   
   // 切换到显示周几
-  if(get_sm_ss_state(to) == SM_DISPLAY_WEEK && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK && ev == EV_KEY_MOD_PRESS) {
     display_week();
     reset_switch();;
     power_reset_powersave_to();
@@ -175,7 +175,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // 刷新年月日显示
-  if(get_sm_ss_state(to) == SM_DISPLAY_YYMMDD && ev == EV_1S) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD && ev == EV_1S) {
     display_yymmdd();
     test_autoswitch();
     power_test_powersave_to();
@@ -183,7 +183,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // 切换回时分秒显示，从小模式切过来，或者从pac切过来
-  if(get_sm_ss_state(to) == SM_DISPLAY_HHMMSS && 
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && 
     (ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
     beeper_stop_music();
     display_hhmmss();
@@ -192,7 +192,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // 切换到显示温度
-  if(get_sm_ss_state(to) == SM_DISPLAY_TEMP && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP && ev == EV_KEY_MOD_PRESS) {
     display_temp();
     reset_switch();;
     power_reset_powersave_to();
@@ -200,7 +200,7 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
   }  
   
   // 刷新周显示
-  if(get_sm_ss_state(to) == SM_DISPLAY_WEEK && ev == EV_1S) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK && ev == EV_1S) {
     display_week();
     test_autoswitch();
     power_test_powersave_to();
@@ -209,14 +209,14 @@ void sm_display(unsigned char from, unsigned char to, enum task_events ev)
    
 
   // 切换回时分秒显示
-  if(get_sm_ss_state(to) == SM_DISPLAY_HHMMSS && ev == EV_KEY_MOD_PRESS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && ev == EV_KEY_MOD_PRESS) {
     display_hhmmss();
     power_reset_powersave_to();
     return;
   }  
 
   // 刷新温度显示
-  if(get_sm_ss_state(to) == SM_DISPLAY_TEMP && ev == EV_1S) {
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP && ev == EV_1S) {
     display_temp();
     test_autoswitch();
     power_test_powersave_to();    

@@ -1,4 +1,4 @@
-#include "sm_powersave.h"
+#include "sm_clock_powersave.h"
 #include "debug.h"
 #include "led.h"
 #include "power.h"
@@ -8,12 +8,12 @@
 #include "timer.h"
 
 
-void sm_powersave(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_powersave(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_powersave %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_powersave %bd %bd %bd\n", from, to, ev);
 
   // 该进入节电模式了
-  if(get_sm_ss_state(to) == SM_POWERSAVE_PS && ev == EV_250MS) {
+  if(get_sm_ss_state(to) == SM_CLOCK_POWERSAVE_PS && ev == EV_250MS) {
     // 进入睡眠
     power_enter_powersave();
     power_leave_powersave();

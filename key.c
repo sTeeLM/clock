@@ -31,6 +31,7 @@ static void int0_ISR (void) interrupt 0 using 1
     set_task(EV_KEY_MOD_PRESS); // 为了能唤醒
   }
   beeper_stop_music();// 按键停止音乐
+	
 }
 
 void scan_key_proc(enum task_events ev)
