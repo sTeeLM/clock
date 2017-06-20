@@ -43,3 +43,32 @@ void fuse_proc(enum task_events ev)
   CDBG("fuse_proc\n");
   run_state_machine(ev);
 }
+
+void fuse_set_fuse_short(unsigned char index, bit enable)
+{
+	CDBG("fuse_set_fuse_short %bd %bd\n", index, enable);
+	if(index == 0)
+		serial_set_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST, enable);
+	else
+		serial_set_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST, enable);
+	
+	serial_ctl_out();
+}
+
+void fuse_set_fuse_broke(unsigned char index, bit enable)
+{
+	CDBG("fuse_set_fuse_broke %bd %bd\n", index, enable);
+	if(index == 0)
+		serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, enable);
+	else
+		serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, enable);
+
+	serial_ctl_out();
+}
+
+void fuse_enable(bit enable)
+{
+	CDBG("fuse_enable %bd\n", enable);
+	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, enable);
+	serial_ctl_out();
+}

@@ -26,7 +26,6 @@ static void serial_dump_ctl(void)
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED2) ? '1' : '0', "SERIAL_BIT_C_UNUSED2");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED3) ? '1' : '0', "SERIAL_BIT_C_UNUSED3");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED4) ? '1' : '0', "SERIAL_BIT_C_UNUSED4");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED5) ? '1' : '0', "SERIAL_BIT_C_UNUSED5");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_TEST");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_LO_TEST) ? '1' : '0', "SERIAL_BIT_THERMO_LO_TEST");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_HI_TEST) ? '1' : '0', "SERIAL_BIT_THERMO_HI_TEST");
@@ -41,7 +40,8 @@ static void serial_dump_ctl(void)
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGER");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_EN) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_EN");
-  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_EN) ? '1' : '0', "SERIAL_BIT_THERMO_EN");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_LO_EN) ? '1' : '0', "SERIAL_BIT_THERMO_LO_EN");
+  CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_THERMO_HI_EN) ? '1' : '0', "SERIAL_BIT_THERMO_LO_EN");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_GYRO_EN) ? '1' : '0', "SERIAL_BIT_GYRO_EN");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN");

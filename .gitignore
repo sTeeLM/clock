@@ -31,6 +31,7 @@
 *.lnp
 *.ORC
 *.M51
+Clock
 
 # Debug files
 *.dSYM/

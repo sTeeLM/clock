@@ -4,4 +4,8 @@
 void tripwire_initialize (void);
 void scan_tripwire(void);
 void tripwire_proc(enum task_events ev);
+
+void tripwire_enable(bit enable);
+void tripwire_set_broke(bit broke);
+
 #endif

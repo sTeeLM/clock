@@ -349,7 +349,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>main</GroupName>
+          <GroupName>common</GroupName>
           <Files>
             <File>
               <FileName>sm.c</FileName>
@@ -357,14 +357,14 @@
               <FilePath>.\sm.c</FilePath>
             </File>
             <File>
-              <FileName>STARTUP.A51</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\STARTUP.A51</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>STARTUP.A51</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
               <FileName>com.c</FileName>
@@ -477,44 +477,44 @@
           <GroupName>clock</GroupName>
           <Files>
             <File>
-              <FileName>sm_timer.c</FileName>
+              <FileName>sm_clock_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_timer.c</FilePath>
+              <FilePath>.\sm_clock_timer.c</FilePath>
             </File>
             <File>
-              <FileName>sm_counter.c</FileName>
+              <FileName>sm_clock_counter.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_counter.c</FilePath>
+              <FilePath>.\sm_clock_counter.c</FilePath>
             </File>
             <File>
-              <FileName>sm_display.c</FileName>
+              <FileName>sm_clock_display.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_display.c</FilePath>
+              <FilePath>.\sm_clock_display.c</FilePath>
             </File>
             <File>
-              <FileName>sm_mod_alarm.c</FileName>
+              <FileName>sm_clock_powersave.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_mod_alarm.c</FilePath>
+              <FilePath>.\sm_clock_powersave.c</FilePath>
             </File>
             <File>
-              <FileName>sm_mod_global_flag.c</FileName>
+              <FileName>sm_clock_mod_alarm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_mod_global_flag.c</FilePath>
+              <FilePath>.\sm_clock_mod_alarm.c</FilePath>
             </File>
             <File>
-              <FileName>sm_mod_time.c</FileName>
+              <FileName>sm_clock_alarm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_mod_time.c</FilePath>
+              <FilePath>.\sm_clock_alarm.c</FilePath>
             </File>
             <File>
-              <FileName>sm_alarm.c</FileName>
+              <FileName>sm_clock_mod_global_flag.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_alarm.c</FilePath>
+              <FilePath>.\sm_clock_mod_global_flag.c</FilePath>
             </File>
             <File>
-              <FileName>sm_powersave.c</FileName>
+              <FileName>sm_clock_mod_time.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_powersave.c</FilePath>
+              <FilePath>.\sm_clock_mod_time.c</FilePath>
             </File>
           </Files>
         </Group>
