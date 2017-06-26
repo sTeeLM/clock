@@ -8,7 +8,7 @@
   <PWI>
    <POPUP w="1082" x="5" flags="00000002" y="81" h="520" pid="0" iid="-1">
     <PROPERTIES>
-     <ITEM name="Message Column Width">816</ITEM>
+     <ITEM name="Message Column Width">826</ITEM>
      <ITEM name="ShowGrid">No</ITEM>
      <ITEM name="Source Column Width">100</ITEM>
      <ITEM name="Time Column Width">120</ITEM>
@@ -35,7 +35,7 @@
    <POPUP w="695" x="19" flags="00000000" y="91" h="453" pid="0" iid="19">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="976" x="1904" flags="00000023" y="826" h="698" pid="0" iid="18">
+   <POPUP w="373" x="0" flags="00008023" y="582" h="278" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -54,7 +54,7 @@
      <ITEM name="TopLineAddress">00000000</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="16" x="265" flags="0000000b" y="915" h="30" pid="2" iid="3">
+   <POPUP w="16" x="265" flags="0000000b" y="830" h="30" pid="2" iid="3">
     <PROPERTIES>
      <ITEM name="DataType">2</ITEM>
      <ITEM name="DispChars">Yes</ITEM>
@@ -104,6 +104,25 @@
      <ITEM name="Version">100</ITEM>
      <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
+   </POPUP>
+   <POPUP w="1209" x="37" flags="00000022" y="128" h="721" pid="0" iid="79">
+    <PROPERTIES>
+     <ITEM name="ComboBox1000">S</ITEM>
+     <ITEM name="ComboBox1001">Sr</ITEM>
+     <ITEM name="ComboBox1002">P</ITEM>
+     <ITEM name="ComboBox1003">A</ITEM>
+     <ITEM name="ComboBox1004">N</ITEM>
+     <ITEM name="ComboBox1005">S</ITEM>
+     <ITEM name="ComboBox1006">Sr</ITEM>
+     <ITEM name="ComboBox1007">P</ITEM>
+     <ITEM name="ComboBox1008">A</ITEM>
+     <ITEM name="ComboBox1009">N</ITEM>
+     <ITEM name="HSplitter1Pos">100</ITEM>
+     <ITEM name="VSplitter1Pos">238</ITEM>
+    </PROPERTIES>
+   </POPUP>
+   <POPUP w="40" x="37" flags="00000008" y="128" h="4" pid="1" iid="80">
+    <PROPERTIES/>
    </POPUP>
   </PWI>
  </MODULE>

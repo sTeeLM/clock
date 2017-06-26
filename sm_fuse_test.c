@@ -10,6 +10,7 @@
 #include "gyro.h"
 #include "clock.h"
 #include "cext.h"
+#include "led.h"
 
 #define FUSE_TEST_TIMEO 5
 #define HG_TEST_TIMEO   10
@@ -17,88 +18,152 @@
 
 static unsigned char in_testing;
 static unsigned char begin_test_sec;
-static unsigned char hg_state; // 高4位变化记录，低4位当前状态
-
-enum fuse_display_state
-{
-	FUSE_DISPLAY_WAIT       = 0,
-	FUSE_DISPLAY_TESTING_P1,
-	FUSE_DISPLAY_TESTING_P2,	
-	FUSE_DISPLAY_SHORT,
-	FUSE_DISPLAY_BROKE,
-	FUSE_DISPLAY_ERROR,	
-	FUSE_DISPLAY_GOOD
-};
-
-enum tripwire_display_state
-{
-	TRIPWIRE_DISPLAY_WAIT       = 0,
-	TRIPWIRE_DISPLAY_TESTING_P1,
-	TRIPWIRE_DISPLAY_TESTING_P2,
-	TRIPWIRE_DISPLAY_BROKE,
-	TRIPWIRE_DISPLAY_ERROR,
-	TRIPWIRE_DISPLAY_GOOD
-};
-
-enum thermo_display_state
-{
-	THERMO_DISPLAY_WAIT       = 0,
-	THERMO_DISPLAY_TESTING_P1,
-	THERMO_DISPLAY_TESTING_P2,
-	THERMO_DISPLAY_TOO_HI,
-	THERMO_DISPLAY_TOO_LO,
-	THERMO_DISPLAY_ERROR,
-	THERMO_DISPLAY_GOOD
-};
-
-enum hg_display_state
-{
-	HG_DISPLAY_WAIT       = 0,
-	HG_DISPLAY_TESTING,
-	HG_DISPLAY_ERROR,
-	HG_DISPLAY_GOOD
-};
-
-enum gyro_display_state
-{
-	GYRO_DISPLAY_WAIT       = 0,
-	GYRO_DISPLAY_TESTING_P1,
-	GYRO_DISPLAY_TESTING_P2,
-	GYRO_DISPLAY_TESTING_P3,
-	GYRO_DISPLAY_ERROR,
-	GYRO_DISPLAY_GOOD
-};
-
-
-static void display_fuse_state(unsigned char index, enum fuse_display_state state)
-{
-	
-}
-
-static void display_tripwire_state(enum tripwire_display_state state)
-{
-	
-}
-
-static void display_thermo_state(enum thermo_display_state state)
-{
-	
-}
+static unsigned char hg_state; // 高4位变化记录，低4位初始状态
 
 static void test_hg_state(unsigned char state)
 {
-	
+	// bit比较state低4位和hg_state低4位， 如果不相等，将hg_state高4位对应置位
+	hg_state |= ((hg_state & 0xF0) ^ (state & 0xF0)) << 4;
 }
 
-static void display_hg_state(enum hg_display_state state, unsigned char mask)
+enum fuse_test_display_state {
+	FUSE_DISPLAY_WAIT       = 0,
+	FUSE_DISPLAY_TESTING_P1,
+	FUSE_DISPLAY_TESTING_P2,	
+	FUSE_DISPLAY_TESTING_P3,
+	FUSE_DISPLAY_TESTING_M,
+// fuse test
+	FUSE_DISPLAY_FUSE0_SHORT, // 001
+	FUSE_DISPLAY_FUSE0_BROKE, // 002
+	FUSE_DISPLAY_FUSE0_ERROR,	// 003
+	FUSE_DISPLAY_FUSE1_SHORT, // 004
+	FUSE_DISPLAY_FUSE1_BROKE, // 005
+	FUSE_DISPLAY_FUSE1_ERROR,	// 006
+// tripwire 
+	FUSE_DISPLAY_TRIPWIRE_BROKE, // 101
+	FUSE_DISPLAY_TRIPWIRE_ERROR, // 102
+// thermo
+	FUSE_DISPLAY_THERMO_TOO_HI, // 201
+	FUSE_DISPLAY_THERMO_TOO_LO, // 202
+	FUSE_DISPLAY_THERMO_HI_ERROR,  // 203
+	FUSE_DISPLAY_THERMO_LO_ERROR,  // 203
+// hg
+	FUSE_DISPLAY_HG_ERROR,    // 301
+// gyro
+	FUSE_DISPLAY_GYRO_ERROR,   // 401
+	FUSE_DISPLAY_GOOD 
+};
+
+
+static void display_error_code(unsigned char err)
 {
-	
+	led_clear();
+	if(err != 0) {
+		led_set_code(5, 'E');
+		led_set_code(4, (err / 100) + 0x30);
+		led_set_code(3, ((err % 100)/10) + 0x30);  
+		led_set_code(2, (err % 10) + 0x30); 
+	} else {
+		led_set_code(5, 'P');
+		led_set_code(4, 'A');
+		led_set_code(3, 'S');  
+		led_set_code(2, 'S');
+	}
 }
 
-static void display_gyro_state(enum gyro_display_state state)
+static void display_fuse_state(enum fuse_test_display_state state, unsigned char value)
 {
-	
+	char err = -1;
+	switch(state) {
+		case FUSE_DISPLAY_WAIT:
+			led_set_code(5, 'P');
+			led_set_code(4, '0');
+			led_set_blink(4);
+			break;
+		case FUSE_DISPLAY_TESTING_P1:
+			led_set_code(5, 'P');
+			led_set_code(4, '1');
+			led_set_blink(4);
+			break;
+		case FUSE_DISPLAY_TESTING_P2:
+			led_set_code(5, 'P');
+			led_set_code(4, '2');
+			led_set_blink(4);
+			break;
+		case FUSE_DISPLAY_TESTING_P3:
+			led_set_code(5, 'P');
+			led_set_code(4, '3');
+			led_set_blink(4);
+			break;
+		case FUSE_DISPLAY_TESTING_M:
+			led_set_code(5, 'P');
+			led_set_code(4, value & 0x8 != 0 ? '1' : '0');
+			led_set_blink(4);
+			led_set_code(3, value & 0x4 != 0 ? '1' : '0');
+			led_set_blink(3);
+			led_set_code(2, value & 0x2 != 0 ? '1' : '0');
+			led_set_blink(2);
+			led_set_code(1, value & 0x1 != 0 ? '1' : '0');
+			led_set_blink(1);
+			break;
+// fuse test
+		case FUSE_DISPLAY_FUSE0_SHORT: // 001
+			err = 1; 
+			break;		
+		case FUSE_DISPLAY_FUSE0_BROKE: // 002
+			err = 2; 
+			break;
+		case FUSE_DISPLAY_FUSE0_ERROR:	// 003
+			err = 3; 
+			break;
+		case FUSE_DISPLAY_FUSE1_SHORT: // 004
+			err = 4; 
+			break;
+		case FUSE_DISPLAY_FUSE1_BROKE: // 005
+			err = 5; 
+			break;
+		case FUSE_DISPLAY_FUSE1_ERROR:	// 006
+			err = 6; 
+			break;
+// tripwire 
+		case FUSE_DISPLAY_TRIPWIRE_BROKE: // 101
+			err = 101; 
+			break;
+		case FUSE_DISPLAY_TRIPWIRE_ERROR: // 102
+			err = 102; 
+			break;
+// thermo
+		case FUSE_DISPLAY_THERMO_TOO_HI: // 201
+			err = 201; 
+			break;
+		case FUSE_DISPLAY_THERMO_TOO_LO: // 202
+			err = 202; 
+			break;
+		case FUSE_DISPLAY_THERMO_HI_ERROR:  // 203
+			err = 203; 
+			break;
+		case FUSE_DISPLAY_THERMO_LO_ERROR:  // 204
+			err = 204; 
+			break;
+// hg
+		case FUSE_DISPLAY_HG_ERROR:    // 301
+			err = 301; 
+			break;
+// gyro
+		case FUSE_DISPLAY_GYRO_ERROR:   // 401
+			err = 401; 
+			break;
+		case FUSE_DISPLAY_GOOD:
+			err = 0; 
+			break;
 }
+
+	if(err != -1) {
+		display_error_code(err);
+	}
+
+}
+
 
 void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 {
@@ -122,19 +187,19 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	
 	// mod0 切换测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE && ev == EV_KEY_MOD_PRESS && in_testing == 0) {
-		display_fuse_state(0, FUSE_DISPLAY_WAIT);
+		display_fuse_state(FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	
 	// mod0 切换测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT && ev == EV_KEY_MOD_PRESS && in_testing == 0) {
-		display_fuse_state(1, FUSE_DISPLAY_WAIT);
+		display_fuse_state(FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	
 	// mod0 切换测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_BROKE && ev == EV_KEY_MOD_PRESS && in_testing == 0) {
-		display_fuse_state(1, FUSE_DISPLAY_WAIT);
+		display_fuse_state(FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	
@@ -148,12 +213,15 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		fuse_enable(1);
 		in_testing = 1;
 		begin_test_sec = clock_get_sec();
+		/*
 		if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT 
 			|| get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE )
 			display_fuse_state(0, FUSE_DISPLAY_TESTING_P1);
 		else {
 			display_fuse_state(1, FUSE_DISPLAY_TESTING_P1);
 		}
+		*/
+		display_fuse_state(FUSE_DISPLAY_TESTING_P1, 0);
 		return;
 	}
 	
@@ -174,7 +242,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 					fuse_set_fuse_short(1, 1);
 				else 
 					fuse_set_fuse_broke(1, 1);
-				display_fuse_state(1, FUSE_DISPLAY_TESTING_P2);
+				display_fuse_state(FUSE_DISPLAY_TESTING_P2, 0);
 				begin_test_sec = clock_get_sec();
 			}
 		} else if(in_testing == 1 
@@ -185,30 +253,24 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 			in_testing = 0;
 			fuse_enable(0);
 			if(ev == EV_FUSE0_SHORT)
-				display_fuse_state(0, FUSE_DISPLAY_SHORT);
+				display_fuse_state(FUSE_DISPLAY_FUSE0_SHORT, 0);
 			else if(ev == EV_FUSE0_BROKE)
-				display_fuse_state(0, FUSE_DISPLAY_BROKE);
+				display_fuse_state(FUSE_DISPLAY_FUSE0_BROKE, 0);
 			else if (ev == EV_FUSE1_SHORT)
-				display_fuse_state(1, FUSE_DISPLAY_SHORT);
+				display_fuse_state(FUSE_DISPLAY_FUSE1_SHORT, 0);
 			else
-				display_fuse_state(1, FUSE_DISPLAY_BROKE);
+				display_fuse_state(FUSE_DISPLAY_FUSE1_BROKE, 0);
 		}else if(in_testing == 2 && ev == EV_1S) { // bad, 不响应
 			if(time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
 				in_testing = 0;
 				fuse_enable(0);
-				display_fuse_state(0, FUSE_DISPLAY_ERROR);
-				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT) {
+				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT 
+					|| get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE) {
 					fuse_set_fuse_short(0, 0);
-					display_fuse_state(0, FUSE_DISPLAY_ERROR);
-				} else if (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
-					fuse_set_fuse_broke(0, 0);
-					display_fuse_state(0, FUSE_DISPLAY_ERROR);
-				} else if (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT ) {
+					display_fuse_state(FUSE_DISPLAY_FUSE0_ERROR, 0);
+				} else{
 					fuse_set_fuse_short(1, 0);
-					display_fuse_state(1, FUSE_DISPLAY_ERROR);
-				} else {
-					fuse_set_fuse_broke(1, 0);
-					display_fuse_state(1, FUSE_DISPLAY_ERROR);
+					display_fuse_state(FUSE_DISPLAY_FUSE1_ERROR, 0);
 				}
 			}
 		} else if(in_testing == 2 
@@ -220,17 +282,14 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 			fuse_enable(0);
 			if(ev == EV_FUSE0_SHORT) {
 				fuse_set_fuse_short(0, 0);
-				display_fuse_state(0, FUSE_DISPLAY_GOOD);	
 			} else if(ev == EV_FUSE0_BROKE) {
 				fuse_set_fuse_broke(0, 0);
-				display_fuse_state(0, FUSE_DISPLAY_GOOD);	
 			} else if(ev == EV_FUSE1_SHORT) {
 				fuse_set_fuse_short(1, 0);
-				display_fuse_state(1, FUSE_DISPLAY_GOOD);	
 			} else {
 				fuse_set_fuse_broke(1, 0);
-				display_fuse_state(1, FUSE_DISPLAY_GOOD);	
 			}
+			display_fuse_state(FUSE_DISPLAY_GOOD, 0);	
 		}
 	}
 	
@@ -241,11 +300,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		|| get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_LO
 		)
 		&& ev == EV_KEY_MOD_PRESS && in_testing == 0) {
-		if(get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE ) {
-			display_tripwire_state(TRIPWIRE_DISPLAY_WAIT);
-		} else {
-			display_thermo_state(THERMO_DISPLAY_WAIT);
-		}
+		display_fuse_state(FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	
@@ -259,14 +314,12 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		begin_test_sec = clock_get_sec();
 		if(get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE) {
 			tripwire_enable(1);
-			display_tripwire_state(TRIPWIRE_DISPLAY_TESTING_P1);
 		} else if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
 			thermo_hi_enable(1);
-			display_thermo_state(THERMO_DISPLAY_TESTING_P1);
 		} else {
 			thermo_lo_enable(1);
-			display_thermo_state(THERMO_DISPLAY_TESTING_P1);
 		}
+		display_fuse_state(FUSE_DISPLAY_TESTING_P1, 0);
 		return;
 	}
 	
@@ -282,26 +335,24 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 			begin_test_sec = clock_get_sec();
 			if(get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE) {
 				tripwire_set_broke(1);
-				display_tripwire_state(TRIPWIRE_DISPLAY_TESTING_P2);
 			} else if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
 				thermo_hi_set_hit(1);
-				display_thermo_state(THERMO_DISPLAY_TESTING_P2);
 			} else {
 				thermo_lo_set_hit(1);
-				display_thermo_state(THERMO_DISPLAY_TESTING_P2);
 			}
+			display_fuse_state(FUSE_DISPLAY_TESTING_P2, 0);
 		// P2 Failed，没响应？
 		} else if(in_testing == 2 && time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
 			in_testing = 0;
-			if(get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE) {
+			if(get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE, 0) {
 				tripwire_enable(0);
-				display_tripwire_state(TRIPWIRE_DISPLAY_ERROR);
+				display_fuse_state(FUSE_DISPLAY_TRIPWIRE_ERROR, 0);
 			} else if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
 				thermo_hi_enable(0);
-				display_thermo_state(THERMO_DISPLAY_ERROR);
+				display_fuse_state(FUSE_DISPLAY_THERMO_HI_ERROR, 0);
 			} else {
 				thermo_lo_enable(0);
-				display_thermo_state(THERMO_DISPLAY_ERROR);
+				display_fuse_state(FUSE_DISPLAY_THERMO_LO_ERROR, 0);
 			}
 		}
 		return;
@@ -315,33 +366,31 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 			in_testing = 0;
 			if(ev == EV_TRIPWIRE) {
 				tripwire_enable(0);
-				display_tripwire_state(TRIPWIRE_DISPLAY_BROKE);
+				display_fuse_state(FUSE_DISPLAY_TRIPWIRE_BROKE, 0);
 			} else if(ev == EV_THERMO_HI){
 				thermo_hi_enable(0);
-				display_thermo_state(THERMO_DISPLAY_TOO_HI);
+				display_fuse_state(FUSE_DISPLAY_THERMO_TOO_HI, 0);
 			} else {
 				thermo_lo_enable(0);
-				display_thermo_state(THERMO_DISPLAY_TOO_LO);
+				display_fuse_state(FUSE_DISPLAY_THERMO_TOO_LO, 0);
 			}
 		} else if(in_testing == 2) { // P2 OK
 			in_testing = 0;
 			if(ev == EV_TRIPWIRE) {
 				tripwire_enable(0);
-				display_tripwire_state(TRIPWIRE_DISPLAY_GOOD);
 			} else if(ev == EV_THERMO_HI){
 				thermo_hi_enable(0);
-				display_thermo_state(THERMO_DISPLAY_GOOD);
 			} else {
 				thermo_lo_enable(0);
-				display_thermo_state(THERMO_DISPLAY_GOOD);
 			}
+			display_fuse_state(FUSE_DISPLAY_GOOD, 0);
 		}
 		return;
 	}
 	
 	// 进入HG测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_KEY_MOD_PRESS && in_testing == 0) {
-		display_hg_state(HG_DISPLAY_WAIT, 0);
+		display_fuse_state(FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	// 启动HG测试
@@ -350,16 +399,16 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		begin_test_sec = clock_get_sec();
 		hg_enable(1);
 		hg_state = hg_get_state();
-		display_hg_state(HG_DISPLAY_TESTING, hg_state);
+		display_fuse_state(FUSE_DISPLAY_TESTING_M, hg_state);
 		return;
 	}
 	// 等待人去转
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_ROTATE_HG && in_testing == 1) {
 		test_hg_state(hg_get_state());
-		display_hg_state(HG_DISPLAY_TESTING, hg_state);
+		display_fuse_state(FUSE_DISPLAY_TESTING_M, hg_state);
 		if((hg_state & 0xF0) == 0xF0) { // OK!
 			hg_enable(0);
-			display_hg_state(HG_DISPLAY_GOOD, 0);
+			display_fuse_state(FUSE_DISPLAY_GOOD, 0);
 			in_testing = 0;
 		}
 		return;
@@ -368,7 +417,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_1S) {
 		if(in_testing == 1 && time_diff(clock_get_sec(), begin_test_sec) > HG_TEST_TIMEO) {
 			hg_enable(0);
-			display_hg_state(HG_DISPLAY_ERROR, 0);
+			display_fuse_state(FUSE_DISPLAY_HG_ERROR, 0);
 			in_testing = 0;
 		}
 		return;
@@ -377,7 +426,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	
 	// 进入Gyro测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_KEY_MOD_PRESS && in_testing == 0) {
-		display_gyro_state(GYRO_DISPLAY_WAIT);
+		display_fuse_state(FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	// 启动Gyro测试
@@ -385,13 +434,13 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		in_testing = 1;
 		begin_test_sec = clock_get_sec();
 		gyro_enable(1);
-		display_gyro_state(GYRO_DISPLAY_TESTING_P1);
+		display_fuse_state(FUSE_DISPLAY_TESTING_P1, 0);
 		return;
 	}
 	// 等待人去晃
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_ACC_GYRO && in_testing == 1) {
 		if(gyro_test_acc_event()) { // OK!
-			display_gyro_state(GYRO_DISPLAY_TESTING_P2);
+			display_fuse_state(FUSE_DISPLAY_TESTING_P2, 0);
 			in_testing = 2;
 			begin_test_sec = clock_get_sec();
 		}
@@ -400,7 +449,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	// 等待人丢
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_ACC_GYRO && in_testing == 2) {
 		if(gyro_test_drop_event()) { // OK!
-			display_gyro_state(GYRO_DISPLAY_TESTING_P3);
+			display_fuse_state(FUSE_DISPLAY_TESTING_P3, 0);
 			in_testing = 3;
 			begin_test_sec = clock_get_sec();
 		}
@@ -409,7 +458,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	// 等待人去转
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_ROTATE_GYRO && in_testing == 3) {
 		if(gyro_test_rotate_event()) { // OK!
-			display_gyro_state(GYRO_DISPLAY_GOOD);
+			display_fuse_state(FUSE_DISPLAY_GOOD, 0);
 			in_testing = 0;
 		}
 		return;
@@ -418,7 +467,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_1S) {
 		if(time_diff(clock_get_sec(), begin_test_sec) > GYRO_TEST_TIMEO) {
 			gyro_enable(0);
-			display_gyro_state(GYRO_DISPLAY_ERROR);
+			display_fuse_state(FUSE_DISPLAY_GYRO_ERROR, 0);
 			in_testing = 0;
 		}
 		return;
