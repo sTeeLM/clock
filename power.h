@@ -15,7 +15,7 @@ void power_enter_powersave(void);
 void power_leave_powersave(void);
 
 unsigned char power_get_powersave_to_s(void);
-enum powersave_time get_powersave_to(void);
+enum powersave_time power_get_powersave_to(void);
 void power_inc_powersave_to();
 bit power_test_powersave_to(void);
 void power_reset_powersave_to(void);

@@ -11,8 +11,8 @@
 #include "beeper.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
-#define KEY_LPRESS_DELAY 2 // 长按时间，2s
-#define KEY_2_KEY_LPRESS_DELAY 1 // 同时按下长按时间，1s
+#define KEY_LPRESS_DELAY 3 // 长按时间，5s
+#define KEY_2_KEY_LPRESS_DELAY 2 // 同时按下长按时间，2s
 
 static unsigned char last_mod_tmr_count; 
 static unsigned char last_set_tmr_count;
@@ -36,28 +36,6 @@ static void int0_ISR (void) interrupt 0 using 1
 
 void scan_key_proc(enum task_events ev)
 {
-  if(!MOD_KEY && !mod_press) {
-    delay_5us(100);
-    if(!MOD_KEY) {
-      set_task(EV_KEY_MOD_DOWN);     
-      mod_press = 1;
-      last_mod_tmr_count = clock_get_sec();       
-    }
-  } else if(!MOD_KEY && mod_press){
-    if(time_diff(clock_get_sec(), last_mod_tmr_count) >= KEY_LPRESS_DELAY) {
-      set_task(EV_KEY_MOD_LPRESS);
-    }
-  } else if(MOD_KEY && mod_press) {
-    set_task(EV_KEY_MOD_UP);
-    if(time_diff(clock_get_sec(), last_mod_tmr_count) < KEY_LPRESS_DELAY) {
-      set_task(EV_KEY_MOD_PRESS);
-      if(set_press) {
-        set_task(EV_KEY_MOD_SET_PRESS);    
-      }        
-    }
-    mod_press = 0;
-  }
-
   if(!SET_KEY && !set_press) {
     delay_5us(100);
     if(!SET_KEY) {
@@ -78,6 +56,28 @@ void scan_key_proc(enum task_events ev)
         set_task(EV_KEY_MOD_SET_PRESS);    
       }         
     }    
+  }
+	
+  if(!MOD_KEY && !mod_press) {
+    delay_5us(100);
+    if(!MOD_KEY) {
+      set_task(EV_KEY_MOD_DOWN);     
+      mod_press = 1;
+      last_mod_tmr_count = clock_get_sec();       
+    }
+  } else if(!MOD_KEY && mod_press){
+    if(time_diff(clock_get_sec(), last_mod_tmr_count) >= KEY_LPRESS_DELAY) {
+      set_task(EV_KEY_MOD_LPRESS);
+    }
+  } else if(MOD_KEY && mod_press) {
+    set_task(EV_KEY_MOD_UP);
+    if(time_diff(clock_get_sec(), last_mod_tmr_count) < KEY_LPRESS_DELAY) {
+      set_task(EV_KEY_MOD_PRESS);
+      if(set_press) {
+        set_task(EV_KEY_MOD_SET_PRESS);    
+      }        
+    }
+    mod_press = 0;
   }
   
   if(!SET_KEY && set_press 

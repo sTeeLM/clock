@@ -4,6 +4,7 @@
 #include "alarm.h"
 #include "led.h"
 #include "debug.h"
+#include "rom.h"
 
 static void update_alarm(unsigned char what, unsigned char day)
 {
@@ -53,11 +54,7 @@ static void update_alarm(unsigned char what, unsigned char day)
   }
 }
 
-static void toggle_alarm(unsigned char day)
-{
-  alarm0_set_enable(day, !alarm0_test_enable(day));
-  update_alarm(IS_DAY_ONOFF, day);
-}
+
 
 static void enter_alarm(unsigned char what, unsigned char day)
 {
@@ -91,6 +88,7 @@ static void write_only(unsigned char what)
         led_set_blink(3);
         led_set_blink(2); 
       }
+      rom_write(ROM_ALARM0_HOUR, alarm0_get_hour());
       break;
     case IS_MIN:
       if(lpress_lock_month_min == 1) {
@@ -98,10 +96,19 @@ static void write_only(unsigned char what)
         led_set_blink(1);
         led_set_blink(0); 
       }
+      rom_write(ROM_ALARM0_HOUR, alarm0_get_min());
       break;
     case IS_DAY_ONOFF:
+      rom_write(ROM_ALARM0_DAY_MASK, alarm0_get_day_mask());
       break;
   } 
+}
+
+static void toggle_alarm(unsigned char day)
+{
+  alarm0_set_enable(day, !alarm0_test_enable(day));
+  update_alarm(IS_DAY_ONOFF, day);
+  write_only(IS_DAY_ONOFF);
 }
 
 static void inc_only(unsigned char what)

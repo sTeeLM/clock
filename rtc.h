@@ -78,10 +78,15 @@ enum rtc_alarm_mode rtc_alarm_get_mode(void);
 // 在rtc_read_data(RTC_TYPE_TEMP)之后调用
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt);
 
+enum rtc_alarm_index {
+  RTC_ALARM0 = 0,
+  RTC_ALARM1
+};
+
 // 在rtc_read_data（RTC_TYPE_CTL）之后调用
-void rtc_enable_alarm_int(bit enable, unsigned char index);
-bit rtc_test_alarm_int(unsigned char index);
-bit rtc_test_alarm_int_flag(unsigned char index);
-void rtc_clr_alarm_int_flag(unsigned char index);
+void rtc_enable_alarm_int(enum rtc_alarm_index index, bit enable);
+bit rtc_test_alarm_int(enum rtc_alarm_index index);
+bit rtc_test_alarm_int_flag(enum rtc_alarm_index index);
+void rtc_clr_alarm_int_flag(enum rtc_alarm_index index);
 
 #endif

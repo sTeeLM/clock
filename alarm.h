@@ -19,19 +19,20 @@ struct alarm0_struct {
 
 bit alarm0_test_enable(unsigned char day);
 void alarm0_set_enable(unsigned char day, bit enable);
+unsigned char alarm0_get_day_mask(void);
 bit alarm0_get_hour_12(void);
 void alarm0_set_hour_12(bit enable);
 unsigned char alarm0_get_min(void);
 void alarm0_inc_min(void);
 unsigned char alarm0_get_hour(void);
 void alarm0_inc_hour(void);
-void alarm0_sync_from_rtc(void);
+//void alarm0_sync_from_rtc(void);
 void alarm0_sync_to_rtc(void);
 
 // 闹钟1是整点报时闹钟
 bit alarm1_test_enable(void);
 void alarm1_set_enable(bit enable);
-void alarm1_sync_from_rtc(void);
+//void alarm1_sync_from_rtc(void);
 void alarm1_sync_to_rtc(void);
 void scan_alarm(void);
 void alarm_switch_on(void);

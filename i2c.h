@@ -3,7 +3,7 @@
 
 #define I2C_DELAY_VALUE  20  
 
-#define I2C_STOP_WAIT_VALUE 20  
+#define I2C_STOP_WAIT_VALUE 40  
 
 void I2C_Init();
 bit I2C_Put(unsigned char SlaveAddr, unsigned char SubAddr, unsigned char dat);  

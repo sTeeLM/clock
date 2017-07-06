@@ -4,6 +4,7 @@
 #include "sm.h"
 #include "clock.h"
 #include "power.h"
+#include "rom.h"
 
 static struct alarm0_struct alarm0;
 
@@ -30,10 +31,10 @@ void scan_alarm(void)
 {
   bit alarm0_hit, alarm1_hit;
   rtc_read_data(RTC_TYPE_CTL);
-  alarm0_hit = rtc_test_alarm_int_flag(0);
-  alarm1_hit = rtc_test_alarm_int_flag(1);
-  rtc_clr_alarm_int_flag(0);
-  rtc_clr_alarm_int_flag(1);
+  alarm0_hit = rtc_test_alarm_int_flag(RTC_ALARM0);
+  alarm1_hit = rtc_test_alarm_int_flag(RTC_ALARM1);
+  rtc_clr_alarm_int_flag(RTC_ALARM0);
+  rtc_clr_alarm_int_flag(RTC_ALARM1);
   rtc_write_data(RTC_TYPE_CTL); 
 
   if(alarm0_hit) {
@@ -48,6 +49,7 @@ void scan_alarm(void)
     }
   }
   
+  // 这段逻辑会被频繁调用长达1分钟
   if(alarm1_hit) {
     rtc_read_data(RTC_TYPE_TIME);
     if(rtc_time_get_min() == 0 
@@ -60,14 +62,36 @@ void scan_alarm(void)
   }
 }
 
+static void alarm_load_rom(void)
+{
+  alarm0.day_mask = rom_read(ROM_ALARM0_DAY_MASK);
+  alarm0.hour = rom_read(ROM_ALARM0_HOUR);
+  alarm0.min  = rom_read(ROM_ALARM0_MIN);
+  alarm0_is12 = rom_read(ROM_ALARM0_IS12);
+  alarm1_enable = rom_read(ROM_ALARM1_ENABLE); 
+}
+
+static void alarm_save_rom(void)
+{
+  rom_write(ROM_ALARM0_DAY_MASK, alarm0.day_mask);
+  rom_write(ROM_ALARM0_HOUR, alarm0.hour);
+  rom_write(ROM_ALARM0_MIN, alarm0.min);
+  rom_write(ROM_ALARM0_IS12, alarm0_is12 ? 1 : 0);
+  rom_write(ROM_ALARM1_ENABLE, alarm1_enable);
+}
+
 void alarm_initialize (void)
 {
   CDBG("alarm_initialize\n");
+  // 从ROM中读取配置
+  /*
   alarm0.day_mask = 0x7F;
   alarm0.hour = 12;
   alarm0.min  = 12;
   alarm0_is12 = 1;
   alarm1_enable = 1;
+  */
+  alarm_load_rom();
   alarm_dump();
 }
 
@@ -76,17 +100,17 @@ void alarm_switch_on(void)
   CDBG("alarm_switch_on\n");
   alarm0_sync_to_rtc();
   alarm1_sync_to_rtc();
-  rtc_enable_alarm_int(1,0);
-  rtc_enable_alarm_int(1,1);
   rtc_set_lt_timer(0);
 }
 
 void alarm_switch_off(void)
 {
   CDBG("alarm_switch_off\n");
+  rtc_read_data(RTC_TYPE_CTL);
+  rtc_enable_alarm_int(RTC_ALARM0, 0);
+  rtc_enable_alarm_int(RTC_ALARM1, 0);
+  rtc_write_data(RTC_TYPE_CTL);
   rtc_set_lt_timer(1);
-  rtc_enable_alarm_int(0,0);
-  rtc_enable_alarm_int(0,1);
 }
 
 void alarm_dump(void)
@@ -106,8 +130,8 @@ void alarm_enter_powersave(void)
 void alarm_leave_powersave(void)
 {
   CDBG("alarm_leave_powersave!\n");
-  alarm0_sync_from_rtc();
-  alarm1_sync_from_rtc();
+//  alarm0_sync_from_rtc();
+//  alarm1_sync_from_rtc();
 }
 
 // day  1-7
@@ -128,6 +152,12 @@ void alarm0_set_enable(unsigned char day, bit enable)
     alarm0.day_mask &= ~day;
   }
   CDBG("alarm0_set_enable res %bx!\n", alarm0.day_mask);
+  
+}
+
+unsigned char alarm0_get_day_mask(void)
+{
+  return alarm0.day_mask;
 }
 
 bit alarm0_get_hour_12(void)
@@ -160,7 +190,7 @@ void alarm0_inc_hour(void)
 {
   alarm0.hour = (++ alarm0.hour) % 24;
 }
-
+/*
 void alarm0_sync_from_rtc(void)
 {
   CDBG("alarm0_sync_from_rtc!\n");
@@ -170,6 +200,7 @@ void alarm0_sync_from_rtc(void)
   alarm0_is12 = rtc_alarm_get_hour_12();
   
 }
+*/
 
 void alarm0_sync_to_rtc(void)
 {
@@ -183,8 +214,8 @@ void alarm0_sync_to_rtc(void)
   rtc_write_data(RTC_TYPE_ALARM0);
   
   rtc_read_data(RTC_TYPE_CTL);
-  rtc_enable_alarm_int(1, 0);
-  rtc_clr_alarm_int_flag(0);
+  rtc_enable_alarm_int(RTC_ALARM0, alarm0.day_mask != 0);
+  rtc_clr_alarm_int_flag(RTC_ALARM0);
   rtc_write_data(RTC_TYPE_CTL);
 }
 
@@ -198,12 +229,14 @@ void alarm1_set_enable(bit enable)
   alarm1_enable = enable;
 }
 
+/*
 void alarm1_sync_from_rtc(void)
 {
   CDBG("alarm1_sync_from_rtc!\n");
   rtc_read_data(RTC_TYPE_CTL);
-  alarm1_enable = rtc_test_alarm_int(1);
+  alarm1_enable = rtc_test_alarm_int(RTC_ALARM1);
 }
+*/
 
 void alarm1_sync_to_rtc(void)
 {
@@ -214,7 +247,7 @@ void alarm1_sync_to_rtc(void)
   rtc_write_data(RTC_TYPE_ALARM1);
   
   rtc_read_data(RTC_TYPE_CTL);
-  rtc_enable_alarm_int(alarm1_enable, 1);
-  rtc_clr_alarm_int_flag(1);
+  rtc_enable_alarm_int(RTC_ALARM1, alarm1_enable);
+  rtc_clr_alarm_int_flag(RTC_ALARM1);
   rtc_write_data(RTC_TYPE_CTL);
 }

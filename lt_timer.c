@@ -15,3 +15,8 @@ void lt_timer_switch_off(void)
 {
   CDBG("lt_timer_switch_off\n");
 }
+
+void scan_lt_timer(void)
+{
+  CDBG("scan_lt_timer\n");
+}

@@ -6,7 +6,9 @@
 #include "clock.h"
 #include "task.h"
 #include "alarm.h"
+#include "lt_timer.h"
 #include "serial_hub.h"
+#include "rom.h"
 
 sbit RTC_RESET = P1 ^ 5;
 
@@ -49,30 +51,19 @@ void rtc_set_lt_timer(bit enable)
 
 void scan_rtc(void)
 { 
-  
   CDBG("scan_rtc\n");
-  
-  if(serial_test_state_bit(SERIAL_BIT_RTC_HIT)) // 没有RTC中断
-    return;
   
   if(!is_lt_timer_mode) { // 正常闹钟模式
     scan_alarm();
   } else { // 长期定时器模式
-    
-    
-  }
-  
-  if(!serial_test_state_bit(SERIAL_BIT_RTC_HIT)) {
-    // 有RTC中断，需要清除中断
-    // 我们已经调用了rtc_clr_alarm_int_flag
-    // 重新serial一遍标志位
-    serial_state_in();
+    scan_lt_timer();
   }
 }
 
 void rtc_initialize (void)
 {
 	unsigned char count = RTC_RESET_PULSE_DELAY;
+  unsigned char is12;
 
 	CDBG("rtc_initialize\n");
   
@@ -88,10 +79,12 @@ void rtc_initialize (void)
   memset(rtc_data, 0, sizeof(rtc_data));
 
   // 初始化
+  // 调试用！
   // 初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
+  is12 = rom_read(ROM_ALARM0_IS12);
   rtc_read_data(RTC_TYPE_TIME);
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
-  rtc_time_set_hour_12(1);
+  rtc_time_set_hour_12(is12);
   rtc_time_set_hour(12);
   rtc_time_set_min(11);
   rtc_time_set_sec(30); 
@@ -106,26 +99,8 @@ void rtc_initialize (void)
   rtc_date_set_day(2);
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
-
-/*
-  // 闹钟0：一般闹钟，设置为12小时，12:11:00 AM
-  rtc_read_data(RTC_TYPE_ALARM0);
-  rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC);
-  rtc_alarm_set_hour_12(1);
-  rtc_alarm_set_hour(12);
-  rtc_alarm_set_min(12);
-  rtc_write_data(RTC_TYPE_ALARM0);  
   
   
-  // 闹钟1：整点报时闹钟，设置为12小时，00:00：00 PM
-  rtc_read_data(RTC_TYPE_ALARM1);
-  rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_MIN);
-  rtc_alarm_set_hour_12(1);
-  rtc_alarm_set_hour(0);
-  rtc_alarm_set_min(0);
-  rtc_write_data(RTC_TYPE_ALARM1);  
-*/
-
   // 清除中断标志位
   I2C_Get(RTC_I2C_ADDRESS, 0x0F, &count);
   count &= ~0x3; // A1F,A2F = 00
@@ -135,6 +110,11 @@ void rtc_initialize (void)
   I2C_Get(RTC_I2C_ADDRESS, 0x0E, &count);
   count |= 0x7; // INCN,A1E,A2E = 111
   I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);
+  
+  // 启动32KHZ输出
+  rtc_read_data(RTC_TYPE_CTL);
+  rtc_data[1] |= 0x48;
+  rtc_write_data(RTC_TYPE_CTL);  
   
   dump_rtc();
   
@@ -593,14 +573,14 @@ bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 }
 
 // 在rtc_read_data（RTC_TYPE_CTL）之后调用
-void rtc_enable_alarm_int(bit enable, unsigned char index)
+void rtc_enable_alarm_int(enum rtc_alarm_index index, bit enable)
 {
-  if(index == 0) {
+  if(index == RTC_ALARM0) {
     if(!enable)
       rtc_data[0] &= ~1;
     else
       rtc_data[0] |= 1;
-  } else if(index == 1) {
+  } else if(index == RTC_ALARM1) {
     if(!enable)
       rtc_data[0] &= ~2;
     else
@@ -608,30 +588,30 @@ void rtc_enable_alarm_int(bit enable, unsigned char index)
   }
 }
 
-bit rtc_test_alarm_int(unsigned char index)
+bit rtc_test_alarm_int(enum rtc_alarm_index index)
 {
-  if(index == 0) {
+  if(index == RTC_ALARM0) {
     return (rtc_data[0] & 1) == 1;
-  } else if(index == 1) {
+  } else if(index == RTC_ALARM1) {
     return (rtc_data[0] & 2) == 2;
   }
   return 0;
 }
 
-void rtc_clr_alarm_int_flag(unsigned char index)
+void rtc_clr_alarm_int_flag(enum rtc_alarm_index index)
 {
-  if(index == 0) {
+  if(index == RTC_ALARM0) {
     rtc_data[1] &= ~1;
-  } else if(index == 1) {
+  } else if(index == RTC_ALARM1) {
     rtc_data[1] &= ~2;    
   } 
 }
 
-bit rtc_test_alarm_int_flag(unsigned char index)
+bit rtc_test_alarm_int_flag(enum rtc_alarm_index index)
 {
-  if(index == 0) {
+  if(index == RTC_ALARM0) {
     return (rtc_data[1] & 1) == 1;
-  } else if(index == 1) {
+  } else if(index == RTC_ALARM1) {
     return (rtc_data[1] & 2) == 2;
   }
   return 0;

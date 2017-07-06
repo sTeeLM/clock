@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "cext.h"
 #include "misc.h"
+#include "rom.h"
 
 // 格式为：频率常数，节拍常数，频率常数，节拍常数
 // 频率常数：n为多少个20us延迟
@@ -142,11 +143,11 @@ void beeper_initialize (void)
    // Start Timer2
    TR2 = 0;	
    
-   beeper_music_index = 0;
+   beeper_music_index = rom_read(ROM_BEEPER_MUSIC_INDEX) % BEEPER_MUSIC_CNT;
    beeper_stop = 1;
    beeper_music_to = BEEPER_MUSIC_TO_30;
    beeper_music_to_s = 30;
-   beep_enable = 1;
+   beep_enable = rom_read(ROM_BEEPER_ENABLE);
    beeper_out  = 0;
 }
 

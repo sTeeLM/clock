@@ -23,18 +23,17 @@ enum task_events
   EV_FUSE1_BROKE      = 17, // fuse0被剪断
   EV_ROTATE_HG        = 18, // hg检测出倾斜状态改变
   EV_ROTATE_GYRO      = 19, // gyro检测出倾斜状态改变	
-  EV_ACC_GYRO         = 20, // gyro 检测出加速度改变
-  EV_THERMO_HI     = 21, // 温度太高
-  EV_THERMO_LO     = 22, // 温度太低
-  EV_FUSE0_TRIGGER    = 23, // fuse0应该被触发 
-  EV_FUSE1_TRIGGER    = 24, // fuse1应该被触发
-  EV_TRIPWIRE         = 25, // tripwire被剪断
-  EV_FUSE_SEL0         = 26, // fuse 虚拟事件0
-  EV_FUSE_SEL1         = 27, // fuse 虚拟事件1
-  EV_ALARM0           = 28, // 闹钟0应该响起
-  EV_ALARM1           = 29, // 闹钟1应该响起
-  EV_COUNTER          = 30, // 计时器到时间
-  EV_POWER_SAVE       = 31, // 应该进入PS状态 
+  EV_ACC_GYRO         = 20, // gyro 检测出晃动
+  EV_DROP_GYRO         = 21, // gyro 检测出下落（失重）
+  EV_THERMO_HI     = 22, // 温度太高
+  EV_THERMO_LO     = 23, // 温度太低
+  EV_TRIPWIRE         = 24, // tripwire被剪断
+  EV_FUSE_SEL0         = 25, // fuse 虚拟事件0
+  EV_FUSE_SEL1         = 26, // fuse 虚拟事件1
+  EV_ALARM0           = 27, // 闹钟0应该响起
+  EV_ALARM1           = 28, // 闹钟1应该响起
+  EV_COUNTER          = 29, // 计时器到时间
+  EV_POWER_SAVE       = 30, // 应该进入PS状态 
   EV_COUNT  
 };
 

@@ -6,6 +6,7 @@
 #include "clock.h"
 #include "alarm.h"
 #include "debug.h"
+#include "rom.h"
 
 static void display_global_flag(unsigned char what)
 {
@@ -84,23 +85,28 @@ static void inc_write(unsigned char what)
   switch(what) {
     case IS_PS:
       power_inc_powersave_to();
+      rom_write(ROM_POWERSAVE_TO, power_get_powersave_to());
       break;
     case IS_BS:
       alarm1_set_enable(!alarm1_test_enable());
       alarm1_sync_to_rtc();
+      rom_write(ROM_ALARM1_ENABLE, alarm1_test_enable() ? 1 : 0);
       break;
     case IS_MUSIC:
       beeper_inc_music_index();
+      rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
       beeper_play_music();
       break;
     case IS_BEEP:
       beeper_set_beep_enable(!beeper_get_beep_enable());
+    rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
       break;
     case IS_1224:
       clock_set_hour_12(!clock_get_hour_12());
       clock_sync_to_rtc(CLOCK_SYNC_TIME);
       alarm0_set_hour_12(!alarm0_get_hour_12());
       alarm0_sync_to_rtc();
+      rom_write(ROM_ALARM0_IS12, alarm0_get_hour_12() ? 1 : 0);
       break;
   }
 }

@@ -358,9 +358,10 @@ static const struct sm_trans code sm_trans_clock_counter[] = {
 
 static const struct sm_trans code sm_trans_fuse_test[] = {  
   /* SM_FUSE_TEST */
-  // 从别的状态切过来，防止误操作
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_UP, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_SET_UP, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},	
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_FUSE_SEL0, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
   // set0启动测试
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
   // 测试fuse0 short 收到EV_FUSE0_SHORT, 更新显示
@@ -443,7 +444,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   // set0启动测试
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
   // 收到EV_THERMO_LO，更新显示
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_THERMO_HI, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_THERMO_LO, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
 	// 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
   // mod0 切换到测试 hg
@@ -567,7 +568,7 @@ static const struct sm_trans code sm_trans_fuse_param[] = {
   // 结尾从头开始
   {SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_FUSE_SEL0, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},  
   // mod1 跳转电路测试
-  {SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_SET_LPRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test}, 
+  {SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_MOD_LPRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test}, 
 };
 
 static const struct sm_trans code sm_trans_fuse_timer[] = { 
@@ -614,10 +615,8 @@ static const struct sm_trans code sm_trans_fuse_grenade[] = {
   /* SM_FUSE_GRENADE */
   // 过1秒进入pre-armed状态
   {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, EV_1S, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, sm_fuse_grenade},
-  // 收到set0，解除
-  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  // 收到mod0，解除
-  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
+  // 收到mod1，解除
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_KEY_MOD_LPRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
   // 收到EV_ACC,测试加速度改变
   {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_ACC_GYRO, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, sm_fuse_grenade},
   // 如果是脱手（失重），进入ARMED
@@ -634,8 +633,8 @@ static const struct sm_trans code sm_trans_fuse_detonate[] = {
   {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, EV_250MS, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
   // 持续charge 30秒
   {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_1S, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
-  // 进入电路测试
-  {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_FUSE_SEL0, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
+  // 通电状态，mod1进入电路测试
+  {SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_MOD_LPRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
 };
 
 static const struct sm_trans code sm_trans_fuse_powersave[] = { 

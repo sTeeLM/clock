@@ -4,7 +4,7 @@
 #include "sm.h"
 
 enum sm_fuse_test_ss {
-  SM_FUSE_TEST_INIT          = 0, // 初始状态
+  SM_FUSE_TEST_INIT          = 0, // 初始状态0
   SM_FUSE_TEST_FUSE0_SHORT   = 1, // fuse0短路测试
   SM_FUSE_TEST_FUSE0_BROKE   = 2, // fuse0断路测试
   SM_FUSE_TEST_FUSE1_SHORT   = 3, // fuse1短路测试

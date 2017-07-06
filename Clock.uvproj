@@ -342,8 +342,8 @@
             <UserClasses></UserClasses>
             <CSection></CSection>
             <UserSection></UserSection>
-            <CodeBaseAddress></CodeBaseAddress>
-            <XDataBaseAddress></XDataBaseAddress>
+            <CodeBaseAddress>0X0000-0X7FFF</CodeBaseAddress>
+            <XDataBaseAddress>0X0000-0X03FF</XDataBaseAddress>
             <PDataBaseAddress></PDataBaseAddress>
             <BitBaseAddress></BitBaseAddress>
             <DataBaseAddress></DataBaseAddress>
@@ -481,6 +481,11 @@
               <FileName>tripwire.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\tripwire.c</FilePath>
+            </File>
+            <File>
+              <FileName>rom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\rom.c</FilePath>
             </File>
           </Files>
         </Group>

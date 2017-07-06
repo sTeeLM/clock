@@ -2,7 +2,7 @@
 #define __CLOCK_FUSE_H__
 #include "task.h"
 void fuse_initialize (void);
-void scan_fuse(void);
+void scan_fuse(unsigned int status);
 void fuse_proc(enum task_events ev);
 
 

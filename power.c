@@ -15,6 +15,7 @@
 #include "debug.h"
 #include "cext.h"
 #include "misc.h"
+#include "rom.h"
 
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
@@ -22,8 +23,14 @@ bit powersave_flag;
 
 void power_initialize(void)
 {
+  unsigned char powersave_to;
   CDBG("power_initialize\n");
-  powersave_to_s = 15;
+  powersave_to = rom_read(ROM_POWERSAVE_TO);
+  switch(powersave_to) {
+    case POWERSAVE_OFF: powersave_to_s = 0;  break;
+    case POWERSAVE_15S: powersave_to_s = 15; break;
+    case POWERSAVE_30S: powersave_to_s = 30; break;
+  }
   powersave_flag = 0;
 }
 
@@ -32,8 +39,6 @@ void power_proc(enum task_events ev)
   CDBG("power_proc %bd\n", ev);
   run_state_machine(ev);
 }
-
-sbit TEST_KEY = P1 ^ 4;
 
 void power_enter_powersave(void)
 {
