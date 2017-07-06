@@ -474,6 +474,8 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_ROTATE_GYRO, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
   // 收到EV_ACC，更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_ACC_GYRO, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
+  // 收到EV_DROP，更新显示
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_DROP_GYRO, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},  
 	// 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
   // mod0 切换到测试 fuse0 short

@@ -13,19 +13,55 @@
 #include "led.h"
 
 #define FUSE_TEST_TIMEO 5
-#define HG_TEST_TIMEO   10
-#define GYRO_TEST_TIMEO 10
+#define HG_TEST_TIMEO   60
+#define GYRO_TEST_TIMEO 60
 
 
 static unsigned char in_testing;
 static unsigned char begin_test_sec;
-static unsigned char hg_state; // 高4位变化记录，低4位初始状态
+static unsigned char hg_state;
+static unsigned char hg_state_mask;
 
 
-static void test_hg_state(unsigned char state)
+static void test_hg_state_mask(unsigned char state)
 {
-	// bit比较state低4位和hg_state低4位， 如果不相等，将hg_state高4位对应置位
-	hg_state |= ((hg_state & 0xF0) ^ (state & 0xF0)) << 4;
+  char val = hg_state ^ state;
+  
+  CDBG("test_hg_state_mask pld_hg_state = %bx state = %bx hg_state_mask = %bx\n", hg_state, state, hg_state_mask);
+  
+  hg_state |= (state & 0xF);
+  
+  if((val & 1)) {
+    if(hg_state & 0x10) {
+      hg_state_mask |= 1;
+    } else {
+      hg_state |= 0x10;
+    }
+  }
+
+  if((val & 2)) {
+    if(hg_state & 0x20) {
+      hg_state_mask |= 2;
+    } else {
+      hg_state |= 0x20;
+    }
+  }
+
+  if((val & 4)) {
+    if(hg_state & 0x40) {
+      hg_state_mask |= 4;
+    } else {
+      hg_state |= 0x40;
+    }
+  }
+
+  if((val & 8)) {
+    if(hg_state & 0x80) {
+      hg_state_mask |= 8;
+    } else {
+      hg_state |= 0x80;
+    }
+  }  
 }
 
 enum fuse_test_display_state {
@@ -68,8 +104,9 @@ enum fuse_test_phase {
 		FUSE_TEST_PHASE_GYRO	
 };
 
-static void display_error_code(enum fuse_test_phase phase, unsigned char err)
+static void display_error_code(enum fuse_test_phase phase, int err)
 {
+  CDBG("display_error_code phase = %bd, error = %d\n", phase, err);
 	led_clear();
 	if(err != 0) {
 		led_set_code(5, 'E');
@@ -90,7 +127,7 @@ static void display_error_code(enum fuse_test_phase phase, unsigned char err)
 
 static void display_fuse_state(enum fuse_test_phase phase, enum fuse_test_display_state state, char value)
 {
-	char err = -1;
+	int err = -1;
   
   CDBG("display_fuse_state phase %bd, state %bd value %bd\n", phase, state, value);
   
@@ -132,14 +169,11 @@ static void display_fuse_state(enum fuse_test_phase phase, enum fuse_test_displa
 		case FUSE_DISPLAY_TESTING_M:
 			led_set_code(5, 'P');
 			led_set_code(4, phase + 0x30);
-			led_set_code(3, value & 0x8 != 0 ? '1' : '0');
-			led_set_blink(3);
-			led_set_code(2, value & 0x4 != 0 ? '1' : '0');
-			led_set_blink(2);
-			led_set_code(1, value & 0x2 != 0 ? '1' : '0');
-			led_set_blink(1);
-			led_set_code(0, value & 0x1 != 0 ? '1' : '0');
-			led_set_blink(0);
+       CDBG("FUSE_DISPLAY_TESTING_M value = %bx\n", value);
+			led_set_code(3, (value & 0x8) != 0 ? '1' : '0');
+			led_set_code(2, (value & 0x4) != 0 ? '1' : '0');
+			led_set_code(1, (value & 0x2) != 0 ? '1' : '0');
+			led_set_code(0, (value & 0x1) != 0 ? '1' : '0');
 			break;
 // fuse test
 		case FUSE_DISPLAY_FUSE0_SHORT: // 001
@@ -274,7 +308,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		}
 		fuse_enable(1);
 		in_testing = 1;
-		begin_test_sec = clock_get_sec();
+		begin_test_sec = clock_get_sec_256();
 		return;
 	}
 	
@@ -285,7 +319,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		|| (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_BROKE && (ev == EV_1S || ev == EV_FUSE1_BROKE))
 		) {
 		if(in_testing == 1 && ev == EV_1S) { // so far so good, continue!
-			if(time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
+			if(time_diff_now(begin_test_sec) > FUSE_TEST_TIMEO) {
 				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT ) {
 					CDBG("fuse0 P1 short good\n");
 					fuse_set_fuse_short(0, 1);
@@ -304,7 +338,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 					display_fuse_state(FUSE_TEST_PHASE_FUSE1_BROKE, FUSE_DISPLAY_TESTING_P2, 0);
 				}
 				in_testing = 2;
-				begin_test_sec = clock_get_sec();
+				begin_test_sec = clock_get_sec_256();
 			}
 		} else if(in_testing == 1 
 			&& (ev == EV_FUSE0_SHORT
@@ -327,7 +361,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 			in_testing = 0;
 			fuse_enable(0);
 		}else if(in_testing == 2 && ev == EV_1S) { // bad, 不响应
-			if(time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
+			if(time_diff_now(begin_test_sec) > FUSE_TEST_TIMEO) {
 				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT ) {
 					CDBG("fuse0 P2 failed: short not response\n");
 					fuse_set_fuse_short(0, 0);
@@ -391,7 +425,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	if((get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI 
     || get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_LO) && ev == EV_KEY_SET_PRESS && in_testing == 0) {
     in_testing = 1;
-    begin_test_sec = clock_get_sec();
+    begin_test_sec = clock_get_sec_256();
     if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
       thermo_hi_enable(1);
       display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_TESTING_P1, 0);
@@ -405,9 +439,9 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	if((get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI
     || get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_LO) && ev == EV_1S) {
 	  // P1 OK, into P2
-		if(in_testing == 1 && time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
+		if(in_testing == 1 && time_diff_now(begin_test_sec) > FUSE_TEST_TIMEO) {
 			in_testing = 2;
-			begin_test_sec = clock_get_sec();
+			begin_test_sec = clock_get_sec_256();
       if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
         display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_TESTING_P2, 0);
       } else {
@@ -475,7 +509,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	// set0 开始测试
 	if((get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE ) && ev == EV_KEY_SET_PRESS && in_testing == 0) {
     in_testing = 1;
-    begin_test_sec = clock_get_sec();
+    begin_test_sec = clock_get_sec_256();
     tripwire_enable(1);
     display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TESTING_P1, 0);
 		return;
@@ -484,13 +518,13 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	
 	if((get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE)&& ev == EV_1S) {
 	  // P1 OK, into P2
-		if(in_testing == 1 && time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
+		if(in_testing == 1 && time_diff_now(begin_test_sec) > FUSE_TEST_TIMEO) {
 			in_testing = 2;
-			begin_test_sec = clock_get_sec();
+			begin_test_sec = clock_get_sec_256();
       tripwire_set_broke(1);
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TESTING_P2, 0);
 		// P2 Failed，没响应？
-		} else if(in_testing == 2 && time_diff(clock_get_sec(), begin_test_sec) > FUSE_TEST_TIMEO) {
+		} else if(in_testing == 2 && time_diff_now(begin_test_sec) > FUSE_TEST_TIMEO) {
 			in_testing = 0;
       tripwire_set_broke(0);
       tripwire_enable(0);
@@ -519,17 +553,18 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	// 启动HG测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_KEY_SET_PRESS && in_testing == 0) {
 		in_testing = 1;
-		begin_test_sec = clock_get_sec();
+		begin_test_sec = clock_get_sec_256();
 		hg_enable(1);
-		hg_state = hg_get_state();
-		display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_TESTING_M, hg_state);
+		hg_state_mask = 0;
+    hg_state = hg_get_state();
+		display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_TESTING_M, hg_state_mask);
 		return;
 	}
 	// 等待人去转
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_ROTATE_HG && in_testing == 1) {
-		test_hg_state(hg_get_state());
-		display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_TESTING_M, hg_state);
-		if((hg_state & 0xF0) == 0xF0) { // OK!
+		test_hg_state_mask(hg_get_state());
+		display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_TESTING_M, hg_state_mask);
+		if(hg_state_mask  == 0xF) { // OK!
 			hg_enable(0);
 			display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_GOOD, 0);
 			in_testing = 0;
@@ -538,7 +573,8 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	}
 	// 检查是否超时
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_1S) {
-		if(in_testing == 1 && time_diff(clock_get_sec(), begin_test_sec) > HG_TEST_TIMEO) {
+    CDBG(" %bd %bd time_diff = %bd\n", clock_get_sec_256(), begin_test_sec, time_diff_now(begin_test_sec));
+		if(in_testing == 1 && time_diff_now(begin_test_sec) > HG_TEST_TIMEO) {
 			hg_enable(0);
 			display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_HG_ERROR, 0);
 			in_testing = 0;
@@ -555,7 +591,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	// 启动Gyro测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_KEY_SET_PRESS && in_testing == 0) {
 		in_testing = 1;
-		begin_test_sec = clock_get_sec();
+		begin_test_sec = clock_get_sec_256();
 		gyro_enable(1);
 		display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_TESTING_P1, 0);
 		return;
@@ -564,14 +600,14 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_ACC_GYRO && in_testing == 1) {
     display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_TESTING_P2, 0);
 		in_testing = 2;
-		begin_test_sec = clock_get_sec();
+		begin_test_sec = clock_get_sec_256();
 		return;
 	}
 	// 等待人丢
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_DROP_GYRO && in_testing == 2) {
 		display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_TESTING_P3, 0);
 		in_testing = 3;
-		begin_test_sec = clock_get_sec();
+		begin_test_sec = clock_get_sec_256();
 		return;
 	}
 	// 等待人去转
@@ -582,7 +618,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	}
 	// 检查是否超时
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_1S) {
-		if(time_diff(clock_get_sec(), begin_test_sec) > GYRO_TEST_TIMEO) {
+		if(time_diff_now(begin_test_sec) > GYRO_TEST_TIMEO) {
 			gyro_enable(0);
 			display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_GYRO_ERROR, 0);
 			in_testing = 0;

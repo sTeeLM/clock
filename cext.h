@@ -34,4 +34,7 @@
 #define  time_diff(from,to) \
 (unsigned char)((unsigned char)from - (unsigned char)to)
 
+#define  time_diff_now(to) \
+(unsigned char)((unsigned char)clock_get_sec_256() - (unsigned char)to)
+
 #endif

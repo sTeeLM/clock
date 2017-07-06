@@ -118,6 +118,7 @@ static unsigned char code date_table[100][12] =
 
 static struct clock_struct idata clk;
 static bit clk_is12;
+static unsigned char sec_256; // ”√”⁄ time_diff
 
 #pragma NOAREGS
 static void clock_inc_ms39(void)
@@ -137,6 +138,7 @@ static void clock_inc_ms39(void)
     
   if(clk.ms39 == 0 ) {
     clk.sec = ( ++clk.sec) % 60;
+    sec_256 ++;
     set_task(EV_1S);
     if(clk.sec == 0) {
       clk.min = (++ clk.min) % 60;
@@ -193,6 +195,11 @@ bit clock_get_hour_12(void)
 void clock_set_hour_12(bit enable)
 {
   clk_is12 = enable;
+}
+
+unsigned char clock_get_sec_256(void)
+{
+  return sec_256;
 }
 
 unsigned char clock_get_sec(void)

@@ -107,7 +107,7 @@ void power_inc_powersave_to(void)
 bit power_test_powersave_to(void)
 {
   if(powersave_to_s != 0 
-    && time_diff(clock_get_sec(), last_ps_s) >= powersave_to_s) {
+    && time_diff_now(last_ps_s) >= powersave_to_s) {
       CDBG("test_powersave_to time out!\n");
       set_task(EV_POWER_SAVE);
       return 1;
@@ -132,5 +132,5 @@ void power_clr_flag(void)
 
 void power_reset_powersave_to(void)
 {
-  last_ps_s = clock_get_sec();
+  last_ps_s = clock_get_sec_256();
 }

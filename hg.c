@@ -19,35 +19,37 @@ void hg_initialize (void)
 
 static void hg_fix(void)
 {
-  CDBG("hg_fix\n");
+  CDBG("hg_fix hg_state = %bx\n", hg_state);
   serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 1) != 0);
-  serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 2) != 0);  
-  serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 4) != 0);
-  serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 8) != 0);  
+  serial_set_ctl_bit(SERIAL_BIT_HG1_FIX, (hg_state & 2) != 0);  
+  serial_set_ctl_bit(SERIAL_BIT_HG2_FIX, (hg_state & 4) != 0);
+  serial_set_ctl_bit(SERIAL_BIT_HG3_FIX, (hg_state & 8) != 0);  
   serial_ctl_out();
 }
 
 void scan_hg(unsigned int status)
 {
+  unsigned char old_hg_state;
   CDBG("scan_hg %x\n", status);
   
-  if((HG0_HIT_MASK & status) == 0
-    || (HG1_HIT_MASK & status) == 0 
-    || (HG2_HIT_MASK & status) == 0
-    || (HG3_HIT_MASK & status) == 0) {
-      set_task(EV_ROTATE_HG);
-      hg_state = 0;
-			hg_state = (status & 0x0F00) >> 8;
-      hg_state = ~hg_state;	
-      hg_fix();
-    }
-  CDBG("scan_hg hg_state = %bx\n", hg_state);
+  old_hg_state = hg_state;
+	hg_state = (status & 0x0F00) >> 8;
+  hg_state = ~hg_state;	
+  hg_state &= 0xF;
+  
+  CDBG("scan_hg hg_state = %bx, old_state = %bx\n", hg_state, old_hg_state);
+    
+  if(old_hg_state != hg_state) {
+    CDBG("EV_ROTATE_HG!\n");
+    set_task(EV_ROTATE_HG);
+    hg_fix();
+  }
 }
 
 
 void hg_enable(bit enable)
 {
-	CDBG("hg_enable %bd\n", enable);
+	CDBG("hg_enable %bd\n", enable ? 1 : 0);
 	serial_set_ctl_bit(SERIAL_BIT_HG_EN, enable);
 	serial_ctl_out();
 }

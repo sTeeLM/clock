@@ -28,6 +28,7 @@ struct clock_struct
 bit clock_get_hour_12();
 void clock_set_hour_12(bit enable);
 unsigned char clock_get_sec(void);
+unsigned char clock_get_sec_256(void);
 void clock_clr_sec(void);
 unsigned char clock_get_min(void);
 void clock_inc_min(void);

@@ -117,13 +117,13 @@ static void display_hhmmss(void)
 
 static void reset_switch(void)
 {
-  last_display_s = clock_get_sec();
+  last_display_s = clock_get_sec_256();
 }
 
 
 static void test_autoswitch(void)
 {
-  if(time_diff(clock_get_sec(), last_display_s) >= SM_CLOCK_DISPLAY_SWITCH_S) {
+  if(time_diff_now(last_display_s) >= SM_CLOCK_DISPLAY_SWITCH_S) {
     CDBG("test_autoswitch time out!\n");
     set_task(EV_KEY_SET_PRESS);
   }

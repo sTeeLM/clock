@@ -33,10 +33,13 @@ void scan_gyro(void)
   CDBG("gyro port reg is %bx\n", val);
   
   if ((val & 0x1) == 0) {
+    CDBG("EV_ROTATE_GYRO\n");
     set_task(EV_ROTATE_GYRO);
   } else if((val & 0x2) == 0){
+    CDBG("EV_DROP_GYRO\n");
     set_task(EV_DROP_GYRO);
   } else if((val & 0x4) == 0) {
+    CDBG("EV_ACC_GYRO\n");
     set_task(EV_ACC_GYRO);
   }
 }

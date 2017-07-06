@@ -225,7 +225,7 @@ static void _beepler_play(unsigned char * music, bit once)
   cm = 0;
   tune = 0;
   beeper_stop = 0;
-  start_s = clock_get_sec();
+  start_s = clock_get_sec_256();
   
   while (!beeper_stop)     
   {
@@ -239,7 +239,7 @@ static void _beepler_play(unsigned char * music, bit once)
           return;
         }
         // 直到一首歌播放完毕才检查超时
-        if(time_diff(clock_get_sec(), start_s) >= beeper_music_to_s) {
+        if(time_diff_now(start_s) >= beeper_music_to_s) {
           _beeper_stop_play();
           return;
         }
