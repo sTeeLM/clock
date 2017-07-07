@@ -17,4 +17,5 @@ void rom_write(unsigned char addr, unsigned char val)
 {
   I2C_Init();
   I2C_Put(ROM_I2C_ADDR, addr, val);
+  CDBG("rom_write [%bx] with %bx\n", addr, val);
 }

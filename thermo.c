@@ -13,24 +13,27 @@
 #define THERMO_THRESHOLED_MAX (85)
 #define THERMO_THRESHOLED_MIN (-55)
 
+#define THERMO_THRESHOLED_STEP 5
+
 static bit thermo_hi_is_enable;
 static bit thermo_lo_is_enable;
 
-void thermo_initialize (void)
+static void thermo_power_on(void)
 {
   unsigned int val;
-  CDBG("thermo_initialize\n");
+  CDBG("thermo_power_on\n");
+  
+  thermo_hi_is_enable = 0;
+  
+  thermo_lo_is_enable = 0;
+  
+  serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 1);
+  
+  serial_ctl_out();
+  
   // stop thermo T
   I2C_Put(THERMO_HI_I2C_ADDRESS, 0x22, 0);
-  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x22, 0);
-  
-  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
-  // 0|0|0|0|0|0|0|0
-  // set thermo0 config
-  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xAC, 0x00);
-  // 0|0|0|0|0|0|1|0
-  // set thermo1 config
-  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);  
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x22, 0);  
   
   // set th and tl
   thermo_hi_threshold_reset(); 
@@ -42,6 +45,14 @@ void thermo_initialize (void)
   // Polarity Inversion Register 设置为全0
   I2C_Put(THERMO_HUB_I2C_ADDRESS, 0x2, 0x0);
 
+  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
+  // 0|0|0|0|0|0|0|0
+  // set thermo0 config
+  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xAC, 0x00);
+  // 0|0|0|0|0|0|1|0
+  // set thermo1 config
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);
+
   // 开启测温
   I2C_Put(THERMO_HI_I2C_ADDRESS, 0xEE, 0);
   I2C_Put(THERMO_LO_I2C_ADDRESS, 0xEE, 0);
@@ -51,7 +62,20 @@ void thermo_initialize (void)
   // 读取一次端口寄存器消除中断
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
   CDBG("thermo int reg is %bx\n", val);
+}
 
+static void thermo_power_off(void)
+{
+  CDBG("thermo_power_off\n");
+  serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 0);
+  serial_ctl_out();
+}
+
+void thermo_initialize (void)
+{
+  CDBG("thermo_initialize\n");
+  thermo_power_on();
+  thermo_power_off();
 }
 
 void scan_thermo(void)
@@ -98,23 +122,27 @@ void thermo_proc(enum task_events ev)
 void thermo_hi_enable(bit enable)
 {
 	CDBG("thermo_hi_enable %bd\n", enable ? 1 : 0);
+  
+  if(enable) {
+    thermo_power_on();
+  } else {
+    thermo_power_off();
+  }
+  
   thermo_hi_is_enable = enable;
-  if(thermo_hi_is_enable || thermo_lo_is_enable)
-    serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 1);
-  else
-    serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 0);
-	serial_ctl_out();
 }
 
 void thermo_lo_enable(bit enable)
 {
 	CDBG("thermo_lo_enable %bd\n", enable ? 1 : 0);
+  
+  if(enable) {
+    thermo_power_on();
+  } else {
+    thermo_power_off();
+  }
+  
   thermo_lo_is_enable = enable;
-  if(thermo_hi_is_enable || thermo_lo_is_enable)
-    serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 1);
-  else
-    serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 0);
-	serial_ctl_out();
 }
 
 void thermo_hi_threshold_reset()
@@ -186,7 +214,7 @@ void thermo_hi_threshold_dec()
   char val;
   val = thermo_hi_threshold_get();
   if(val > THERMO_THRESHOLED_MIN) {
-    val -= 5;
+    val -= THERMO_THRESHOLED_STEP;
     thermo_hi_threshold_set(val);
   }
 }
@@ -196,7 +224,7 @@ void thermo_hi_threshold_inc()
   char val;
   val = thermo_hi_threshold_get();
   if(val < THERMO_THRESHOLED_MAX) {
-    val += 5;
+    val += THERMO_THRESHOLED_STEP;
     thermo_hi_threshold_set(val);
   }
 }
@@ -206,7 +234,7 @@ void thermo_lo_threshold_dec()
   char val;
   val = thermo_lo_threshold_get();
   if(val > THERMO_THRESHOLED_MIN) {
-    val -= 5;
+    val -= THERMO_THRESHOLED_STEP;
     thermo_lo_threshold_set(val);
   }
 }
@@ -216,7 +244,23 @@ void thermo_lo_threshold_inc()
   char val;
   val = thermo_lo_threshold_get();
   if(val < THERMO_THRESHOLED_MAX) {
-    val += 5;
+    val += THERMO_THRESHOLED_STEP;
     thermo_lo_threshold_set(val);
+  }
+}
+
+unsigned char thermo_threshold_inc(unsigned char thres)
+{
+  char value;
+  if(thres != THERMO_THRESHOLED_INVALID) {
+    value = (char)thres;
+    if(value < THERMO_THRESHOLED_MAX) {
+      value += THERMO_THRESHOLED_STEP;
+      return (unsigned char) value;
+    }else {
+      return THERMO_THRESHOLED_INVALID;
+    }
+  } else {
+    return (unsigned char)THERMO_THRESHOLED_MIN;
   }
 }

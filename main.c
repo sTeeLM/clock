@@ -22,18 +22,17 @@
 #include "lt_timer.h"
 #include "debug.h"
 #include "cext.h"
+#include "rom.h"
+
+
 
 void main(void)
- {	 
+{	 
   EA = 1;                                       // enable global interrupts
   com_initialize();                             // initialize interrupt driven serial I/O
   int_hub_initialize();                         // initialize interrupt hub 
   serial_hub_initialize();                      // initialize serial hub
   rtc_initialize();                             // initialize rtc
-  fuse_initialize();                            // initialize fuse
-  gyro_initialize();                            // initialize gyro
-  hg_initialize();                              // initialize hg
-  tripwire_initialize();                        // initialize tripwire
   clock_initialize();												    // initialize clock
   key_initialize();                             // initialize keys
   led_initialize();                             // initialize led display
@@ -43,8 +42,12 @@ void main(void)
   timer_initialize();                           // initialize timer
   beeper_initialize();                          // initialize beeper
   thermo_initialize();                          // initialize thermo
+  fuse_initialize();                            // initialize fuse
+  gyro_initialize();                            // initialize gyro
+  hg_initialize();                              // initialize hg
+  tripwire_initialize();                        // initialize tripwire
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
 
   run_task();                                   // run task procs, loop forever
- }
+}

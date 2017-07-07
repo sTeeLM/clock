@@ -243,6 +243,10 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
     alarm_switch_off();
     lt_timer_switch_on();
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
+    in_testing = 0;
+    begin_test_sec = 0;
+    hg_state = 0;
+    hg_state_mask = 0;
     return;
   }
    

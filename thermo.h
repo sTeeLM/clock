@@ -3,6 +3,8 @@
 
 #include "task.h"
 
+#define THERMO_THRESHOLED_INVALID 255
+
 void thermo_initialize (void);
 void scan_thermo(void);
 void thermo_proc(enum task_events ev);
@@ -28,4 +30,7 @@ void thermo_lo_threshold_reset();
 
 void thermo_hi_threshold_set(char val);
 void thermo_lo_threshold_set(char val);
+
+unsigned char thermo_threshold_inc(unsigned char thres);
+
 #endif

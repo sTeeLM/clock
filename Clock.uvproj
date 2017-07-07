@@ -12,13 +12,13 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STC89C58RD+</Device>
+          <Device>STC89C516RD+</Device>
           <Vendor>STC</Vendor>
-          <Cpu>IRAM(0-0xFF) XRAM(0-0x3FF) IROM(0-0x7FFF) CLOCK(45000000) MODP2</Cpu>
+          <Cpu>IRAM(0-0xFF) XRAM(0-0x3FF) IROM(0-0xFFFF) CLOCK(45000000) MODP2</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>61704</DeviceId>
+          <DeviceId>0</DeviceId>
           <RegisterFile>STC89C5xRC.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
@@ -269,7 +269,7 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x8000</Size>
+                <Size>0x10000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -342,8 +342,8 @@
             <UserClasses></UserClasses>
             <CSection></CSection>
             <UserSection></UserSection>
-            <CodeBaseAddress>0X0000-0X7FFF</CodeBaseAddress>
-            <XDataBaseAddress>0X0000-0X03FF</XDataBaseAddress>
+            <CodeBaseAddress></CodeBaseAddress>
+            <XDataBaseAddress></XDataBaseAddress>
             <PDataBaseAddress></PDataBaseAddress>
             <BitBaseAddress></BitBaseAddress>
             <DataBaseAddress></DataBaseAddress>

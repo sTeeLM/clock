@@ -137,7 +137,7 @@ static void clock_inc_ms39(void)
   }
     
   if(clk.ms39 == 0 ) {
-    clk.sec = ( ++clk.sec) % 60;
+    clk.sec = (++ clk.sec) % 60;
     sec_256 ++;
     set_task(EV_1S);
     if(clk.sec == 0) {
@@ -236,7 +236,7 @@ unsigned char clock_get_date(void)
 }
 void clock_inc_date(void)
 {
-  clk.date = (clk.date ++) % clock_get_mon_date(clk.year, clk.mon);
+  clk.date = ( ++ clk.date) % clock_get_mon_date(clk.year, clk.mon);
   clk.day = clock_yymmdd_to_day(clk.year, clk.mon, clk.date);
 }
 

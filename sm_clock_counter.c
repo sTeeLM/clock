@@ -153,7 +153,7 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
       inc_only(IS_HOUR);
     }
     lpress_start++;
-    if(lpress_start == 249) lpress_start = 0;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
     return;
   }
   
@@ -188,7 +188,7 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
       inc_only(IS_MIN);
     }
     lpress_start++;
-    if(lpress_start == 249) lpress_start = 0;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
     return;
   }
   
@@ -223,7 +223,7 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
       inc_only(IS_SEC);
     }
     lpress_start++;
-    if(lpress_start == 249) lpress_start = 0;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
     return;
   }
   

@@ -29,6 +29,21 @@ power:
 
 #define ROM_POWERSAVE_TO    7
 
+#define ROM_FUSE_HG_ONOFF   8
+#define ROM_FUSE_GYRO_ONOFF 9
+#define ROM_FUSE_THERMO_HI  10
+#define ROM_FUSE_THERMO_LO  11
+#define ROM_FUSE_TRIPWIRE_ONOFF  12
+#define ROM_FUSE_PASSWORD   13
+// 13 - 18£¬ 6×Ö½ÚÊÇpassword
+
+#define ROM_LT_TIMER_SYNC_YEAR 19
+#define ROM_LT_TIMER_SYNC_MON  20
+#define ROM_LT_TIMER_SYNC_DATE 21
+#define ROM_LT_TIMER_SYNC_HOUR 22
+#define ROM_LT_TIMER_SYNC_MIN  23
+#define ROM_LT_TIMER_SYNC_SEC  24
+
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);
 

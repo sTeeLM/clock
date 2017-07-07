@@ -13,10 +13,25 @@
 #define FUSE1_SHORT_MASK 0x10
 #define FUSE1_BROKE_MASK 0x20
 
+static void fuse_power_on(void)
+{
+  CDBG("fuse_power_on\n");
+	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
+	serial_ctl_out();
+}
+  
+static void fuse_power_off(void)
+{
+  CDBG("fuse_power_off\n");
+	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
+	serial_ctl_out();
+}
+
 void fuse_initialize (void)
 {
   CDBG("fuse_initialize\n");
-
+  fuse_power_on();
+  fuse_power_off();
 }
 
 void scan_fuse(unsigned int status)
@@ -78,6 +93,8 @@ void fuse_set_fuse_broke(unsigned char index, bit enable)
 void fuse_enable(bit enable)
 {
 	CDBG("fuse_enable %bd\n", enable ? 1 : 0);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, enable);
-	serial_ctl_out();
+  if(enable)
+    fuse_power_on();
+  else
+    fuse_power_off();
 }

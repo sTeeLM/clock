@@ -5,7 +5,7 @@
 #include "mod_common.h"
 #include "led.h"
 
-static struct timer_struct idata tmr[TIMER_SLOT_CNT];
+static struct timer_struct idata tmr[TIMER_SLOT_CNT]; // slot0 当前timer，1/2是两个瞬时值
 
 static unsigned char tmr_mode;
 static bit tmr_display;

@@ -9,10 +9,10 @@
 #include "lt_timer.h"
 #include "serial_hub.h"
 #include "rom.h"
+#include "misc.h"
 
 sbit RTC_RESET = P1 ^ 5;
 
-#define RTC_RESET_PULSE_DELAY 20
 #define RTC_I2C_ADDRESS  0xD0 //11010000
 
 #define RTC_TIME_OFFSET 0x00
@@ -62,7 +62,7 @@ void scan_rtc(void)
 
 void rtc_initialize (void)
 {
-	unsigned char count = RTC_RESET_PULSE_DELAY;
+	unsigned char count;
   unsigned char is12;
 
 	CDBG("rtc_initialize\n");
@@ -73,7 +73,7 @@ void rtc_initialize (void)
 
   // reset rtc
 	RTC_RESET = 0;
-	while(count --);
+	delay_ms(10);
 	RTC_RESET = 1;
     
   memset(rtc_data, 0, sizeof(rtc_data));

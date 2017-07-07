@@ -12,6 +12,13 @@ unsigned char led_blink;
 static unsigned char led_index;
 static unsigned char scan_loop_cnt;
 
+/*        A
+        F   B
+          G
+        E   C  
+          D
+*/
+
 unsigned char code led_code[] =
 {
         /* GFEDCBA */
@@ -44,7 +51,7 @@ unsigned char code led_code[] =
    0x0E, //0001110  F
    0xFF, //         G
    0x09, //0001001  H
-   0xFF, //         I
+   0x4F, //1001111  I
    0x71, //1110001  J  
    0xFF, //         K
    0x47, //1000111  L
@@ -113,21 +120,30 @@ void led_initialize (void)
   P0 = 0xFF;  
   P2 = 0xFF;
 
-  /*
-  // for test
-  led_set_code(0, '1');
-  led_set_code(1, '2');  
-  led_set_code(2, '3');
-  led_set_code(3, '4');  
-  led_set_code(4, '5');
-  led_set_code(5, '6');
-  
-  led_set_dp(0);
-  led_set_dp(4);
-  
+  led_set_code(0, '8');
+  led_set_code(1, '8');  
+  led_set_code(2, '8');
+  led_set_code(3, '8');  
+  led_set_code(4, '8');
+  led_set_code(5, '8');
+ 
   led_set_blink(0);
   led_set_blink(1); 
-  */  
+  led_set_blink(2);
+  led_set_blink(3);
+  led_set_blink(4);
+  led_set_blink(5); 
+  led_set_blink(6);
+  led_set_blink(7);
+  
+  led_set_dp(0);
+  led_set_dp(1);
+  led_set_dp(2);
+  led_set_dp(3);
+  led_set_dp(4);
+  led_set_dp(5);
+  led_set_dp(6);
+  led_set_dp(7);  
 }
 
 void led_clear(void)

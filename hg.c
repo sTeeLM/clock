@@ -11,10 +11,26 @@ static unsigned char hg_state;
 #define HG2_HIT_MASK 0x400
 #define HG3_HIT_MASK 0x800
 
+static void hg_power_on(void)
+{
+  CDBG("hg_power_on\n");
+  hg_state = 0;
+	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);
+	serial_ctl_out();
+}
+
+static void hg_power_off(void)
+{
+  CDBG("hg_power_off\n");
+	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);
+	serial_ctl_out();
+}
+
 void hg_initialize (void)
 {
   CDBG("hg_initialize\n");
-	hg_state = 0;
+	hg_power_on();
+  hg_power_off();
 }
 
 static void hg_fix(void)
@@ -50,8 +66,11 @@ void scan_hg(unsigned int status)
 void hg_enable(bit enable)
 {
 	CDBG("hg_enable %bd\n", enable ? 1 : 0);
-	serial_set_ctl_bit(SERIAL_BIT_HG_EN, enable);
-	serial_ctl_out();
+  if(enable) {
+    hg_power_on();
+  } else {
+    hg_power_off();
+  }
 }
 
 unsigned char hg_get_state(void)

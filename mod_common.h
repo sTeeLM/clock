@@ -8,6 +8,13 @@
 #define IS_MON   4
 #define IS_DAY   5
 #define IS_DAY_ONOFF 6
+#define IS_HG    7
+#define IS_GYRO  8
+#define IS_THERMO_HI 9
+#define IS_THERMO_LO 10
+#define IS_TRIPWIRE 11
+#define IS_PASSWORD 12
+#define IS_PASSWORD5 (IS_PASSWORD + 5)
 
 #define IS_PS    0
 #define IS_BS    1
@@ -20,6 +27,7 @@
 #define IS_COUNTER 2
 
 #define LPRESS_INC_DELAY 5
+#define LPRESS_INC_OVERFLOW 249
 
 extern bit lpress_lock_year_hour;
 extern bit lpress_lock_month_min;
