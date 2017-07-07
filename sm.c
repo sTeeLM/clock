@@ -358,10 +358,7 @@ static const struct sm_trans code sm_trans_clock_counter[] = {
 
 static const struct sm_trans code sm_trans_fuse_test[] = {  
   /* SM_FUSE_TEST */
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},	
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_FUSE_SEL0, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_UP, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
   // set0启动测试
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
   // 测试fuse0 short 收到EV_FUSE0_SHORT, 更新显示
@@ -481,7 +478,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   // mod0 切换到测试 fuse0 short
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},
    // mod1 切换回时钟模式
-  {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_SET_LPRESS, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_LPRESS, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
   // set1 切换到参数设置
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_SET_LPRESS, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
 };

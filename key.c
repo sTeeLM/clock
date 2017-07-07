@@ -91,7 +91,7 @@ void scan_key_proc(enum task_events ev)
 
 void mod_proc(enum task_events ev)
 {
-  CDBG("mod_proc\n");
+  CDBG("mod_proc %bd\n",ev);
 
   switch (ev) {
     case EV_KEY_MOD_DOWN:

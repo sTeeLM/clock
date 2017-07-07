@@ -5,16 +5,16 @@ enum task_events
 {
   EV_250MS            = 0, // 大约每250ms转一下
   EV_1S               = 1, // 大约每1s转一下  
-  EV_SCAN_KEY         = 2, // 扫描按键
-  EV_KEY_MOD_DOWN     = 3, // mod键按下
-  EV_KEY_MOD_UP       = 4, // mod键抬起
-  EV_KEY_MOD_PRESS    = 5, // mod键短按
-  EV_KEY_MOD_LPRESS   = 6, // mod键长按  
-  EV_KEY_SET_DOWN     = 7, // set键按下
-  EV_KEY_SET_UP       = 8, // set键抬起
-  EV_KEY_SET_PRESS    = 9, // set键短按
-  EV_KEY_SET_LPRESS   = 10, // set键长按
-  EV_KEY_MOD_SET_PRESS    = 11, // mod set键同时短按
+  EV_SCAN_KEY         = 2, // 扫描按键 
+  EV_KEY_SET_DOWN     = 3, // set键按下
+  EV_KEY_SET_PRESS    = 4, // set键短按
+  EV_KEY_SET_LPRESS   = 5, // set键长按
+  EV_KEY_SET_UP       = 6, // set键抬起
+  EV_KEY_MOD_DOWN     = 7, // mod键按下
+  EV_KEY_MOD_PRESS    = 8, // mod键短按
+  EV_KEY_MOD_LPRESS   = 9, // mod键长按
+  EV_KEY_MOD_UP       = 10, // mod键抬起 
+  EV_KEY_MOD_SET_PRESS    = 11, // mod set 键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
   EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
   EV_FUSE0_SHORT      = 14, // fuse0被短路

@@ -245,21 +245,11 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     return;
   }
-  
-	if(get_sm_ss_state(from) == SM_FUSE_TEST_INIT 
-		&& get_sm_ss_state(to) == SM_FUSE_TEST_INIT
-		&& ev == EV_1S) {
-			in_testing ++;
-			if(in_testing >= 2) {
-				set_task(EV_FUSE_SEL0);
-				in_testing = 0;
-			}
-		}
-	
+   
   // 从别的状态切换过来，防止误操作
   if(get_sm_ss_state(from) == SM_FUSE_TEST_INIT
     && get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT
-    && ev == EV_FUSE_SEL0 ) {
+    && ev == EV_KEY_MOD_UP ) {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_WAIT, 0);
 			CDBG("fuse0 short begin test\n");
     return;
