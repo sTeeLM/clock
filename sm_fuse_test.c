@@ -11,6 +11,7 @@
 #include "clock.h"
 #include "cext.h"
 #include "led.h"
+#include "rom.h"
 
 #define FUSE_TEST_TIMEO 5
 #define HG_TEST_TIMEO   60
@@ -239,14 +240,17 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
   CDBG("sm_fuse_test %bd %bd %bd\n", from, to, ev);
 
   // 按modset1进入fuse功能集合
-  if(get_sm_ss_state(to) == SM_FUSE_TEST_INIT && ev == EV_KEY_MOD_SET_LPRESS) {
+  if(get_sm_ss_state(to) == SM_FUSE_TEST_INIT && (ev == EV_KEY_MOD_SET_LPRESS || ev == EV_FUSE_SEL0)) {
+    display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     alarm_switch_off();
     lt_timer_switch_on();
-    display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     in_testing = 0;
     begin_test_sec = 0;
     hg_state = 0;
     hg_state_mask = 0;
+    if(ev == EV_FUSE_SEL0) { // 可能是通过密码做了解除
+      set_task(EV_KEY_MOD_UP);
+    }
     return;
   }
    
@@ -290,15 +294,19 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT ) {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_TESTING_P1, 0);
 			CDBG("fuse0 short into P1\n");
+      rom_write(ROM_FUSE0_SHORT_GOOD, 0);
 		} else if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_TESTING_P1, 0);
 			CDBG("fuse0 broke into P1\n");
+      rom_write(ROM_FUSE0_BROKE_GOOD, 0);
 		} else if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT ) {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_TESTING_P1, 0);
 			CDBG("fuse1 short into P1\n");
+      rom_write(ROM_FUSE1_SHORT_GOOD, 0);
 		} else  {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE1_BROKE, FUSE_DISPLAY_TESTING_P1, 0);
 			CDBG("fuse1 broke into P1\n");
+      rom_write(ROM_FUSE1_BROKE_GOOD, 0);
 		}
 		fuse_enable(1);
 		in_testing = 1;
@@ -383,18 +391,22 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 				|| ev == EV_FUSE1_BROKE)) { // good!
 			if(ev == EV_FUSE0_SHORT) {
 				CDBG("fuse0 P2 short good\n");
+        rom_write(ROM_FUSE0_SHORT_GOOD, 1);
 				fuse_set_fuse_short(0, 0);
 				display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_GOOD, 0);
 			} else if(ev == EV_FUSE0_BROKE) {
-				CDBG("fuse0 P2 broke good\n");					
+				CDBG("fuse0 P2 broke good\n");	
+        rom_write(ROM_FUSE0_BROKE_GOOD, 1);
 				fuse_set_fuse_broke(0, 0);
 				display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_GOOD, 0);
 			} else if(ev == EV_FUSE1_SHORT) {
-				CDBG("fuse1 P2 short good\n");			
+				CDBG("fuse1 P2 short good\n");
+        rom_write(ROM_FUSE1_SHORT_GOOD, 1);
 				fuse_set_fuse_short(1, 0);
 				display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_GOOD, 0);	
 			} else {
 				CDBG("fuse1 P2 broke good\n");
+        rom_write(ROM_FUSE1_BROKE_GOOD, 1);
 				fuse_set_fuse_broke(1, 0);
 				display_fuse_state(FUSE_TEST_PHASE_FUSE1_BROKE, FUSE_DISPLAY_GOOD, 0);			
 			}
@@ -421,9 +433,11 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
     in_testing = 1;
     begin_test_sec = clock_get_sec_256();
     if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
+      rom_write(ROM_THERMO_HI_GOOD, 0);
       thermo_hi_enable(1);
       display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_TESTING_P1, 0);
     } else {
+      rom_write(ROM_THERMO_LO_GOOD, 0);
       thermo_lo_enable(1);
       display_fuse_state(FUSE_TEST_PHASE_THERMO_LO, FUSE_DISPLAY_TESTING_P1, 0);
     }
@@ -481,10 +495,12 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		} else if(in_testing == 2) { // P2 OK
 			in_testing = 0;
       if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
+        rom_write(ROM_THERMO_HI_GOOD, 1);
         thermo_hi_threshold_reset();
         thermo_hi_enable(0);
         display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_GOOD, 0);
       } else {
+        rom_write(ROM_THERMO_LO_GOOD, 1);
         thermo_lo_threshold_reset();
         thermo_lo_enable(0);
         display_fuse_state(FUSE_TEST_PHASE_THERMO_LO, FUSE_DISPLAY_GOOD, 0);
@@ -504,6 +520,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	if((get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE ) && ev == EV_KEY_SET_PRESS && in_testing == 0) {
     in_testing = 1;
     begin_test_sec = clock_get_sec_256();
+    rom_write(ROM_TRIPWIRE_GOOD, 0);
     tripwire_enable(1);
     display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TESTING_P1, 0);
 		return;
@@ -531,6 +548,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		if(in_testing == 1) { // P1 Failed， 已经处于断开状态/温度激活状态？
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TRIPWIRE_BROKE, 0);
 		} else if(in_testing == 2) { // P2 OK
+      rom_write(ROM_TRIPWIRE_GOOD, 1);
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_GOOD, 0);
 		}
     in_testing = 0;
@@ -546,6 +564,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	}
 	// 启动HG测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_HG && ev == EV_KEY_SET_PRESS && in_testing == 0) {
+    rom_write(ROM_HG_GOOD, 0);
 		in_testing = 1;
 		begin_test_sec = clock_get_sec_256();
 		hg_enable(1);
@@ -559,6 +578,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		test_hg_state_mask(hg_get_state());
 		display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_TESTING_M, hg_state_mask);
 		if(hg_state_mask  == 0xF) { // OK!
+      rom_write(ROM_HG_GOOD, 1);
 			hg_enable(0);
 			display_fuse_state(FUSE_TEST_PHASE_HG, FUSE_DISPLAY_GOOD, 0);
 			in_testing = 0;
@@ -584,6 +604,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	}
 	// 启动Gyro测试
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_KEY_SET_PRESS && in_testing == 0) {
+    rom_write(ROM_GYRO_GOOD, 0);
 		in_testing = 1;
 		begin_test_sec = clock_get_sec_256();
 		gyro_enable(1);
@@ -613,6 +634,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	// 检查是否超时
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_1S) {
 		if(time_diff_now(begin_test_sec) > GYRO_TEST_TIMEO) {
+      rom_write(ROM_GYRO_GOOD, 1);
 			gyro_enable(0);
 			display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_GYRO_ERROR, 0);
 			in_testing = 0;

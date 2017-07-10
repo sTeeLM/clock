@@ -33,4 +33,5 @@ void thermo_lo_threshold_set(char val);
 
 unsigned char thermo_threshold_inc(unsigned char thres);
 
+char thermo_ger_current(void);
 #endif

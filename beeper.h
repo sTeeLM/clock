@@ -13,12 +13,6 @@ enum beeper_music{
   BEEPER_MUSIC_CNT
 };
 
-enum beeper_music_timeout {
-  BEEPER_MUSIC_TO_30        = 0,
-  BEEPER_MUSIC_TO_60        = 1,
-  BEEPER_MUSIC_TO_90        = 2,
-  BEEPER_MUSIC_TO_CNT
-};
 
 void beeper_beep(void);
 void beeper_beep_beep(void);
@@ -30,8 +24,7 @@ enum beeper_music beeper_get_music_index();
 void beeper_play_music(void);
 void beeper_stop_music(void);
 
-enum beeper_music_timeout beeper_get_music_to(void);
-unsigned char beeper_get_music_to_s(void);
+unsigned char beeper_get_music_to(void);
 void beeper_inc_music_to(void);
 
 

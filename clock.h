@@ -25,6 +25,8 @@ struct clock_struct
 
 #define CLOCK_YEAR_BASE 2000
 
+void clock_enable_interrupt(bit enable);
+
 bit clock_get_hour_12();
 void clock_set_hour_12(bit enable);
 unsigned char clock_get_sec(void);

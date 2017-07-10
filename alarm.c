@@ -11,8 +11,6 @@ static struct alarm0_struct alarm0;
 static bit alarm0_is12;
 static bit alarm1_enable;
 
-unsigned char clk_min, clk_sec;
-
 void alarm_proc(enum task_events ev)
 {
  

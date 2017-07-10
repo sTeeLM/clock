@@ -3,6 +3,8 @@
 #include "clock.h"
 #include "rom.h"
 
+#define LT_TIMER_MAX_DAY 100
+
 static struct lt_timer_struct ltm; 
 
 void lt_timer_initialize (void)
@@ -25,9 +27,9 @@ void scan_lt_timer(void)
   CDBG("scan_lt_timer\n");
 }
 
-void lt_timer_inc_date(void)
+void lt_timer_inc_day(void)
 {
-  ltm.date = (++ ltm.date) % clock_get_mon_date(ltm.year, ltm.mon);
+  ltm.day = (++ ltm.day) % LT_TIMER_MAX_DAY;
 }
 
 void lt_timer_inc_hour(void)
@@ -35,19 +37,9 @@ void lt_timer_inc_hour(void)
   ltm.hour = (++ ltm.hour) % 24;
 }
 
-void lt_timer_inc_year(void)
-{
-  ltm.year = (++ ltm.year) % 100;
-}
-
 void lt_timer_inc_min(void)
 {
   ltm.min = (++ ltm.min) % 60;
-}
-
-void lt_timer_inc_month(void)
-{
-  ltm.mon = (++ ltm.mon) % 12;
 }
 
 void lt_timer_inc_sec(void)
@@ -70,41 +62,39 @@ unsigned char lt_timer_get_sec(void)
   return ltm.sec;
 }
 
-unsigned char lt_timer_get_year(void)
+unsigned char lt_timer_get_day(void)
 {
-  return ltm.year;
+  return ltm.day;
 }
 
-unsigned char lt_timer_get_month(void)
+// test current time + ltm > 2099-12-31-23:59:59
+bit lt_timer_is_overflow(void)
 {
-  return ltm.mon + 1;
-}
-
-unsigned char lt_timer_get_date(void)
-{
-  return ltm.date + 1;
+  bit ret = 0;
+  
+  unsigned char sec, min, hour, date, mon, year;
+  
+  clock_enable_interrupt(0);
+  
+  clock_enable_interrupt(1);
+  
+  return ret;
 }
 
 void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
 {
-  switch (type) {
-    case LT_TIMER_SYNC_YEAR:
-      rom_write(ROM_LT_TIMER_SYNC_YEAR, ltm.year);
-      break;
-    case LT_TIMER_SYNC_MON:
-      rom_write(ROM_LT_TIMER_SYNC_MON, ltm.mon);
-      break; 
-    case LT_TIMER_SYNC_DATE:
-      rom_write(ROM_LT_TIMER_SYNC_DATE, ltm.date);
+  switch (type) { 
+    case LT_TIMER_SYNC_DAY:
+      rom_write(ROM_LT_TIMER_DAY, ltm.day);
       break;
     case LT_TIMER_SYNC_HOUR:
-      rom_write(ROM_LT_TIMER_SYNC_HOUR, ltm.hour);
+      rom_write(ROM_LT_TIMER_HOUR, ltm.hour);
       break;
     case LT_TIMER_SYNC_MIN:
-      rom_write(ROM_LT_TIMER_SYNC_MIN, ltm.min);
+      rom_write(ROM_LT_TIMER_MIN, ltm.min);
       break;
     case LT_TIMER_SYNC_SEC:
-      rom_write(ROM_LT_TIMER_SYNC_SEC, ltm.sec);
+      rom_write(ROM_LT_TIMER_SEC, ltm.sec);
       break;
     
   }
@@ -112,10 +102,8 @@ void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
 
 void lt_timer_sync_from_rom(void)
 {
-  ltm.year = rom_read(ROM_LT_TIMER_SYNC_YEAR);
-  ltm.mon  = rom_read(ROM_LT_TIMER_SYNC_MON);
-  ltm.date = rom_read(ROM_LT_TIMER_SYNC_DATE);
-  ltm.hour = rom_read(ROM_LT_TIMER_SYNC_HOUR);
-  ltm.min  = rom_read(ROM_LT_TIMER_SYNC_MIN);
-  ltm.sec  = rom_read(ROM_LT_TIMER_SYNC_SEC);
+  ltm.day = rom_read(ROM_LT_TIMER_DAY);
+  ltm.hour = rom_read(ROM_LT_TIMER_HOUR);
+  ltm.min  = rom_read(ROM_LT_TIMER_MIN);
+  ltm.sec  = rom_read(ROM_LT_TIMER_SEC);
 }

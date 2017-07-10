@@ -6,6 +6,9 @@
 #include "misc.h"
 #include "rom.h"
 
+#define MAX_BEEPER_MUSIC_TO   60 // 秒
+#define BEEPER_MUSIC_TO_STEP  30
+
 // 格式为：频率常数，节拍常数，频率常数，节拍常数
 // 频率常数：n为多少个20us延迟
 // 节拍常数：m为多少个10ms延迟（10ms = 500个20us延迟）
@@ -107,7 +110,6 @@ static bit beep_enable;
 static unsigned char pai;
 static unsigned char beeper_music_index;
 static unsigned char beeper_music_to;
-static unsigned char beeper_music_to_s;
 
 // 每10ms 调用一次
 static void beeper_ISR (void) interrupt 5 using 2 
@@ -145,8 +147,7 @@ void beeper_initialize (void)
    
    beeper_music_index = rom_read(ROM_BEEPER_MUSIC_INDEX) % BEEPER_MUSIC_CNT;
    beeper_stop = 1;
-   beeper_music_to = BEEPER_MUSIC_TO_30;
-   beeper_music_to_s = 30;
+   beeper_music_to = rom_read(ROM_BEEPER_MUSIC_TO);
    beep_enable = rom_read(ROM_BEEPER_ENABLE);
    beeper_out  = 0;
 }
@@ -171,29 +172,15 @@ void beeper_set_beep_enable(bit enable)
   beep_enable = enable;
 }
 
-enum beeper_music_timeout beeper_get_music_to(void)
+unsigned char beeper_get_music_to(void)
 {
   return beeper_music_to;
 }
 
-unsigned char beeper_get_music_to_s(void)
-{
-  switch(beeper_music_to) {
-    case BEEPER_MUSIC_TO_30: return 30;
-    case BEEPER_MUSIC_TO_60: return 60;
-    case BEEPER_MUSIC_TO_90: return 90; 
-  }
-  return 0;
-}
 
 void beeper_inc_music_to(void)
 {
-  beeper_music_to = (++beeper_music_to) % BEEPER_MUSIC_TO_CNT;
-  switch(beeper_music_to) {
-    case BEEPER_MUSIC_TO_30: beeper_music_to_s = 30; break;
-    case BEEPER_MUSIC_TO_60: beeper_music_to_s = 60; break;
-    case BEEPER_MUSIC_TO_90: beeper_music_to_s = 90; break;
-  }
+  beeper_music_to = (beeper_music_to + BEEPER_MUSIC_TO_STEP) % MAX_BEEPER_MUSIC_TO;
 }
 
 void beeper_inc_music_index(void)
@@ -239,7 +226,7 @@ static void _beepler_play(unsigned char * music, bit once)
           return;
         }
         // 直到一首歌播放完毕才检查超时
-        if(time_diff_now(start_s) >= beeper_music_to_s) {
+        if(time_diff_now(start_s) >= beeper_music_to) {
           _beeper_stop_play();
           return;
         }

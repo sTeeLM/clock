@@ -14,7 +14,7 @@
 // 2000~2099年
 static unsigned char code date_table[100][12] = 
 {
-{31,29,31,30,31,30,31,31,30,31,30,31,},
+{31,29,31,30,31,30,31,31,30,31,30,31,}, // 2000
 {31,28,31,30,31,30,31,31,30,31,30,31,},
 {31,28,31,30,31,30,31,31,30,31,30,31,},
 {31,28,31,30,31,30,31,31,30,31,30,31,},
@@ -268,6 +268,7 @@ void clock_inc_year(void)
 void clock_sync_from_rtc(enum clock_sync_type type)
 {
   CDBG("clock_sync_from_rtc = %bd\n", type);
+  clock_enable_interrupt(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     clk.hour = rtc_time_get_hour();   // 0 - 23
@@ -282,11 +283,13 @@ void clock_sync_from_rtc(enum clock_sync_type type)
     clk.date = rtc_date_get_date() - 1;      // 0 - 30(29/28/27)
     clk.day  = rtc_date_get_day() - 1;       // 0 - 6
   }
+  clock_enable_interrupt(1);
 }
 
 void clock_sync_to_rtc(enum clock_sync_type type)
 {
   CDBG("clock_sync_to_rtc = %bd\n", type);
+  clock_enable_interrupt(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     rtc_time_set_hour(clk.hour);
@@ -301,6 +304,7 @@ void clock_sync_to_rtc(enum clock_sync_type type)
     rtc_date_set_date(clk.date + 1);         // 0 - 30(29/28/27)
     rtc_write_data(RTC_TYPE_DATE);
   }
+  clock_enable_interrupt(1);
 }
 
 static void clock0_ISR (void) interrupt 1 using 1
@@ -309,30 +313,6 @@ static void clock0_ISR (void) interrupt 1 using 1
   timer_inc_ms39();
   TF0 = 0;
 }
-
-/*
-static void clock0_ISR (void) interrupt 1 using 1 
-{
-   counter_3p9ms ++;
-   if((counter_1ms % 2 ) == 0) {
-     refresh_led();
-   }
- 
-   if((counter_1ms % 25) == 0) {
-     set_task(EV_SCAN_KEY); 
-     counter_25ms ++;
-     if((counter_25ms % 10) == 0) {
-       set_task(EV_250MS); 
-       counter_250ms ++;
-       if((counter_250ms % 4) == 0) {
-         counter_1s ++;
-         set_task(EV_1S); 
-       }
-     }
-   }
-   TF0 = 0;
-}
-*/
 
 
 // 辅助函数
@@ -349,6 +329,12 @@ unsigned char clock_get_mon_date(unsigned char year, unsigned char mon)
   return date_table[year][mon];
 }
 
+void clock_enable_interrupt(bit enable)
+{
+  ET0 = enable;
+  TR0 = enable;
+}
+
 void clock_initialize(void)
 {
   CDBG("clock_initialize\n");
@@ -362,8 +348,8 @@ void clock_initialize(void)
   TL0 = (256 - 128); // 32768HZ方波输入，3.90625ms中断一次（256个中断是1s）
   TH0 = (256 - 128);
   PT0 = 1; // 最高优先级 
-  ET0 = 1; // 开中断
-  TR0 = 1; // 开始了
+  
+  clock_enable_interrupt(1);
 
   clock_dump();
 }

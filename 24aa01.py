@@ -23,49 +23,67 @@ a[4] = 1
 
 #define ROM_BEEPER_MUSIC_INDEX 5
 #define ROM_BEEPER_ENABLE      6
+#define ROM_BEEPER_MUSIC_TO    7
 
 a[5] = 0
 a[6] = 1
+a[7] = 30
 
-#define ROM_POWERSAVE_TO    7
+#define ROM_POWERSAVE_TO    8
 
-a[7] = 0
+a[8] = 0
 
-#define ROM_FUSE_HG_ONOFF   8
-#define ROM_FUSE_GYRO_ONOFF 9
-#define ROM_FUSE_THERMO_HI  10
-#define ROM_FUSE_THERMO_LO  11
-#define ROM_FUSE_TRIPWIRE_ONOFF  12
-#define ROM_FUSE_PASSWORD   13
-# 13 - 18 is password
+#define ROM_FUSE_HG_ONOFF   9
+#define ROM_FUSE_GYRO_ONOFF 10
+#define ROM_FUSE_THERMO_HI  11
+#define ROM_FUSE_THERMO_LO  12
+#define ROM_FUSE_TRIPWIRE_ONOFF  13
+#define ROM_FUSE_PASSWORD   14
+# 14 - 19 is password, 6 bytes
 
-a[8] = 1
 a[9] = 1
-a[10] = 40
-a[11] = 216
-a[12] = 1
-
+a[10] = 1
+a[11] = 40
+a[12] = 216
 a[13] = 1
-a[14] = 2
-a[15] = 3
-a[16] = 4
-a[17] = 5
-a[18] = 6
+
+a[14] = 1
+a[15] = 2
+a[16] = 3
+a[17] = 4
+a[18] = 5
+a[19] = 6
 
 
-#define ROM_LT_TIMER_SYNC_YEAR 19
-#define ROM_LT_TIMER_SYNC_MON  20
-#define ROM_LT_TIMER_SYNC_DATE 21
-#define ROM_LT_TIMER_SYNC_HOUR 22
-#define ROM_LT_TIMER_SYNC_MIN  23
-#define ROM_LT_TIMER_SYNC_SEC  24
+#define ROM_LT_TIMER_SYNC_DAY  20
+#define ROM_LT_TIMER_SYNC_HOUR 21
+#define ROM_LT_TIMER_SYNC_MIN  22
+#define ROM_LT_TIMER_SYNC_SEC  23
 
-a[19] = 14
-a[20] = 8
-a[21] = 17
-a[22] = 13
-a[23] = 1
-a[24] = 5
+a[20] = 14
+a[21] = 8
+a[22] = 17
+a[23] = 13
+
+#define ROM_FUSE0_SHORT_GOOD 40
+#define ROM_FUSE0_BROKE_GOOD 41
+#define ROM_FUSE1_SHORT_GOOD 42
+#define ROM_FUSE1_BROKE_GOOD 43
+#define ROM_TRIPWIRE_GOOD    44
+#define ROM_THERMO_HI_GOOD   45
+#define ROM_THERMO_LO_GOOD   46
+#define ROM_HG_GOOD          47
+#define ROM_GYRO_GOOD        48
+
+a[40] = 1
+a[41] = 1
+a[42] = 1
+a[43] = 1
+a[44] = 1
+a[45] = 1
+a[46] = 1
+a[47] = 1
+a[48] = 1
 
 with open('24aa01.bin', 'wb') as f:
 	f.write(a);

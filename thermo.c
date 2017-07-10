@@ -264,3 +264,16 @@ unsigned char thermo_threshold_inc(unsigned char thres)
     return (unsigned char)THERMO_THRESHOLED_MIN;
   }
 }
+
+// 必须在power_on后使用
+char thermo_ger_current(void)
+{
+  unsigned int val;
+  char ret;
+  I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xAA, 2, &val);
+  CDBG("get current temp return %x\n", val);
+  
+  ret = (char)((val >> 8) & 0xFF); // 整数部分
+  CDBG("current temp is %bd\n", ret);
+  return ret;
+}

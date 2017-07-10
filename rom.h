@@ -26,23 +26,34 @@ power:
 
 #define ROM_BEEPER_MUSIC_INDEX 5
 #define ROM_BEEPER_ENABLE      6
+#define ROM_BEEPER_MUSIC_TO  7
 
-#define ROM_POWERSAVE_TO    7
+#define ROM_POWERSAVE_TO    8
 
-#define ROM_FUSE_HG_ONOFF   8
-#define ROM_FUSE_GYRO_ONOFF 9
-#define ROM_FUSE_THERMO_HI  10
-#define ROM_FUSE_THERMO_LO  11
-#define ROM_FUSE_TRIPWIRE_ONOFF  12
-#define ROM_FUSE_PASSWORD   13
-// 13 - 18， 6字节是password
+#define ROM_FUSE_HG_ONOFF   9
+#define ROM_FUSE_GYRO_ONOFF 10
+#define ROM_FUSE_THERMO_HI  11
+#define ROM_FUSE_THERMO_LO  12
+#define ROM_FUSE_TRIPWIRE_ONOFF  13
+#define ROM_FUSE_PASSWORD   14
+// 14 - 19， 6字节是password
 
-#define ROM_LT_TIMER_SYNC_YEAR 19
-#define ROM_LT_TIMER_SYNC_MON  20
-#define ROM_LT_TIMER_SYNC_DATE 21
-#define ROM_LT_TIMER_SYNC_HOUR 22
-#define ROM_LT_TIMER_SYNC_MIN  23
-#define ROM_LT_TIMER_SYNC_SEC  24
+#define ROM_LT_TIMER_DAY  20
+#define ROM_LT_TIMER_HOUR 21
+#define ROM_LT_TIMER_MIN  22
+#define ROM_LT_TIMER_SEC  23
+
+
+// 40 开始，是所有的外设的测试结果
+#define ROM_FUSE0_SHORT_GOOD 40
+#define ROM_FUSE0_BROKE_GOOD 41
+#define ROM_FUSE1_SHORT_GOOD 42
+#define ROM_FUSE1_BROKE_GOOD 43
+#define ROM_TRIPWIRE_GOOD    44
+#define ROM_THERMO_HI_GOOD   45
+#define ROM_THERMO_LO_GOOD   46
+#define ROM_HG_GOOD          47
+#define ROM_GYRO_GOOD        48
 
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);

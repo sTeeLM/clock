@@ -3,9 +3,7 @@
 
 enum lt_timer_sync_type
 {
-  LT_TIMER_SYNC_YEAR = 0,
-  LT_TIMER_SYNC_MON,
-  LT_TIMER_SYNC_DATE,
+  LT_TIMER_SYNC_DAY,
   LT_TIMER_SYNC_HOUR,
   LT_TIMER_SYNC_MIN,
   LT_TIMER_SYNC_SEC
@@ -13,9 +11,7 @@ enum lt_timer_sync_type
 
 struct lt_timer_struct
 {
-  unsigned char year; // 0 - 99
-  unsigned char mon;  // 0 - 11
-  unsigned char date; // 0-30, 闰年2月29天（0-28），平年28天（0-27）
+  unsigned char day;  // 0-99
   unsigned char hour; // 0-23
   unsigned char min;  // 0-59
   unsigned char sec;  // 0-59
@@ -27,21 +23,17 @@ void lt_timer_switch_off(void);
 
 void scan_lt_timer(void);
 
-void lt_timer_inc_date(void);
+void lt_timer_inc_day(void);
 void lt_timer_inc_hour(void);
-void lt_timer_inc_year(void);
 void lt_timer_inc_min(void);
-void lt_timer_inc_month(void);
 void lt_timer_inc_sec(void);
 
 unsigned char lt_timer_get_hour(void);
 unsigned char lt_timer_get_min(void);
 unsigned char lt_timer_get_sec(void);
-unsigned char lt_timer_get_year(void);
-unsigned char lt_timer_get_month(void);
-unsigned char lt_timer_get_date(void);
+unsigned char lt_timer_get_day(void);
 
 void lt_timer_sync_to_rom(enum lt_timer_sync_type type);
 void lt_timer_sync_from_rom(void);
-
+bit lt_timer_is_overflow(void);
 #endif
