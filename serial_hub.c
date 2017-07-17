@@ -11,7 +11,7 @@ sbit SR_DATA_IN = P3 ^ 5;
 sbit SR_WR      = P3 ^ 6;  // 上升沿有效
 sbit SR_WCLK    = P3 ^ 7;  // 上升沿有效
 
-static unsigned char idata ctl_buffer[3];
+static unsigned char ctl_buffer[3];
 
 static void serial_dump_ctl(void)
 {

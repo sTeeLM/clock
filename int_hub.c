@@ -12,6 +12,7 @@
 #include "thermo.h"
 #include "tripwire.h"
 #include "fuse.h"
+#include "cext.h"
 
 sbit RTC_INT        = P1 ^ 1;
 sbit GYRO_INT       = P1 ^ 2;
@@ -92,6 +93,8 @@ void scan_int_hub_proc (enum task_events ev)
   unsigned int status = 0;
   unsigned char val;
   CDBG("scan_int_hub_proc\n");
+  
+  UNUSED_PARAM(ev);
   
   while(!RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT ) {
     if(!RTC_INT) {

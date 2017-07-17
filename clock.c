@@ -9,6 +9,7 @@
 #include "clock.h"
 #include "rtc.h"
 #include "timer.h"
+#include "lt_timer.h"
 
 // ISR里不能调带参数函数。。。
 // 2000~2099年
@@ -118,7 +119,7 @@ static unsigned char code date_table[100][12] =
 
 static struct clock_struct idata clk;
 static bit clk_is12;
-static unsigned char sec_256; // 用于 time_diff
+static unsigned char idata sec_256; // 用于 time_diff
 
 #pragma NOAREGS
 static void clock_inc_ms39(void)
@@ -138,6 +139,7 @@ static void clock_inc_ms39(void)
     
   if(clk.ms39 == 0 ) {
     clk.sec = (++ clk.sec) % 60;
+    lt_timer_dec_sec();
     sec_256 ++;
     set_task(EV_1S);
     if(clk.sec == 0) {
@@ -185,7 +187,8 @@ static unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, 
   d = date + 1;
   m = mon + 1;
   y = CLOCK_YEAR_BASE + year;
-  return (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400) % 7;
+  // 经典的Zeller公式
+  return (d + 2 * m + 3 * (m + 1) /5 + y + y/4 - y/100 + y/400) % 7;
 }
 
 bit clock_get_hour_12(void)
@@ -195,6 +198,11 @@ bit clock_get_hour_12(void)
 void clock_set_hour_12(bit enable)
 {
   clk_is12 = enable;
+}
+
+unsigned char clock_get_ms39(void)
+{
+  return clk.ms39;
 }
 
 unsigned char clock_get_sec_256(void)

@@ -35,7 +35,7 @@ static void dump_rtc(void)
 	// dump rtc contents
 	for(addr = 0; addr < 0x15; addr ++) {
 		I2C_Get(RTC_I2C_ADDRESS, addr, &c);
-		CDBG("%bx = %bx\n", addr,  c);
+		CDBG("rtc [%02bx] = 02%bx\n", addr,  c);
 	}
 }
 
@@ -86,7 +86,7 @@ void rtc_initialize (void)
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
   rtc_time_set_hour_12(is12);
   rtc_time_set_hour(12);
-  rtc_time_set_min(11);
+  rtc_time_set_min(10);
   rtc_time_set_sec(30); 
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);

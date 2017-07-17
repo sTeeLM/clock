@@ -11,7 +11,7 @@ bit lpress_lock_day_sec;
 
 unsigned char lpress_start;
 unsigned char last_display_s;
-
+unsigned char common_state;
 
 void display_logo(enum display_logo_type type, unsigned char num)
 {

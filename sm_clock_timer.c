@@ -5,8 +5,6 @@
 #include "debug.h"
 #include "beeper.h"
 
-static unsigned char slot;
-
 static void show_slot_title(unsigned char slot)
 {
   led_clear();
@@ -49,7 +47,7 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
     && ev == EV_KEY_SET_UP) {
     display_slot(0);
     timer_set_mode(TIMER_MODE_INC);
-    slot = 1;
+    lpress_start = 1; // 复用lpress_start作为slot index
     return;
   }
   
@@ -57,24 +55,24 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_RUNNING && ev == EV_KEY_MOD_DOWN) {
     timer_set_led_autorefresh(1, TIMER_DISP_MODE_MMSSMM);
     timer_start();
-    slot = 1;
+    lpress_start = 1;
     return;
   }
   
   // set0计次
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_RUNNING && ev == EV_KEY_SET_DOWN) {
-    if(slot < TIMER_SLOT_CNT) {
+    if(lpress_start < TIMER_SLOT_CNT) {
       timer_set_led_autorefresh(0, TIMER_DISP_MODE_MMSSMM);
-      show_slot_title(slot);
+      show_slot_title(lpress_start);
     }
     return;
   }
   
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_RUNNING && ev == EV_KEY_SET_UP) {
-    if(slot < TIMER_SLOT_CNT) {
+    if(lpress_start < TIMER_SLOT_CNT) {
       timer_set_led_autorefresh(1, TIMER_DISP_MODE_MMSSMM);
-      timer_save(slot);
-      slot ++;
+      timer_save(lpress_start);
+      lpress_start ++;
     }
     return;
   }  
@@ -84,7 +82,7 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
     timer_stop();
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_MMSSMM);
     display_slot(0);
-    slot = 1;
+    lpress_start = 1;
     return;
   }
   
@@ -97,13 +95,13 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
   
   // set0逐次显示计次
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_STOP && ev == EV_KEY_SET_DOWN) {
-    show_slot_title(slot);
+    show_slot_title(lpress_start);
     return;
   }  
   
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_STOP && ev == EV_KEY_SET_UP) {
-    display_slot(slot);
-    slot = (++ slot) % TIMER_SLOT_CNT;
+    display_slot(lpress_start);
+    lpress_start = (++ lpress_start) % TIMER_SLOT_CNT;
     return;
   }
   

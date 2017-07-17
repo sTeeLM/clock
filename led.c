@@ -52,7 +52,7 @@ unsigned char code led_code[] =
    0xFF, //         G
    0x09, //0001001  H
    0x4F, //1001111  I
-   0x71, //1110001  J  
+   0x71, //1110001  J 
    0xFF, //         K
    0x47, //1000111  L
    0xFF, //         M

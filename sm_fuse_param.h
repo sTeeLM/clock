@@ -5,6 +5,8 @@
 
 enum sm_fuse_param_ss {
   SM_FUSE_PARAM_INIT      = 0, // ³õÊ¼×´Ì¬
+  SM_FUSE_PARAM_YY        = 1,
+  SM_FUSE_PARAM_MO        = 2,
   SM_FUSE_PARAM_DD        = 3,
   SM_FUSE_PARAM_HH        = 4,
   SM_FUSE_PARAM_MM        = 5,

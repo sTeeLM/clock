@@ -7,8 +7,6 @@
 #include "clock.h"
 #include "thermo.h"
 
-static unsigned char password_index;
-
 static void inc_only(unsigned char what)
 {
   
@@ -19,32 +17,42 @@ static void inc_only(unsigned char what)
   
   switch (what) {
     case IS_HOUR:
+    case IS_YEAR:
       if(!lpress_lock_year_hour) {
         lpress_lock_year_hour = 1;
         led_clr_blink(5);
         led_clr_blink(4); 
       }
-      lt_timer_inc_hour();
+      if(what == IS_HOUR) {
+        lt_timer_inc_hour();
+      } else {
+        lt_timer_inc_year();
+      }
       break;
     case IS_MIN:
+    case IS_MON:
       if(!lpress_lock_month_min) {
         lpress_lock_month_min = 1;
         led_clr_blink(3);
         led_clr_blink(2); 
       }
-      lt_timer_inc_min();
+      if(what == IS_MIN) {
+        lt_timer_inc_min();
+      } else {
+        lt_timer_inc_month();
+      }
       break;
     case IS_SEC:
     case IS_DAY:
       if(!lpress_lock_day_sec) {
         lpress_lock_day_sec = 1;
         led_clr_blink(1);
-        led_clr_blink(0); 
+        led_clr_blink(0);
       }
-      if(what == IS_SEC) {
+      if(what == IS_SEC) { 
         lt_timer_inc_sec();
       } else {
-        lt_timer_inc_day();
+        lt_timer_inc_date();
       }
       break;
     case IS_HG:
@@ -97,10 +105,26 @@ static void write_only(unsigned char what)
       break;
     case IS_DAY:
       if(lpress_lock_day_sec == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_DAY);
+        lt_timer_sync_to_rom(LT_TIMER_SYNC_DATE);
         lpress_lock_day_sec = 0;
         led_set_blink(1);
         led_set_blink(0); 
+      }
+      break;
+    case IS_MON:
+      if(lpress_lock_month_min == 1) {
+        lt_timer_sync_to_rom(LT_TIMER_SYNC_MONTH);
+        lpress_lock_month_min = 0;
+        led_set_blink(3);
+        led_set_blink(2);      
+      }
+      break;
+    case IS_YEAR:
+      if(lpress_lock_year_hour == 1) {
+        lt_timer_sync_to_rom(LT_TIMER_SYNC_YEAR);
+        lpress_lock_year_hour = 0;
+        led_set_blink(5);
+        led_set_blink(4);
       }
       break;
     case IS_HG:
@@ -165,24 +189,29 @@ static void update_hhmmss(void)
   led_set_code(0, (sec % 10) + 0x30);
 }
 
-static void update_day(void)
+static void update_yymmdd(void)
 {
-  unsigned char day;
+  unsigned char year, mon, date;
   
-  
-  day = lt_timer_get_day();
+  year = lt_timer_get_year();
+  mon  = lt_timer_get_month();
+  date = lt_timer_get_date();
   
   led_set_dp(2);
   led_set_dp(4);
 
-  CDBG("update_day %bd\n", day);
+  CDBG("update_yymmdd %bd-%bd-%bd\n", year, mon, date);
   
-  led_set_code(5, 'D');
-  led_set_code(4, 'A');
-  led_set_code(3, 'Y');
-  led_set_code(2, '-');
-  led_set_code(1, (day / 10) + 0x30);
-  led_set_code(0, (day % 10) + 0x30);  
+  if((year / 10) != 0) {
+    led_set_code(5, (year / 10) + 0x30);
+  } else {
+    led_set_code(5, LED_CODE_BLACK);
+  }
+  led_set_code(4, (year % 10) + 0x30);
+  led_set_code(3, (mon / 10)+ 0x30);
+  led_set_code(2, (mon % 10) + 0x30);
+  led_set_code(1, (date / 10) + 0x30);
+  led_set_code(0, (date % 10) + 0x30);
 }
 
 static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
@@ -206,16 +235,24 @@ static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 }
 
 
-static void enter_day(unsigned char what) // blink year:0, month:1, day:2
+static void enter_yymmdd(unsigned char what) // blink year:0, month:1, day:2
 {
   led_clear();
-  switch(what) {     
+  switch(what) {
+    case IS_YEAR:
+      led_set_blink(5);
+      led_set_blink(4);    
+      break;
+    case IS_MON:
+      led_set_blink(3);
+      led_set_blink(2);    
+      break;      
     case IS_DAY:
       led_set_blink(1);
       led_set_blink(0);    
       break;      
   }
-  update_day();  
+  update_yymmdd(); 
 }
 
 static void update_thermo(unsigned char what)
@@ -333,26 +370,82 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
   }
   
   // 防止误操作
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD 
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY
     && (get_sm_ss_state(from) == SM_FUSE_PARAM_INIT || get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)
     && (ev == EV_KEY_SET_UP|| ev == EV_FUSE_SEL0)) {
     lt_timer_sync_from_rom();
-    password_index = 5;
-    enter_day(IS_DAY);
+    common_state = 5;
+    enter_yymmdd(IS_YEAR);
     return;
   }  
+
+  // 调整年
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_PRESS) {
+    inc_and_write(IS_YEAR);
+    update_yymmdd();
+    return;
+  } 
+  
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_LPRESS) {
+    if((lpress_start % LPRESS_INC_DELAY) == 0) {
+      inc_only(IS_YEAR);
+      update_yymmdd();
+    }
+    lpress_start++;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
+    return;
+  } 
+
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_UP) {
+    write_only(IS_YEAR);
+    lpress_start = 0;
+    return;
+  }   
+  
+  // 调整月
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_MOD_PRESS) {
+    enter_yymmdd(IS_MON);
+    return;
+  }
+  
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_SET_PRESS) {
+    inc_and_write(IS_MON);
+    update_yymmdd();
+    return;
+  } 
+  
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_SET_LPRESS) {
+    if((lpress_start % LPRESS_INC_DELAY) == 0) {
+      inc_only(IS_MON);
+      update_yymmdd();
+    }
+    lpress_start++;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
+    return;
+  } 
+
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_SET_UP) {
+    write_only(IS_MON);
+    lpress_start = 0;
+    return;
+  } 
   
   // 调整日
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_MOD_PRESS) {
+    enter_yymmdd(IS_DAY);
+    return;
+  }
+  
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_DAY);
-    update_day();
+    update_yymmdd();
     return;
   } 
   
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_DAY);
-      update_day();
+      update_yymmdd();
     }
     lpress_start++;
     if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
@@ -541,26 +634,26 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
   
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_MOD_PRESS) {
     if(get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD) {
-      if(password_index > 0) {
-        password_index = -- password_index;
+      if(common_state > 0) {
+        common_state --;
       } else {
         set_task(EV_FUSE_SEL0);
         return;
       }
     }
-    enter_password(IS_PASSWORD + password_index); // 使用last_display_s作为password的index，为了减少ram使用。。。
+    enter_password(IS_PASSWORD + common_state); // 使用last_display_s作为password的index，为了减少ram使用。。。
     return;
   }
   
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_PASSWORD + password_index);
-    update_password(IS_PASSWORD + password_index);
+    inc_and_write(IS_PASSWORD + common_state);
+    update_password(IS_PASSWORD + common_state);
     return;
   }
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_PASSWORD + password_index);
-      update_password(IS_PASSWORD + password_index);
+      inc_only(IS_PASSWORD + common_state);
+      update_password(IS_PASSWORD + common_state);
     }
     lpress_start++;
     if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
@@ -568,7 +661,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
   } 
 
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_SET_UP) {
-    write_only(IS_PASSWORD + password_index);
+    write_only(IS_PASSWORD + common_state);
     lpress_start = 0;
     return;
   }

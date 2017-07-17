@@ -3,7 +3,7 @@
 
 #include "task.h"
 
-#define THERMO_THRESHOLED_INVALID 255
+#define THERMO_THRESHOLED_INVALID 0xFF
 
 void thermo_initialize (void);
 void scan_thermo(void);
@@ -33,5 +33,5 @@ void thermo_lo_threshold_set(char val);
 
 unsigned char thermo_threshold_inc(unsigned char thres);
 
-char thermo_ger_current(void);
+char thermo_get_current(void);
 #endif

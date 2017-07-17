@@ -54,16 +54,19 @@ a[17] = 4
 a[18] = 5
 a[19] = 6
 
-
-#define ROM_LT_TIMER_SYNC_DAY  20
-#define ROM_LT_TIMER_SYNC_HOUR 21
-#define ROM_LT_TIMER_SYNC_MIN  22
-#define ROM_LT_TIMER_SYNC_SEC  23
+#define ROM_LT_TIMER_YEAR 20
+#define ROM_LT_TIMER_MONTH  21
+#define ROM_LT_TIMER_DATE  22
+#define ROM_LT_TIMER_HOUR 23
+#define ROM_LT_TIMER_MIN  24
+#define ROM_LT_TIMER_SEC  25
 
 a[20] = 14
-a[21] = 8
-a[22] = 17
-a[23] = 13
+a[21] = 7  # 0-11
+a[22] = 18 # 0-30
+a[23] = 12
+a[24] = 15
+a[25] = 10
 
 #define ROM_FUSE0_SHORT_GOOD 40
 #define ROM_FUSE0_BROKE_GOOD 41

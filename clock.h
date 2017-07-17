@@ -46,6 +46,7 @@ void clock_inc_year(void);
 void clock_sync_from_rtc(enum clock_sync_type type);
 void clock_sync_to_rtc(enum clock_sync_type type);
 void clock_dump(void);
+unsigned char clock_get_ms39(void);
 
 bit clock_is_leap_year(unsigned char year); // year 0-99
 unsigned char clock_get_mon_date(unsigned char year, unsigned char mon); // mon 0-11

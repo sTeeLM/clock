@@ -4,6 +4,7 @@
 #include "serial_hub.h"
 #include "sm.h"
 
+static bit hg_enabled;
 static unsigned char hg_state;
 
 #define HG0_HIT_MASK 0x100
@@ -29,13 +30,15 @@ static void hg_power_off(void)
 void hg_initialize (void)
 {
   CDBG("hg_initialize\n");
-	hg_power_on();
-  hg_power_off();
+	hg_enabled = 0;
 }
 
 static void hg_fix(void)
 {
   CDBG("hg_fix hg_state = %bx\n", hg_state);
+  
+  if(!hg_enabled) return;
+  
   serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 1) != 0);
   serial_set_ctl_bit(SERIAL_BIT_HG1_FIX, (hg_state & 2) != 0);  
   serial_set_ctl_bit(SERIAL_BIT_HG2_FIX, (hg_state & 4) != 0);
@@ -47,6 +50,8 @@ void scan_hg(unsigned int status)
 {
   unsigned char old_hg_state;
   CDBG("scan_hg %x\n", status);
+  
+  if(!hg_enabled) return;
   
   old_hg_state = hg_state;
 	hg_state = (status & 0x0F00) >> 8;
@@ -66,11 +71,13 @@ void scan_hg(unsigned int status)
 void hg_enable(bit enable)
 {
 	CDBG("hg_enable %bd\n", enable ? 1 : 0);
-  if(enable) {
+  if(enable && !hg_enabled) {
     hg_power_on();
-  } else {
+  } else if(!enable && hg_enabled){
     hg_power_off();
   }
+  
+  hg_enabled = enable;
 }
 
 unsigned char hg_get_state(void)

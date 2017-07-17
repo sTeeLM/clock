@@ -38,11 +38,14 @@ power:
 #define ROM_FUSE_PASSWORD   14
 // 14 - 19， 6字节是password
 
-#define ROM_LT_TIMER_DAY  20
-#define ROM_LT_TIMER_HOUR 21
-#define ROM_LT_TIMER_MIN  22
-#define ROM_LT_TIMER_SEC  23
 
+
+#define ROM_LT_TIMER_YEAR 20
+#define ROM_LT_TIMER_MONTH  21
+#define ROM_LT_TIMER_DATE  22
+#define ROM_LT_TIMER_HOUR 23
+#define ROM_LT_TIMER_MIN  24
+#define ROM_LT_TIMER_SEC  25
 
 // 40 开始，是所有的外设的测试结果
 #define ROM_FUSE0_SHORT_GOOD 40

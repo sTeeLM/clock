@@ -1,5 +1,4 @@
 #include <STC89C5xRC.H>
-
 #include "key.h"
 #include "task.h"
 #include "clock.h"
@@ -9,6 +8,7 @@
 #include "cext.h"
 #include "power.h"
 #include "beeper.h"
+#include "cext.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
 #define KEY_LPRESS_DELAY 3 // 长按时间，5s
@@ -36,6 +36,7 @@ static void int0_ISR (void) interrupt 0 using 1
 
 void scan_key_proc(enum task_events ev)
 {
+  UNUSED_PARAM(ev);
   if(!SET_KEY && !set_press) {
     delay_5us(100);
     if(!SET_KEY) {

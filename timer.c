@@ -42,11 +42,11 @@ void timer_inc_ms39(void)
         tmr[0].ms39 --;
         if(tmr[0].ms39 == 255 ) {
           tmr[0].sec --;
-          if(tmr[0].sec == 255) tmr[0].sec = 59;
-          if(tmr[0].sec == 59) {
+          if(tmr[0].sec == 255){
+            tmr[0].sec = 59;
             tmr[0].min --;
-            if(tmr[0].min == 255) tmr[0].min = 59;
-            if(tmr[0].min == 59) {
+            if(tmr[0].min == 255){ 
+              tmr[0].min = 59;
               if(tmr[0].hour > 0) {
                 tmr[0].hour --;
               }

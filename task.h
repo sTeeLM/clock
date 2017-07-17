@@ -30,10 +30,11 @@ enum task_events
   EV_TRIPWIRE         = 24, // tripwire被剪断
   EV_FUSE_SEL0         = 25, // fuse 虚拟事件0
   EV_FUSE_SEL1         = 26, // fuse 虚拟事件1
-  EV_ALARM0           = 27, // 闹钟0应该响起
-  EV_ALARM1           = 28, // 闹钟1应该响起
-  EV_COUNTER          = 29, // 计时器到时间
-  EV_POWER_SAVE       = 30, // 应该进入PS状态 
+  EV_FUSE_SEL2         = 27, // fuse 虚拟事件2  
+  EV_ALARM0           = 28, // 闹钟0应该响起
+  EV_ALARM1           = 29, // 闹钟1应该响起
+  EV_COUNTER          = 30, // 计时器到时间
+  EV_POWER_SAVE       = 31, // 应该进入PS状态 
   EV_COUNT  
 };
 

@@ -15,17 +15,13 @@
 
 #define THERMO_THRESHOLED_STEP 5
 
-static bit thermo_hi_is_enable;
-static bit thermo_lo_is_enable;
+static bit thermo_hi_enabled;
+static bit thermo_lo_enabled;
 
 static void thermo_power_on(void)
 {
   unsigned int val;
   CDBG("thermo_power_on\n");
-  
-  thermo_hi_is_enable = 0;
-  
-  thermo_lo_is_enable = 0;
   
   serial_set_ctl_bit(SERIAL_BIT_THERMO_EN, 1);
   
@@ -60,7 +56,7 @@ static void thermo_power_on(void)
   delay_ms(10); // delay 10 ms
 
   // 读取一次端口寄存器消除中断
-  I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
+  I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, (unsigned char *)&val);
   CDBG("thermo int reg is %bx\n", val);
 }
 
@@ -74,8 +70,7 @@ static void thermo_power_off(void)
 void thermo_initialize (void)
 {
   CDBG("thermo_initialize\n");
-  thermo_power_on();
-  thermo_power_off();
+  thermo_hi_enabled = thermo_lo_enabled = 0;
 }
 
 void scan_thermo(void)
@@ -83,14 +78,17 @@ void scan_thermo(void)
   unsigned char val;
   CDBG("scan_thermo\n");
   
+  if(!thermo_hi_enabled && !thermo_lo_enabled)
+     return;
+  
   // 读取一次端口寄存器消除中断
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
   CDBG("thermo int reg is %bx\n", val);
   
-  if((val & 0x1) == 0 && thermo_hi_is_enable) {
+  if((val & 0x1) == 0 && thermo_hi_enabled) {
     CDBG("EV_THERMO_HI!\n");
     set_task(EV_THERMO_HI);
-  } else if((val & 0x2) == 0 && thermo_lo_is_enable) {
+  } else if((val & 0x2) == 0 && thermo_lo_enabled) {
     CDBG("EV_THERMO_LO!\n");
     set_task(EV_THERMO_LO);
   }
@@ -123,35 +121,36 @@ void thermo_hi_enable(bit enable)
 {
 	CDBG("thermo_hi_enable %bd\n", enable ? 1 : 0);
   
-  if(enable) {
+  if(enable && (!thermo_hi_enabled && !thermo_lo_enabled)) {
     thermo_power_on();
-  } else {
+  } else if(!enable && thermo_hi_enabled && !thermo_lo_enabled){
     thermo_power_off();
   }
   
-  thermo_hi_is_enable = enable;
+  thermo_hi_enabled = enable;
 }
 
 void thermo_lo_enable(bit enable)
 {
 	CDBG("thermo_lo_enable %bd\n", enable ? 1 : 0);
   
-  if(enable) {
+  if(enable && (!thermo_hi_enabled && !thermo_lo_enabled)) {
     thermo_power_on();
-  } else {
+  } else if(!enable && !thermo_hi_enabled && thermo_lo_enabled){
     thermo_power_off();
   }
   
-  thermo_lo_is_enable = enable;
+  thermo_lo_enabled = enable;
 }
 
 void thermo_hi_threshold_reset()
-{
+{  
   thermo_hi_threshold_set(THERMO_THRESHOLED_MAX);
 }
 
 void thermo_lo_threshold_reset()
 {
+  
   thermo_lo_threshold_set(THERMO_THRESHOLED_MIN);
 }
 
@@ -178,7 +177,10 @@ bit thermo_lo_threshold_reach_top()
 char thermo_hi_threshold_get()
 {
   unsigned int val;
-  I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xA1, 2, &val);
+  
+  if(!thermo_hi_enabled) return THERMO_THRESHOLED_INVALID;
+  
+  I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xA1, 2, (unsigned char *)&val);
   return thermo_hex_to_temp(val);
 }
 
@@ -186,26 +188,35 @@ void thermo_hi_threshold_set(char temp)
 {
   unsigned int val;
   CDBG("thermo_hi_threshold_set %bd\n", temp);
+  
+  if(!thermo_hi_enabled) return;
+  
   val = thermo_temp_to_hex(temp);
-  I2C_Puts(THERMO_HI_I2C_ADDRESS, 0xA1, 2, &val);
+  I2C_Puts(THERMO_HI_I2C_ADDRESS, 0xA1, 2, (unsigned char *)&val);
   val = thermo_temp_to_hex(temp);
-  I2C_Puts(THERMO_HI_I2C_ADDRESS, 0xA2, 2, &val);
+  I2C_Puts(THERMO_HI_I2C_ADDRESS, 0xA2, 2, (unsigned char *)&val);
 }
 
 void thermo_lo_threshold_set(char temp)
 {
   unsigned int val;
   CDBG("thermo_lo_threshold_set %bd\n", temp);
+  
+  if(!thermo_lo_enabled) return;
+  
   val = thermo_temp_to_hex(temp);
-  I2C_Puts(THERMO_LO_I2C_ADDRESS, 0xA1, 2, &val);
+  I2C_Puts(THERMO_LO_I2C_ADDRESS, 0xA1, 2, (unsigned char *)&val);
   val = thermo_temp_to_hex(temp);
-  I2C_Puts(THERMO_LO_I2C_ADDRESS, 0xA2, 2, &val);
+  I2C_Puts(THERMO_LO_I2C_ADDRESS, 0xA2, 2, (unsigned char *)&val);
 }
 
 char thermo_lo_threshold_get()
 {
   unsigned int val;
-  I2C_Gets(THERMO_LO_I2C_ADDRESS, 0xA1, 2, &val);
+  
+  if(!thermo_lo_enabled) return THERMO_THRESHOLED_INVALID;
+  
+  I2C_Gets(THERMO_LO_I2C_ADDRESS, 0xA1, 2, (unsigned char *)&val);
   return thermo_hex_to_temp(val);
 }
 
@@ -266,11 +277,14 @@ unsigned char thermo_threshold_inc(unsigned char thres)
 }
 
 // 必须在power_on后使用
-char thermo_ger_current(void)
+char thermo_get_current(void)
 {
   unsigned int val;
   char ret;
-  I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xAA, 2, &val);
+  
+  if(!thermo_hi_enabled) return THERMO_THRESHOLED_INVALID;
+  
+  I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xAA, 2, (unsigned char *)&val);
   CDBG("get current temp return %x\n", val);
   
   ret = (char)((val >> 8) & 0xFF); // 整数部分

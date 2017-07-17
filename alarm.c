@@ -6,6 +6,7 @@
 #include "power.h"
 #include "rom.h"
 
+
 static struct alarm0_struct alarm0;
 
 static bit alarm0_is12;

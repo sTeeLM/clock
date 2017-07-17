@@ -31,6 +31,9 @@
 #define  LF             0x0A
 #define  ESC            0x1B
 
+#define  UNUSED_PARAM(x) \
+  x = x
+
 #define  time_diff(from,to) \
 (unsigned char)((unsigned char)from - (unsigned char)to)
 

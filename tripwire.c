@@ -5,6 +5,8 @@
 
 #define TRIPWIRE_HIT_MASK 0x1000
 
+static bit tripwire_enabled;
+
 static void tripwire_power_on(void)
 {
   CDBG("tripwire_power_on\n");
@@ -22,13 +24,15 @@ static void tripwire_power_off(void)
 void tripwire_initialize (void)
 {
   CDBG("tripwire_initialize\n");
-  tripwire_power_on();
-  tripwire_power_off();
+  tripwire_enabled = 0;
 }
 
 void scan_tripwire(unsigned int status)
 {
   CDBG("scan_tripwire %x\n", status);
+  
+  if(!tripwire_enabled) return;
+  
   if((TRIPWIRE_HIT_MASK & status) == 0) {
     set_task(EV_TRIPWIRE);
   }
@@ -43,16 +47,18 @@ void tripwire_proc(enum task_events ev)
 void tripwire_enable(bit enable)
 {
 	CDBG("tripwire_enable %bd\n", enable ? 1 : 0);
-  if(enable) {
+  if(enable && !tripwire_enabled) {
     tripwire_power_on();
-  } else {
+  } else if(!enable && tripwire_enabled){
     tripwire_power_off();
   }
+  tripwire_enabled = enable;
 }
 
 void tripwire_set_broke(bit broke)
 {
 	CDBG("tripwire_set_broke %bd\n", broke ? 1: 0);
+  if(!tripwire_enabled) return;
 	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, broke);
 	serial_ctl_out();
 }

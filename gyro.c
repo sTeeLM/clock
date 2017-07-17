@@ -10,6 +10,8 @@ static bit is_acc;
 static bit is_rotate;
 static bit is_drop;
 
+static bit gyro_enabled;
+
 static void gyro_power_on(void)
 {
   unsigned char val;
@@ -36,8 +38,7 @@ static void gyro_power_off(void)
 void gyro_initialize (void)
 {
   CDBG("gyro_initialize\n");
-  gyro_power_on();
-  gyro_power_off();
+  gyro_enabled = 0;
 
 }
 
@@ -45,6 +46,9 @@ void scan_gyro(void)
 {
   unsigned char val;
   CDBG("scan_gyro\n");
+  
+  if(!gyro_enabled) return;
+  
   // 读取一次端口寄存器消除中断
   I2C_Get(GYRO_I2C_ADDRESS, 0x0, &val);
   CDBG("gyro port reg is %bx\n", val);
@@ -63,10 +67,12 @@ void scan_gyro(void)
 
 void gyro_enable(bit enable)
 {
-	CDBG("gyro_enable %bd\n", enable);
-  if(enable) {
+	CDBG("gyro_enable %bd\n", enable ? 1 : 0 );
+  if(enable && !gyro_enabled) {
     gyro_power_on();
-  } else {
+  } else if(!enable && gyro_enabled){
     gyro_power_off();
   }
+  
+  gyro_enabled = enable;
 }
