@@ -28,7 +28,8 @@ enum param_error
   PARAM_ERROR_THERMO_TOO_HI = 506,
   PARAM_ERROR_THERMO_LO_BAD = 507,
   PARAM_ERROR_THERMO_TOO_LOW = 508,
-  PARAM_ERROR_THERMO_HI_LESS_LO = 59
+  PARAM_ERROR_THERMO_HI_LESS_LO = 509,
+  PARAM_ERROR_FUSE_ERROR = 510
 };
 
 #define TIMER_PARAM_ERROR 0xFF
@@ -42,7 +43,7 @@ enum timer_param_step {
   TIMER_PARAM_CHECK_SET_THERMO_HI,
   TIMER_PARAM_CHECK_SET_THERMO_LO,
   TIMER_PARAM_CHECK_SET_LT_TIME,
-  TIMER_PARAM_CHECK_SET_FUSE,
+  TIMER_PARAM_CHECK_SET_FUSE, 
   TIMER_PARAM_DELAY0,
   TIMER_PARAM_DELAY1,
   TIMER_PARAM_DELAY2,
@@ -60,14 +61,20 @@ static void display_error(unsigned int err)
   led_set_code(0, (err % 10) + 0x30); 
 }
 
-static void rollback_param(void)
+
+static void stop_peripheral(void)
 {
-  fuse_enable(0);
   tripwire_enable(0);
   thermo_hi_enable(0);
   thermo_lo_enable(0);
   gyro_enable(0);
   hg_enable(0);
+}
+
+static void rollback_param(void)
+{
+  fuse_enable(0);
+  stop_peripheral();
   lt_timer_reset();
 }
 
@@ -191,7 +198,15 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_FUSE:
-      fuse_enable(1);
+      if(rom_read(ROM_FUSE0_SHORT_GOOD) 
+        &&rom_read(ROM_FUSE1_SHORT_GOOD)
+        &&rom_read(ROM_FUSE0_BROKE_GOOD)
+        &&rom_read(ROM_FUSE1_BROKE_GOOD)
+      ) {
+        fuse_enable(1);
+      } else {
+        display_error(PARAM_ERROR_FUSE_ERROR);
+      }
       break;
     case TIMER_PARAM_DELAY0:
     case TIMER_PARAM_DELAY1:
@@ -309,6 +324,11 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
+  if(get_sm_ss_state(to) == SM_FUSE_TIMER_ARMED && ev == EV_KEY_MOD_PRESS) {
+    power_reset_powersave_to();
+    return;
+  }
+  
   // mod0进入等待输入密码的状态
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED
     && get_sm_ss_state(to) == SM_FUSE_TIMER_VERIFY 
@@ -394,7 +414,8 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
     || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
-    rollback_param(); // 关闭所有外围电路，以及lt_timer
+    stop_peripheral(); // 关闭所有外围电路，以及lt_timer
+    lt_timer_reset();
     set_task(EV_FUSE_SEL0);
     return;
   } 

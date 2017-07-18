@@ -5,6 +5,7 @@
 #include "sm.h"
 #include "i2c.h"
 #include "misc.h"
+#include "power.h"
 
 #define THERMO_HI_I2C_ADDRESS  0x90 //1001 0000
 #define THERMO_LO_I2C_ADDRESS  0x92 //1001 0010
@@ -73,13 +74,23 @@ void thermo_initialize (void)
   thermo_hi_enabled = thermo_lo_enabled = 0;
 }
 
+void thermo_enter_powersave(void)
+{
+  CDBG("thermo_enter_powersave\n");
+}
+
+void thermo_leave_powersave(void)
+{
+  CDBG("thermo_leave_powersave\n");
+}
+
 void scan_thermo(void)
 {
   unsigned char val;
-  CDBG("scan_thermo\n");
   
-  if(!thermo_hi_enabled && !thermo_lo_enabled)
-     return;
+  bit has_event = 0;
+  
+  CDBG("scan_thermo\n");
   
   // 读取一次端口寄存器消除中断
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
@@ -88,9 +99,15 @@ void scan_thermo(void)
   if((val & 0x1) == 0 && thermo_hi_enabled) {
     CDBG("EV_THERMO_HI!\n");
     set_task(EV_THERMO_HI);
+    has_event = 1;
   } else if((val & 0x2) == 0 && thermo_lo_enabled) {
     CDBG("EV_THERMO_LO!\n");
     set_task(EV_THERMO_LO);
+    has_event = 1;
+  }
+  
+  if(has_event && power_test_flag()) {
+    power_clr_flag();
   }
 }
 

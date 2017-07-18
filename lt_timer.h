@@ -61,4 +61,7 @@ void lt_timer_reset(void);
 void lt_timer_switch_display(void);
 void lt_timer_display(bit enable);
 
+void lt_timer_enter_powersave(void);
+void lt_timer_leave_powersave(void);
+
 #endif

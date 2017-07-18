@@ -5,7 +5,8 @@
 
 enum sm_fuse_powersave_ss {
   SM_FUSE_POWERSAVE_INIT      = 0, // ³õÊ¼×´Ì¬
-  SM_FUSE_POWERSAVE_PS        = 1
+  SM_FUSE_POWERSAVE_PS        = 1,
+  SM_FUSE_POWERSAVE_PREDETONATE = 2
 };
 
 void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events);

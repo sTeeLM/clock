@@ -95,7 +95,7 @@ void timer_initialize(void)
 void timer_enter_powersave(void)
 {
   CDBG("timer_enter_powersave\n");
-  timer_clr(); // 一旦进入节点模式，自动清0，节电模式无法用！
+  timer_clr(); // 一旦进入节电模式，自动清0，节电模式无法用！
 }
 
 void timer_leave_powersave(void)

@@ -15,6 +15,7 @@ static unsigned char ctl_buffer[3];
 
 static void serial_dump_ctl(void)
 {
+  /*
   CDBG("++++++serial_dump_ctl begin++++++\n");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED0) ? '1' : '0', "SERIAL_BIT_C_UNUSED0");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_C_UNUSED1) ? '1' : '0', "SERIAL_BIT_C_UNUSED1");
@@ -41,6 +42,7 @@ static void serial_dump_ctl(void)
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN");
   CDBG("%c %s\n", serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN");
   CDBG("++++++serial_dump_ctl end++++++++\n");
+  */
 }
 
 

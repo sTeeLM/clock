@@ -5,6 +5,7 @@
 #include "rtc.h"
 #include "led.h"
 #include "task.h"
+#include "power.h"
 
 static bit lt_tmr_start;
 static bit lt_tmr_stopped;
@@ -26,19 +27,67 @@ void lt_timer_initialize (void)
   lt_tmr_disp_day = 0;
 }
 
+void lt_timer_enter_powersave(void)
+{
+  CDBG("lt_timer_enter_powersave\n");
+  if(rtc_is_lt_timer()) {
+    lt_timer_stop_ram();
+    lt_timer_start_rtc();
+  }
+}
+
+void lt_timer_leave_powersave(void)
+{
+  CDBG("lt_timer_leave_powersave\n");
+  if(rtc_is_lt_timer()) {
+    lt_timer_stop_rtc();
+    lt_timer_sync_from_rom();
+    if(!lt_timer_get_relative(0)) {
+      lt_tmr_stopped = 1;
+      set_task(EV_COUNTER);
+    } else {
+      lt_timer_start_ram();
+    }
+  }
+}
+
 void lt_timer_switch_on(void)
 {
   CDBG("lt_timer_switch_on\n");
+  lt_timer_sync_to_rtc();
 }
 
 void lt_timer_switch_off(void)
 {
   CDBG("lt_timer_switch_off\n");
+  rtc_read_data(RTC_TYPE_CTL);
+  rtc_enable_alarm_int(RTC_ALARM0, 0);
+  rtc_enable_alarm_int(RTC_ALARM1, 0);
+  rtc_write_data(RTC_TYPE_CTL);
 }
 
 void scan_lt_timer(void)
 {
+  bit alarm0_hit;
+  
   CDBG("scan_lt_timer\n");
+  
+  rtc_read_data(RTC_TYPE_CTL);
+  alarm0_hit = rtc_test_alarm_int_flag(RTC_ALARM0);
+  rtc_clr_alarm_int_flag(RTC_ALARM0);
+  rtc_write_data(RTC_TYPE_CTL);
+  
+  if(alarm0_hit) {
+    rtc_read_data(RTC_TYPE_CTL);
+    
+    rtc_read_data(RTC_TYPE_DATE);
+    if(rtc_date_get_year() == ltm.year) {
+      if(power_test_flag()) {
+        power_clr_flag();
+      }
+      set_task(EV_COUNTER);
+    }
+  }
 }
 
 void lt_timer_inc_year(void)
@@ -406,7 +455,7 @@ bit lt_timer_get_relative(bit too_close_check)
 {
   bit borrow;
   
-  // 计算相对时间，调用后ltm.year, ltm.month 没有意义了
+  // 计算相对时间，调用后ltm.month 没有意义了,ltm.year需要保留
   clock_enable_interrupt(0);
   borrow = lt_timer_sub_sec_min();
   borrow = lt_timer_sub_min_hour(borrow);
@@ -434,10 +483,12 @@ bit lt_timer_get_relative(bit too_close_check)
 // 将ltm里的绝对时间写入RTC
 void lt_timer_sync_to_rtc(void)
 {
+  CDBG("lt_timer_sync_to_rtc : ltm.date = %bd, ltm.hour = %bd, ltm.min = %bd, ltm.sec = %bd\n",
+  ltm.date, ltm.hour, ltm.min, ltm.sec);
   // 绝对时间写入rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
-  rtc_alarm_set_date(ltm.date);
+  rtc_alarm_set_date(ltm.date + 1);
   rtc_alarm_set_hour(ltm.hour);
   rtc_alarm_set_min(ltm.min);
   rtc_alarm_set_sec(ltm.sec);

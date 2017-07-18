@@ -34,4 +34,8 @@ void thermo_lo_threshold_set(char val);
 unsigned char thermo_threshold_inc(unsigned char thres);
 
 char thermo_get_current(void);
+
+void thermo_enter_powersave(void);
+void thermo_leave_powersave(void);
+
 #endif

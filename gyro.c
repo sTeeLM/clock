@@ -3,6 +3,7 @@
 #include "serial_hub.h"
 #include "i2c.h"
 #include "task.h"
+#include "power.h"
 
 #define GYRO_I2C_ADDRESS  0x44 //0100 0100
 
@@ -42,12 +43,22 @@ void gyro_initialize (void)
 
 }
 
+void gyro_enter_powersave(void)
+{
+  CDBG("gyro_enter_powersave\n");
+}
+
+void gyro_leave_powersave(void)
+{
+  CDBG("gyro_leave_powersave\n");
+}
+
 void scan_gyro(void)
 {
   unsigned char val;
-  CDBG("scan_gyro\n");
+  bit has_event = 0;
   
-  if(!gyro_enabled) return;
+  CDBG("scan_gyro\n");
   
   // 读取一次端口寄存器消除中断
   I2C_Get(GYRO_I2C_ADDRESS, 0x0, &val);
@@ -56,12 +67,19 @@ void scan_gyro(void)
   if ((val & 0x1) == 0) {
     CDBG("EV_ROTATE_GYRO\n");
     set_task(EV_ROTATE_GYRO);
+    has_event = 1;
   } else if((val & 0x2) == 0){
     CDBG("EV_DROP_GYRO\n");
     set_task(EV_DROP_GYRO);
+    has_event = 1;
   } else if((val & 0x4) == 0) {
     CDBG("EV_ACC_GYRO\n");
     set_task(EV_ACC_GYRO);
+    has_event = 1;
+  }
+  
+  if(has_event && power_test_flag()) {
+    power_clr_flag();
   }
 }
 

@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "serial_hub.h"
 #include "sm.h"
+#include "power.h"
 
 #define TRIPWIRE_HIT_MASK 0x1000
 
@@ -27,14 +28,25 @@ void tripwire_initialize (void)
   tripwire_enabled = 0;
 }
 
+void tripwire_enter_powersave(void)
+{
+  CDBG("tripwire_enter_powersave\n");
+}
+
+void tripwire_leave_powersave(void)
+{
+  CDBG("tripwire_leave_powersave\n");
+}
+
 void scan_tripwire(unsigned int status)
 {
   CDBG("scan_tripwire %x\n", status);
   
-  if(!tripwire_enabled) return;
-  
   if((TRIPWIRE_HIT_MASK & status) == 0) {
     set_task(EV_TRIPWIRE);
+    if(power_test_flag()) {
+      power_clr_flag();
+    }
   }
 }
 

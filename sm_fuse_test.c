@@ -12,6 +12,7 @@
 #include "cext.h"
 #include "led.h"
 #include "rom.h"
+#include "rtc.h"
 
 #define FUSE_TEST_TIMEO 5
 #define HG_TEST_TIMEO   60
@@ -239,11 +240,12 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     alarm_switch_off();
     lt_timer_switch_on();
+    rtc_set_lt_timer(1);
     lpress_start = 0; // use lpress_start 作为测试状态指示
     last_display_s = 0; // use last_display_s作为超时起始时间
     common_state = 0;
     hg_state_mask = 0;
-    if(ev == EV_FUSE_SEL0) { // 可能是通过密码做了解除
+    if(ev == EV_FUSE_SEL0) { // 可能是通过密码做了解除，或者是通电超过30S
       set_task(EV_KEY_MOD_UP);
     }
     return;

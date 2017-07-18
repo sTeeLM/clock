@@ -16,6 +16,12 @@
 #include "cext.h"
 #include "misc.h"
 #include "rom.h"
+#include "fuse.h"
+#include "hg.h"
+#include "gyro.h"
+#include "lt_timer.h"
+#include "thermo.h"
+#include "tripwire.h"
 
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
@@ -44,13 +50,19 @@ void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
   powersave_flag = 1;
+  timer_enter_powersave(); 
+  lt_timer_enter_powersave();
   clock_enter_powersave();
   rtc_enter_powersave();       
   key_enter_powersave();       
   led_enter_powersave();          
-  alarm_enter_powersave();     
-  timer_enter_powersave();   
+  alarm_enter_powersave();       
   beeper_enter_powersave();
+  fuse_enter_powersave();
+  hg_enter_powersave();
+  gyro_enter_powersave();
+  thermo_enter_powersave();
+  tripwire_enter_powersave();
   com_enter_powersave();
   while(powersave_flag) {
     PCON |= 0x1; // should be 0x2
@@ -67,13 +79,19 @@ void power_leave_powersave(void)
 {
 
   com_leave_powersave(); 
+  tripwire_leave_powersave();
+  thermo_leave_powersave();
+  gyro_leave_powersave();
+  hg_leave_powersave();
+  fuse_leave_powersave();
   beeper_leave_powersave();
-  timer_leave_powersave(); 
   alarm_leave_powersave();  
   led_leave_powersave(); 
   key_leave_powersave(); 
   rtc_leave_powersave(); 
   clock_leave_powersave();
+  lt_timer_leave_powersave();
+  timer_leave_powersave();
   CDBG("power_leave_powersave\n");
 }
 

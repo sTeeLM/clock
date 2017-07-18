@@ -400,13 +400,15 @@ void clock_initialize (float fclk)
 
 void clock_enter_powersave(void)
 {
+  CDBG("clock_enter_powersave");
   ET0 = 0;
 }
 
 void clock_leave_powersave(void)
 {
-  ET0 = 1;
+  CDBG("clock_leave_powersave");
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
-  clock_sync_from_rtc(CLOCK_SYNC_DATE);   
+  clock_sync_from_rtc(CLOCK_SYNC_DATE);
+  ET0 = 1;  
 }
 

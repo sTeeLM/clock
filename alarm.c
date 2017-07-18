@@ -29,6 +29,7 @@ void alarm_proc(enum task_events ev)
 void scan_alarm(void)
 {
   bit alarm0_hit, alarm1_hit;
+  
   rtc_read_data(RTC_TYPE_CTL);
   alarm0_hit = rtc_test_alarm_int_flag(RTC_ALARM0);
   alarm1_hit = rtc_test_alarm_int_flag(RTC_ALARM1);
@@ -99,7 +100,6 @@ void alarm_switch_on(void)
   CDBG("alarm_switch_on\n");
   alarm0_sync_to_rtc();
   alarm1_sync_to_rtc();
-  rtc_set_lt_timer(0);
 }
 
 void alarm_switch_off(void)
@@ -109,7 +109,6 @@ void alarm_switch_off(void)
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
   rtc_write_data(RTC_TYPE_CTL);
-  rtc_set_lt_timer(1);
 }
 
 void alarm_dump(void)
@@ -123,14 +122,12 @@ void alarm_dump(void)
 
 void alarm_enter_powersave(void)
 {
-  CDBG("alarm_enter_powersave!\n");
+  CDBG("alarm_enter_powersave\n");
 }
 
 void alarm_leave_powersave(void)
 {
-  CDBG("alarm_leave_powersave!\n");
-//  alarm0_sync_from_rtc();
-//  alarm1_sync_from_rtc();
+  CDBG("alarm_leave_powersave\n");
 }
 
 // day  1-7
@@ -189,17 +186,6 @@ void alarm0_inc_hour(void)
 {
   alarm0.hour = (++ alarm0.hour) % 24;
 }
-/*
-void alarm0_sync_from_rtc(void)
-{
-  CDBG("alarm0_sync_from_rtc!\n");
-  rtc_read_data(RTC_TYPE_ALARM0);
-  alarm0.hour = rtc_alarm_get_hour();
-  alarm0.min  = rtc_alarm_get_min();
-  alarm0_is12 = rtc_alarm_get_hour_12();
-  
-}
-*/
 
 void alarm0_sync_to_rtc(void)
 {
@@ -227,15 +213,6 @@ void alarm1_set_enable(bit enable)
 {
   alarm1_enable = enable;
 }
-
-/*
-void alarm1_sync_from_rtc(void)
-{
-  CDBG("alarm1_sync_from_rtc!\n");
-  rtc_read_data(RTC_TYPE_CTL);
-  alarm1_enable = rtc_test_alarm_int(RTC_ALARM1);
-}
-*/
 
 void alarm1_sync_to_rtc(void)
 {

@@ -68,6 +68,8 @@ bit int_hub_test_bit(unsigned char index, unsigned int status)
 
 static void int_hub_dump_status(unsigned int status)
 {
+  UNUSED_PARAM(status);
+  /*
   CDBG("++++++int_hub_dump_status begin++++++\n");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE0_TRIGGERED, status) ? '1' : '0', "INT_HUB_FUSE0_TRIGGERED");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE1_TRIGGERED, status) ? '1' : '0', "INT_HUB_FUSE1_TRIGGERED");
@@ -86,6 +88,7 @@ static void int_hub_dump_status(unsigned int status)
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED3, status) ? '1' : '0', "INT_HUB_UNSUSED3");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
   CDBG("++++++int_hub_dump_status ends++++++\n");
+  */
 }
 
 void scan_int_hub_proc (enum task_events ev)
@@ -96,30 +99,34 @@ void scan_int_hub_proc (enum task_events ev)
   
   UNUSED_PARAM(ev);
   
-  while(!RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT ) {
-    if(!RTC_INT) {
-      scan_rtc();
-    }
-    
-    if(!EXT_INT) {
-      // 读取端口寄存器
-      I2C_Get(INTHUB1_I2C_ADDR, 0x0, &val); 
-      status = val; 
-      status = status << 8;
-      I2C_Get(INTHUB0_I2C_ADDR, 0x0, &val);
-      status |= val;
-      int_hub_dump_status(status);
-      scan_fuse(status);
-      scan_hg(status);
-      scan_tripwire(status);
-    }
-    
-    if(!THERMO_INT) {
-      scan_thermo();
-    }
-    
-    if(!GYRO_INT) {
-      scan_gyro();  
-    }
+
+  if(!RTC_INT) {
+    scan_rtc(); // call scan_alarm or scan_lt_timer
+  }
+  
+  if(!EXT_INT) {
+    // 读取端口寄存器
+    I2C_Get(INTHUB1_I2C_ADDR, 0x0, &val); 
+    status = val; 
+    status = status << 8;
+    I2C_Get(INTHUB0_I2C_ADDR, 0x0, &val);
+    status |= val;
+    int_hub_dump_status(status);
+    scan_fuse(status);
+    scan_hg(status);
+    scan_tripwire(status);
+  }
+  
+  if(!THERMO_INT) {
+    scan_thermo();
+  }
+  
+  if(!GYRO_INT) {
+    scan_gyro();  
+  }
+  
+  // 还有中断没有处理，继续扫
+  if(!RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT ) {
+    set_task(EV_SCAN_INT_HUB);
   }
 }

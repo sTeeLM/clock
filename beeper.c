@@ -149,7 +149,7 @@ void beeper_initialize (void)
    beeper_stop = 1;
    beeper_music_to = rom_read(ROM_BEEPER_MUSIC_TO);
    beep_enable = rom_read(ROM_BEEPER_ENABLE);
-   beeper_out  = 0;
+   beeper_out  = 1;
 }
 
 void beeper_enter_powersave(void)
@@ -199,7 +199,7 @@ static void _beeper_stop_play(void)
   ET2 = 0;
   pai = 0;
   beeper_stop = 1;
-  beeper_out = 0;
+  beeper_out = 1;
 }
 
 static void _beepler_play(unsigned char * music, bit once)
@@ -262,7 +262,7 @@ void beeper_beep(void)
     beeper_out=~beeper_out;
     delay_5us(4 * 0x13); 
   }
-  beeper_out = 0;
+  beeper_out = 1;
 }
 
 void beeper_beep_beep_always(void)
@@ -281,7 +281,7 @@ void beeper_beep_beep_always(void)
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
   }
-  beeper_out = 0;
+  beeper_out = 1;
 }
 
 void beeper_beep_beep(void)
@@ -302,7 +302,7 @@ void beeper_beep_beep(void)
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
   }
-  beeper_out = 0;
+  beeper_out = 1;
 }
 
 void beeper_play_music(void)

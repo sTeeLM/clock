@@ -138,6 +138,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
     alarm_switch_on();
     lt_timer_switch_off();
+    rtc_set_lt_timer(0);
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 0);
     return;
   }

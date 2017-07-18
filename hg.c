@@ -3,6 +3,7 @@
 #include "task.h"
 #include "serial_hub.h"
 #include "sm.h"
+#include "power.h"
 
 static bit hg_enabled;
 static unsigned char hg_state;
@@ -33,11 +34,19 @@ void hg_initialize (void)
 	hg_enabled = 0;
 }
 
+void hg_enter_powersave(void)
+{
+  CDBG("hg_enter_powersave\n");
+}
+
+void hg_leave_powersave(void)
+{
+  CDBG("hg_leave_powersave\n");
+}
+
 static void hg_fix(void)
 {
   CDBG("hg_fix hg_state = %bx\n", hg_state);
-  
-  if(!hg_enabled) return;
   
   serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 1) != 0);
   serial_set_ctl_bit(SERIAL_BIT_HG1_FIX, (hg_state & 2) != 0);  
@@ -63,6 +72,9 @@ void scan_hg(unsigned int status)
   if(old_hg_state != hg_state) {
     CDBG("EV_ROTATE_HG!\n");
     set_task(EV_ROTATE_HG);
+    if(power_test_flag()) {
+      power_clr_flag();
+    }
     hg_fix();
   }
 }
