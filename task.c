@@ -127,8 +127,8 @@ void run_task()
   while(1) {
     for(c = 0; c < EV_COUNT; c++) {
       if(test_task(c)) {
-        task_procs[c](c);
         clr_task(c);
+        task_procs[c](c);
       }
     }
   }

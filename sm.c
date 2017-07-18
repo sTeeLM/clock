@@ -716,17 +716,21 @@ static const struct sm_trans code sm_trans_fuse_timer[] = {
 static const struct sm_trans code sm_trans_fuse_grenade[] = { 
   /* SM_FUSE_GRENADE */
   // 过1秒进入pre-armed状态
-  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, EV_1S, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, sm_fuse_grenade},
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, EV_1S, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, sm_fuse_grenade},
   // 收到mod1，解除
-  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_KEY_MOD_LPRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  // 收到EV_ACC,测试加速度改变
-  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_ACC_GYRO, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, sm_fuse_grenade},
-  // 如果是脱手（失重），进入ARMED
-  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PRE_ARMED, EV_FUSE_SEL0, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, sm_fuse_grenade},
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, EV_KEY_MOD_LPRESS, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_DISARMED, sm_fuse_grenade},
+  // 参数设置不成功，进入电路测试
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, EV_FUSE_SEL0, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
+  // 清理完毕，进电路测试
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_DISARMED, EV_FUSE_SEL0, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
+  // 收到EV_DROP_GYRO,确认加速度改变
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, EV_DROP_GYRO, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, sm_fuse_grenade},
   // 收到EV_ACC,测试加速度改变
   {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, EV_ACC_GYRO, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, sm_fuse_grenade},
-  // 落地/触碰,触发
-  {SM_FUSE_PARAM<<4|SM_FUSE_GRENADE_ARMED, EV_FUSE_SEL0, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
+  // 落地/触碰,触发,进入predetonate
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, EV_FUSE_SEL0, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREDETONATE, sm_fuse_grenade}, 
+  // 清理完毕,进入detonate
+  {SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREDETONATE, EV_FUSE_SEL0, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
 };
 
 static const struct sm_trans code sm_trans_fuse_detonate[] = { 

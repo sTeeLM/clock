@@ -42,4 +42,22 @@ enum display_logo_type {
 
 void display_logo(enum display_logo_type type, unsigned char num);
 
+
+enum param_error
+{
+  PARAM_ERROR_GYRO_BAD  = 501,
+  PARAM_ERROR_NEED_GYRO  = 502,
+  PARAM_ERROR_LT_TIMER_OVERFLOW = 503,
+  PARAM_ERROR_HG_BAD = 504,
+  PARAM_ERROR_TRIPWIRE_BAD = 505,
+  PARAM_ERROR_THERMO_HI_BAD = 506,
+  PARAM_ERROR_THERMO_TOO_HI = 507,
+  PARAM_ERROR_THERMO_LO_BAD = 508,
+  PARAM_ERROR_THERMO_TOO_LOW = 509,
+  PARAM_ERROR_THERMO_HI_LESS_LO = 510,
+  PARAM_ERROR_FUSE_ERROR = 511,
+};
+
+void display_param_error(unsigned int err);
+
 #endif
