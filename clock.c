@@ -407,7 +407,6 @@ void clock_initialize(void)
   TL0 = (256 - 128); // 32768HZ方波输入，3.90625ms中断一次（256个中断是1s）
   TH0 = (256 - 128);
   PT0 = 1; // 最高优先级 
-  
   display_mode = CLOCK_DISPLAY_MODE_HHMMSS;
   display_enable = 0;
   
@@ -416,41 +415,6 @@ void clock_initialize(void)
   clock_dump();
 }
 
-/*
-void clock_initialize (float fclk)
-{
-
-   int clkr_reload;
-  
-	 CDBG("clock_initialize %f\n", fclk);  
-  
-   counter_1ms = 0;  // initialize state counter
-	 counter_25ms = 0;
-   counter_250ms = 0;
-   counter_1s = 0;
-  
-	// initialization T2CON:
-   //   CP/RL2 = 0 (autoreload, no capture),
-   //   EXEN2 = 0 (disable external input T2EX),
-   //   C/T2 = 0 (clock, no counter),
-   //   RCLK = TCLK = 0 (clock, no baud rate generator),
-   //   TF2 = EXF2 = 0 (interrupt flags cleared) 
-   //   TR2 = 0 (clock stop, please)
-   T2CON = 4;
-
-   // Load clock2 autoreload bytes
-   clkr_reload = (0xFFFF - (unsigned int)((fclk * TMR_TIME) / 12));
-   RCAP2H = high_byte(clkr_reload); 
-   RCAP2L = low_byte(clkr_reload);
-
-   // Highest priority for Timer2 interrupts
-   PT2 = 1;
-   // Enables Timer2 interrupts
-   ET2 = 1;
-   // Start Timer2
-   TR2 = 1;	
-}
-*/
 
 void clock_enter_powersave(void)
 {

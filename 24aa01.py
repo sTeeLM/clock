@@ -32,7 +32,7 @@ a[7] = 30
 #define ROM_POWERSAVE_TO    8
 # 0=off 1=15s 2=30s
 
-a[8] = 1
+a[8] = 0
 
 #define ROM_FUSE_HG_ONOFF   9
 #define ROM_FUSE_GYRO_ONOFF 10

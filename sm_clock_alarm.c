@@ -59,6 +59,7 @@ void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
   
   // 闹钟0到时间了
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {
+    clock_display(0);
     display_alarm(IS_ALARM0);
     beeper_play_music();
     return;
@@ -66,6 +67,7 @@ void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
   
   // 闹钟1到时间了
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM1 && ev == EV_ALARM1) {
+    clock_display(0);
     display_alarm(IS_ALARM1);
     beeper_beep_beep_always();
     return;

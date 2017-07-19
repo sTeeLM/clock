@@ -850,9 +850,9 @@ void sm_initialize (void)
   CDBG("sm_initialize\n");
   sm_state = SM_CLOCK_DISPLAY|SM_CLOCK_DISPLAY_INIT;
   
-  alarm_switch_on();
   lt_timer_switch_off();
+  alarm_switch_on();
   rtc_set_lt_timer(0);
-  
+
   set_task(EV_KEY_MOD_UP);
 }

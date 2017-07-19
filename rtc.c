@@ -35,7 +35,7 @@ static void dump_rtc(void)
 	// dump rtc contents
 	for(addr = 0; addr < 0x15; addr ++) {
 		I2C_Get(RTC_I2C_ADDRESS, addr, &c);
-		CDBG("rtc [%02bx] = 02%bx\n", addr,  c);
+		CDBG("rtc [%02bx] = 0x%bx\n", addr,  c);
 	}
 }
 

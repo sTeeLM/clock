@@ -64,6 +64,7 @@ void serial_ctl_out(void)
   SR_WR = 0;
   delay_5us(1);
   SR_WR = 1;
+  SR_DATA_IN = 1;
   serial_dump_ctl();
 }
 

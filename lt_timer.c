@@ -428,6 +428,7 @@ void lt_timer_sync_from_rom(void)
 // 将绝对时间写入rom！
 void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
 {
+  CDBG("lt_timer_sync_to_rom type = %bd\n", type);
   switch (type) { 
     case LT_TIMER_SYNC_YEAR:
       rom_write(ROM_LT_TIMER_YEAR, ltm.year);
