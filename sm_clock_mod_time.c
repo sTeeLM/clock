@@ -223,6 +223,7 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
   
   // 按mod1进入修改时间模式
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_INIT && ev == EV_KEY_MOD_LPRESS) {
+    clock_display(0);
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 1);
     return;
   }    

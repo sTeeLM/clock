@@ -34,88 +34,7 @@ static void display_temp(void)
   led_set_code(0, (flt % 10) + 0x30);    
 }
 
-static void display_week(void)
-{
-  unsigned char day;
-
-  day = clock_get_day();
-
-  CDBG("display_week %bd\n", day); 
-
-  led_clear();
-  
-  led_set_code(5, 'D');
-  led_set_code(4, 'A');
-  led_set_code(3, 'Y');
-  led_set_code(2, '-');  
-  led_set_code(1, (day / 10) + 0x30);
-  led_set_code(0, (day % 10) + 0x30);    
-}
-
-static void display_yymmdd(void)
-{
-  unsigned char year, mon, date;
-  
-  year = clock_get_year();
-  mon  = clock_get_month();
-  date  = clock_get_date();
-  
-  CDBG("display_yymmdd %bd-%bd-%bd\n", year, mon, date);
-  
-  led_clear();
-  
-  led_set_dp(2);
-  led_set_dp(4);
-  
-  if((year / 10) != 0) {
-    led_set_code(5, (year / 10) + 0x30);
-  } else {
-    led_set_code(5, LED_CODE_BLACK);
-  }
-  led_set_code(4, (year % 10) + 0x30);
-  led_set_code(3, (mon / 10)+ 0x30);
-  led_set_code(2, (mon % 10) + 0x30);
-  led_set_code(1, (date / 10) + 0x30);
-  led_set_code(0, (date % 10) + 0x30);
-}
-
-static void display_hhmmss(void)
-{
-  unsigned char hour, min, sec;
-  
-  hour = clock_get_hour();
-  min  = clock_get_min();
-  sec  = clock_get_sec();
-  
-  CDBG("display_hhmmss %bd:%bd:%bd\n", hour, min, sec);
-  
-  led_clear();
-  
-  // 两个“:”号
-  led_set_dp(1);
-  led_set_dp(2);
-  led_set_dp(3);
-  led_set_dp(4);
-  
-  // 如果是12小时显示，以第一位数字的点表示“PM”
-  if(clock_get_hour_12() && hour > 12) {
-    led_set_dp(5);
-    hour -= 12;
-  }
-  
-  if((hour / 10) != 0) {
-    led_set_code(5, (hour / 10) + 0x30);
-  } else {
-    led_set_code(5, LED_CODE_BLACK);
-  }
-  led_set_code(4, (hour % 10) + 0x30);
-  led_set_code(3, (min / 10)+ 0x30);
-  led_set_code(2, (min % 10) + 0x30);
-  led_set_code(1, (sec / 10) + 0x30);
-  led_set_code(0, (sec % 10) + 0x30);
-}
-
-static void reset_switch(void)
+static void reset_auto_switch(void)
 {
   last_display_s = clock_get_sec_256();
 }
@@ -147,80 +66,79 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
     && ev == EV_KEY_MOD_UP) {
-    display_hhmmss();
+    led_clear();
+    clock_display(1);
+    clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
     power_reset_powersave_to();
     return;
   }
+    
+  // 切换回时分秒显示，从小模式切过来，或者从pac切过来
+  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && 
+    (ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
+    clock_display(1);
+    clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
+    power_reset_powersave_to();
+    return;
+  }  
   
-  // 刷新时分秒显示
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && ev == EV_250MS) {
-    display_hhmmss();
+  // 1S探测下睡眠超时时间
+  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_HHMMSS 
+    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
+    && ev == EV_1S) {
     power_test_powersave_to();
     return;
   }
 
   // 切换到显示年月日
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
-    display_yymmdd();
-    reset_switch();
+    //display_yymmdd();
+    clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
+    reset_auto_switch();
     power_reset_powersave_to();
     return;
   } 
   
+  // 1S探测下自动切回时间
+  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_YYMMDD 
+    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD
+    && ev == EV_1S) {
+    test_autoswitch();
+    return;
+  }
+  
   // 切换到显示周几
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK && ev == EV_KEY_MOD_PRESS) {
-    display_week();
-    reset_switch();;
+    //display_week();
+    clock_switch_display_mode(CLOCK_DISPLAY_MODE_WEEK);
+    reset_auto_switch();
     power_reset_powersave_to();
     return;
   }
   
-  // 刷新年月日显示
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD && ev == EV_1S) {
-    display_yymmdd();
+  // 1S探测下自动切回时间
+  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_WEEK 
+    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK
+    && ev == EV_1S) {
     test_autoswitch();
-    power_test_powersave_to();
     return;
-  }
-  
-  // 切换回时分秒显示，从小模式切过来，或者从pac切过来
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && 
-    (ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
-    beeper_stop_music();
-    display_hhmmss();
-    power_reset_powersave_to();
-    return;
-  }
+  }  
   
   // 切换到显示温度
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP && ev == EV_KEY_MOD_PRESS) {
+    clock_display(0);
     display_temp();
-    reset_switch();;
+    reset_auto_switch();
     power_reset_powersave_to();
-    return;
-  }  
-  
-  // 刷新周显示
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK && ev == EV_1S) {
-    display_week();
-    test_autoswitch();
-    power_test_powersave_to();
     return;
   }  
    
-
-  // 切换回时分秒显示
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && ev == EV_KEY_MOD_PRESS) {
-    display_hhmmss();
-    power_reset_powersave_to();
-    return;
-  }  
-
-  // 刷新温度显示
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP && ev == EV_1S) {
-    display_temp();
+  // 1S探测下自动切回时间
+  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_TEMP 
+    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP
+    && ev == EV_1S) {
     test_autoswitch();
-    power_test_powersave_to();    
     return;
   }
+
 }

@@ -50,4 +50,15 @@ unsigned char clock_get_ms39(void);
 
 bit clock_is_leap_year(unsigned char year); // year 0-99
 unsigned char clock_get_mon_date(unsigned char year, unsigned char mon); // mon 0-11
+
+enum clock_display_mode
+{
+  CLOCK_DISPLAY_MODE_HHMMSS = 0,
+  CLOCK_DISPLAY_MODE_YYMMDD,
+  CLOCK_DISPLAY_MODE_WEEK
+};
+
+void clock_display(bit enable);
+void clock_switch_display_mode(enum clock_display_mode mode);
+
 #endif

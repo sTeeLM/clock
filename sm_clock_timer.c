@@ -4,6 +4,9 @@
 #include "timer.h"
 #include "debug.h"
 #include "beeper.h"
+#include "clock.h"
+
+// 跑表功能
 
 static void show_slot_title(unsigned char slot)
 {
@@ -37,6 +40,7 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
   
   // 按set1跑表大模式
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_INIT && ev == EV_KEY_SET_LPRESS) {
+    clock_display(0);
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 4);
     return;
   }

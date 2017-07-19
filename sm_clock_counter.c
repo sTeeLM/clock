@@ -5,6 +5,8 @@
 #include "led.h"
 #include "beeper.h"
 
+// 倒计时功能
+
 static void inc_only(unsigned char what)
 {
   switch (what) {

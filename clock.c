@@ -121,9 +121,26 @@ static struct clock_struct idata clk;
 static bit clk_is12;
 static unsigned char idata sec_256; // 用于 time_diff
 
+static bit display_enable;
+static unsigned char display_mode;
+
+
+
+void clock_display(bit enable)
+{
+  display_enable = enable;
+}
+
+void clock_switch_display_mode(enum clock_display_mode mode)
+{
+  display_mode = mode;
+}
+
 #pragma NOAREGS
 static void clock_inc_ms39(void)
 {
+  unsigned char hour;
+  bit is_pm;
   clk.ms39 ++;
   if((clk.ms39 % 2 ) == 0) {
      refresh_led();
@@ -157,8 +174,42 @@ static void clock_inc_ms39(void)
           }
         }
       }
+    } 
+  }
+  if(display_enable) {
+    if(display_mode == CLOCK_DISPLAY_MODE_HHMMSS) {
+      hour = clk.hour;
+      is_pm = 0;
+      if(clk_is12 && clk.hour > 12) {
+        hour -= 12;
+        is_pm = 1;
+      }
+      
+      if(hour / 10 != 0) {
+        led_data[5] = led_code[hour / 10 + 4] | (is_pm ? 0 : 0x80);
+      } else {
+        led_data[5] = 0x7F | (is_pm ? 0 : 0x80);
+      }
+      led_data[4] = led_code[hour % 10 + 4];
+      led_data[3] = led_code[clk.min / 10 + 4];
+      led_data[2] = led_code[clk.min % 10 + 4];
+      led_data[1] = led_code[clk.sec / 10 + 4]; 
+      led_data[0] = led_code[clk.sec % 10 + 4]|0x80;
+    } else if(display_mode == CLOCK_DISPLAY_MODE_YYMMDD) {
+      led_data[5] = led_code[clk.year / 10 + 4] |0x80;
+      led_data[4] = led_code[clk.year % 10 + 4];
+      led_data[3] = led_code[(clk.mon + 1) / 10 + 4] |0x80;
+      led_data[2] = led_code[(clk.mon + 1) % 10 + 4];
+      led_data[1] = led_code[(clk.date + 1) / 10 + 4] |0x80; 
+      led_data[0] = led_code[(clk.date + 1) % 10 + 4]|0x80;
+    } else {
+      led_data[5] = led_code[0x18]|0x80; // D
+      led_data[4] = led_code[0x15]|0x80; // A
+      led_data[3] = led_code[0x2D]|0x80; // Y
+      led_data[2] = led_code[0x01]|0x80; // -
+      led_data[1] = led_code[(clk.day + 1) / 10 + 4] |0x80; 
+      led_data[0] = led_code[(clk.day + 1) % 10 + 4] |0x80;
     }
-    
   }
 }
 #pragma AREGS 
@@ -282,7 +333,7 @@ void clock_sync_from_rtc(enum clock_sync_type type)
     clk.hour = rtc_time_get_hour();   // 0 - 23
     clk.min  = rtc_time_get_min();    // 0 - 59
     clk.sec  = rtc_time_get_sec();    // 0 - 59
-    clk.ms39 = 250;   // 0 - 255
+    clk.ms39 = 60;   // 0 - 255
     clk_is12     = rtc_time_get_hour_12();
   } else if(type == CLOCK_SYNC_DATE) {
     rtc_read_data(RTC_TYPE_DATE);
@@ -356,6 +407,9 @@ void clock_initialize(void)
   TL0 = (256 - 128); // 32768HZ方波输入，3.90625ms中断一次（256个中断是1s）
   TH0 = (256 - 128);
   PT0 = 1; // 最高优先级 
+  
+  display_mode = CLOCK_DISPLAY_MODE_HHMMSS;
+  display_enable = 0;
   
   clock_enable_interrupt(1);
 
