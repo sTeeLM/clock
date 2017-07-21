@@ -17,8 +17,8 @@ static void gyro_power_on(void)
 {
   unsigned char val;
   CDBG("gyro_power_on\n");
-	serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 1);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 1);
+  serial_ctl_out();
   
   // Configuration Register 设置为全1，用于input
   I2C_Put(GYRO_I2C_ADDRESS, 0x3, 0xFF);
@@ -32,8 +32,8 @@ static void gyro_power_on(void)
 static void gyro_power_off(void)
 {
   CDBG("gyro_power_off\n");
-	serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 0);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 0);
+  serial_ctl_out();
 }
 
 void gyro_initialize (void)
@@ -85,7 +85,7 @@ void scan_gyro(void)
 
 void gyro_enable(bit enable)
 {
-	CDBG("gyro_enable %bd\n", enable ? 1 : 0 );
+  CDBG("gyro_enable %bd\n", enable ? 1 : 0 );
   if(enable && !gyro_enabled) {
     gyro_power_on();
   } else if(!enable && gyro_enabled){

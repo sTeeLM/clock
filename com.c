@@ -60,7 +60,7 @@ void com_initialize (void) {
   sendactive = 0;                              // transmitter is not active
   sendfull = 0;                                // clear 'sendfull' flag
 
-	SCON = 0x50;                                 // serial port MODE 1, enable serial receiver
+  SCON = 0x50;                                 // serial port MODE 1, enable serial receiver
                                                // Configure timer 1 as a baud rate generator
   PCON |= 0x80;                                // 0x80=SMOD: set serial baudrate doubler
   TMOD |= 0x20;                                // put timer 1 into MODE 2

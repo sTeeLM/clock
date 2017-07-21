@@ -6,7 +6,7 @@
 #define  false          0
 
 #define  HIGH           1
-#define  LOW          	0
+#define  LOW            0
 
 #define  ON             1
 #define  OFF            0

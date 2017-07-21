@@ -389,7 +389,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
   // 测试fuse0 broke 收到EV_FUSE0_BROKE, 更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_FUSE0_BROKE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
   // mod0 切换到测试 fuse1 short
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, sm_fuse_test},
@@ -402,7 +402,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, sm_fuse_test},
   // 测试fuse1 short 收到EV_FUSE1_SHORT, 更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, EV_FUSE1_SHORT, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, sm_fuse_test},
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, sm_fuse_test},
   // mod0 切换到测试 fuse1 broke
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_SHORT, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
@@ -416,7 +416,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
   // 测试fuse1 broke 收到EV_FUSE1_BROKE, 更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_FUSE1_BROKE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
   // mod0 切换到测试tripwire
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
@@ -429,7 +429,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
   // 收到 EV_TRIPWIRE 更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_TRIPWIRE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
   // mod0 切换到测试thermo hi
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
@@ -442,7 +442,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
   // 收到EV_THERMO_HI，更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_THERMO_HI, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
   // mod0 切换到测试thermo lo
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
@@ -455,7 +455,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
   // 收到EV_THERMO_LO，更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_THERMO_LO, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
   // mod0 切换到测试 hg
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
@@ -468,8 +468,8 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_SET_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
   // 收到EV_ROTATE，更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_ROTATE_HG, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
-	// 收到EV_1S，更新状态
-	{SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
+  // 收到EV_1S，更新状态
+  {SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
   // mod0 切换到测试 gyro
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
   // mod1 切换回时钟模式
@@ -486,7 +486,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_ACC_GYRO, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
   // 收到EV_DROP，更新显示
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_DROP_GYRO, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},  
-	// 收到EV_1S，更新状态
+  // 收到EV_1S，更新状态
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_1S, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
   // mod0 切换到测试 fuse0 short
   {SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_PRESS, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_SHORT, sm_fuse_test},

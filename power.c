@@ -66,9 +66,9 @@ void power_enter_powersave(void)
   com_enter_powersave();
   while(powersave_flag) {
     PCON |= 0x1; // should be 0x2
-		com_leave_powersave(); 
+    com_leave_powersave(); 
     scan_int_hub_proc(EV_SCAN_INT_HUB);
-		com_enter_powersave();
+    com_enter_powersave();
     if(!powersave_flag) {
       break;
     }

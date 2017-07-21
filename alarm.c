@@ -49,7 +49,7 @@ void scan_alarm(void)
     }
   }
   
-  // 这段逻辑会被频繁调用长达1分钟
+  // 这段逻辑会被频繁调1S用长达1分钟
   if(alarm1_hit) {
     rtc_read_data(RTC_TYPE_TIME);
     if(rtc_time_get_min() == 0 

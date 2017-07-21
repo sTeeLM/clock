@@ -17,21 +17,21 @@ static void hg_power_on(void)
 {
   CDBG("hg_power_on\n");
   hg_state = 0;
-	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);
+  serial_ctl_out();
 }
 
 static void hg_power_off(void)
 {
   CDBG("hg_power_off\n");
-	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);
+  serial_ctl_out();
 }
 
 void hg_initialize (void)
 {
   CDBG("hg_initialize\n");
-	hg_enabled = 0;
+  hg_enabled = 0;
 }
 
 void hg_enter_powersave(void)
@@ -63,8 +63,8 @@ void scan_hg(unsigned int status)
   if(!hg_enabled) return;
   
   old_hg_state = hg_state;
-	hg_state = (status & 0x0F00) >> 8;
-  hg_state = ~hg_state;	
+  hg_state = (status & 0x0F00) >> 8;
+  hg_state = ~hg_state;  
   hg_state &= 0xF;
   
   CDBG("scan_hg hg_state = %bx, old_state = %bx\n", hg_state, old_hg_state);
@@ -82,7 +82,7 @@ void scan_hg(unsigned int status)
 
 void hg_enable(bit enable)
 {
-	CDBG("hg_enable %bd\n", enable ? 1 : 0);
+  CDBG("hg_enable %bd\n", enable ? 1 : 0);
   if(enable && !hg_enabled) {
     hg_power_on();
   } else if(!enable && hg_enabled){
@@ -94,7 +94,7 @@ void hg_enable(bit enable)
 
 unsigned char hg_get_state(void)
 {
-	CDBG("hg_get_state\n");
-	return hg_state;
+  CDBG("hg_get_state\n");
+  return hg_state;
 }
 

@@ -36,8 +36,8 @@ extern unsigned char lpress_start;
 extern unsigned char last_display_s;
 extern unsigned char common_state;
 enum display_logo_type {
-	DISPLAY_LOGO_TYPE_CLOCK = 0,
-	DISPLAY_LOGO_TYPE_FUSE  = 1,	
+  DISPLAY_LOGO_TYPE_CLOCK = 0,
+  DISPLAY_LOGO_TYPE_FUSE  = 1,  
 };
 
 void display_logo(enum display_logo_type type, unsigned char num);

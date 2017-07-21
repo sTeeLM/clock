@@ -143,7 +143,7 @@ void beeper_initialize (void)
    // Disable Timer2 interrupts
    ET2 = 0;
    // Start Timer2
-   TR2 = 0;	
+   TR2 = 0;  
    
    beeper_music_index = rom_read(ROM_BEEPER_MUSIC_INDEX) % BEEPER_MUSIC_CNT;
    beeper_stop = 1;

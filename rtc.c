@@ -30,13 +30,13 @@ static bit is_lt_timer_mode;
 
 static void dump_rtc(void)
 {
-	unsigned char addr;
-	unsigned char c;
-	// dump rtc contents
-	for(addr = 0; addr < 0x15; addr ++) {
-		I2C_Get(RTC_I2C_ADDRESS, addr, &c);
-		CDBG("rtc [%02bx] = 0x%bx\n", addr,  c);
-	}
+  unsigned char addr;
+  unsigned char c;
+  // dump rtc contents
+  for(addr = 0; addr < 0x15; addr ++) {
+    I2C_Get(RTC_I2C_ADDRESS, addr, &c);
+    CDBG("rtc [%02bx] = 0x%bx\n", addr,  c);
+  }
 }
 
 bit rtc_is_lt_timer(void)
@@ -62,19 +62,19 @@ void scan_rtc(void)
 
 void rtc_initialize (void)
 {
-	unsigned char count;
+  unsigned char count;
   unsigned char is12;
 
-	CDBG("rtc_initialize\n");
+  CDBG("rtc_initialize\n");
   
   is_lt_timer_mode = 0;
-	
-	I2C_Init();
+  
+  I2C_Init();
 
   // reset rtc
-	RTC_RESET = 0;
-	delay_ms(10);
-	RTC_RESET = 1;
+  RTC_RESET = 0;
+  delay_ms(10);
+  RTC_RESET = 1;
     
   memset(rtc_data, 0, sizeof(rtc_data));
 

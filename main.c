@@ -27,14 +27,14 @@
 
 
 void main(void)
-{	
+{  
 //  AUXR |= 2; // use xram on chip
   EA = 1;                                       // enable global interrupts
   com_initialize();                             // initialize interrupt driven serial I/O
   int_hub_initialize();                         // initialize interrupt hub 
   serial_hub_initialize();                      // initialize serial hub
   rtc_initialize();                             // initialize rtc
-  clock_initialize();												    // initialize clock
+  clock_initialize();                            // initialize clock
   key_initialize();                             // initialize keys
   led_initialize();                             // initialize led display
   power_initialize();                           // initialize power manager

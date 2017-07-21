@@ -11,15 +11,15 @@ static bit tripwire_enabled;
 static void tripwire_power_on(void)
 {
   CDBG("tripwire_power_on\n");
-	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 1);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 1);
+  serial_ctl_out();
 }
 
 static void tripwire_power_off(void)
 {
   CDBG("tripwire_power_off\n");
-	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 0);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 0);
+  serial_ctl_out();
 }
 
 void tripwire_initialize (void)
@@ -58,7 +58,7 @@ void tripwire_proc(enum task_events ev)
 
 void tripwire_enable(bit enable)
 {
-	CDBG("tripwire_enable %bd\n", enable ? 1 : 0);
+  CDBG("tripwire_enable %bd\n", enable ? 1 : 0);
   if(enable && !tripwire_enabled) {
     tripwire_power_on();
   } else if(!enable && tripwire_enabled){
@@ -69,8 +69,8 @@ void tripwire_enable(bit enable)
 
 void tripwire_set_broke(bit broke)
 {
-	CDBG("tripwire_set_broke %bd\n", broke ? 1: 0);
+  CDBG("tripwire_set_broke %bd\n", broke ? 1: 0);
   if(!tripwire_enabled) return;
-	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, broke);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, broke);
+  serial_ctl_out();
 }

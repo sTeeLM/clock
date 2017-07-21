@@ -29,15 +29,15 @@ static void fuse_power_on(void)
   fuse1_shorted = 0;
   fuse1_broked  = 0;  
   
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
+  serial_ctl_out();
 }
   
 static void fuse_power_off(void)
 {
   CDBG("fuse_power_off\n");
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
-	serial_ctl_out();
+  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
+  serial_ctl_out();
   fuse0_shorted = 0;
   fuse0_broked  = 0;
   fuse1_shorted = 0;
@@ -107,7 +107,7 @@ void scan_fuse(unsigned int status)
   // 如果还没有trigger
   if((status & FUSE0_TRIGGERED_MASK) != 0) {
     if((status & FUSE0_SHORT_MASK) == 0) {
-			CDBG("EV_FUSE0_SHORT\n");
+      CDBG("EV_FUSE0_SHORT\n");
       set_task(EV_FUSE0_SHORT);
       fuse0_shorted = 1;
       has_event = 1;
@@ -116,7 +116,7 @@ void scan_fuse(unsigned int status)
     }
     
     if((status & FUSE0_BROKE_MASK) == 0) {
-			CDBG("EV_FUSE0_BROKE\n");
+      CDBG("EV_FUSE0_BROKE\n");
       set_task(EV_FUSE0_BROKE);
       fuse0_broked = 1;
       has_event = 1;
@@ -127,7 +127,7 @@ void scan_fuse(unsigned int status)
   
   if((status & FUSE1_TRIGGERED_MASK) != 0) {
     if((status & FUSE1_SHORT_MASK) == 0) {
-			CDBG("EV_FUSE1_SHORT\n");
+      CDBG("EV_FUSE1_SHORT\n");
       set_task(EV_FUSE1_SHORT);
       fuse1_shorted = 1;
       has_event = 1;
@@ -136,7 +136,7 @@ void scan_fuse(unsigned int status)
     }
     
     if((status & FUSE1_BROKE_MASK) == 0) {
-			CDBG("EV_FUSE1_BROKE\n");
+      CDBG("EV_FUSE1_BROKE\n");
       set_task(EV_FUSE1_BROKE);
       fuse1_broked = 1;
       has_event = 1;
@@ -158,35 +158,35 @@ void fuse_proc(enum task_events ev)
 
 void fuse_set_fuse_short(unsigned char index, bit enable)
 {
-	CDBG("fuse_set_fuse_short %bd %bd\n", index, enable ? 1 : 0);
+  CDBG("fuse_set_fuse_short %bd %bd\n", index, enable ? 1 : 0);
   
   if(!fuse_enabled) return;
   
-	if(index == 0)
-		serial_set_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST, enable);
-	else
-		serial_set_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST, enable);
-	
-	serial_ctl_out();
+  if(index == 0)
+    serial_set_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST, enable);
+  else
+    serial_set_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST, enable);
+  
+  serial_ctl_out();
 }
 
 void fuse_set_fuse_broke(unsigned char index, bit enable)
 {
-	CDBG("fuse_set_fuse_broke %bd %bd\n", index, enable ? 1 : 0);
+  CDBG("fuse_set_fuse_broke %bd %bd\n", index, enable ? 1 : 0);
   
   if(!fuse_enabled) return;
   
-	if(index == 0)
-		serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, enable);
-	else
-		serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, enable);
+  if(index == 0)
+    serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, enable);
+  else
+    serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, enable);
 
-	serial_ctl_out();
+  serial_ctl_out();
 }
 
 void fuse_enable(bit enable)
 {
-	CDBG("fuse_enable %bd\n", enable ? 1 : 0);
+  CDBG("fuse_enable %bd\n", enable ? 1 : 0);
   
   if(enable && !fuse_enabled)
     fuse_power_on();
