@@ -1,3 +1,4 @@
+#include <STC89C5xRC.H>
 #include "fuse.h"
 #include "hg.h"
 #include "gyro.h"
@@ -19,6 +20,8 @@ static bit fuse0_shorted;
 static bit fuse0_broked;
 static bit fuse1_shorted;
 static bit fuse1_broked;
+
+sbit FUSE_TRIGGER_POWER_EN  = P4 ^ 1;
 
 static void fuse_power_on(void)
 {
@@ -53,6 +56,7 @@ void fuse_initialize (void)
   fuse0_broked  = 0;
   fuse1_shorted = 0;
   fuse1_broked  = 0;
+  FUSE_TRIGGER_POWER_EN = 0;
 }
 
 bit fuse_test_short(unsigned char index)
@@ -80,6 +84,12 @@ void fuse_trigger(bit enable)
   fuse0_good = !fuse0_shorted && !fuse0_broked;
   fuse1_good = !fuse1_shorted && !fuse1_broked;  
   
+  // ษýัน
+  if((fuse0_good || fuse1_good)) {
+    FUSE_TRIGGER_POWER_EN = enable;
+  }
+  
+  // trigger
   if(fuse0_good) {
     serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, enable);
   }

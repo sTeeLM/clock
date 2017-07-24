@@ -14,11 +14,25 @@
 #include "fuse.h"
 #include "cext.h"
 
+#ifndef __EMULATE__
+
 sbit RTC_INT        = P1 ^ 1;
 sbit GYRO_INT       = P1 ^ 2;
 sbit THERMO_INT     = P1 ^ 3;
 sbit EXT_INT        = P1 ^ 4;
 sbit INT_BIT        = P3 ^ 3;
+
+#else
+
+sbit RTC_INT        = P1 ^ 1;
+sbit GYRO_INT       = P1 ^ 2;
+sbit THERMO_INT     = P1 ^ 3;
+sbit EXT0_INT       = P1 ^ 4;
+sbit EXT1_INT       = P4 ^ 3;
+sbit INT_BIT        = P3 ^ 3;
+
+#endif
+
 
 #define INTHUB0_I2C_ADDR 0x40 //0100 0000
 #define INTHUB1_I2C_ADDR 0x42 //0100 0010
@@ -103,7 +117,7 @@ void scan_int_hub_proc (enum task_events ev)
   if(!RTC_INT) {
     scan_rtc(); // call scan_alarm or scan_lt_timer
   }
-  
+#ifndef __EMULATE__  
   if(!EXT_INT) {
     // 读取端口寄存器
     I2C_Get(INTHUB1_I2C_ADDR, 0x0, &val); 
@@ -116,6 +130,23 @@ void scan_int_hub_proc (enum task_events ev)
     scan_hg(status);
     scan_tripwire(status);
   }
+#else
+  if(!EXT0_INT) {
+    I2C_Get(INTHUB0_I2C_ADDR, 0x0, &val);
+    status = val;
+    int_hub_dump_status(status);
+    scan_fuse(status);
+  }
+  
+  if(!EXT1_INT) {
+    I2C_Get(INTHUB1_I2C_ADDR, 0x0, &val); 
+    status = val; 
+    status = status << 8;
+    int_hub_dump_status(status);
+    scan_hg(status);
+    scan_tripwire(status);
+  }
+#endif
   
   if(!THERMO_INT) {
     scan_thermo();
@@ -125,8 +156,15 @@ void scan_int_hub_proc (enum task_events ev)
     scan_gyro();  
   }
   
+#ifndef __EMULATE__ 
   // 还有中断没有处理，继续扫
   if(!RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT ) {
     set_task(EV_SCAN_INT_HUB);
   }
+#else
+  if(!RTC_INT || !EXT0_INT || !EXT1_INT|| !THERMO_INT || !GYRO_INT ) {
+    set_task(EV_SCAN_INT_HUB);
+  }
+#endif
+  
 }
