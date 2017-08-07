@@ -1,2 +1,13 @@
 [0723/183752:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0724/123705:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0727/223617:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0728/235441:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0731/110043:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
+[0731/222902:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0801/093644:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0801/214226:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0802/082339:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0802/082339:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0803/040002:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0806/135432:ERROR:ipc_channel_win.cc(217)] pipe error: 109
+[0806/140911:ERROR:ipc_channel_win.cc(217)] pipe error: 109

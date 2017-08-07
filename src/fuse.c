@@ -8,12 +8,10 @@
 #include "sm.h"
 #include "power.h"
 
-#define FUSE0_TRIGGERED_MASK 0x1
-#define FUSE1_TRIGGERED_MASK 0x2
-#define FUSE0_SHORT_MASK 0x4
-#define FUSE0_BROKE_MASK 0x8
-#define FUSE1_SHORT_MASK 0x10
-#define FUSE1_BROKE_MASK 0x20
+#define FUSE0_SHORT_MASK 0x1
+#define FUSE0_BROKE_MASK 0x2
+#define FUSE1_SHORT_MASK 0x4
+#define FUSE1_BROKE_MASK 0x8
 
 static bit fuse_enabled;
 static bit fuse0_shorted;
@@ -114,47 +112,44 @@ void scan_fuse(unsigned int status)
   bit has_event = 0;
   CDBG("scan_fuse %x\n", status);
   
-  // 如果还没有trigger
-  if((status & FUSE0_TRIGGERED_MASK) != 0) {
-    if((status & FUSE0_SHORT_MASK) == 0) {
-      CDBG("EV_FUSE0_SHORT\n");
-      set_task(EV_FUSE0_SHORT);
-      fuse0_shorted = 1;
-      has_event = 1;
-    } else {
-      fuse0_shorted = 0;
-    }
-    
-    if((status & FUSE0_BROKE_MASK) == 0) {
-      CDBG("EV_FUSE0_BROKE\n");
-      set_task(EV_FUSE0_BROKE);
-      fuse0_broked = 1;
-      has_event = 1;
-    } else {
-      fuse0_broked = 0;
-    }
+
+  if((status & FUSE0_SHORT_MASK) == 0) {
+    CDBG("EV_FUSE0_SHORT\n");
+    set_task(EV_FUSE0_SHORT);
+    fuse0_shorted = 1;
+    has_event = 1;
+  } else {
+    fuse0_shorted = 0;
   }
   
-  if((status & FUSE1_TRIGGERED_MASK) != 0) {
-    if((status & FUSE1_SHORT_MASK) == 0) {
-      CDBG("EV_FUSE1_SHORT\n");
-      set_task(EV_FUSE1_SHORT);
-      fuse1_shorted = 1;
-      has_event = 1;
-    } else {
-      fuse1_shorted = 0;
-    }
-    
-    if((status & FUSE1_BROKE_MASK) == 0) {
-      CDBG("EV_FUSE1_BROKE\n");
-      set_task(EV_FUSE1_BROKE);
-      fuse1_broked = 1;
-      has_event = 1;
-    } else {
-      fuse1_broked = 0;
-    }
+  if((status & FUSE0_BROKE_MASK) == 0) {
+    CDBG("EV_FUSE0_BROKE\n");
+    set_task(EV_FUSE0_BROKE);
+    fuse0_broked = 1;
+    has_event = 1;
+  } else {
+    fuse0_broked = 0;
+  }
+
+
+  if((status & FUSE1_SHORT_MASK) == 0) {
+    CDBG("EV_FUSE1_SHORT\n");
+    set_task(EV_FUSE1_SHORT);
+    fuse1_shorted = 1;
+    has_event = 1;
+  } else {
+    fuse1_shorted = 0;
   }
   
+  if((status & FUSE1_BROKE_MASK) == 0) {
+    CDBG("EV_FUSE1_BROKE\n");
+    set_task(EV_FUSE1_BROKE);
+    fuse1_broked = 1;
+    has_event = 1;
+  } else {
+    fuse1_broked = 0;
+  }
+
   if(has_event == 1 && power_test_flag()) {
     power_clr_flag();
   }

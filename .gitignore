@@ -43,5 +43,10 @@ Clock
 *.pdsbak
 *.bak
 *.tmp
-
+*.PcbDoc.Zip
+*.PcbDocPreview
+*.SchDocPreview
+*.SchLib.Zip
+*.PcbDoc.Zip
+*.SchDoc.Zip
 .DS_Store

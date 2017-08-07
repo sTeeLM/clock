@@ -14,7 +14,7 @@
 #include "fuse.h"
 #include "cext.h"
 
-#ifndef __EMULATE__
+#ifdef __EMULATE__
 
 sbit RTC_INT        = P1 ^ 1;
 sbit GYRO_INT       = P1 ^ 2;
@@ -85,22 +85,22 @@ static void int_hub_dump_status(unsigned int status)
   UNUSED_PARAM(status);
   /*
   CDBG("++++++int_hub_dump_status begin++++++\n");
-  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE0_TRIGGERED, status) ? '1' : '0', "INT_HUB_FUSE0_TRIGGERED");
-  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE1_TRIGGERED, status) ? '1' : '0', "INT_HUB_FUSE1_TRIGGERED");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE0_SHORT, status) ? '1' : '0', "INT_HUB_FUSE0_SHORT");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE0_BROKE, status) ? '1' : '0', "INT_HUB_FUSE0_BROKE");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE1_SHORT, status) ? '1' : '0', "INT_HUB_FUSE1_SHORT");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_FUSE1_BROKE, status) ? '1' : '0', "INT_HUB_FUSE1_BROKE");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED0, status) ? '1' : '0', "INT_HUB_UNSUSED0");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED1, status) ? '1' : '0', "INT_HUB_UNSUSED1");
+  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED2, status) ? '1' : '0', "INT_HUB_UNSUSED2");
+  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED3, status) ? '1' : '0', "INT_HUB_UNSUSED3");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_HG0_HIT, status) ? '1' : '0', "INT_HUB_HG0_HIT");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_HG1_HIT, status) ? '1' : '0', "INT_HUB_HG1_HIT");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_HG2_HIT, status) ? '1' : '0', "INT_HUB_HG2_HIT");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_HG3_HIT, status) ? '1' : '0', "INT_HUB_HG3_HIT"); 
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_TRIPWIRE_HIT, status) ? '1' : '0', "INT_HUB_TRIPWIRE_HIT");  
-  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED2, status) ? '1' : '0', "INT_HUB_UNSUSED2");
-  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED3, status) ? '1' : '0', "INT_HUB_UNSUSED3");
   CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
+  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED5, status) ? '1' : '0', "INT_HUB_UNSUSED5");
+  CDBG("%c %s\n", int_hub_test_bit(INT_HUB_UNSUSED6, status) ? '1' : '0', "INT_HUB_UNSUSED6");
   CDBG("++++++int_hub_dump_status ends++++++\n");
   */
 }
@@ -117,7 +117,7 @@ void scan_int_hub_proc (enum task_events ev)
   if(!RTC_INT) {
     scan_rtc(); // call scan_alarm or scan_lt_timer
   }
-#ifndef __EMULATE__  
+#ifdef __EMULATE__  
   if(!EXT_INT) {
     // 读取端口寄存器
     I2C_Get(INTHUB1_I2C_ADDR, 0x0, &val); 
@@ -156,7 +156,7 @@ void scan_int_hub_proc (enum task_events ev)
     scan_gyro();  
   }
   
-#ifndef __EMULATE__ 
+#ifdef __EMULATE__ 
   // 还有中断没有处理，继续扫
   if(!RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT ) {
     set_task(EV_SCAN_INT_HUB);

@@ -237,6 +237,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 
   // 按modset1进入fuse功能集合
   if(get_sm_ss_state(to) == SM_FUSE_TEST_INIT && (ev == EV_KEY_MOD_SET_LPRESS || ev == EV_FUSE_SEL0)) {
+    clock_display(0);
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     alarm_switch_off();
     lt_timer_switch_on();
