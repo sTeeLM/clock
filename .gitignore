@@ -21,6 +21,8 @@
 *.so.*
 *.dylib
 
+# Logs
+*.LOG
 
 # Executables
 *.exe
