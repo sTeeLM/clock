@@ -1,0 +1,49 @@
+﻿Field=#~Integer~#~50|Field=Comment~String~Comment~100|Field=Description~String~Description~100|Field=Designator~String~Designator~100|Field=Footprint~String~Footprint~100|Field=LibRef~String~LibRef~100|Field=Quantity~Integer~Quantity~100|ReportField=Currency~<none>|ReportField=ProductionQuantity~1|ReportField=ProjectFileName~clock.PrjPcb|ReportField=ProjectFullPath~\\vmware-host\Shared Folders\下载\clock\pcb\clock.PrjPcb|ReportField=Title~Bill of Materials For Project [clock.PrjPcb] (No PCB Document Selected)|ReportField=TotalQuantity~192|ReportField=ReportTime~15:30:06|ReportField=ReportDate~2017/8/2|ReportField=ReportDateTime~2017/8/2 15:30:06|ReportField=OutputName~Bill of Materials|ReportField=OutputType~BOM_PartType|ReportField=GeneratorName~BOM|ReportField=GeneratorDescription~Bill of Materials|ReportField=VariantName~None|ReportField=Address1~|ReportField=Address2~|ReportField=Address3~|ReportField=Address4~|ReportField=Application_BuildNumber~|ReportField=ApprovedBy~|ReportField=Author~|ReportField=CheckedBy~|ReportField=CompanyName~|ReportField=CurrentDate~2017/8/2|ReportField=CurrentTime~15:28:42|ReportField=Date~|ReportField=DocumentFullPathAndName~\\vmware-host\Shared Folders\下载\clock\pcb\Beeper.SchDoc|ReportField=DocumentName~Beeper.SchDoc|ReportField=DocumentNumber~|ReportField=DrawnBy~|ReportField=Engineer~|ReportField=ImagePath~|ReportField=ModifiedDate~2017/7/27|ReportField=Organization~|ReportField=ProjectName~clock.PrjPcb|ReportField=Revision~|ReportField=Rule~|ReportField=SheetNumber~|ReportField=SheetTotal~|ReportField=Time~|ReportField=Title~|ReportField=DataSourceFileName~clock.PrjPcb|ReportField=DataSourceFullPath~\\vmware-host\Shared Folders\下载\clock\pcb\clock.PrjPcb|ReportField=PCBConfigurationName~Default Configuration|ReportField=Item~|ReportField=ItemRevision~|ReportField=ItemAndRevision~|ReportField=ItemRevisionBase~|ReportField=ItemRevisionLevel1~|ReportField=ItemRevisionLevel2~|ReportField=ItemRevisionLevel1AndBase~|ReportField=ItemRevisionLevel2AndLevel1~
+1|7SEG-CA|||7SEC-CA-56|7SEG-CA|6
+2|74HC595D|||SOP16|74HC595D|2
+3|DS3231||||DS3231|1
+4|HGswitch||||HGswitch|4
+5|PCA9534A|||SSOP16|PCA9534A|2
+6|PL2303SA||||PL2303SA|1
+7|SN74HC86||||SN74HC86|1
+8|STC89LE516RD+|||LQLPF44|STC89LE516RD+|1
+9|TMP101||||TMP101|1
+10|TP4056|||SOP8|TP4056|1
+11|TPS62745||||TPS62745|1
+12|LMC6042||*?||LMC6042|1
+13|REF3230||*?||REF3230|1
+14|SN74HC32||*?||SN74HC32|1
+15|TLV3494||*?||TLV3494|1
+16|Battery|Multicell Battery|BT1|BAT-2|Battery|1
+17|16v|Capacitor|C?|RAD-0.3|Cap|2
+18|50V|Polarized Capacitor (Radial)|C?|RB7.6-15|Cap Pol1|2
+19|Cap|Capacitor|C?|RAD-0.3|Cap|2
+20|Charge|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D1|3.2X1.6X1.1|LED2|1
+21|Stand By|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D2|3.2X1.6X1.1|LED2|1
+22|BAT Low|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1
+23|Diode 1N4005|1 Amp General Purpose Rectifier|D?|DO-41|Diode 1N4005|5
+24|Diode 1N4007|1 Amp General Purpose Rectifier|D?|DO-41|Diode 1N4005|1
+25|Diode 1N4817|1 Amp General Purpose Rectifier|D?|DO-41|Diode 1N4005|3
+26|Diode 1N5822|3 Amp Medium Power Silicon Rectifier Diode|D?|DO-201AD|Diode 1N5408|2
+27|HG0|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|6
+28|HG1|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1
+29|HG2|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1
+30|HG3|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1
+31|2A|Inductor|L?|0402-A|Inductor|2
+32|Inductor|Inductor|L?|0402-A|Inductor|1
+33|Header 3H|Header, 3-Pin, Right Angle|P?|HDR1X3H|Header 3H|2
+34|Header 5|Header, 5-Pin|P?|HDR1X5|Header 5|1
+35|MOSFET-N|N-Channel MOSFET|Q?|E3|MOSFET-N|8
+36|MOSFET-P|P-Channel MOSFET|Q?|E3|MOSFET-P|5
+37|NPN|NPN Bipolar Transistor|Q?|TO-226-AA|NPN|8
+38|PNP|PNP Bipolar Transistor|Q?|SOT-23B_N|PNP|6
+39|Res3|Resistor|R1, R2, R3, R4, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?, R?|12Z-2010|Res3|74
+40|Res Adj1|Variable Resistor|R?|AXIAL-0.7|Res Adj1|4
+41|Res Pack3|Isolated Resistor Network|R?|SO-16_N|Res Pack3|1
+42|MOD|Switch|S?|SPST-2|SW-PB|1
+43|SET|Switch|S?|SPST-2|SW-PB|1
+44|XTAL|Crystal Oscillator|Y?|R38|XTAL|1
+45|MAX9934TAUA+T||[NoValue], *?||MAX9934TAUA+T|2
+46|SN74HC157||[NoValue], *?||SN74HC157|2
+47|TP3605||[NoValue], *?||TP3605|2
+48|Cap Semi|Capacitor (Semiconductor SIM Model)|[NoValue], C1, C2, C?, C?, C?, C?, C?, C?, C?, C?, C?, C?, C?, C?, C?|C1206|Cap Semi|16
