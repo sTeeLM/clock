@@ -11,3 +11,17 @@
 [0803/040002:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0806/135432:ERROR:ipc_channel_win.cc(217)] pipe error: 109
 [0806/140911:ERROR:ipc_channel_win.cc(217)] pipe error: 109
+[0807/155740:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155745:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155750:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155755:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155800:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155800:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155800:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155805:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155805:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155805:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155810:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155810:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/155810:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0811/100455:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
