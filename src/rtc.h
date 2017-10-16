@@ -89,4 +89,7 @@ bit rtc_test_alarm_int(enum rtc_alarm_index index);
 bit rtc_test_alarm_int_flag(enum rtc_alarm_index index);
 void rtc_clr_alarm_int_flag(enum rtc_alarm_index index);
 
+
+void dump_rtc(void);
+
 #endif

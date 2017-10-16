@@ -186,6 +186,7 @@ void beeper_inc_music_to(void)
 void beeper_inc_music_index(void)
 {
   beeper_music_index = (++beeper_music_index) % BEEPER_MUSIC_CNT;
+  CDBG("beeper_inc_music_index %bd\n", beeper_music_index);
 }
 
 enum beeper_music beeper_get_music_index()
@@ -202,7 +203,7 @@ static void _beeper_stop_play(void)
   beeper_out = 1;
 }
 
-static void _beepler_play(unsigned char * music, bit once)
+static bit _beepler_play(unsigned char * music, bit once)
 {
   unsigned char cm;
   unsigned char tune;
@@ -223,32 +224,37 @@ static void _beepler_play(unsigned char * music, bit once)
         tune = 0;
         if(once) {
           _beeper_stop_play();
-          return;
+          return 0;
         }
         // 直到一首歌播放完毕才检查超时
         if(time_diff_now(start_s) >= beeper_music_to) {
           _beeper_stop_play();
-          return;
+          return 0;
         }
         break;          
       case 0xff: 
+        if(time_diff_now(start_s) >= beeper_music_to) {
+          _beeper_stop_play();
+          return 0;
+        } 
         cm+=2;
         delay_ms(250);
         break;          
       default:   
         tune=music[cm++];             
         pai=music[cm++];             
-        beeper_out = 0;            
+        beeper_out = 1;            
         TR2 = 1;
         ET2 = 1;
         while (pai!=0 && !beeper_stop) { 
           beeper_out=~beeper_out; 
           delay_5us(4 * tune); 
         }
-        beeper_out = 0; 
+        beeper_out = 1; 
     }
   }
   _beeper_stop_play();
+  return 1;
 }
 
 void beeper_beep(void)
@@ -257,7 +263,7 @@ void beeper_beep(void)
   CDBG("beeper_beep!\n");
   if(!beep_enable)
     return;
-  beeper_out =0;
+  beeper_out = 1;
   while(c --) {
     beeper_out=~beeper_out;
     delay_5us(4 * 0x13); 
@@ -269,7 +275,7 @@ void beeper_beep_beep_always(void)
 {
   unsigned char c = 30;
   CDBG("beeper_beep_beep_always!\n");
-  beeper_out = 0;
+  beeper_out = 1;
   while(c --) {
     beeper_out=~beeper_out;
     delay_5us(4 * 0x10); 
@@ -305,11 +311,11 @@ void beeper_beep_beep(void)
   beeper_out = 1;
 }
 
-void beeper_play_music(void)
+bit beeper_play_music(void)
 {
 
   CDBG("beeper_play_music\n");
-  _beepler_play(music_table[beeper_music_index], 0);
+  return _beepler_play(music_table[beeper_music_index], 0);
 }
 
 void beeper_stop_music(void)

@@ -28,7 +28,7 @@ static unsigned char rtc_data[4];
 static unsigned char last_read;
 static bit is_lt_timer_mode;
 
-static void dump_rtc(void)
+void dump_rtc(void)
 {
   unsigned char addr;
   unsigned char c;
@@ -69,8 +69,6 @@ void rtc_initialize (void)
   
   is_lt_timer_mode = 0;
   
-  I2C_Init();
-
   // reset rtc
   RTC_RESET = 0;
   delay_ms(10);
@@ -82,6 +80,8 @@ void rtc_initialize (void)
   // 调试用！
   // 初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
   is12 = rom_read(ROM_ALARM0_IS12);
+  
+  I2C_Init();
   rtc_read_data(RTC_TYPE_TIME);
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
   rtc_time_set_hour_12(is12);
@@ -99,7 +99,7 @@ void rtc_initialize (void)
   rtc_date_set_day(2);
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
-  
+   
   
   // 清除中断标志位
   I2C_Get(RTC_I2C_ADDRESS, 0x0F, &count);
@@ -162,6 +162,7 @@ void rtc_write_data(enum rtc_data_type type)
     case RTC_TYPE_CTL:
       offset = RTC_CTL_OFFSET; break;       
   }
+  I2C_Init();
   I2C_Puts(RTC_I2C_ADDRESS, offset, sizeof(rtc_data), rtc_data);  
 }
 
@@ -430,7 +431,7 @@ void rtc_alarm_set_sec( unsigned char sec)
   if(last_read == RTC_TYPE_ALARM0) {
     rtc_data[0] &= 0xF0;
     rtc_data[0] |= sec / 10;
-    rtc_data[0] &= 0x7F;
+    rtc_data[0] &= 0x8F;
     rtc_data[0] |= sec % 10;    
   }
 }

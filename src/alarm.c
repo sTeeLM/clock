@@ -84,14 +84,17 @@ void alarm_initialize (void)
 {
   CDBG("alarm_initialize\n");
   // ¥”ROM÷–∂¡»°≈‰÷√
+  
+  alarm_load_rom();  
+  
   /*
   alarm0.day_mask = 0x7F;
   alarm0.hour = 12;
-  alarm0.min  = 12;
-  alarm0_is12 = 1;
+  alarm0.min  = 11;
+  alarm0_is12 = 0;
   alarm1_enable = 1;
   */
-  alarm_load_rom();
+  
   alarm_dump();
 }
 

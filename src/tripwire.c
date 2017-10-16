@@ -11,14 +11,14 @@ static bit tripwire_enabled;
 static void tripwire_power_on(void)
 {
   CDBG("tripwire_power_on\n");
-  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 1);
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 0);
   serial_ctl_out();
 }
 
 static void tripwire_power_off(void)
 {
   CDBG("tripwire_power_off\n");
-  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 0);
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_EN, 1);
   serial_ctl_out();
 }
 

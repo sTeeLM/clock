@@ -391,7 +391,7 @@ void lt_timer_dec_sec(void)
     }
   }
 
-  if(lt_tmr_display) {
+  if(lt_tmr_display && !led_powersave) {
     if(lt_tmr_disp_day) {    
       led_data[5] = led_code[0x18]|0x80; // D
       led_data[4] = led_code[0x15]|0x80; // A

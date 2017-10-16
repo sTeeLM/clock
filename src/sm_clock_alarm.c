@@ -61,7 +61,10 @@ void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {
     clock_display(0);
     display_alarm(IS_ALARM0);
-    beeper_play_music();
+    if(!beeper_play_music()) {
+    // 放完音乐自动切换
+      set_task(EV_KEY_SET_PRESS);
+    }
     return;
   }
   
@@ -70,6 +73,14 @@ void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
     clock_display(0);
     display_alarm(IS_ALARM1);
     beeper_beep_beep_always();
+    common_state = 0;
+    return;
+  }
+  
+  if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM1 && ev == EV_1S) {
+    if(++common_state > 3) {
+      set_task(EV_KEY_SET_PRESS);
+    }
     return;
   }
 }

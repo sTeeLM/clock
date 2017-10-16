@@ -12,6 +12,8 @@ unsigned char led_blink;
 static unsigned char led_index;
 static unsigned char scan_loop_cnt;
 
+bit led_powersave;
+
 /*        A
         F   B
           G
@@ -62,7 +64,7 @@ unsigned char code led_code[] =
    0xFF, //         Q
    0xFF, //         R
    0x12, //0010010  S
-   0xFF, //         T
+   0x07, //0000111  T
    0x41, //1000001  U
    0xFF, //         V
    0xFF, //         W
@@ -88,6 +90,8 @@ void refresh_led(void)
 {
   P0 = 0xFF;
   
+  if(led_powersave) return;
+  
   if(led_blink & (1 << led_index)) { // 如果要求闪阿闪
     if(scan_loop_cnt > 15) {   // 不显示数字，只显示点，如果有点的话
       P0 = (led_data[led_index] & 0x80) | 0x7F;
@@ -110,40 +114,38 @@ void refresh_led(void)
 
 void led_initialize (void)
 {
+  unsigned char i, j;
   CDBG("led_initialize\n");
 
+  led_powersave = 0;
   led_blink = 0;
   led_index = 0;
   scan_loop_cnt = 0;
   memset(led_data, 0xFF, sizeof(led_data));
   
-  P0 = 0xFF;  
-  P2 = 0xFF;
+  P0 = 0xFF; 
+  P2 = 0xFF;  
 
-  led_set_code(0, '8');
-  led_set_code(1, '8');  
-  led_set_code(2, '8');
-  led_set_code(3, '8');  
-  led_set_code(4, '8');
-  led_set_code(5, '8');
- 
-  led_set_blink(0);
-  led_set_blink(1); 
-  led_set_blink(2);
-  led_set_blink(3);
-  led_set_blink(4);
-  led_set_blink(5); 
-  led_set_blink(6);
-  led_set_blink(7);
+  for(i = 0; i < sizeof(led_code); i ++) {
+    led_data[0] = led_code[i];
+    led_data[1] = led_code[i];
+    led_data[2] = led_code[i];
+    led_data[3] = led_code[i];
+    led_data[4] = led_code[i];
+    led_data[5] = led_code[i];  
+    for(j = 0; j < 6 ; j ++) {
+      refresh_led();
+      delay_ms(3);
+    }
+  }
   
-  led_set_dp(0);
-  led_set_dp(1);
-  led_set_dp(2);
-  led_set_dp(3);
-  led_set_dp(4);
-  led_set_dp(5);
-  led_set_dp(6);
-  led_set_dp(7);  
+  led_blink = 0;
+  led_index = 0;
+  scan_loop_cnt = 0;
+  memset(led_data, 0xFF, sizeof(led_data));
+  
+  P0 = 0xFF; 
+  P2 = 0xFF;  
 }
 
 void led_clear(void)
@@ -200,6 +202,9 @@ void led_set_code(unsigned char i, char c)
 void led_enter_powersave(void)
 {
   CDBG("led_enter_powersave\n");
+  
+  led_powersave = 1;
+  
   P0 = 0xFF;
   P2 = 0xFF;
   led_clear();
@@ -208,7 +213,10 @@ void led_enter_powersave(void)
 void led_leave_powersave(void)
 {
   CDBG("led_leave_powersave\n");
+  
   P0 = 0x0;
   P2 = 0xFF;
   led_clear();
+  
+  led_powersave = 0;
 }

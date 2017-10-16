@@ -17,7 +17,7 @@ static void gyro_power_on(void)
 {
   unsigned char val;
   CDBG("gyro_power_on\n");
-  serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 1);
+  serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 0);
   serial_ctl_out();
   
   // Configuration Register 设置为全1，用于input
@@ -32,7 +32,7 @@ static void gyro_power_on(void)
 static void gyro_power_off(void)
 {
   CDBG("gyro_power_off\n");
-  serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 0);
+  serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 1);
   serial_ctl_out();
 }
 

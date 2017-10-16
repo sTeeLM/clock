@@ -22,4 +22,5 @@ void refresh_led(void);
 extern unsigned char led_data[6];
 extern unsigned char code led_code[];
 extern unsigned char led_blink;
+extern bit led_powersave;
 #endif

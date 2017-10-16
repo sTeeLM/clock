@@ -21,7 +21,7 @@ void beeper_set_beep_enable(bit enable);
 bit beeper_get_beep_enable(void);
 void beeper_inc_music_index(void);
 enum beeper_music beeper_get_music_index();
-void beeper_play_music(void);
+bit beeper_play_music(void);
 void beeper_stop_music(void);
 
 unsigned char beeper_get_music_to(void);

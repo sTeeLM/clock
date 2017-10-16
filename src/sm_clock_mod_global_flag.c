@@ -17,6 +17,9 @@ static void display_global_flag(unsigned char what)
   is_24 = !clock_get_hour_12();
   
   led_clear();
+  
+  CDBG("display_global_flag %bd\n", what);
+  
   switch(what) {
     case IS_PS:
       led_set_code(5, 'P');
@@ -48,7 +51,8 @@ static void display_global_flag(unsigned char what)
       led_set_code(4, 'O');
       led_set_code(3, 'U');
       led_set_code(2, 'N');
-      led_set_code(1, 'D');    
+      led_set_code(1, 'D');  
+      CDBG("beeper_get_music_index return %bd\n", beeper_get_music_index());
       led_set_code(0, beeper_get_music_index() + 1 + 0x30);
       break;
     case IS_BEEP:
@@ -95,7 +99,6 @@ static void inc_write(unsigned char what)
     case IS_MUSIC:
       beeper_inc_music_index();
       rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
-      beeper_play_music();
       break;
     case IS_BEEP:
       beeper_set_beep_enable(!beeper_get_beep_enable());
@@ -160,6 +163,7 @@ void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_ev
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_MUSIC);
     display_global_flag(IS_MUSIC);
+    beeper_play_music();
     return;
   }
   

@@ -17,14 +17,14 @@ static void hg_power_on(void)
 {
   CDBG("hg_power_on\n");
   hg_state = 0;
-  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);
   serial_ctl_out();
 }
 
 static void hg_power_off(void)
 {
   CDBG("hg_power_off\n");
-  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);
   serial_ctl_out();
 }
 
@@ -48,10 +48,10 @@ static void hg_fix(void)
 {
   CDBG("hg_fix hg_state = %bx\n", hg_state);
   
-  serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 1) != 0);
-  serial_set_ctl_bit(SERIAL_BIT_HG1_FIX, (hg_state & 2) != 0);  
-  serial_set_ctl_bit(SERIAL_BIT_HG2_FIX, (hg_state & 4) != 0);
-  serial_set_ctl_bit(SERIAL_BIT_HG3_FIX, (hg_state & 8) != 0);  
+  serial_set_ctl_bit(SERIAL_BIT_HG0_FIX, (hg_state & 1) == 0);
+  serial_set_ctl_bit(SERIAL_BIT_HG1_FIX, (hg_state & 2) == 0);  
+  serial_set_ctl_bit(SERIAL_BIT_HG2_FIX, (hg_state & 4) == 0);
+  serial_set_ctl_bit(SERIAL_BIT_HG3_FIX, (hg_state & 8) == 0);  
   serial_ctl_out();
 }
 

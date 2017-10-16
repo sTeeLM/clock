@@ -19,7 +19,7 @@ static bit fuse0_broked;
 static bit fuse1_shorted;
 static bit fuse1_broked;
 
-sbit FUSE_TRIGGER_POWER_EN  = P4 ^ 1;
+sbit FUSE_TRIGGER_POWER_EN  = P3 ^ 6;
 
 static void fuse_power_on(void)
 {
@@ -30,14 +30,14 @@ static void fuse_power_on(void)
   fuse1_shorted = 0;
   fuse1_broked  = 0;  
   
-  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
   serial_ctl_out();
 }
   
 static void fuse_power_off(void)
 {
   CDBG("fuse_power_off\n");
-  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
   serial_ctl_out();
   fuse0_shorted = 0;
   fuse0_broked  = 0;
@@ -54,7 +54,7 @@ void fuse_initialize (void)
   fuse0_broked  = 0;
   fuse1_shorted = 0;
   fuse1_broked  = 0;
-  FUSE_TRIGGER_POWER_EN = 0;
+  FUSE_TRIGGER_POWER_EN = 1;
 }
 
 bit fuse_test_short(unsigned char index)
@@ -84,15 +84,15 @@ void fuse_trigger(bit enable)
   
   // ษýัน
   if((fuse0_good || fuse1_good)) {
-    FUSE_TRIGGER_POWER_EN = enable;
+    FUSE_TRIGGER_POWER_EN = !enable;
   }
   
   // trigger
   if(fuse0_good) {
-    serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, enable);
+    serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, !enable);
   }
   if(fuse1_good) {
-    serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, enable);
+    serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, !enable);
   }
   serial_ctl_out();
 }
@@ -168,9 +168,9 @@ void fuse_set_fuse_short(unsigned char index, bit enable)
   if(!fuse_enabled) return;
   
   if(index == 0)
-    serial_set_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST, enable);
+    serial_set_ctl_bit(SERIAL_BIT_FUSE0_SHORT_TEST, !enable);
   else
-    serial_set_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST, enable);
+    serial_set_ctl_bit(SERIAL_BIT_FUSE1_SHORT_TEST, !enable);
   
   serial_ctl_out();
 }
@@ -182,9 +182,9 @@ void fuse_set_fuse_broke(unsigned char index, bit enable)
   if(!fuse_enabled) return;
   
   if(index == 0)
-    serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, enable);
+    serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, !enable);
   else
-    serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, enable);
+    serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, !enable);
 
   serial_ctl_out();
 }

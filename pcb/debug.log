@@ -25,3 +25,8 @@
 [0807/155810:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0807/155810:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0811/100455:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
+[0914/153528:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0914/162903:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[1006/232953:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
+[1007/125228:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
+[1009/105813:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.

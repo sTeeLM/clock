@@ -50,12 +50,12 @@ void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
   powersave_flag = 1;
+  led_enter_powersave(); 
   timer_enter_powersave(); 
   lt_timer_enter_powersave();
   clock_enter_powersave();
   rtc_enter_powersave();       
-  key_enter_powersave();       
-  led_enter_powersave();          
+  key_enter_powersave();                
   alarm_enter_powersave();       
   beeper_enter_powersave();
   fuse_enter_powersave();
@@ -65,7 +65,12 @@ void power_enter_powersave(void)
   tripwire_enter_powersave();
   com_enter_powersave();
   while(powersave_flag) {
-    PCON |= 0x1; // should be 0x2
+ // should be 0x2
+#ifdef __CLOCK_EMULATE__    
+    PCON |= 0x1;
+#else
+    PCON |= 0x2;
+#endif
     com_leave_powersave(); 
     scan_int_hub_proc(EV_SCAN_INT_HUB);
     com_enter_powersave();
@@ -85,13 +90,13 @@ void power_leave_powersave(void)
   hg_leave_powersave();
   fuse_leave_powersave();
   beeper_leave_powersave();
-  alarm_leave_powersave();  
-  led_leave_powersave(); 
+  alarm_leave_powersave();   
   key_leave_powersave(); 
   rtc_leave_powersave(); 
   clock_leave_powersave();
   lt_timer_leave_powersave();
   timer_leave_powersave();
+  led_leave_powersave();
   CDBG("power_leave_powersave\n");
 }
 

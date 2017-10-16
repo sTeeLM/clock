@@ -294,6 +294,8 @@ static const struct sm_trans code sm_trans_clock_alarm[] = {
   {SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, EV_KEY_MOD_PRESS, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
   // set0回到时间显示模式
   {SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, EV_KEY_SET_PRESS, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display}, 
+  // 整点报时自动切换
+  {SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, EV_1S, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},
 };
 
 static const struct sm_trans code sm_trans_clock_timer[] = {  

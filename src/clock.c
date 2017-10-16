@@ -141,10 +141,10 @@ static void clock_inc_ms39(void)
 {
   unsigned char hour;
   bit is_pm;
+  
   clk.ms39 ++;
-  if((clk.ms39 % 2 ) == 0) {
-     refresh_led();
-  }
+  
+  refresh_led();
   
   if((clk.ms39 % 6 ) == 0) {
      set_task(EV_SCAN_KEY);
@@ -176,7 +176,7 @@ static void clock_inc_ms39(void)
       }
     } 
   }
-  if(display_enable) {
+  if(display_enable && !led_powersave) {
     if(display_mode == CLOCK_DISPLAY_MODE_HHMMSS) {
       hour = clk.hour;
       is_pm = 0;

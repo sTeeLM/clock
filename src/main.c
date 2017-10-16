@@ -25,16 +25,31 @@
 #include "rom.h"
 
 
+#define __CLOCK__VERSION__ "1.0.0.0"
+
+
+static void show_version(void)
+{
+  
+  CDBG("++++++++++++++++++++++++++++++++++++++++\n");
+  CDBG("+        CLOCK & FUSE %s          +\n", __CLOCK__VERSION__);
+  CDBG("+                                      +\n");
+  CDBG("+        sTeeL<steel.mental@gmail.com> +\n");
+  CDBG("++++++++++++++++++++++++++++++++++++++++\n");
+  
+}
 
 void main(void)
 {  
 //  AUXR |= 2; // use xram on chip
   EA = 1;                                       // enable global interrupts
   com_initialize();                             // initialize interrupt driven serial I/O
+  show_version();
+  rom_initialize();                             // initialize rom
   int_hub_initialize();                         // initialize interrupt hub 
   serial_hub_initialize();                      // initialize serial hub
   rtc_initialize();                             // initialize rtc
-  clock_initialize();                            // initialize clock
+  clock_initialize();                           // initialize clock
   key_initialize();                             // initialize keys
   led_initialize();                             // initialize led display
   power_initialize();                           // initialize power manager
