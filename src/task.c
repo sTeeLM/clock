@@ -58,6 +58,42 @@
   EV_POWER_SAVE       = 31, // 应该进入PS状态    
 */
 
+const char * task_name[] =
+{
+  "EV_250MS",
+  "EV_1S",
+  "EV_SCAN_KEY",
+  "EV_KEY_SET_DOWN",
+  "EV_KEY_SET_PRESS",
+  "EV_KEY_SET_LPRESS",
+  "EV_KEY_SET_UP",
+  "EV_KEY_MOD_DOWN",
+  "EV_KEY_MOD_PRESS",
+  "EV_KEY_MOD_LPRESS",
+  "EV_KEY_MOD_UP",
+  "EV_KEY_MOD_SET_PRESS",
+  "EV_KEY_MOD_SET_LPRESS",
+  "EV_SCAN_INT_HUB",
+  "EV_FUSE0_SHORT",
+  "EV_FUSE0_BROKE",
+  "EV_FUSE1_SHORT",
+  "EV_FUSE1_BROKE",
+  "EV_ROTATE_HG",
+  "EV_ROTATE_GYRO",
+  "EV_ACC_GYRO",
+  "EV_DROP_GYRO",
+  "EV_THERMO_HI",
+  "EV_THERMO_LO",
+  "EV_TRIPWIRE",
+  "EV_FUSE_SEL0",
+  "EV_FUSE_SEL1",
+  "EV_FUSE_SEL2",
+  "EV_ALARM0",
+  "EV_ALARM1",
+  "EV_COUNTER",
+  "EV_POWER_SAVE",
+};
+
 static const TASK_PROC code task_procs[EV_COUNT] = 
 {
   /* EV_250MS            = 0, // 大约每250ms转一下 */

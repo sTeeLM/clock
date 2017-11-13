@@ -7,6 +7,7 @@
 #include "cmd_serial.h"
 #include "cmd_int.h"
 #include "cmd_i2c.h"
+#include "cmd_dbg.h"
 #include "cext.h"
 
 #define SHELL_BUFFER_SIZE 21
@@ -23,6 +24,7 @@ static char cmd_null(char arg1, char arg2)
 struct shell_cmds code cmds[] = 
 {
   {"?",  "show help", "?: list cmd\n? <cmd>: show usage of cmd", cmd_help},
+  {"db", "debug on/off", "db <on|off>: switch debug message on/off", cmd_dbg},
   {"sp", "set or get serial hub", "sp <num> <0|1>: set port #num to 0/1\nsp <num>: show port value of #num", cmd_serial},
   {"ip", "get status of int hub", "ip: dump status of ip port\nip 1: dump reg of ext int", cmd_int},
   {"ir", "read data from i2c", "ir <addr> <cmd>: read one byte", cmd_i2c},

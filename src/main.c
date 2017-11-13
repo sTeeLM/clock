@@ -42,6 +42,7 @@ static void show_version(void)
 void main(void)
 {  
   EA = 1;                                       // enable global interrupts
+  debug_initialize();                           // initialize debug system
   com_initialize();                             // initialize interrupt driven serial I/O
   show_version();
   rom_initialize();                             // initialize rom

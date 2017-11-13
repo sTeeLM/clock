@@ -1,6 +1,7 @@
 #ifndef __CLOCK_TASK_H__
 #define __CLOCK_TASK_H__
 
+// max 32
 enum task_events
 {
   EV_250MS            = 0, // 大约每250ms转一下
@@ -40,6 +41,8 @@ enum task_events
 
 extern unsigned int idata ev_bits0;
 extern unsigned int idata ev_bits1;
+
+extern const char * task_name[];
 
 typedef void (code *TASK_PROC)(enum task_events);
 
