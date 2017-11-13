@@ -7,10 +7,10 @@
 #include "clock.h"
 #include "debug.h"
 
-unsigned char led_data[6];
-unsigned char led_blink;
-static unsigned char led_index;
-static unsigned char scan_loop_cnt;
+unsigned char idata led_data[6];
+unsigned char idata led_blink;
+static unsigned char idata led_index;
+static unsigned char idata scan_loop_cnt;
 
 bit led_powersave;
 

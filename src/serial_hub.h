@@ -10,10 +10,10 @@ enum serial_hub_crl_bits{
   SERIAL_BIT_TRIPWIRE_EN = 4,  
   SERIAL_BIT_FUSE0_TRIGGER = 5, 
   SERIAL_BIT_FUSE1_TRIGGER = 6,
-  SERIAL_BIT_HG0_FIX = 7, 
-  SERIAL_BIT_HG1_FIX = 8, 
-  SERIAL_BIT_HG2_FIX = 9,  
-  SERIAL_BIT_HG3_FIX = 10,
+  SERIAL_BIT_UNUSE0 = 7, 
+  SERIAL_BIT_UNUSE1 = 8, 
+  SERIAL_BIT_UNUSE2 = 9,  
+  SERIAL_BIT_UNUSE3 = 10,
   SERIAL_BIT_FUSE0_BROKE_TEST = 11,  
   SERIAL_BIT_FUSE0_SHORT_TEST = 12, 
   SERIAL_BIT_FUSE1_BROKE_TEST = 13, 
@@ -25,5 +25,5 @@ void serial_hub_initialize(void);
 void serial_ctl_out(void);
 void serial_set_ctl_bit(unsigned char index, bit what);
 bit serial_test_ctl_bit(unsigned char index);
-
+void serial_dump(void);
 #endif

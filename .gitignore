@@ -45,7 +45,7 @@ Clock
 *.pdsbak
 *.bak
 *.tmp
-*.PcbLib.Zip
+*.Zip
 *.PcbDocPreview
 *.SchDocPreview
 *.SchLib.Zip

@@ -4,6 +4,7 @@
 #include "sm.h"
 
 /* hardware*/
+#include "com.h"
 #include "clock.h"
 #include "rtc.h"
 #include "key.h"
@@ -18,6 +19,7 @@
 #include "gyro.h"
 #include "tripwire.h"
 
+#include "shell.h"
 #include "debug.h"
 
 
@@ -124,7 +126,9 @@ void task_initialize (void)
 void run_task()
 {
   unsigned char c;
-  while(1) {
+  
+again:  
+  while(com_try_get_key() == 0) {
     for(c = 0; c < EV_COUNT; c++) {
       if(test_task(c)) {
         clr_task(c);
@@ -132,6 +136,10 @@ void run_task()
       }
     }
   }
+  
+  run_shell();
+  
+  goto again;
 }
 
 

@@ -7,14 +7,14 @@
 #define    baudrate 9600                        // 9600 bps communication baudrate
 
 #define    OLEN  8                              // size of serial transmission buffer
-unsigned   char  ostart;                        // transmission buffer start index
-unsigned   char  oend;                          // transmission buffer end index
-char idata outbuf[OLEN];                        // storage for transmission buffer
+static unsigned   char  ostart;                 // transmission buffer start index
+static unsigned   char  oend;                   // transmission buffer end index
+static char idata outbuf[OLEN];                 // storage for transmission buffer
 
 #define    ILEN  8                              // size of serial receiving buffer
-unsigned   char  istart;                        // receiving buffer start index
-unsigned   char  iend;                          // receiving buffer end index
-char idata inbuf[ILEN];                         // storage for receiving buffer
+static unsigned   char  istart;                 // receiving buffer start index
+static unsigned   char  iend;                   // receiving buffer end index
+static char idata inbuf[ILEN];                  // storage for receiving buffer
 
 bit sendfull;                                   // flag: marks transmit buffer full
 bit sendactive;                                 // flag: marks transmitter active
@@ -121,6 +121,18 @@ char _getkey (void) {
   char c;
   while (iend == istart) {
      ;                                         // wait until there are characters
+  }
+  ES = 0;                                      // disable serial interrupts during buffer update
+  c = inbuf[istart++ & (ILEN-1)];
+  ES = 1;                                      // enable serial interrupts again
+  return (c);
+}
+
+char com_try_get_key(void) 
+{
+  char c;
+  if (iend == istart) {
+     return 0;                                         // wait until there are characters
   }
   ES = 0;                                      // disable serial interrupts during buffer update
   c = inbuf[istart++ & (ILEN-1)];

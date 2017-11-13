@@ -19,8 +19,8 @@ void led_set_code(unsigned char i, char c);
 void refresh_led(void);
 
 // 由于需要刷新timer数据，在这里开个口，别人不要用
-extern unsigned char led_data[6];
+extern unsigned char idata led_data[];
 extern unsigned char code led_code[];
-extern unsigned char led_blink;
+extern unsigned char idata led_blink;
 extern bit led_powersave;
 #endif

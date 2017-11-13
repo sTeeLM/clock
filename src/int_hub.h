@@ -11,21 +11,22 @@ enum int_hub_state {
   INT_HUB_FUSE0_BROKE,
   INT_HUB_FUSE1_SHORT, 
   INT_HUB_FUSE1_BROKE,
-  INT_HUB_UNSUSED0, 
-  INT_HUB_UNSUSED1,
-  INT_HUB_UNSUSED2, 
-  INT_HUB_UNSUSED3,
-  
   INT_HUB_HG0_HIT,
   INT_HUB_HG1_HIT,
   INT_HUB_HG2_HIT, 
   INT_HUB_HG3_HIT,
-  INT_HUB_TRIPWIRE_HIT,
+  INT_HUB_TRIPWIRE_HIT,  
+  INT_HUB_UNSUSED0, 
+  INT_HUB_UNSUSED1,
+  INT_HUB_UNSUSED2, 
+  INT_HUB_UNSUSED3,
   INT_HUB_UNSUSED4, 
   INT_HUB_UNSUSED5,
   INT_HUB_UNSUSED6, 
 };
 
 bit int_hub_test_bit(unsigned char index, unsigned int status);
-
+unsigned int int_hub_get_status(void);
+void int_hub_dump_ext_status(unsigned int status);
+void int_hub_dump(void);
 #endif

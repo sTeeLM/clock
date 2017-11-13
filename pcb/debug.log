@@ -30,3 +30,8 @@
 [1006/232953:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
 [1007/125228:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
 [1009/105813:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
+[1028/190020:ERROR:block_files.cc(113)] Failing CreateMapBlock
+[1028/190020:ERROR:entry_impl.cc(960)] Failed to save user data
+[1105/123807:WARNING:backend_impl.cc(1593)] Messed up entry found.
+[1105/123807:WARNING:backend_impl.cc(1807)] Destroying invalid entry.
+[1106/111317:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.

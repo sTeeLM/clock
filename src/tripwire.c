@@ -4,7 +4,7 @@
 #include "sm.h"
 #include "power.h"
 
-#define TRIPWIRE_HIT_MASK 0x1000
+#define TRIPWIRE_HIT_MASK 0x0100
 
 static bit tripwire_enabled;
 

@@ -35,7 +35,7 @@ XDATASTART      EQU     0
 ;
 ; <o> XDATALEN: XDATA memory size <0x0-0xFFFF> 
 ;     <i> The length of XDATA memory in bytes.
-XDATALEN        EQU     0    
+XDATALEN        EQU     0x400   
 ;
 ; <o> PDATASTART: PDATA memory start address <0x0-0xFFFF> 
 ;     <i> The absolute start address of PDATA memory
