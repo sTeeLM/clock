@@ -300,7 +300,7 @@
             <uAregs>0</uAregs>
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
-            <Optimize>8</Optimize>
+            <Optimize>9</Optimize>
             <WarningLevel>2</WarningLevel>
             <SizeSpeed>0</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
@@ -590,7 +590,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>cmd</GroupName>
+          <GroupName>shell</GroupName>
           <Files>
             <File>
               <FileName>cmd_help.c</FileName>
@@ -616,6 +616,21 @@
               <FileName>cmd_dbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\cmd_dbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_reboot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_reboot.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_sm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_sm.c</FilePath>
             </File>
           </Files>
         </Group>

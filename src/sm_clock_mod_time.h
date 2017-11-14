@@ -13,6 +13,8 @@ enum sm_clock_mod_time_ss {
   SM_CLOCK_MODIFY_TIME_DD   = 6, // ÐÞ¸ÄÈÕ   
 };
 
+extern const char * code sm_clock_mod_time_name[];
+
 void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events);
 
 #endif

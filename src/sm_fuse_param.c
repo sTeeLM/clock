@@ -7,6 +7,24 @@
 #include "clock.h"
 #include "thermo.h"
 
+const char * code sm_fuse_param_ss_name[] = 
+{
+  "SM_FUSE_PARAM_INIT",
+  "SM_FUSE_PARAM_YY",
+  "SM_FUSE_PARAM_MO",
+  "SM_FUSE_PARAM_DD",
+  "SM_FUSE_PARAM_HH",
+  "SM_FUSE_PARAM_MM",
+  "SM_FUSE_PARAM_SS",
+  "SM_FUSE_PARAM_HG_ONOFF",
+  "SM_FUSE_PARAM_GYRO_ONOFF",
+  "SM_FUSE_PARAM_THERMO_HI_ONOFF",
+  "SM_FUSE_PARAM_THERMO_LO_ONOFF",
+  "SM_FUSE_PARAM_TRIPWIRE_ONOFF",
+  "SM_FUSE_PARAM_PASSWORD",
+  NULL
+};
+
 static void inc_only(unsigned char what)
 {
   

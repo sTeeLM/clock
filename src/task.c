@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 
 #include "task.h"
@@ -162,8 +163,7 @@ void task_initialize (void)
 void run_task()
 {
   unsigned char c;
-  
-again:  
+    
   while(com_try_get_key() == 0) {
     for(c = 0; c < EV_COUNT; c++) {
       if(test_task(c)) {
@@ -173,9 +173,13 @@ again:
     }
   }
   
-  run_shell();
-  
-  goto again;
 }
 
+void task_dump(void)
+{
+  unsigned char i;
+  for (i = 0 ; i < EV_COUNT; i ++) {
+    printf("[%02bd][%s] %c\n", i, task_name[i], test_task(i) ? '1' : '0');
+  }
+}
 

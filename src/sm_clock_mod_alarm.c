@@ -6,6 +6,21 @@
 #include "debug.h"
 #include "rom.h"
 
+const char * code sm_clock_mod_alarm_ss_name[] = 
+{
+  "SM_CLOCK_MODIFY_ALARM_INIT",
+  "SM_CLOCK_MODIFY_ALARM_HH",
+  "SM_CLOCK_MODIFY_ALARM_MM",
+  "SM_CLOCK_MODIFY_ALARM_DAY1",
+  "SM_CLOCK_MODIFY_ALARM_DAY2",
+  "SM_CLOCK_MODIFY_ALARM_DAY3",
+  "SM_CLOCK_MODIFY_ALARM_DAY4",
+  "SM_CLOCK_MODIFY_ALARM_DAY5",
+  "SM_CLOCK_MODIFY_ALARM_DAY6",
+  "SM_CLOCK_MODIFY_ALARM_DAY7",
+  NULL
+};
+
 static void update_alarm(unsigned char what, unsigned char day)
 {
   unsigned char hour, min;

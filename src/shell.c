@@ -3,14 +3,20 @@
 #include "debug.h"
 #include "shell.h"
 
+#include "led.h"
+#include "clock.h"
+
 #include "cmd_help.h"
 #include "cmd_serial.h"
 #include "cmd_int.h"
 #include "cmd_i2c.h"
 #include "cmd_dbg.h"
+#include "cmd_reboot.h"
+#include "cmd_task.h"
+#include "cmd_sm.h"
 #include "cext.h"
 
-#define SHELL_BUFFER_SIZE 21
+#define SHELL_BUFFER_SIZE 41
 
 char shell_buf[SHELL_BUFFER_SIZE];
 
@@ -18,17 +24,34 @@ static char cmd_null(char arg1, char arg2)
 {
   UNUSED_PARAM(arg1);
   UNUSED_PARAM(arg2);
+  printf("quit!\n");
   return 0;
 }
 
 struct shell_cmds code cmds[] = 
 {
-  {"?",  "show help", "?: list cmd\n? <cmd>: show usage of cmd", cmd_help},
+  {"?",  "show help", "?: list cmd\n"
+                      "? <cmd>: show usage of cmd", cmd_help},
   {"db", "debug on/off", "db <on|off>: switch debug message on/off", cmd_dbg},
-  {"sp", "set or get serial hub", "sp <num> <0|1>: set port #num to 0/1\nsp <num>: show port value of #num", cmd_serial},
-  {"ip", "get status of int hub", "ip: dump status of ip port\nip 1: dump reg of ext int", cmd_int},
+  {"sp", "set or get serial hub", "sp <num> <0|1>: set port #num to 0/1\n"
+                                  "sp <num>: show port value of #num", cmd_serial},
+  {"ip", "get status of int hub", "ip: dump status of ip port\n"
+                                  "ip ext: dump reg of ext int", cmd_int},
   {"ir", "read data from i2c", "ir <addr> <cmd>: read one byte", cmd_i2c},
-  {"iw", "write data to i2c", "iw <addr>: set addr\niw <cmd> <data>: write one byte", cmd_i2c},  
+  {"iw", "write data to i2c", "iw <addr>: set addr\n"
+                              "iw <cmd> <data>: write one byte", cmd_i2c}, 
+  {"rb", "reboot", "rb: reboot to user code (ap)\n"
+                   "rb isp: reboot to isp", cmd_reboot},
+  {"tsk", "task managment", "tsk: list all task state\n"
+                            "tsk <task index> <1|0>: trigger task or clear task", cmd_task},
+  {"sm", "state machine managment", "sm: show current state\n"
+                                    "sm ll: list name of all tables, states, sub-states\n"
+                                    "sm lt: list tables\n"
+                                    "sm st <table-name>: set current table\n"
+                                    "sm ls: list states\n"
+                                    "sm ss <state-name>: set current state\n"
+                                    "sm lss: list sub-state\n"
+                                    "sm sss <sub-state-name>: set sub-state", cmd_sm},
   {"ex", "quit the shell", "ex", cmd_null}
 }; 
 
@@ -54,7 +77,7 @@ static void call_cmd(char * buf, char arg1, char arg2)
       printf("%s:\n%s\n", cmds[i].cmd, cmds[i].usage);
     }
   } else {
-    printf("unknown cmd %s\n");
+    printf("unknown cmd '%s'\n", buf);
   }
 }
 
@@ -74,12 +97,23 @@ void run_shell(void)
   printf("+             tini SHELL               +\n");
   printf("++++++++++++++++++++++++++++++++++++++++\n");
   
+  // stop the clock
+  clock_enter_shell();
+  led_clear();
+  led_set_code(5, 'S');
+  led_set_code(4, 'H'); 
+  led_set_code(3, 'E');  
+  led_set_code(2, 'L'); 
+  led_set_code(1, 'L');  
   do {
     printf("shell>");
     
     gets (shell_buf, sizeof(shell_buf)-1);
     
     shell_buf[sizeof(shell_buf)-1] = 0;
+    
+    if(shell_buf[0] == 0)
+      continue;
     
     arg1_pos = 0;
     arg2_pos = 0;
@@ -124,4 +158,6 @@ void run_shell(void)
     
   } while (strcmp(shell_buf, "ex") != 0);
   
+  led_clear();
+  clock_leave_shell();  
 }

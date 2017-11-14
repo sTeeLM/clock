@@ -6,6 +6,18 @@
 
 #include "mod_common.h"
 
+const char * code sm_clock_mod_time_name[] =
+{
+  "SM_CLOCK_MODIFY_TIME_INIT",
+  "SM_CLOCK_MODIFY_TIME_HH",
+  "SM_CLOCK_MODIFY_TIME_MM",
+  "SM_CLOCK_MODIFY_TIME_SS",
+  "SM_CLOCK_MODIFY_TIME_YY",
+  "SM_CLOCK_MODIFY_TIME_MO",
+  "SM_CLOCK_MODIFY_TIME_DD",
+  NULL
+};
+
 static void inc_only(unsigned char what)
 {
   switch (what) {

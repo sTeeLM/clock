@@ -1,0 +1,31 @@
+#include <string.h>
+#include <stdio.h>
+#include "cmd_reboot.h"
+#include "shell.h"
+#include "cext.h"
+
+char cmd_reboot(char arg1, char arg2)
+{
+  SHELL_CMD_PROC fuck;
+  
+  UNUSED_PARAM(arg2);
+  
+  if(arg1 == 0) {
+#ifdef __CLOCK_EMULATE__    
+    fuck = NULL;
+    fuck(0,0);
+#else
+    ISP_CONTR |= 0x20;
+#endif
+    return 0;
+  } else if(strcmp(shell_buf + arg1, "isp") == 0) {
+#ifdef __CLOCK_EMULATE__ 
+    printf ("reboot to isp was not supported\n");
+    return 1;
+#else
+    ISP_CONTR |= 0x60;
+    return 0;
+#endif
+  }
+  return 1;
+}

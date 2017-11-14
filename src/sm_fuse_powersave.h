@@ -9,6 +9,8 @@ enum sm_fuse_powersave_ss {
   SM_FUSE_POWERSAVE_PREDETONATE = 2
 };
 
+extern const char * code sm_fuse_powersave_ss_name[];
+
 void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events);
 
 #endif

@@ -16,6 +16,8 @@ enum sm_clock_mod_alarm_ss {
   SM_CLOCK_MODIFY_ALARM_DAY7 = 9  // 修改Alarm星期日开启状态  
 };
 
+extern const char * code sm_clock_mod_alarm_ss_name[];
+
 void sm_clock_mod_alarm(unsigned char from, unsigned char to, enum task_events);
 
 #endif

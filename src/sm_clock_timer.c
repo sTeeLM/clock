@@ -8,6 +8,15 @@
 
 // ÅÜ±í¹¦ÄÜ
 
+const char * code sm_clock_timer_ss_name[] = 
+{
+  "SM_CLOCK_TIMER_INIT",
+  "SM_CLOCK_TIMER_CLEAR",
+  "SM_CLOCK_TIMER_RUNNING",
+  "SM_CLOCK_TIMER_STOP",
+  NULL
+};
+
 static void show_slot_title(unsigned char slot)
 {
   led_clear();

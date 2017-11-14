@@ -8,6 +8,17 @@
 #include "debug.h"
 #include "rom.h"
 
+const char * code sm_clock_mod_global_flag_name[] = 
+{
+  "SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT",
+  "SM_CLOCK_MODIFY_GLOBAL_FLAG_PS",
+  "SM_CLOCK_MODIFY_GLOBAL_FLAG_BS",
+  "SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC",
+  "SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP",
+  "SM_CLOCK_MODIFY_GLOBAL_FLAG_1224",
+  NULL
+};
+
 static void display_global_flag(unsigned char what)
 {
   bit baoshi,is_24;

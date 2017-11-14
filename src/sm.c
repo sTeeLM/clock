@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #include "sm.h"
 #include "debug.h"
 #include "led.h"
@@ -826,45 +828,55 @@ static const struct sm_trans_group * code sm_trans_table[] = {
   sm_group_fuse
 };
 
-const char * code sm_tables_name[] = 
+
+struct sm_state_names
 {
-  "SM_CLOCK",
-  "SM_FUSE",
+  const char * state_name;
+  const char ** sub_state_names;
 };
 
-static const char * code sm_states_clock_name[] = 
+struct sm_table_names
 {
-  "SM_CLOCK_DISPLAY",
-  "SM_CLOCK_MODIFY_TIME",
-  "SM_CLOCK_MODIFY_ALARM",
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG",
-  "SM_CLOCK_POWERSAVE",
-  "SM_CLOCK_ALARM",
-  "SM_CLOCK_TIMER",
-  "SM_CLOCK_COUNTER",
-};
-
-static const char * code sm_states_fuse_name[] = 
-{
-  "SM_FUSE_TEST",
-  "SM_FUSE_MODE",
-  "SM_FUSE_PARAM",
-  "SM_FUSE_TIMER",
-  "SM_FUSE_GRENADE",
-  "SM_FUSE_DETONATE",
-  "SM_FUSE_POWERSAVE",
-};
-
-const char * * code sm_states_name[] =
-{
-  sm_states_clock_name,
-  sm_states_fuse_name
+  const char * table_name;
+  struct sm_state_names * state_names;
 };
 
 
-static unsigned char sm_state; // hi 4 bits : state, lo 4 bits: sub-state 
-unsigned char sm_curr_table; // current table;
-unsigned char sm_new_table;
+static const struct sm_state_names code sm_clock_names[] = 
+{
+  {"SM_CLOCK_DISPLAY", sm_clock_display_ss_name},
+  {"SM_CLOCK_MODIFY_TIME", sm_clock_mod_time_name},
+  {"SM_CLOCK_MODIFY_ALARM", sm_clock_mod_alarm_ss_name},
+  {"SM_CLOCK_MODIFY_GLOBAL_FLAG", sm_clock_mod_global_flag_name}, 
+  {"SM_CLOCK_POWERSAVE", sm_clock_powersave_ss_name},
+  {"SM_CLOCK_ALARM", sm_clock_alarm_ss_name},
+  {"SM_CLOCK_TIMER", sm_clock_timer_ss_name},
+  {"SM_CLOCK_COUNTER", sm_clock_counter_ss_name},
+  {NULL, NULL}
+};
+
+static const struct sm_state_names code sm_fuse_names[] = 
+{
+  {"SM_FUSE_TEST",sm_fuse_test_ss_name},
+  {"SM_FUSE_MODE",sm_fuse_mode_ss_name},
+  {"SM_FUSE_PARAM",sm_fuse_param_ss_name},
+  {"SM_FUSE_TIMER",sm_fuse_timer_ss_name},
+  {"SM_FUSE_GRENADE",sm_fuse_grenade_ss_name},
+  {"SM_FUSE_DETONATE",sm_fuse_detonate_ss_name},
+  {"SM_FUSE_POWERSAVE",sm_fuse_powersave_ss_name},
+  {NULL, NULL}
+};
+
+static const struct sm_table_names code sm_names[] = 
+{
+  {"SM_CLOCK", sm_clock_names},
+  {"SM_FUSE", sm_fuse_names},
+  {NULL, NULL}
+};
+
+static unsigned char sm_state;      // curent state hi 4 bits : state, lo 4 bits: sub-state 
+static unsigned char sm_curr_table; // current table;
+static unsigned char sm_new_table;
 
 
 /* 不做任何过滤 */
@@ -886,14 +898,15 @@ void run_state_machine(enum task_events ev)
       && sm_curr_table == sm_trans_table[sm_curr_table][index].table[c].from_table) {
       newstate = sm_trans_table[sm_curr_table][index].table[c].to_state;
       sm_new_table = sm_trans_table[sm_curr_table][index].table[c].to_table;
-      CDBG("SM [%s] [%s][%s][%02bd] -> [%s][%s][%02bd]\n",
+      CDBG("SM [%s] [%s][%s][%s] -> [%s][%s][%s]\n",
         task_name[ev], 
-        sm_tables_name[sm_curr_table],
-        sm_states_name[sm_curr_table][index], 
-        get_sm_ss_state(sm_state),
-        sm_tables_name[sm_new_table],
-        sm_states_name[sm_new_table][get_sm_state(newstate)],
-        get_sm_ss_state(newstate));
+        sm_names[sm_curr_table].table_name,
+        sm_names[sm_curr_table].state_names[index].state_name, 
+        sm_names[sm_curr_table].state_names[index].sub_state_names[get_sm_ss_state(sm_state)],
+        sm_names[sm_new_table].table_name,
+        sm_names[sm_new_table].state_names[get_sm_state(newstate)].state_name, 
+        sm_names[sm_new_table].state_names[get_sm_state(newstate)].sub_state_names[get_sm_ss_state(newstate)]
+        );
       sm_trans_table[sm_curr_table][index].table[c].sm_proc(sm_state, newstate, ev);
       sm_state = newstate;
       sm_curr_table = sm_new_table;
@@ -915,4 +928,125 @@ void sm_initialize (void)
   rtc_set_lt_timer(0);
 
   set_task(EV_KEY_MOD_UP);
+}
+
+void sm_show_current(void)
+{
+    printf("current : [%s][%s][%s]\n", 
+      sm_names[sm_curr_table].table_name, 
+      sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].state_name,
+      sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[get_sm_ss_state(sm_state)]);
+}
+
+
+void sm_dump(void)
+{
+  char i,j,k;
+  
+  for(i = 0; sm_names[i].table_name != NULL; i++) {
+    printf("%c table %s:\n", i == sm_curr_table ? '*' : ' ', sm_names[i]);
+    for(j = 0; sm_names[i].state_names[j].state_name != NULL; j ++) {
+      printf("  |--%c state %s:\n", i == sm_curr_table && j == get_sm_state(sm_state) ? '*' : ' ', sm_names[i].state_names[j].state_name);
+      for(k = 0 ; sm_names[i].state_names[j].sub_state_names[k] != NULL ; k ++) {
+        printf("  |   |--%c sub-state %s\n", i == sm_curr_table && j == get_sm_state(sm_state) && k == get_sm_ss_state(sm_state) ? '*' : ' ', 
+          sm_names[i].state_names[j].sub_state_names[k]);
+      }
+    }
+  }
+}
+
+void sm_dump_table(void)
+{
+  char i;
+  for(i = 0; sm_names[i].table_name != NULL; i++) {
+    printf("%c table %s\n", i == sm_curr_table ? '*' : ' ', sm_names[i]);
+  }
+}
+
+void sm_dump_state(void)
+{
+  char i;
+  for(i = 0; sm_names[sm_curr_table].state_names[i].state_name != NULL; i ++) {
+    printf("%c state %s\n", i == get_sm_state(sm_state) ? '*' : ' ', sm_names[sm_curr_table].state_names[i].state_name);
+  }
+}
+
+void sm_dump_sub_state(void)
+{
+  char i;
+  for(i = 0 ; sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[i] != NULL ; i ++) {
+    printf("%c sub-state %s\n", i == get_sm_ss_state(sm_state) ? '*' : ' ', 
+      sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[i]);
+  }
+}
+
+
+bit sm_set_table_by_name(const char * table_name)
+{
+  char i;
+  for(i = 0; sm_names[i].table_name != NULL; i++) {
+    if(strcmp(sm_names[i].table_name, table_name) == 0) {
+      printf("table %s -> %s\n", sm_names[sm_curr_table].table_name, table_name);
+      printf("state %s -> %s\n", 
+        sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].state_name,
+        sm_names[i].state_names[0].state_name
+        );
+      printf("sub-state %s -> %s\n", 
+        sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[get_sm_ss_state(sm_state)],
+        sm_names[i].state_names[0].sub_state_names[0]
+        );
+      sm_curr_table = sm_new_table = i;
+      sm_state = 0;
+      return 0;
+    }
+  }
+  return 1;
+}
+
+static void sm_set_state(unsigned char state)
+{
+  sm_state &= 0x0F; // remove state
+  sm_state |= (state & 0x0F) << 4;
+}
+
+static void sm_set_sub_state(unsigned char sub_state)
+{
+  sm_state &= 0xF0; // remove sub-state
+  sm_state |= sub_state & 0x0F;
+}
+
+bit sm_set_state_by_name(const char * state_name)
+{
+  char i;
+  for(i = 0; sm_names[sm_curr_table].state_names[i].state_name != NULL; i ++) {
+    if(strcmp(state_name, sm_names[sm_curr_table].state_names[i].state_name) == 0) {
+      printf("state %s  -> %s\n", 
+        sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].state_name, 
+        sm_names[sm_curr_table].state_names[i].state_name);
+      printf("sub-state %s -> %s\n", 
+        sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[get_sm_ss_state(sm_state)],
+        sm_names[sm_curr_table].state_names[i].sub_state_names[0]
+        );
+      sm_set_state(i);
+      sm_set_sub_state(0);
+      return 0;
+    }
+  }
+  return 1;
+}
+
+bit sm_set_sub_state_by_name(const char * sub_state_name)
+{
+  char i;
+  for(i = 0 ; sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[i] != NULL ; i ++) {
+    if(strcmp(sub_state_name, sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[i]) == 0) {
+      printf("sub-state %s -> %s\n",
+      sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[get_sm_ss_state(sm_state)],
+      sm_names[sm_curr_table].state_names[get_sm_state(sm_state)].sub_state_names[i]
+      );
+      sm_set_sub_state(i);
+      return 0;
+    }
+  }
+  return 1;
 }

@@ -6,6 +6,17 @@
 #include "beeper.h"
 
 // 倒计时功能
+const char * code sm_clock_counter_ss_name[] = 
+{
+  "SM_CLOCK_COUNTER_INIT",
+  "SM_CLOCK_COUNTER_MODIFY_HH",
+  "SM_CLOCK_COUNTER_MODIFY_MM",
+  "SM_CLOCK_COUNTER_MODIFY_SS",
+  "SM_CLOCK_COUNTER_RUNNING",
+  "SM_CLOCK_COUNTER_PAUSE",
+  "SM_CLOCK_COUNTER_STOP",
+  NULL
+};
 
 static void inc_only(unsigned char what)
 {

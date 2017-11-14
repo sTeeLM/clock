@@ -13,6 +13,8 @@ enum sm_clock_counter_ss {
   SM_CLOCK_COUNTER_STOP       = 6, // Í£Ö¹/ÏìÁå×´Ì¬
 };
 
+extern const char * code sm_clock_counter_ss_name[];
+  
 void sm_clock_counter(unsigned char from, unsigned char to, enum task_events);
 
 #endif

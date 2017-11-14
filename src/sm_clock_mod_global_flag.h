@@ -12,6 +12,8 @@ enum sm_clock_mod_global_flag_ss {
   SM_CLOCK_MODIFY_GLOBAL_FLAG_1224   = 5, // 12/24–° ±œ‘ æ«–ªª
 };
 
+extern const char * code sm_clock_mod_global_flag_name[];
+
 void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_events);
 
 #endif

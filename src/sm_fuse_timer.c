@@ -18,6 +18,17 @@
 #define param_step       last_display_s
 #define current_temp     lpress_start
 
+const char * code sm_fuse_timer_ss_name[] = 
+{
+  "SM_FUSE_TIMER_INIT",
+  "SM_FUSE_TIMER_PREARMED",
+  "SM_FUSE_TIMER_ARMED",
+  "SM_FUSE_TIMER_VERIFY",
+  "SM_FUSE_TIMER_DISARMED",
+  "SM_FUSE_TIMER_PREDETONATE",
+  NULL
+};
+
 static void display_param_error(unsigned int err)
 {
   led_clear();

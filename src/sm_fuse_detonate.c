@@ -7,6 +7,13 @@
 
 #define MAX_FUSE_CHARGE_TIME 30 //s
 
+const char * code sm_fuse_detonate_ss_name[] = 
+{
+  "SM_FUSE_DETONATE_INIT",
+  "SM_FUSE_DETONATE_CHARGE",
+  NULL
+};
+
 static void display_detonate(void)
 {
   unsigned char i;

@@ -12,6 +12,16 @@
 
 #define SM_CLOCK_DISPLAY_SWITCH_S 3 // 5s
 
+const char * code sm_clock_display_ss_name[] = 
+{
+  "SM_CLOCK_DISPLAY_INIT",
+  "SM_CLOCK_DISPLAY_HHMMSS",
+  "SM_CLOCK_DISPLAY_YYMMDD",
+  "SM_CLOCK_DISPLAY_WEEK",
+  "SM_CLOCK_DISPLAY_TEMP",
+  NULL
+};
+
 static void display_temp(void)
 {
   unsigned char inti, flt;

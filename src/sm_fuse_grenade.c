@@ -6,6 +6,16 @@
 #include "gyro.h"
 #include "fuse.h"
 
+const char * code sm_fuse_grenade_ss_name[] = 
+{
+  "SM_FUSE_GRENADE_INIT",
+  "SM_FUSE_GRENADE_PREARMED",
+  "SM_FUSE_GRENADE_ARMED",
+  "SM_FUSE_GRENADE_DISARMED",
+  "SM_FUSE_GRENADE_PREDETONATE",
+  NULL
+};
+
 static bit grenade_check_set_param(void)
 {
   unsigned char val;

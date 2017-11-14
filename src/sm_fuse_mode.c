@@ -6,6 +6,13 @@
 #define FUSE_MODE_DISPLAY_TIMER   0
 #define FUSE_MODE_DISPLAY_GERNADE 1
 
+char * code sm_fuse_mode_ss_name[] = 
+{
+  "SM_FUSE_MODE_INIT",
+  "SM_FUSE_MODE_TIMER",
+  "SM_FUSE_MODE_GRENADE",
+  NULL
+};
 
 static void display_mode(unsigned char mode)
 {

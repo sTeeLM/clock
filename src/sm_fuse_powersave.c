@@ -8,6 +8,14 @@
 #include "hg.h"
 #include "lt_timer.h"
 
+const char * code sm_fuse_powersave_ss_name[] =
+{
+  "SM_FUSE_POWERSAVE_INIT",
+  "SM_FUSE_POWERSAVE_PS",
+  "SM_FUSE_POWERSAVE_PREDETONATE",
+  NULL
+};
+
 static void stop_peripheral(void)
 {
   tripwire_enable(0);

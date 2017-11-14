@@ -16,6 +16,8 @@ enum sm_fuse_test_ss {
   SM_FUSE_TEST_GYRO          = 9  // gyro≤‚ ‘
 };
 
+extern const char * code sm_fuse_test_ss_name[];
+
 void sm_fuse_test(unsigned char from, unsigned char to, enum task_events);
 
 #endif

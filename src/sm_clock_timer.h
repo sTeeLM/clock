@@ -10,6 +10,8 @@ enum sm_clock_timer_ss {
   SM_CLOCK_TIMER_STOP     = 3, //ֹͣ״̬
 };
 
+extern const char * code sm_clock_timer_ss_name[];
+
 void sm_clock_timer(unsigned char from, unsigned char to, enum task_events);
 
 #endif

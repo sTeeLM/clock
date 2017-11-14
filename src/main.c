@@ -23,6 +23,7 @@
 #include "debug.h"
 #include "cext.h"
 #include "rom.h"
+#include "shell.h"
 
 
 #define __CLOCK__VERSION__ "1.0.0.0"
@@ -32,9 +33,8 @@ static void show_version(void)
 {
   
   CDBG("++++++++++++++++++++++++++++++++++++++++\n");
-  CDBG("+        CLOCK & FUSE %s          +\n", __CLOCK__VERSION__);
+  CDBG("+        tiny OS  %s              +\n", __CLOCK__VERSION__);
   CDBG("+                                      +\n");
-  CDBG("+        sTeeL<steel.mental@gmail.com> +\n");
   CDBG("++++++++++++++++++++++++++++++++++++++++\n");
   
 }
@@ -65,5 +65,8 @@ void main(void)
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
 
-  run_task();                                   // run task procs, loop forever
+  while(1) {                                    //loop forever
+    run_task();                                 // run task procs
+    run_shell();                                // run shell
+  }
 }

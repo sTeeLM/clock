@@ -9,6 +9,8 @@ enum sm_fuse_mode_ss {
   SM_FUSE_MODE_GRENADE   = 2, // Åö×²´¥·¢²âÊÔ
 };
 
+extern const char * code sm_fuse_mode_ss_name[];
+
 void sm_fuse_mode(unsigned char from, unsigned char to, enum task_events);
 
 #endif

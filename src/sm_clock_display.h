@@ -11,6 +11,8 @@ enum sm_clock_display_ss {
   SM_CLOCK_DISPLAY_TEMP   = 4, // ÏÔÊ¾ÎÂ¶È
 };
 
+extern const char * code sm_clock_display_ss_name[];
+
 void sm_clock_display(unsigned char from, unsigned char to, enum task_events);
 
 #endif

@@ -4,6 +4,8 @@
 void clock_initialize ();
 void clock_enter_powersave(void);
 void clock_leave_powersave(void);
+void clock_enter_shell(void);
+void clock_leave_shell(void);
 
 enum clock_sync_type
 {

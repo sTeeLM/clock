@@ -20,6 +20,8 @@ enum sm_fuse_param_ss {
   
 };
 
+extern const char * code sm_fuse_param_ss_name[];
+
 void sm_fuse_param(unsigned char from, unsigned char to, enum task_events);
 
 #endif

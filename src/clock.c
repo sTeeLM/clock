@@ -124,7 +124,7 @@ static unsigned char idata sec_256; // ”√”⁄ time_diff
 static bit display_enable;
 static unsigned char display_mode;
 
-
+static bit in_shell;
 
 void clock_display(bit enable)
 {
@@ -143,8 +143,6 @@ static void clock_inc_ms39(void)
   bit is_pm;
   
   clk.ms39 ++;
-  
-  refresh_led();
   
   if((clk.ms39 % 6 ) == 0) {
      set_task(EV_SCAN_KEY);
@@ -368,6 +366,13 @@ void clock_sync_to_rtc(enum clock_sync_type type)
 
 static void clock0_ISR (void) interrupt 1 using 1
 {
+  refresh_led();
+  
+  if(in_shell) {
+    TF0 = 0;
+    return;
+  }
+  
   clock_inc_ms39();
   timer_inc_ms39();
   TF0 = 0;
@@ -418,15 +423,28 @@ void clock_initialize(void)
 
 void clock_enter_powersave(void)
 {
-  CDBG("clock_enter_powersave");
-  ET0 = 0;
+  CDBG("clock_enter_powersave\n");
+  clock_enable_interrupt(0);
 }
 
 void clock_leave_powersave(void)
 {
-  CDBG("clock_leave_powersave");
+  CDBG("clock_leave_powersave\n");
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
   clock_sync_from_rtc(CLOCK_SYNC_DATE);
-  ET0 = 1;  
+  clock_enable_interrupt(1);
 }
 
+void clock_enter_shell(void)
+{
+  in_shell = 1;
+}
+
+void clock_leave_shell(void)
+{
+  in_shell = 0;
+  clock_enable_interrupt(0);
+  clock_sync_from_rtc(CLOCK_SYNC_TIME);
+  clock_sync_from_rtc(CLOCK_SYNC_DATE);
+  clock_enable_interrupt(1);
+}

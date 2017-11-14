@@ -12,6 +12,8 @@ enum sm_fuse_timer_ss {
   SM_FUSE_TIMER_PREDETONATE = 5, // ×¼±¸detonate
 };
 
+extern const char * code sm_fuse_timer_ss_name[];
+
 void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events);
 
 #endif

@@ -18,6 +18,21 @@
 #define HG_TEST_TIMEO   60
 #define GYRO_TEST_TIMEO 60
 
+const char * code sm_fuse_test_ss_name[] = 
+{
+  "SM_FUSE_TEST_INIT",
+  "SM_FUSE_TEST_FUSE0_SHORT",
+  "SM_FUSE_TEST_FUSE0_BROKE",
+  "SM_FUSE_TEST_FUSE1_SHORT",
+  "SM_FUSE_TEST_FUSE1_BROKE",
+  "SM_FUSE_TEST_TRIPWIRE",
+  "SM_FUSE_TEST_THERMO_HI",
+  "SM_FUSE_TEST_THERMO_LO",
+  "SM_FUSE_TEST_HG",
+  "SM_FUSE_TEST_GYRO",
+  NULL
+};
+
 static unsigned char hg_state_mask;
 
 static void test_hg_state_mask(unsigned char state)

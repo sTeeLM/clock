@@ -48,6 +48,7 @@ typedef void (code *TASK_PROC)(enum task_events);
 
 void task_initialize (void);
 
+void task_dump(void);
 
 // 这些宏也在中断里被调用，所以不能是带参数函数，只能拿宏实现了
 #define set_task(ev1)             \

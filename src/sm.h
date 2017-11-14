@@ -38,9 +38,6 @@ enum sm_tables
 
 typedef void (code *SM_PROC)(unsigned char from, unsigned char to, enum task_events ev);
 
-extern const char * code sm_tables_name[];
-extern const char * * code sm_states_name[];
-
 struct sm_trans
 {
   unsigned char from_table;  
@@ -51,7 +48,6 @@ struct sm_trans
   SM_PROC sm_proc;
 };
 
-
 #define get_sm_state(st) \
   (((st & 0xF0) >> 4) & 0x0F)
 
@@ -61,5 +57,14 @@ struct sm_trans
 void run_state_machine(enum task_events);
 void null_proc(enum task_events ev);
 void sm_initialize (void);
+
+void sm_show_current(void);
+void sm_dump(void);
+void sm_dump_table(void);
+void sm_dump_state(void);
+void sm_dump_sub_state(void);
+bit sm_set_table_by_name(const char * table_name);
+bit sm_set_state_by_name(const char * state_name);
+bit sm_set_sub_state_by_name(const char * sub_state_name);
 
 #endif

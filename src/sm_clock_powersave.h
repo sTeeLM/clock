@@ -8,6 +8,8 @@ enum sm_clock_powersave_ss {
   SM_CLOCK_POWERSAVE_PS       = 1, // ½Úµç×´Ì¬
 };
 
+extern const char * code sm_clock_powersave_ss_name[];
+
 void sm_clock_powersave(unsigned char from, unsigned char to, enum task_events);
 
 #endif

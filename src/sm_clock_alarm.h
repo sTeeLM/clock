@@ -8,5 +8,7 @@ enum sm_clock_alarm_ss {
   SM_CLOCK_ALARM_HIT_ALARM1     = 1, // 整点报时到时间
 };
 
+extern const char * code sm_clock_alarm_ss_name[];
+
 void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events);
 #endif

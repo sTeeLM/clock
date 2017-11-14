@@ -11,6 +11,8 @@ enum sm_fuse_grenade_ss {
   SM_FUSE_GRENADE_PREDETONATE = 4  // ԤDETONATE
 };
 
+extern const char * code sm_fuse_grenade_ss_name[];
+
 void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events);
 
 #endif
