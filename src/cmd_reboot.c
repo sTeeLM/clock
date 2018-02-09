@@ -1,3 +1,5 @@
+#include <STC89C5xRC.H>
+
 #include <string.h>
 #include <stdio.h>
 #include "cmd_reboot.h"
@@ -15,6 +17,7 @@ char cmd_reboot(char arg1, char arg2)
     fuck = NULL;
     fuck(0,0);
 #else
+    UNUSED_PARAM(fuck);
     ISP_CONTR |= 0x20;
 #endif
     return 0;

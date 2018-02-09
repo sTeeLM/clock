@@ -77,9 +77,9 @@ void int_hub_dump(void)
   //RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT
   printf("++++++int_hub_dump begin++++++\n");
   printf("[RTC_INT] %c\n", RTC_INT ? '1' : '0');
-  printf("[EXT_INT] %c\n", RTC_INT ? '1' : '0');  
-  printf("[THERMO_INT] %c\n", RTC_INT ? '1' : '0');
-  printf("[GYRO_INT] %c\n", RTC_INT ? '1' : '0');  
+  printf("[EXT_INT] %c\n", EXT_INT ? '1' : '0');  
+  printf("[THERMO_INT] %c\n", THERMO_INT ? '1' : '0');
+  printf("[GYRO_INT] %c\n", GYRO_INT ? '1' : '0');  
   printf("++++++int_hub_dump end++++++\n");
 }
 
@@ -100,9 +100,7 @@ unsigned int int_hub_get_status(void)
 void int_hub_dump_ext_status(unsigned int status)
 {
   printf("++++++int_hub_dump_ext_status begin++++++\n");
-  printf("[%02bd] %c %s\n", INT_HUB_FUSE0_SHORT, int_hub_test_bit(INT_HUB_FUSE0_SHORT, status) ? '1' : '0', "INT_HUB_FUSE0_SHORT");
   printf("[%02bd] %c %s\n", INT_HUB_FUSE0_BROKE, int_hub_test_bit(INT_HUB_FUSE0_BROKE, status) ? '1' : '0', "INT_HUB_FUSE0_BROKE");
-  printf("[%02bd] %c %s\n", INT_HUB_FUSE1_SHORT, int_hub_test_bit(INT_HUB_FUSE1_SHORT, status) ? '1' : '0', "INT_HUB_FUSE1_SHORT");
   printf("[%02bd] %c %s\n", INT_HUB_FUSE1_BROKE, int_hub_test_bit(INT_HUB_FUSE1_BROKE, status) ? '1' : '0', "INT_HUB_FUSE1_BROKE");
   printf("[%02bd] %c %s\n", INT_HUB_HG0_HIT, int_hub_test_bit(INT_HUB_HG0_HIT, status) ? '1' : '0', "INT_HUB_HG0_HIT");
   printf("[%02bd] %c %s\n", INT_HUB_HG1_HIT, int_hub_test_bit(INT_HUB_HG1_HIT, status) ? '1' : '0', "INT_HUB_HG1_HIT");
@@ -116,6 +114,8 @@ void int_hub_dump_ext_status(unsigned int status)
   printf("[%02bd] %c %s\n", INT_HUB_UNSUSED4, int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
   printf("[%02bd] %c %s\n", INT_HUB_UNSUSED5, int_hub_test_bit(INT_HUB_UNSUSED5, status) ? '1' : '0', "INT_HUB_UNSUSED5");
   printf("[%02bd] %c %s\n", INT_HUB_UNSUSED6, int_hub_test_bit(INT_HUB_UNSUSED6, status) ? '1' : '0', "INT_HUB_UNSUSED6");
+  printf("[%02bd] %c %s\n", INT_HUB_UNSUSED7, int_hub_test_bit(INT_HUB_UNSUSED7, status) ? '1' : '0', "INT_HUB_UNSUSED7");
+  printf("[%02bd] %c %s\n", INT_HUB_UNSUSED8, int_hub_test_bit(INT_HUB_UNSUSED8, status) ? '1' : '0', "INT_HUB_UNSUSED8");
   printf("++++++int_hub_dump_ext_status ends++++++\n");
 }
 

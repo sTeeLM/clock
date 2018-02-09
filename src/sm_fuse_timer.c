@@ -219,10 +219,8 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_FUSE:
-      if(rom_read(ROM_FUSE0_SHORT_GOOD) 
-        &&rom_read(ROM_FUSE1_SHORT_GOOD)
-        &&rom_read(ROM_FUSE0_BROKE_GOOD)
-        &&rom_read(ROM_FUSE1_BROKE_GOOD)
+      if(rom_read(ROM_FUSE0_BROKE_GOOD)
+        || rom_read(ROM_FUSE1_BROKE_GOOD)
       ) {
         fuse_enable(1);
       } else {
@@ -317,8 +315,8 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
   // prearm状态，收到任何如下事件，都回滚
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_PREARMED 
     && (ev == EV_COUNTER 
-    || ev == EV_FUSE0_SHORT || ev == EV_FUSE0_BROKE 
-    || ev == EV_FUSE1_SHORT || ev == EV_FUSE1_BROKE
+    || ev == EV_FUSE0_BROKE 
+    || ev == EV_FUSE1_BROKE
     || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
     || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
@@ -432,8 +430,8 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_PREDETONATE
     &&(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED || get_sm_ss_state(from) == SM_FUSE_TIMER_VERIFY)
     && (ev == EV_COUNTER || ev == EV_FUSE_SEL2
-    || ev == EV_FUSE0_SHORT || ev == EV_FUSE0_BROKE 
-    || ev == EV_FUSE1_SHORT || ev == EV_FUSE1_BROKE
+    || ev == EV_FUSE0_BROKE 
+    || ev == EV_FUSE1_BROKE
     || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
     || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {

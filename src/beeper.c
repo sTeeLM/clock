@@ -132,12 +132,19 @@ void beeper_initialize (void)
    //   TR2 = 0 (clock stop, please)
    T2CON = 0;
 
-   // Load clock2 autoreload bytes
+   // Load clock2 autoreload bytes  
+#ifdef OSCILLATO_6T
+   TH2 = (0xFFFF-10000)/128;
+   TL2 = (0xFFFF-10000)%128;
+   RCAP2H = (0xFFFF-10000)/128;
+   RCAP2L = (0xFFFF-10000)%128;
+#else
    TH2 = (0xFFFF-10000)/256;
    TL2 = (0xFFFF-10000)%256;
    RCAP2H = (0xFFFF-10000)/256;
    RCAP2L = (0xFFFF-10000)%256;
-
+#endif
+  
    // Normal priority for Timer2 interrupts
    PT2 = 0;
    // Disable Timer2 interrupts
@@ -248,7 +255,7 @@ static bit _beepler_play(unsigned char * music, bit once)
         ET2 = 1;
         while (pai!=0 && !beeper_stop) { 
           beeper_out=~beeper_out; 
-          delay_5us(4 * tune); 
+          delay_10us(2 * tune); 
         }
         beeper_out = 1; 
     }
@@ -266,7 +273,7 @@ void beeper_beep(void)
   beeper_out = 1;
   while(c --) {
     beeper_out=~beeper_out;
-    delay_5us(4 * 0x13); 
+    delay_10us(2 * 0x13); 
   }
   beeper_out = 1;
 }
@@ -278,14 +285,14 @@ void beeper_beep_beep_always(void)
   beeper_out = 1;
   while(c --) {
     beeper_out=~beeper_out;
-    delay_5us(4 * 0x10); 
+    delay_10us(2 * 0x10); 
   }
   
   delay_ms(100);
   
   while(c --) {
     beeper_out=~beeper_out;
-    delay_5us(4 * 0x10); 
+    delay_10us(2 * 0x10); 
   }
   beeper_out = 1;
 }
@@ -299,14 +306,14 @@ void beeper_beep_beep(void)
   beeper_out =0;
   while(c --) {
     beeper_out=~beeper_out;
-    delay_5us(4 * 0x10); 
+    delay_10us(2 * 0x10); 
   }
   
   delay_ms(100);
   
   while(c --) {
     beeper_out=~beeper_out;
-    delay_5us(4 * 0x10); 
+    delay_10us(2 * 0x10); 
   }
   beeper_out = 1;
 }

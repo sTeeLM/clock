@@ -18,31 +18,29 @@ enum task_events
   EV_KEY_MOD_SET_PRESS    = 11, // mod set 键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
   EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
-  EV_FUSE0_SHORT      = 14, // fuse0被短路
-  EV_FUSE0_BROKE      = 15, // fuse0被剪断
-  EV_FUSE1_SHORT      = 16, // fuse0被短路
-  EV_FUSE1_BROKE      = 17, // fuse0被剪断
-  EV_ROTATE_HG        = 18, // hg检测出倾斜状态改变
-  EV_ROTATE_GYRO      = 19, // gyro检测出倾斜状态改变	
-  EV_ACC_GYRO         = 20, // gyro 检测出晃动
-  EV_DROP_GYRO         = 21, // gyro 检测出下落（失重）
-  EV_THERMO_HI     = 22, // 温度太高
-  EV_THERMO_LO     = 23, // 温度太低
-  EV_TRIPWIRE         = 24, // tripwire被剪断
-  EV_FUSE_SEL0         = 25, // fuse 虚拟事件0
-  EV_FUSE_SEL1         = 26, // fuse 虚拟事件1
-  EV_FUSE_SEL2         = 27, // fuse 虚拟事件2  
-  EV_ALARM0           = 28, // 闹钟0应该响起
-  EV_ALARM1           = 29, // 闹钟1应该响起
-  EV_COUNTER          = 30, // 计时器到时间
-  EV_POWER_SAVE       = 31, // 应该进入PS状态 
+  EV_FUSE0_BROKE      = 14, // fuse0被剪断
+  EV_FUSE1_BROKE      = 15, // fuse0被剪断
+  EV_ROTATE_HG        = 16, // hg检测出倾斜状态改变
+  EV_ROTATE_GYRO      = 17, // gyro检测出倾斜状态改变	
+  EV_ACC_GYRO         = 18, // gyro 检测出晃动
+  EV_DROP_GYRO         = 19, // gyro 检测出下落（失重）
+  EV_THERMO_HI     = 20, // 温度太高
+  EV_THERMO_LO     = 21, // 温度太低
+  EV_TRIPWIRE         = 22, // tripwire被剪断
+  EV_FUSE_SEL0         = 23, // fuse 虚拟事件0
+  EV_FUSE_SEL1         = 24, // fuse 虚拟事件1
+  EV_FUSE_SEL2         = 25, // fuse 虚拟事件2  
+  EV_ALARM0           = 26, // 闹钟0应该响起
+  EV_ALARM1           = 27, // 闹钟1应该响起
+  EV_COUNTER          = 28, // 计时器到时间
+  EV_POWER_SAVE       = 29, // 应该进入PS状态 
   EV_COUNT  
 };
 
 extern unsigned int idata ev_bits0;
 extern unsigned int idata ev_bits1;
 
-extern const char * task_name[];
+extern const char * code task_name[];
 
 typedef void (code *TASK_PROC)(enum task_events);
 

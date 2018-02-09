@@ -14,6 +14,7 @@
 #include "cmd_reboot.h"
 #include "cmd_task.h"
 #include "cmd_sm.h"
+#include "cmd_beeper.h"
 #include "cext.h"
 
 #define SHELL_BUFFER_SIZE 41
@@ -52,6 +53,11 @@ struct shell_cmds code cmds[] =
                                     "sm ss <state-name>: set current state\n"
                                     "sm lss: list sub-state\n"
                                     "sm sss <sub-state-name>: set sub-state", cmd_sm},
+  {"bp", "beeper test", "bp <on|off>: enable/disable\n"
+                        "bp be: 'be'\n"
+                        "bp bebe: 'bebe'\n"
+                        "bp next: next music\n"
+                        "bp music: play music", cmd_beeper},
   {"ex", "quit the shell", "ex", cmd_null}
 }; 
 
@@ -70,7 +76,7 @@ char shell_search_cmd_by_name(char * cmd)
 static void call_cmd(char * buf, char arg1, char arg2)
 {
   char i;
-  
+  printf("buffer is '%s'\n", buf);
   i = shell_search_cmd_by_name(buf);
   if(i != -1) {
     if(cmds[i].proc(arg1, arg2) != 0) { // C212
@@ -130,7 +136,7 @@ void run_shell(void)
       arg1_pos ++;
     }
     
-    if(arg1_pos >= sizeof(shell_buf)) {
+    if(arg1_pos >= sizeof(shell_buf) || shell_buf[arg1_pos] == 0) {
       call_cmd(shell_buf, 0, 0);
       continue;
     }
@@ -149,7 +155,7 @@ void run_shell(void)
       arg2_pos ++;
     }
     
-    if(arg2_pos >= sizeof(shell_buf)) {
+    if(arg2_pos >= sizeof(shell_buf) || shell_buf[arg2_pos] == 0) {
       call_cmd(shell_buf, arg1_pos, 0);
       continue;
     }

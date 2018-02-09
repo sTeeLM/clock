@@ -21,9 +21,7 @@
 const char * code sm_fuse_test_ss_name[] = 
 {
   "SM_FUSE_TEST_INIT",
-  "SM_FUSE_TEST_FUSE0_SHORT",
   "SM_FUSE_TEST_FUSE0_BROKE",
-  "SM_FUSE_TEST_FUSE1_SHORT",
   "SM_FUSE_TEST_FUSE1_BROKE",
   "SM_FUSE_TEST_TRIPWIRE",
   "SM_FUSE_TEST_THERMO_HI",
@@ -83,12 +81,10 @@ enum fuse_test_display_state {
 	FUSE_DISPLAY_TESTING_P3,
 	FUSE_DISPLAY_TESTING_M,
 // fuse test
-	FUSE_DISPLAY_FUSE0_SHORT, // 001
-	FUSE_DISPLAY_FUSE0_BROKE, // 002
-	FUSE_DISPLAY_FUSE0_ERROR,	// 003
-	FUSE_DISPLAY_FUSE1_SHORT, // 004
-	FUSE_DISPLAY_FUSE1_BROKE, // 005
-	FUSE_DISPLAY_FUSE1_ERROR,	// 006
+	FUSE_DISPLAY_FUSE0_BROKE, // 001
+	FUSE_DISPLAY_FUSE0_ERROR,	// 002
+	FUSE_DISPLAY_FUSE1_BROKE, // 003
+	FUSE_DISPLAY_FUSE1_ERROR,	// 004
 // tripwire 
 	FUSE_DISPLAY_TRIPWIRE_BROKE, // 101
 	FUSE_DISPLAY_TRIPWIRE_ERROR, // 102
@@ -105,9 +101,7 @@ enum fuse_test_display_state {
 };
 
 enum fuse_test_phase {
-		FUSE_TEST_PHASE_FUSE0_SHORT = 0,
-		FUSE_TEST_PHASE_FUSE0_BROKE,	
-		FUSE_TEST_PHASE_FUSE1_SHORT,
+		FUSE_TEST_PHASE_FUSE0_BROKE,
 		FUSE_TEST_PHASE_FUSE1_BROKE,
 		FUSE_TEST_PHASE_TRIPWIRE,	
 		FUSE_TEST_PHASE_THERMO_HI,	
@@ -188,23 +182,17 @@ static void display_fuse_state(enum fuse_test_phase phase, enum fuse_test_displa
 			led_set_code(0, (value & 0x1) != 0 ? '1' : '0');
 			break;
 // fuse test
-		case FUSE_DISPLAY_FUSE0_SHORT: // 001
+		case FUSE_DISPLAY_FUSE0_BROKE: // 001
 			err = 1; 
-			break;		
-		case FUSE_DISPLAY_FUSE0_BROKE: // 002
+			break;
+		case FUSE_DISPLAY_FUSE0_ERROR:	// 002
 			err = 2; 
 			break;
-		case FUSE_DISPLAY_FUSE0_ERROR:	// 003
+		case FUSE_DISPLAY_FUSE1_BROKE: // 003
 			err = 3; 
 			break;
-		case FUSE_DISPLAY_FUSE1_SHORT: // 004
+		case FUSE_DISPLAY_FUSE1_ERROR:	// 004
 			err = 4; 
-			break;
-		case FUSE_DISPLAY_FUSE1_BROKE: // 005
-			err = 5; 
-			break;
-		case FUSE_DISPLAY_FUSE1_ERROR:	// 006
-			err = 6; 
 			break;
 // tripwire 
 		case FUSE_DISPLAY_TRIPWIRE_BROKE: // 101
@@ -269,26 +257,12 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
    
   // ´Ó±ðµÄ×´Ì¬ÇÐ»»¹ýÀ´£¬·ÀÖ¹Îó²Ù×÷
   if(get_sm_ss_state(from) == SM_FUSE_TEST_INIT
-    && get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT
+    && get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE
     && ev == EV_KEY_MOD_UP ) {
-			display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_WAIT, 0);
-			CDBG("fuse0 short begin test\n");
+			display_fuse_state(SM_FUSE_TEST_FUSE0_BROKE, FUSE_DISPLAY_WAIT, 0);
+			CDBG("fuse0 broke begin test\n");
     return;
   }
-	
-	// mod0 ÇÐ»»²âÊÔ
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE && ev == EV_KEY_MOD_PRESS && lpress_start == 0) {
-		display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_WAIT, 0);
-		CDBG("fuse0 broke begin test\n");
-		return;
-	}
-	
-	// mod0 ÇÐ»»²âÊÔ
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT && ev == EV_KEY_MOD_PRESS && lpress_start == 0) {
-		display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_WAIT, 0);
-		CDBG("fuse1 short begin test\n");
-		return;
-	}
 	
 	// mod0 ÇÐ»»²âÊÔ
 	if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_BROKE && ev == EV_KEY_MOD_PRESS && lpress_start == 0) {
@@ -298,24 +272,14 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	}
 	
 	// set0 Æô¶¯²âÊÔ fuse0 fuse1 short broke
-	if((get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT 
-		|| get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE
-		|| get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT
+	if((get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE 
 		|| get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_BROKE
 		)
 		&& ev == EV_KEY_SET_PRESS && lpress_start == 0) {
-		if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT ) {
-			display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_TESTING_P1, 0);
-			CDBG("fuse0 short into P1\n");
-      rom_write(ROM_FUSE0_SHORT_GOOD, 0);
-		} else if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
+		if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_TESTING_P1, 0);
 			CDBG("fuse0 broke into P1\n");
       rom_write(ROM_FUSE0_BROKE_GOOD, 0);
-		} else if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT ) {
-			display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_TESTING_P1, 0);
-			CDBG("fuse1 short into P1\n");
-      rom_write(ROM_FUSE1_SHORT_GOOD, 0);
 		} else  {
 			display_fuse_state(FUSE_TEST_PHASE_FUSE1_BROKE, FUSE_DISPLAY_TESTING_P1, 0);
 			CDBG("fuse1 broke into P1\n");
@@ -328,25 +292,15 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	}
 	
 	// ²âÊÔ×´Ì¬ fuse0 fuse1 short broke 
-	if(  (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT && (ev == EV_1S || ev == EV_FUSE0_SHORT))
-		|| (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE && (ev == EV_1S || ev == EV_FUSE0_BROKE))
-		|| (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT && (ev == EV_1S || ev == EV_FUSE1_SHORT))
+	if((get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE && (ev == EV_1S || ev == EV_FUSE0_BROKE))
 		|| (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_BROKE && (ev == EV_1S || ev == EV_FUSE1_BROKE))
 		) {
 		if(lpress_start == 1 && ev == EV_1S) { // so far so good, continue!
 			if(time_diff_now(last_display_s) > FUSE_TEST_TIMEO) {
-				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT ) {
-					CDBG("fuse0 P1 short good\n");
-					fuse_set_fuse_short(0, 1);
-					display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_TESTING_P2, 0);
-				} else if (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
+				 if (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
 					CDBG("fuse0 P1 broke good\n");
 					fuse_set_fuse_broke(0, 1);
 					display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_TESTING_P2, 0);
-				} else if (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT ) {
-					CDBG("fuse1 P1 short good\n");
-					fuse_set_fuse_short(1, 1);
-					display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_TESTING_P2, 0);
 				} else {
 					CDBG("fuse1 P1 broke good\n");
 					fuse_set_fuse_broke(1, 1);
@@ -356,19 +310,11 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 				last_display_s = clock_get_sec_256();
 			}
 		} else if(lpress_start == 1 
-			&& (ev == EV_FUSE0_SHORT
-				|| ev == EV_FUSE0_BROKE
-				|| ev == EV_FUSE1_SHORT
+			&& (ev == EV_FUSE0_BROKE
 				|| ev == EV_FUSE1_BROKE)) { // bad: is short or broke
-			if(ev == EV_FUSE0_SHORT) {
-				display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_FUSE0_SHORT, 0);
-				CDBG("fuse0 P1 failed: already short\n");
-			} else if(ev == EV_FUSE0_BROKE) {
+			if(ev == EV_FUSE0_BROKE) {
 				display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_FUSE0_BROKE, 0);
 				CDBG("fuse0 P1 failed: already broke\n");
-			} else if (ev == EV_FUSE1_SHORT) {
-				display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_FUSE1_SHORT, 0);
-				CDBG("fuse1 P1 failed: already short\n");
 			} else {
 				display_fuse_state(FUSE_TEST_PHASE_FUSE1_BROKE, FUSE_DISPLAY_FUSE1_BROKE, 0);
 				CDBG("fuse0 P1 failed: already broke\n");
@@ -377,18 +323,10 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 			fuse_enable(0);
 		}else if(lpress_start == 2 && ev == EV_1S) { // bad, ²»ÏìÓ¦
 			if(time_diff_now(last_display_s) > FUSE_TEST_TIMEO) {
-				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_SHORT ) {
-					CDBG("fuse0 P2 failed: short not response\n");
-					fuse_set_fuse_short(0, 0);
-					display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_FUSE0_ERROR, 0);
-				} else if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
+				if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE ) {
 					CDBG("fuse0 P2 failed: broke not response\n");
 					fuse_set_fuse_broke(0, 0);
 					display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_FUSE0_ERROR, 0);
-				} else if(get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_SHORT ) {
-					CDBG("fuse1 P2 failed: short not response\n");
-					fuse_set_fuse_short(1, 0);
-					display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_FUSE0_ERROR, 0);
 				} else {
 					CDBG("fuse1 P2 failed: broke not response\n");
 					fuse_set_fuse_broke(1, 0);
@@ -398,25 +336,13 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 				fuse_enable(0);
 			}
 		} else if(lpress_start == 2 
-		&&  (ev == EV_FUSE0_SHORT
-				|| ev == EV_FUSE0_BROKE
-				|| ev == EV_FUSE1_SHORT
+		&&  (ev == EV_FUSE0_BROKE
 				|| ev == EV_FUSE1_BROKE)) { // good!
-			if(ev == EV_FUSE0_SHORT) {
-				CDBG("fuse0 P2 short good\n");
-        rom_write(ROM_FUSE0_SHORT_GOOD, 1);
-				fuse_set_fuse_short(0, 0);
-				display_fuse_state(FUSE_TEST_PHASE_FUSE0_SHORT, FUSE_DISPLAY_GOOD, 0);
-			} else if(ev == EV_FUSE0_BROKE) {
+			if(ev == EV_FUSE0_BROKE) {
 				CDBG("fuse0 P2 broke good\n");	
         rom_write(ROM_FUSE0_BROKE_GOOD, 1);
 				fuse_set_fuse_broke(0, 0);
 				display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_GOOD, 0);
-			} else if(ev == EV_FUSE1_SHORT) {
-				CDBG("fuse1 P2 short good\n");
-        rom_write(ROM_FUSE1_SHORT_GOOD, 1);
-				fuse_set_fuse_short(1, 0);
-				display_fuse_state(FUSE_TEST_PHASE_FUSE1_SHORT, FUSE_DISPLAY_GOOD, 0);	
 			} else {
 				CDBG("fuse1 P2 broke good\n");
         rom_write(ROM_FUSE1_BROKE_GOOD, 1);

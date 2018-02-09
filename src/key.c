@@ -38,7 +38,7 @@ void scan_key_proc(enum task_events ev)
 {
   UNUSED_PARAM(ev);
   if(!SET_KEY && !set_press) {
-    delay_5us(100);
+    delay_10us(50);
     if(!SET_KEY) {
       set_task(EV_KEY_SET_DOWN);      
       set_press = 1;
@@ -60,7 +60,7 @@ void scan_key_proc(enum task_events ev)
   }
   
   if(!MOD_KEY && !mod_press) {
-    delay_5us(100);
+    delay_10us(50);
     if(!MOD_KEY) {
       set_task(EV_KEY_MOD_DOWN);     
       mod_press = 1;

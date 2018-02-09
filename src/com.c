@@ -2,8 +2,14 @@
 #include <stdio.h>
 #include "debug.h"
 #include "com.h"
+#include "cext.h"
 
-#define    XTAL 11059200                        // CPU Oscillator Frequency
+#ifdef     OSCILLATO_6T
+#define    XTAL 22118400
+#else
+#define    XTAL 11059200
+#endif
+
 #define    baudrate 9600                        // 9600 bps communication baudrate
 
 #define    OLEN  8                              // size of serial transmission buffer

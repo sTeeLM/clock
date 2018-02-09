@@ -59,9 +59,7 @@ static void rom_dump(void)
   rom_read(ROM_LT_TIMER_MIN);
   rom_read(ROM_LT_TIMER_SEC); 
   
-  rom_read(ROM_FUSE0_SHORT_GOOD);
   rom_read(ROM_FUSE0_BROKE_GOOD);
-  rom_read(ROM_FUSE1_SHORT_GOOD);
   rom_read(ROM_FUSE1_BROKE_GOOD);
   rom_read(ROM_TRIPWIRE_GOOD);
   rom_read(ROM_THERMO_HI_GOOD);
@@ -105,9 +103,7 @@ static void rom_reset(void)
   rom_write(ROM_LT_TIMER_MIN, 15);
   rom_write(ROM_LT_TIMER_SEC, 10); 
   
-  rom_write(ROM_FUSE0_SHORT_GOOD, 0);
   rom_write(ROM_FUSE0_BROKE_GOOD, 0);
-  rom_write(ROM_FUSE1_SHORT_GOOD, 0);
   rom_write(ROM_FUSE1_BROKE_GOOD, 0);
   rom_write(ROM_TRIPWIRE_GOOD, 0);
   rom_write(ROM_THERMO_HI_GOOD, 0);

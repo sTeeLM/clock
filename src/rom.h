@@ -48,15 +48,13 @@ power:
 #define ROM_LT_TIMER_SEC  25
 
 // 40 开始，是所有的外设的测试结果
-#define ROM_FUSE0_SHORT_GOOD 40
-#define ROM_FUSE0_BROKE_GOOD 41
-#define ROM_FUSE1_SHORT_GOOD 42
-#define ROM_FUSE1_BROKE_GOOD 43
-#define ROM_TRIPWIRE_GOOD    44
-#define ROM_THERMO_HI_GOOD   45
-#define ROM_THERMO_LO_GOOD   46
-#define ROM_HG_GOOD          47
-#define ROM_GYRO_GOOD        48
+#define ROM_FUSE0_BROKE_GOOD 40
+#define ROM_FUSE1_BROKE_GOOD 41
+#define ROM_TRIPWIRE_GOOD    42
+#define ROM_THERMO_HI_GOOD   43
+#define ROM_THERMO_LO_GOOD   44
+#define ROM_HG_GOOD          45
+#define ROM_GYRO_GOOD        46
 
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);

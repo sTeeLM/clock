@@ -35,10 +35,8 @@ static bit grenade_check_set_param(void)
   
   gyro_enable(1);
   
-  if(rom_read(ROM_FUSE0_SHORT_GOOD) 
-    &&rom_read(ROM_FUSE1_SHORT_GOOD)
-    &&rom_read(ROM_FUSE0_BROKE_GOOD)
-    &&rom_read(ROM_FUSE1_BROKE_GOOD)
+  if(rom_read(ROM_FUSE0_BROKE_GOOD)
+    || rom_read(ROM_FUSE1_BROKE_GOOD)
   ) {
     fuse_enable(1);
   } else {

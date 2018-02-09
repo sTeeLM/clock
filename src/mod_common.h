@@ -27,7 +27,7 @@
 #define IS_COUNTER 2
 
 #define LPRESS_INC_DELAY 5
-#define LPRESS_INC_OVERFLOW 249
+#define LPRESS_INC_OVERFLOW 50
 
 extern bit lpress_lock_year_hour;
 extern bit lpress_lock_month_min;

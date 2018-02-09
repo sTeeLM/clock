@@ -69,15 +69,13 @@ a[23] = 12
 a[24] = 15
 a[25] = 10
 
-#define ROM_FUSE0_SHORT_GOOD 40
-#define ROM_FUSE0_BROKE_GOOD 41
-#define ROM_FUSE1_SHORT_GOOD 42
-#define ROM_FUSE1_BROKE_GOOD 43
-#define ROM_TRIPWIRE_GOOD    44
-#define ROM_THERMO_HI_GOOD   45
-#define ROM_THERMO_LO_GOOD   46
-#define ROM_HG_GOOD          47
-#define ROM_GYRO_GOOD        48
+#define ROM_FUSE0_BROKE_GOOD 40
+#define ROM_FUSE1_BROKE_GOOD 41
+#define ROM_TRIPWIRE_GOOD    42
+#define ROM_THERMO_HI_GOOD   43
+#define ROM_THERMO_LO_GOOD   44
+#define ROM_HG_GOOD          45
+#define ROM_GYRO_GOOD        46
 
 a[40] = 1
 a[41] = 1
@@ -86,8 +84,6 @@ a[43] = 1
 a[44] = 1
 a[45] = 1
 a[46] = 1
-a[47] = 1
-a[48] = 1
 
 with open('24aa01.bin', 'wb') as f:
 	f.write(a);

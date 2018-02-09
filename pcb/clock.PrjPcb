@@ -159,6 +159,23 @@ GenerateClassCluster=0
 DocumentUniqueId=DOUYJASD
 
 [Document8]
+DocumentPath=5V_Power.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=YDFSFEWN
+
+[Document9]
 DocumentPath=Int_Hub.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -175,7 +192,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LBKCQLPG
 
-[Document9]
+[Document10]
 DocumentPath=clock.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -191,23 +208,6 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=WASBUUWO
-
-[Document10]
-DocumentPath=Fuse_Power.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=3
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=YDFSFEWN
 
 [Document11]
 DocumentPath=Fuse0.SchDoc
@@ -244,23 +244,6 @@ GenerateClassCluster=0
 DocumentUniqueId=YBNOBUBA
 
 [Document13]
-DocumentPath=Fuse_Ref.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=4
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=QQPGMLSC
-
-[Document14]
 DocumentPath=Hg.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -277,7 +260,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=BHIXUHJN
 
-[Document15]
+[Document14]
 DocumentPath=Thermo.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -294,24 +277,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=MUHFHCJN
 
-[Document16]
-DocumentPath=Fuse.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=ILSIUXOK
-
-[Document17]
+[Document15]
 DocumentPath=Beeper.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -328,7 +294,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=DJOTDNWJ
 
-[Document18]
+[Document16]
 DocumentPath=clock.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -345,7 +311,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document19]
+[Document17]
 DocumentPath=DSS0012A.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -362,7 +328,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=SIXSBCFN
 
-[Document20]
+[Document18]
 DocumentPath=DRC0010G.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -379,7 +345,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YYUXMGRR
 
-[Document21]
+[Document19]
 DocumentPath=DBV6.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -396,7 +362,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FWWNMUXG
 
-[Document22]
+[Document20]
 DocumentPath=sot23.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -413,7 +379,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=CKYFRHDT
 
-[Document23]
+[Document21]
 DocumentPath=QFN24.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -447,11 +413,11 @@ AutoOpenOutJob=-1
 [Generic_SmartPDFSettings]
 ProjectMode=0
 ZoomPrecision=50
-AddNetsInformation=-1
+AddNetsInformation=0
 AddNetPins=-1
 AddNetNetLabels=-1
 AddNetPorts=-1
-ShowComponentParameters=-1
+ShowComponentParameters=0
 GlobalBookmarks=0
 ExportBOM=0
 TemplateFilename=Board Stack Report.XLT
