@@ -3,7 +3,7 @@
 #include "cext.h"
 
 #ifdef OSCILLATO_6T
-// 时钟频率22118400
+// 鏃堕挓棰戠巼22118400
 static void internal_delay_10us(void) 
 {
 	unsigned char i;
@@ -27,7 +27,7 @@ static void internal_delay_ms(void)
 }
 
 #else
-// 时钟频率11059200
+// 鏃堕挓棰戠巼11059200
 static void internal_delay_10us(void) 
 {
 	unsigned char i;

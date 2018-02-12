@@ -4,7 +4,7 @@
 #include "sm.h"
 
 enum sm_fuse_powersave_ss {
-  SM_FUSE_POWERSAVE_INIT      = 0, // ��ʼ״̬
+  SM_FUSE_POWERSAVE_INIT      = 0, // 初始状态
   SM_FUSE_POWERSAVE_PS        = 1,
   SM_FUSE_POWERSAVE_PREDETONATE = 2
 };

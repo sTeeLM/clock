@@ -35,38 +35,38 @@ void sm_fuse_mode(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_mode %bd %bd %bd\n", from, to, ev);
 
-  // °´mod1½øÈëÄ£Ê½Ñ¡Ôñ
+  // æŒ‰mod1è¿›å…¥æ¨¡å¼é€‰æ‹©
   if(get_sm_ss_state(to) == SM_FUSE_MODE_INIT && ev == EV_KEY_MOD_LPRESS) {
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 2);
     return;
   }
   
-  // ´Ó±ğµÄ×´Ì¬ÇĞ»»¹ıÀ´£¬·ÀÖ¹Îó²Ù×÷
+  // ä»åˆ«çš„çŠ¶æ€åˆ‡æ¢è¿‡æ¥ï¼Œé˜²æ­¢è¯¯æ“ä½œ
   if(get_sm_ss_state(from) == SM_FUSE_MODE_INIT
     && get_sm_ss_state(to) == SM_FUSE_MODE_TIMER) {
     display_mode(FUSE_MODE_DISPLAY_TIMER);
     return;
   }
     
-  // mod0 ÇĞ»»´¥ÅöÄ£Ê½
+  // mod0 åˆ‡æ¢è§¦ç¢°æ¨¡å¼
   if(get_sm_ss_state(to) == SM_FUSE_MODE_TIMER && (ev == EV_KEY_MOD_PRESS || ev == EV_1S)) {
     display_mode(FUSE_MODE_DISPLAY_TIMER);
     return;
   }
   
-  // set0 Ñ¡Ôñ
+  // set0 é€‰æ‹©
   if(get_sm_ss_state(to) == SM_FUSE_MODE_TIMER && ev == EV_KEY_SET_PRESS) {
     set_task(EV_FUSE_SEL0);
     return;
   }
   
-  // mod0 ÇĞ»»´¥ÅöÄ£Ê½
+  // mod0 åˆ‡æ¢è§¦ç¢°æ¨¡å¼
   if(get_sm_ss_state(to) == SM_FUSE_MODE_GRENADE && (ev == EV_KEY_MOD_PRESS || ev == EV_1S)) {
     display_mode(FUSE_MODE_DISPLAY_GERNADE);
     return;
   }
   
-  // set0 Ñ¡Ôñ
+  // set0 é€‰æ‹©
   if(get_sm_ss_state(to) == SM_FUSE_MODE_GRENADE && ev == EV_KEY_SET_PRESS) {
     set_task(EV_FUSE_SEL0);
     return;

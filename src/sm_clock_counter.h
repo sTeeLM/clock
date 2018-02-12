@@ -4,13 +4,13 @@
 #include "sm.h"
 
 enum sm_clock_counter_ss {
-  SM_CLOCK_COUNTER_INIT       = 0, // ��ʼ״̬
-  SM_CLOCK_COUNTER_MODIFY_HH  = 1, // ����ʱ
-  SM_CLOCK_COUNTER_MODIFY_MM  = 2, // ���÷�
-  SM_CLOCK_COUNTER_MODIFY_SS  = 3, // ������
-  SM_CLOCK_COUNTER_RUNNING    = 4, // ����ʱ״̬
-  SM_CLOCK_COUNTER_PAUSE      = 5, // ��ͣ״̬
-  SM_CLOCK_COUNTER_STOP       = 6, // ֹͣ/����״̬
+  SM_CLOCK_COUNTER_INIT       = 0, // 初始状态
+  SM_CLOCK_COUNTER_MODIFY_HH  = 1, // 设置时
+  SM_CLOCK_COUNTER_MODIFY_MM  = 2, // 设置分
+  SM_CLOCK_COUNTER_MODIFY_SS  = 3, // 设置秒
+  SM_CLOCK_COUNTER_RUNNING    = 4, // 倒计时状态
+  SM_CLOCK_COUNTER_PAUSE      = 5, // 暂停状态
+  SM_CLOCK_COUNTER_STOP       = 6, // 停止/响铃状态
 };
 
 extern const char * code sm_clock_counter_ss_name[];

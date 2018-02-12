@@ -53,9 +53,9 @@ void scan_rtc(void)
 { 
   CDBG("scan_rtc\n");
   
-  if(!is_lt_timer_mode) { // Õı³£ÄÖÖÓÄ£Ê½
+  if(!is_lt_timer_mode) { // æ­£å¸¸é—¹é’Ÿæ¨¡å¼
     scan_alarm();
-  } else { // ³¤ÆÚ¶¨Ê±Æ÷Ä£Ê½
+  } else { // é•¿æœŸå®šæ—¶å™¨æ¨¡å¼
     scan_lt_timer();
   }
 }
@@ -76,9 +76,9 @@ void rtc_initialize (void)
     
   memset(rtc_data, 0, sizeof(rtc_data));
 
-  // ³õÊ¼»¯
-  // µ÷ÊÔÓÃ£¡
-  // ³õÊ¼Ê±ÖÓÉèÖÃÎª 12Ğ¡Ê±¸ñÊ½£¬2014-08-19, 12:10£º30 AM
+  // åˆå§‹åŒ–
+  // è°ƒè¯•ç”¨ï¼
+  // åˆå§‹æ—¶é’Ÿè®¾ç½®ä¸º 12å°æ—¶æ ¼å¼ï¼Œ2014-08-19, 12:10ï¼š30 AM
   is12 = rom_read(ROM_ALARM0_IS12);
   
   I2C_Init();
@@ -101,17 +101,17 @@ void rtc_initialize (void)
   rtc_write_data(RTC_TYPE_DATE);
    
   
-  // Çå³ıÖĞ¶Ï±êÖ¾Î»
+  // æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
   I2C_Get(RTC_I2C_ADDRESS, 0x0F, &count);
   count &= ~0x3; // A1F,A2F = 00
   I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);  
 
-  // ÔÊĞíRTC·¢ÖĞ¶Ï
+  // å…è®¸RTCå‘ä¸­æ–­
   I2C_Get(RTC_I2C_ADDRESS, 0x0E, &count);
   count |= 0x7; // INCN,A1E,A2E = 111
   I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);
   
-  // Æô¶¯32KHZÊä³ö
+  // å¯åŠ¨32KHZè¾“å‡º
   rtc_read_data(RTC_TYPE_CTL);
   rtc_data[1] |= 0x48;
   rtc_write_data(RTC_TYPE_CTL);  
@@ -169,12 +169,12 @@ void rtc_write_data(enum rtc_data_type type)
 static unsigned char _rtc_get_hour(unsigned char hour)
 {
   unsigned char ret;
-  if(hour & 0x40) { // ÊÇ12Ğ¡Ê±±íÊ¾
+  if(hour & 0x40) { // æ˜¯12å°æ—¶è¡¨ç¤º
     ret = (hour & 0x0F) + ((hour & 0x10) >> 4) * 10;
-    if( hour & 0x20 ) { // ÊÇPM
+    if( hour & 0x20 ) { // æ˜¯PM
       ret += 12;
     }
-  } else { // ÊÇ24Ğ¡Ê±±íÊ¾
+  } else { // æ˜¯24å°æ—¶è¡¨ç¤º
       ret =  (hour & 0x0F) + ((hour & 0x30) >> 4) * 10;
   }
   return ret;
@@ -183,19 +183,19 @@ static unsigned char _rtc_get_hour(unsigned char hour)
 
 static void _rtc_set_hour(unsigned char hour, unsigned char * dat)
 {
-  if(*dat & 0x40) { // ÊÇ12Ğ¡Ê±±íÊ¾
+  if(*dat & 0x40) { // æ˜¯12å°æ—¶è¡¨ç¤º
     if(hour > 12) {
-      *dat |= 0x20; // ÉèÖÃPM±êÖ¾
+      *dat |= 0x20; // è®¾ç½®PMæ ‡å¿—
       hour -= 12;
     } else {
-      *dat &= ~0x20; // Çå³ıPM±êÖ¾
+      *dat &= ~0x20; // æ¸…é™¤PMæ ‡å¿—
     }
     *dat &= 0xF0; // clear lsb
     *dat |= hour % 10;
     *dat &= 0xEF; // clear msb
     *dat |= (hour / 10) << 4;    
   } else {
-    // 24Ğ¡Ê±±íÊ¾
+    // 24å°æ—¶è¡¨ç¤º
     *dat &= 0xF0; // clear lsb
     *dat |= hour % 10;
     *dat &= 0xCF; // clear msb
@@ -233,15 +233,15 @@ static void _rtc_set_min_sec(unsigned char min, unsigned char * dat)
   *dat |= (min / 10) << 4;
 }
 
-// ÔÚread_rtc_data(RTC_TYPE_TIME)Ö®ºóµ÷ÓÃ
-// ´Ëº¯ÊıÊ¼ÖÕ·µ»Ø24Ğ¡Ê±¸ñÊ½µÄÊ±¼ä£¡
+// åœ¨read_rtc_data(RTC_TYPE_TIME)ä¹‹åè°ƒç”¨
+// æ­¤å‡½æ•°å§‹ç»ˆè¿”å›24å°æ—¶æ ¼å¼çš„æ—¶é—´ï¼
 unsigned char rtc_time_get_hour(void)
 {
   return _rtc_get_hour(rtc_data[2]);
 }
 
 
-// ´Ëº¯ÊıÊ±ÖÓ´«Èë24Ğ¡Ê±¸ñÊ½µÄÊ±¼ä
+// æ­¤å‡½æ•°æ—¶é’Ÿä¼ å…¥24å°æ—¶æ ¼å¼çš„æ—¶é—´
 void rtc_time_set_hour(unsigned char hour)
 {
   _rtc_set_hour(hour, &rtc_data[2]);
@@ -277,7 +277,7 @@ void rtc_time_set_sec(unsigned char sec)
   _rtc_set_min_sec(sec, &rtc_data[0]);
 }
 
-// ÔÚrtc_read_data(RTC_TYPE_DATE)Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_data(RTC_TYPE_DATE)ä¹‹åè°ƒç”¨
 unsigned char rtc_date_get_year()
 {
   return (rtc_data[3] & 0x0F) + ((rtc_data[3] & 0xF0) >> 4) * 10;
@@ -322,7 +322,7 @@ unsigned char rtc_date_get_date()
   return _rtc_get_date(rtc_data[1]);
 }
 
-// ´Ëº¯ÊıĞèÒª¼ì²éºÏ·¨ĞÔ£¡£¡
+// æ­¤å‡½æ•°éœ€è¦æ£€æŸ¥åˆæ³•æ€§ï¼ï¼
 bit rtc_date_set_date(unsigned char date)
 {
   char mon = rtc_date_get_month();
@@ -358,7 +358,7 @@ void rtc_date_set_day(unsigned char day)
   }
 }
 
-// ÔÚrtc_read_data(RTC_TYPE_ALARM0)»òÕßRTC_TYPE_ALARM1Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_data(RTC_TYPE_ALARM0)æˆ–è€…RTC_TYPE_ALARM1ä¹‹åè°ƒç”¨
 unsigned char rtc_alarm_get_hour()
 {
   return _rtc_get_hour(last_read == RTC_TYPE_ALARM0 ? rtc_data[2]:rtc_data[1]);
@@ -535,14 +535,14 @@ void rtc_alarm_set_mode(enum rtc_alarm_mode mode)
   }
 }
 
-// ÔÚrtc_read_data(RTC_TYPE_TEMP)Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_data(RTC_TYPE_TEMP)ä¹‹åè°ƒç”¨
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 {
   float ret = 0;
   bit sign = ((rtc_data[0] &  0x80) != 0);
 
   
-  if(sign) { // ÊÇ¸ºÊı
+  if(sign) { // æ˜¯è´Ÿæ•°
     rtc_data[0] = ~rtc_data[0];
     rtc_data[1] &= 0xC0;
     rtc_data[1] >>= 6;
@@ -551,7 +551,7 @@ bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
     if(rtc_data[1] == 0) {
       rtc_data[0] ++;
     }
-  } else { //ÊÇÕıÊı
+  } else { //æ˜¯æ­£æ•°
     rtc_data[1] &= 0xC0;
     rtc_data[1] >>= 6;
   }
@@ -573,7 +573,7 @@ bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
   return sign;
 }
 
-// ÔÚrtc_read_data£¨RTC_TYPE_CTL£©Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_dataï¼ˆRTC_TYPE_CTLï¼‰ä¹‹åè°ƒç”¨
 void rtc_enable_alarm_int(enum rtc_alarm_index index, bit enable)
 {
   if(index == RTC_ALARM0) {
@@ -623,7 +623,7 @@ void rtc_enter_powersave(void)
 {
   
   CDBG("rtc_enter_powersave\n");
-  // Í£Ö¹32KHZÊä³ö
+  // åœæ­¢32KHZè¾“å‡º
   rtc_read_data(RTC_TYPE_CTL);
   rtc_data[1] &= ~0x48;
   rtc_write_data(RTC_TYPE_CTL);
@@ -633,7 +633,7 @@ void rtc_enter_powersave(void)
 void rtc_leave_powersave(void)
 {
   CDBG("rtc_leave_powersave\n");
-  // Æô¶¯32KHZÊä³ö
+  // å¯åŠ¨32KHZè¾“å‡º
   rtc_read_data(RTC_TYPE_CTL);
   rtc_data[1] |= 0x48;
   rtc_write_data(RTC_TYPE_CTL);

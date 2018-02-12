@@ -3,7 +3,7 @@
 #include "led.h"
 #include "beeper.h"
 
-// 公共变量，以便于减少DATA使用
+// 鍏叡鍙橀噺锛屼互渚夸簬鍑忓皯DATA浣跨敤
 
 bit lpress_lock_year_hour;
 bit lpress_lock_month_min;

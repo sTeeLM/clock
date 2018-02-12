@@ -43,13 +43,13 @@ void scan_alarm(void)
         power_clr_flag();
       }
       set_task(EV_ALARM0);
-      if(alarm1_hit) { // Èç¹ûÍ¬Ê±ÏìÆğ£¬Õûµã±¨Ê±±»ºöÂÔ
+      if(alarm1_hit) { // å¦‚æœåŒæ—¶å“èµ·ï¼Œæ•´ç‚¹æŠ¥æ—¶è¢«å¿½ç•¥
         alarm1_hit = 0;
       }
     }
   }
   
-  // Õâ¶ÎÂß¼­»á±»Æµ·±µ÷1SÓÃ³¤´ï1·ÖÖÓ
+  // è¿™æ®µé€»è¾‘ä¼šè¢«é¢‘ç¹è°ƒ1Sç”¨é•¿è¾¾1åˆ†é’Ÿ
   if(alarm1_hit) {
     rtc_read_data(RTC_TYPE_TIME);
     if(rtc_time_get_min() == 0 
@@ -83,7 +83,7 @@ static void alarm_save_rom(void)
 void alarm_initialize (void)
 {
   CDBG("alarm_initialize\n");
-  // ´ÓROMÖĞ¶ÁÈ¡ÅäÖÃ
+  // ä»ROMä¸­è¯»å–é…ç½®
   
   alarm_load_rom();  
   

@@ -19,14 +19,14 @@ const char * code sm_fuse_grenade_ss_name[] =
 static bit grenade_check_set_param(void)
 {
   unsigned char val;
-  // gyro±ØĞëÔÚÅäÖÃÀï´ò¿ª
+  // gyroå¿…é¡»åœ¨é…ç½®é‡Œæ‰“å¼€
   val = rom_read(ROM_FUSE_GYRO_ONOFF);
   if(!val) {
     display_param_error(PARAM_ERROR_NEED_GYRO);
     return 0;
   }
   
-  // gyro ±ØĞëÊÇºÃµÄ
+  // gyro å¿…é¡»æ˜¯å¥½çš„
   val = rom_read(ROM_GYRO_GOOD);
   if(!val) {
     display_param_error(PARAM_ERROR_GYRO_BAD);
@@ -89,13 +89,13 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_grenade %bd %bd %bd\n", from, to, ev);
   
-  // ´Ó±ğµÄ×´Ì¬ÇĞ¹ıÀ´
+  // ä»åˆ«çš„çŠ¶æ€åˆ‡è¿‡æ¥
   if(get_sm_ss_state(to) == SM_FUSE_GRENADE_INIT) {
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 4);
     return;
   }
   
-  // ¹ı1S½øÈëprearm×´Ì¬£¬ÉèÖÃ²ÎÊı£¬²»³É¹¦·¢ËÍEV_FUSE_SEL0
+  // è¿‡1Sè¿›å…¥prearmçŠ¶æ€ï¼Œè®¾ç½®å‚æ•°ï¼Œä¸æˆåŠŸå‘é€EV_FUSE_SEL0
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_INIT
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_PREARMED && ev == EV_1S) {
     display_grenade(DISPLAY_GRENADE_PREARMED);
@@ -105,10 +105,10 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ½â³ı
+  // è§£é™¤
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_PREARMED
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_DISARMED && ev == EV_KEY_MOD_LPRESS) {
-    // ÇåÀí£¬¹Ø±Õfuse
+    // æ¸…ç†ï¼Œå…³é—­fuse
     display_grenade(DISPLAY_GRENADE_DISARMED);
     gyro_enable(0);
     fuse_enable(0);
@@ -116,14 +116,14 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
     
-  // ÍÑÊÖ
+  // è„±æ‰‹
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_PREARMED
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_ARMED && ev == EV_DROP_GYRO) {
     display_grenade(DISPLAY_GRENADE_ARMED);
     return;
   }
     
-  // ´¥Åö
+  // è§¦ç¢°
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_ARMED
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_ARMED && ev == EV_ACC_GYRO) {
     display_grenade(DISPLAY_GRENADE_ARMED);
@@ -131,11 +131,11 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
     
-  // detonateÇ°ÇåÀí
+  // detonateå‰æ¸…ç†
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_ARMED
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_PREDETONATE && ev == EV_FUSE_SEL0) {
     display_grenade(DISPLAY_GRENADE_PREDETONATE);
-    // ÇåÀí£¬²»¹Øfuse
+    // æ¸…ç†ï¼Œä¸å…³fuse
     gyro_enable(0);
     set_task(EV_FUSE_SEL0);
     return;

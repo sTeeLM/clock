@@ -4,14 +4,14 @@
 #include "sm.h"
 
 enum sm_fuse_test_ss {
-  SM_FUSE_TEST_INIT          = 0, // ³õÊ¼×´Ì¬0
-  SM_FUSE_TEST_FUSE0_BROKE   = 1, // fuse0¶ÏÂ·²âÊÔ
-  SM_FUSE_TEST_FUSE1_BROKE   = 2, // fuse1¶ÏÂ·²âÊÔ
-  SM_FUSE_TEST_TRIPWIRE      = 3, // tripwire²âÊÔ
-  SM_FUSE_TEST_THERMO_HI     = 4, // thermo hi²âÊÔ
-  SM_FUSE_TEST_THERMO_LO     = 5,  // thermo lo²âÊÔ
-  SM_FUSE_TEST_HG            = 6, // hg²âÊÔ
-  SM_FUSE_TEST_GYRO          = 7  // gyro²âÊÔ
+  SM_FUSE_TEST_INIT          = 0, // åˆå§‹çŠ¶æ€0
+  SM_FUSE_TEST_FUSE0_BROKE   = 1, // fuse0æ–­è·¯æµ‹è¯•
+  SM_FUSE_TEST_FUSE1_BROKE   = 2, // fuse1æ–­è·¯æµ‹è¯•
+  SM_FUSE_TEST_TRIPWIRE      = 3, // tripwireæµ‹è¯•
+  SM_FUSE_TEST_THERMO_HI     = 4, // thermo hiæµ‹è¯•
+  SM_FUSE_TEST_THERMO_LO     = 5,  // thermo loæµ‹è¯•
+  SM_FUSE_TEST_HG            = 6, // hgæµ‹è¯•
+  SM_FUSE_TEST_GYRO          = 7  // gyroæµ‹è¯•
 };
 
 extern const char * code sm_fuse_test_ss_name[];

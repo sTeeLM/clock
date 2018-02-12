@@ -7,7 +7,7 @@
 #include "delay_task.h"
 
 static bit hg_enabled;
-static unsigned char hg_state; // Ö»ÓĞµÍËÄÎ»ÓĞĞ§
+static unsigned char hg_state; // åªæœ‰ä½å››ä½æœ‰æ•ˆ
 
 #define HG_INITIALIZE_DELAY_SEC 2
 

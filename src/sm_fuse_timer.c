@@ -125,7 +125,7 @@ static bit check_and_set_timer_param(unsigned char step)
       thermo_hi_enable(0);
       break;
     case TIMER_PARAM_CHECK_SET_GYRO:
-      // Èç¹û´ò¿ªÁËgyro£¬±ØĞëÊÇºÃµÄ
+      // å¦‚æœæ‰“å¼€äº†gyroï¼Œå¿…é¡»æ˜¯å¥½çš„
       val = rom_read(ROM_FUSE_GYRO_ONOFF);
       if(val) {
         val = rom_read(ROM_GYRO_GOOD);
@@ -137,7 +137,7 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_HG:
-      // Èç¹û´ò¿ªÁËhg£¬±ØĞëÊÇºÃµÄ
+      // å¦‚æœæ‰“å¼€äº†hgï¼Œå¿…é¡»æ˜¯å¥½çš„
       val = rom_read(ROM_FUSE_HG_ONOFF);
       if(val) {
         val = rom_read(ROM_HG_GOOD);
@@ -149,7 +149,7 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_TRIPWIRE:
-      // Èç¹û´ò¿ªÁËtripwire£¬±ØĞëÊÇºÃµÄ
+      // å¦‚æœæ‰“å¼€äº†tripwireï¼Œå¿…é¡»æ˜¯å¥½çš„
       val = rom_read(ROM_FUSE_TRIPWIRE_ONOFF);
       if(val) {
         val = rom_read(ROM_TRIPWIRE_GOOD);
@@ -161,7 +161,7 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_GET_CHECK_THERMO_HI_LO:
-      // ÎÂ¶ÈÉÏÏÂÏŞ²»ÄÜµ¹ÖÃ
+      // æ¸©åº¦ä¸Šä¸‹é™ä¸èƒ½å€’ç½®
       thermo_hi = rom_read(ROM_FUSE_THERMO_HI);
       thermo_lo = rom_read(ROM_FUSE_THERMO_LO);
       if(thermo_hi != THERMO_THRESHOLED_INVALID 
@@ -174,7 +174,7 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_THERMO_HI:
-      // Èç¹û´ò¿ªÁËthermo hi£¬±ØĞëÊÇºÃµÄ
+      // å¦‚æœæ‰“å¼€äº†thermo hiï¼Œå¿…é¡»æ˜¯å¥½çš„
       thermo_hi = rom_read(ROM_FUSE_THERMO_HI);
       if(thermo_hi != THERMO_THRESHOLED_INVALID) {
         val = rom_read(ROM_THERMO_HI_GOOD);
@@ -191,7 +191,7 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_THERMO_LO:
-      // Èç¹û´ò¿ªÁËthermo lo£¬±ØĞëÊÇºÃµÄ
+      // å¦‚æœæ‰“å¼€äº†thermo loï¼Œå¿…é¡»æ˜¯å¥½çš„
       thermo_lo = rom_read(ROM_FUSE_THERMO_LO);
       if(thermo_lo != THERMO_THRESHOLED_INVALID) {
         val = rom_read(ROM_THERMO_LO_GOOD);
@@ -208,7 +208,7 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_LT_TIME:
-      // lt_timerÊ±¼ä±ØĞëÔÚµ±Ç°Ê±¼äÖ®ºó
+      // lt_timeræ—¶é—´å¿…é¡»åœ¨å½“å‰æ—¶é—´ä¹‹å
       lt_timer_sync_from_rom();
       lt_timer_sync_to_rtc();
       if(!lt_timer_get_relative(1)) {
@@ -280,39 +280,39 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_timer %bd %bd %bd\n", from, to, ev);
   
-  // ´Ó±ğµÄ×´Ì¬ÇĞ¹ıÀ´
+  // ä»åˆ«çš„çŠ¶æ€åˆ‡è¿‡æ¥
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_INIT) {
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 3);
     param_step = 0;
     return;
   }
   
-  // ¹ı1S½øÈëprearm×´Ì¬
+  // è¿‡1Sè¿›å…¥prearmçŠ¶æ€
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_INIT
     && get_sm_ss_state(to) == SM_FUSE_TIMER_PREARMED && ev == EV_1S) {
     display_prearm_step(param_step);
     return;
   }
 
-  // prearm×´Ì¬£¬Ã¿1SÆô¶¯Ò»¸ö´«¸ĞÆ÷
+  // prearmçŠ¶æ€ï¼Œæ¯1Så¯åŠ¨ä¸€ä¸ªä¼ æ„Ÿå™¨
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_PREARMED
     && get_sm_ss_state(to) == SM_FUSE_TIMER_PREARMED && ev == EV_1S) {
     if(param_step != TIMER_PARAM_ERROR && param_step < TIMER_PARAM_CHECK_CNT) {
       if(!check_and_set_timer_param(param_step)) {
-        rollback_param(); // ·¢ÉúÁË´íÎó£¬¿ªÊ¼»Ø¹ö
+        rollback_param(); // å‘ç”Ÿäº†é”™è¯¯ï¼Œå¼€å§‹å›æ»š
         param_step = TIMER_PARAM_ERROR;
         set_task(EV_FUSE_SEL0);
       } else {
-        param_step ++; //ÉèÖÃÏÂÒ»¸ö²ÎÊı¶¯×÷
+        param_step ++; //è®¾ç½®ä¸‹ä¸€ä¸ªå‚æ•°åŠ¨ä½œ
         if(param_step >= TIMER_PARAM_CHECK_CNT) {
-          set_task(EV_FUSE_SEL1); // È«²¿¶¼Í¨¹ıÁË£¬½øÈëarmed
+          set_task(EV_FUSE_SEL1); // å…¨éƒ¨éƒ½é€šè¿‡äº†ï¼Œè¿›å…¥armed
         }
       }
     }
     return;
   }
   
-  // prearm×´Ì¬£¬ÊÕµ½ÈÎºÎÈçÏÂÊÂ¼ş£¬¶¼»Ø¹ö
+  // prearmçŠ¶æ€ï¼Œæ”¶åˆ°ä»»ä½•å¦‚ä¸‹äº‹ä»¶ï¼Œéƒ½å›æ»š
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_PREARMED 
     && (ev == EV_COUNTER 
     || ev == EV_FUSE0_BROKE 
@@ -320,13 +320,13 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
     || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
-    rollback_param(); // ·¢ÉúÁË´íÎó£¬¿ªÊ¼»Ø¹ö
+    rollback_param(); // å‘ç”Ÿäº†é”™è¯¯ï¼Œå¼€å§‹å›æ»š
     param_step = TIMER_PARAM_ERROR;
     set_task(EV_FUSE_SEL0);
     return;
   }     
   
-  // ½øÈëarmed×´Ì¬£¬¿ªÊ¼µ¹¼ÆÊ±
+  // è¿›å…¥armedçŠ¶æ€ï¼Œå¼€å§‹å€’è®¡æ—¶
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_PREARMED 
     && get_sm_ss_state(to) == SM_FUSE_TIMER_ARMED && ev == EV_FUSE_SEL1) {
     lt_timer_display(1);
@@ -337,7 +337,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // set0ÇĞ»»ÏÔÊ¾
+  // set0åˆ‡æ¢æ˜¾ç¤º
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_ARMED && ev == EV_KEY_SET_PRESS) {
     lt_timer_switch_display();
     power_reset_powersave_to();
@@ -349,20 +349,20 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // mod0½øÈëµÈ´ıÊäÈëÃÜÂëµÄ×´Ì¬
+  // mod0è¿›å…¥ç­‰å¾…è¾“å…¥å¯†ç çš„çŠ¶æ€
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED
     && get_sm_ss_state(to) == SM_FUSE_TIMER_VERIFY 
     && ev == EV_KEY_MOD_PRESS) {
     password_index   = 5;   // current password index
     password_content = 0;   // current displayed password
-    verify_state   &= 0xC0;   // verify state£¬ last 6 bits is 0x3F is success£¬ 2 bits retry count
+    verify_state   &= 0xC0;   // verify stateï¼Œ last 6 bits is 0x3F is successï¼Œ 2 bits retry count
     lt_timer_display(0);
-    display_password(); // Ê¹password_index×÷ÎªpasswordµÄindex£¬ÎªÁË¼õÉÙramÊ¹ÓÃ
+    display_password(); // ä½¿password_indexä½œä¸ºpasswordçš„indexï¼Œä¸ºäº†å‡å°‘ramä½¿ç”¨
     power_reset_powersave_to();
     return;
   } 
     
-  // ÃÜÂëÊäÈëÑéÖ¤Ê§°Ü»òÕßÈ¡Ïû£¬·µ»Øµ¹¼ÆÊ±
+  // å¯†ç è¾“å…¥éªŒè¯å¤±è´¥æˆ–è€…å–æ¶ˆï¼Œè¿”å›å€’è®¡æ—¶
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_VERIFY
     && get_sm_ss_state(to) == SM_FUSE_TIMER_ARMED 
     && (ev == EV_FUSE_SEL1 || ev == EV_KEY_SET_LPRESS)) {
@@ -371,7 +371,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ÏÂÒ»Êı×Ö
+  // ä¸‹ä¸€æ•°å­—
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_VERIFY 
     && get_sm_ss_state(from) == SM_FUSE_TIMER_VERIFY 
     && ev == EV_KEY_MOD_PRESS) {
@@ -380,18 +380,18 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
       verify_password();
       password_content = 0;
       password_index --;
-      display_password(); // Ê¹password_index×÷ÎªpasswordµÄindex£¬ÎªÁË¼õÉÙramÊ¹ÓÃ¡£¡£¡£
+      display_password(); // ä½¿password_indexä½œä¸ºpasswordçš„indexï¼Œä¸ºäº†å‡å°‘ramä½¿ç”¨ã€‚ã€‚ã€‚
     } else {
-      // Ğ£Ñé½á¹û£¬Èç¹ûÍ¨¹ı£¬·¢ËÍEV_FUSE_SEL0
-      // Èç¹ûÊ§°ÜĞ¡ÓÚ3´Î£¬·¢ËÍEV_FUSE_SEL1
-      // Èç¹ûÊ§°Ü´óÓÚµÈÓÚ3´Î£¬·¢ËÍEV_FUSE_SEL2
+      // æ ¡éªŒç»“æœï¼Œå¦‚æœé€šè¿‡ï¼Œå‘é€EV_FUSE_SEL0
+      // å¦‚æœå¤±è´¥å°äº3æ¬¡ï¼Œå‘é€EV_FUSE_SEL1
+      // å¦‚æœå¤±è´¥å¤§äºç­‰äº3æ¬¡ï¼Œå‘é€EV_FUSE_SEL2
       verify_password();
       if((verify_state & 0x3F) == 0x3F) {
         CDBG("verify pass!\n");
-        set_task(EV_FUSE_SEL0); // Ğ£ÑéÍ¨¹ıÁË
+        set_task(EV_FUSE_SEL0); // æ ¡éªŒé€šè¿‡äº†
       } else if((verify_state & 0xC0) == 0x80) {
         CDBG("verify failed, to detonate!\n");
-        set_task(EV_FUSE_SEL2); // Ğ£Ñé¶à´Î²»OK£¬¹ÒÁË
+        set_task(EV_FUSE_SEL2); // æ ¡éªŒå¤šæ¬¡ä¸OKï¼ŒæŒ‚äº†
       } else {
         verify_state += 0x40;
         CDBG("verify failed, count is %0bx!\n", (verify_state & 0xC0));
@@ -401,7 +401,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ÊäÈëÊı×Ö
+  // è¾“å…¥æ•°å­—
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_VERIFY 
     && get_sm_ss_state(from) == SM_FUSE_TIMER_VERIFY 
     && ev == EV_KEY_SET_PRESS) {
@@ -410,23 +410,23 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     display_password();
   }
   
-  // Ã¿ÃëÌ½²âÏÂÊÇ·ñ½øÈëpowersave
+  // æ¯ç§’æ¢æµ‹ä¸‹æ˜¯å¦è¿›å…¥powersave
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED
     && get_sm_ss_state(to) == SM_FUSE_TIMER_ARMED && ev == EV_1S) {
     power_test_powersave_to();
     return;
   }
   
-  // ±»½â³ıÁË
+  // è¢«è§£é™¤äº†
   if(get_sm_ss_state(from) == SM_FUSE_TIMER_VERIFY
     && get_sm_ss_state(to) == SM_FUSE_TIMER_DISARMED && ev == EV_FUSE_SEL0) {
     display_timer(DISPLAY_TIMER_DISARMED);
-    rollback_param(); // ¹Ø±ÕËùÓĞÍâÎ§µçÂ·£¬ÒÔ¼°lt_timer
+    rollback_param(); // å…³é—­æ‰€æœ‰å¤–å›´ç”µè·¯ï¼Œä»¥åŠlt_timer
     set_task(EV_FUSE_SEL0);
     return;
   }
   
-  // ´Óarmed/verify ½øÈëpredetonate×´Ì¬
+  // ä»armed/verify è¿›å…¥predetonateçŠ¶æ€
   if(get_sm_ss_state(to) == SM_FUSE_TIMER_PREDETONATE
     &&(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED || get_sm_ss_state(from) == SM_FUSE_TIMER_VERIFY)
     && (ev == EV_COUNTER || ev == EV_FUSE_SEL2
@@ -436,7 +436,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
     display_timer(DISPLAY_TIMER_PREDETONATE);
-    stop_peripheral(); // ¹Ø±ÕËùÓĞÍâÎ§µçÂ·£¬ÒÔ¼°lt_timer
+    stop_peripheral(); // å…³é—­æ‰€æœ‰å¤–å›´ç”µè·¯ï¼Œä»¥åŠlt_timer
     lt_timer_reset();
     set_task(EV_FUSE_SEL0);
     return;

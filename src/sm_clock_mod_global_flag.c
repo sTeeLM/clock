@@ -130,13 +130,13 @@ void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_ev
 {
   CDBG("sm_clock_mod_global_flag %bd %bd %bd\n", from, to, ev);
   
-  // °´mod1½øÈëĞŞ¸ÄÈ«¾Ö±êÖ¾Î»Ä£Ê½
+  // æŒ‰mod1è¿›å…¥ä¿®æ”¹å…¨å±€æ ‡å¿—ä½æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT && ev == EV_KEY_MOD_LPRESS) {
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 3);
     return;
   }
 
-  // ÇĞ»»µ½ĞŞ¸ÄÈ«¾Ö±êÖ¾Î»Ä£Ê½
+  // åˆ‡æ¢åˆ°ä¿®æ”¹å…¨å±€æ ‡å¿—ä½æ¨¡å¼
   if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_PS
     && ev == EV_KEY_MOD_UP) {
@@ -144,33 +144,33 @@ void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_ev
     return;
   }
 
-  // set0 Ê¡µçÄ£Ê½³¬Ê±Ê±¼äÉèÖÃ
+  // set0 çœç”µæ¨¡å¼è¶…æ—¶æ—¶é—´è®¾ç½®
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_PS && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_PS);
     display_global_flag(IS_PS);
     return;
   }
   
-  // mod0 ½øÈëÉèÖÃÕûµã±¨Ê±on/off×´Ì¬
+  // mod0 è¿›å…¥è®¾ç½®æ•´ç‚¹æŠ¥æ—¶on/offçŠ¶æ€
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_BS && ev == EV_KEY_MOD_PRESS) {
     display_global_flag(IS_BS);
     return;
   }
   
-  // set0 Õûµã±¨Ê±on/off
+  // set0 æ•´ç‚¹æŠ¥æ—¶on/off
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_BS && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_BS);
     display_global_flag(IS_BS);
     return;
   }  
   
-  // mod0 ½øÈëÄÖÁåÒôÀÖÑ¡Ôñ
+  // mod0 è¿›å…¥é—¹é“ƒéŸ³ä¹é€‰æ‹©
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC && ev == EV_KEY_MOD_PRESS) {
     display_global_flag(IS_MUSIC);
     return;
   }
 
-  // set0 ÄÖÁåÒôÀÖÉèÖÃ
+  // set0 é—¹é“ƒéŸ³ä¹è®¾ç½®
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_MUSIC);
     display_global_flag(IS_MUSIC);
@@ -178,33 +178,33 @@ void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_ev
     return;
   }
   
-  // mod0 ½øÈë°´¼üÒô´ò¿ª¹Ø±Õ
+  // mod0 è¿›å…¥æŒ‰é”®éŸ³æ‰“å¼€å…³é—­
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP && ev == EV_KEY_MOD_PRESS) {
     display_global_flag(IS_BEEP);
     return;
   } 
 
-  // set0 °´¼üÒô´ò¿ª¹Ø±Õ
+  // set0 æŒ‰é”®éŸ³æ‰“å¼€å…³é—­
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_BEEP);
     display_global_flag(IS_BEEP);
     return;
   }  
   
-  // mod0 ½øÈë1224Ğ¡Ê±ÉèÖÃ×´Ì¬
+  // mod0 è¿›å…¥1224å°æ—¶è®¾ç½®çŠ¶æ€
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_1224 && ev == EV_KEY_MOD_PRESS) {
     display_global_flag(IS_1224);
     return;
   }
   
-  // set0 1224Ä£Ê½ÇĞ»»
+  // set0 1224æ¨¡å¼åˆ‡æ¢
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_1224 && ev == EV_KEY_SET_PRESS) {
     inc_write(IS_1224);
     display_global_flag(IS_1224);
     return;
   }
   
-  // mod0 ½øÈëÉèÖÃÊ¡µçÄ£Ê½×´Ì¬
+  // mod0 è¿›å…¥è®¾ç½®çœç”µæ¨¡å¼çŠ¶æ€
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_GLOBAL_FLAG_PS && ev == EV_KEY_MOD_PRESS) {
     display_global_flag(IS_PS);
     return;

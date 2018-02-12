@@ -23,13 +23,13 @@ sbit THERMO_INT     = P1 ^ 3;
 sbit EXT_INT        = P1 ^ 4;
 sbit INT_BIT        = P3 ^ 3;
 
-// PCA9535 logic, Êµ¼ÊÉÏ¿ÉÄÜ»áÓÃTCA9535
+// PCA9535 logic, å®é™…ä¸Šå¯èƒ½ä¼šç”¨TCA9535
 #define INT_HUB_I2C_ADDR 0x42 //0100 0010
 
 
 static void int1_ISR (void) interrupt 2 using 1
 {
-  IE1 = 0; // Çå³ıÖĞ¶Ï±êÖ¾Î»
+  IE1 = 0; // æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
   set_task(EV_SCAN_INT_HUB);
 }
 #include "misc.h"
@@ -37,22 +37,22 @@ void int_hub_initialize (void)
 {
   unsigned char val;
   CDBG("int_hub_initialize\n");
-  // Configuration Register ÉèÖÃÎªÈ«1£¬ÓÃÓÚinput
+  // Configuration Register è®¾ç½®ä¸ºå…¨1ï¼Œç”¨äºinput
   I2C_Put(INT_HUB_I2C_ADDR, 0x6, 0xFF);
-  // Polarity Inversion Register ÉèÖÃÎªÈ«0
+  // Polarity Inversion Register è®¾ç½®ä¸ºå…¨0
   I2C_Put(INT_HUB_I2C_ADDR, 0x4, 0x0);
 
 
-  // ¶ÁÈ¡Ò»´Î¶Ë¿Ú¼Ä´æÆ÷Ïû³ıÖĞ¶Ï
+  // è¯»å–ä¸€æ¬¡ç«¯å£å¯„å­˜å™¨æ¶ˆé™¤ä¸­æ–­
   I2C_Get(INT_HUB_I2C_ADDR, 0x0, &val);
   CDBG("int hub 0 port reg is %bx\n", val);
   
-  // Configuration Register ÉèÖÃÎªÈ«1£¬ÓÃÓÚinput
+  // Configuration Register è®¾ç½®ä¸ºå…¨1ï¼Œç”¨äºinput
   I2C_Put(INT_HUB_I2C_ADDR, 0x7, 0xFF);
-  // Polarity Inversion Register ÉèÖÃÎªÈ«0
+  // Polarity Inversion Register è®¾ç½®ä¸ºå…¨0
   I2C_Put(INT_HUB_I2C_ADDR, 0x5, 0x0);
 
-  // ¶ÁÈ¡Ò»´Î¶Ë¿Ú¼Ä´æÆ÷Ïû³ıÖĞ¶Ï
+  // è¯»å–ä¸€æ¬¡ç«¯å£å¯„å­˜å™¨æ¶ˆé™¤ä¸­æ–­
   I2C_Get(INT_HUB_I2C_ADDR, 0x1, &val);
   CDBG("int hub 1 port reg is %bx\n", val);
   
@@ -62,8 +62,8 @@ void int_hub_initialize (void)
   EXT_INT    = 1;
   INT_BIT    = 1;
   
-  IT1 = 1; // ÉèÖÃÎª±ßÑØ´¥·¢
-  EX1 = 1; // ¿ªÖĞ¶Ï
+  IT1 = 1; // è®¾ç½®ä¸ºè¾¹æ²¿è§¦å‘
+  EX1 = 1; // å¼€ä¸­æ–­
 }
 
 

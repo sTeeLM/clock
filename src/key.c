@@ -10,9 +10,9 @@
 #include "beeper.h"
 #include "cext.h"
 
-#define KEY_PRESS_DELAY 200 // ·ÀÖ¹¶¶¶¯£¬¼ì²âÑÓ³ÙÊ±¼ä£¬200 us
-#define KEY_LPRESS_DELAY 3 // ³¤°´Ê±¼ä£¬5s
-#define KEY_2_KEY_LPRESS_DELAY 2 // Í¬Ê±°´ÏÂ³¤°´Ê±¼ä£¬2s
+#define KEY_PRESS_DELAY 200 // é˜²æ­¢æŠ–åŠ¨ï¼Œæ£€æµ‹å»¶è¿Ÿæ—¶é—´ï¼Œ200 us
+#define KEY_LPRESS_DELAY 3 // é•¿æŒ‰æ—¶é—´ï¼Œ5s
+#define KEY_2_KEY_LPRESS_DELAY 2 // åŒæ—¶æŒ‰ä¸‹é•¿æŒ‰æ—¶é—´ï¼Œ2s
 
 static unsigned char last_mod_tmr_count; 
 static unsigned char last_set_tmr_count;
@@ -25,12 +25,12 @@ static bit set_press;
 
 static void int0_ISR (void) interrupt 0 using 1
 {
-  IE0 = 0; // Çå³ıÖĞ¶Ï±êÖ¾Î»
+  IE0 = 0; // æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
   if(power_test_flag()) {
     power_clr_flag();
-    set_task(EV_KEY_MOD_PRESS); // ÎªÁËÄÜ»½ĞÑ
+    set_task(EV_KEY_MOD_PRESS); // ä¸ºäº†èƒ½å”¤é†’
   }
-  beeper_stop_music();// °´¼üÍ£Ö¹ÒôÀÖ
+  beeper_stop_music();// æŒ‰é”®åœæ­¢éŸ³ä¹
   
 }
 
@@ -163,8 +163,8 @@ void key_initialize (void)
   mod_press = 0; 
   set_press = 0;
   
-  IT0 = 1; // ÉèÖÃÎª±ßÑØ´¥·¢
-  EX0 = 1; // ¿ªÖĞ¶Ï
+  IT0 = 1; // è®¾ç½®ä¸ºè¾¹æ²¿è§¦å‘
+  EX0 = 1; // å¼€ä¸­æ–­
 }
 
 void key_enter_powersave(void)

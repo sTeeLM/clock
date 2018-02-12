@@ -5,7 +5,7 @@
 #include "led.h"
 #include "beeper.h"
 
-// µ¹¼ÆÊ±¹¦ÄÜ
+// å€’è®¡æ—¶åŠŸèƒ½
 const char * code sm_clock_counter_ss_name[] = 
 {
   "SM_CLOCK_COUNTER_INIT",
@@ -89,7 +89,7 @@ static void update_hhmmss(void)
   min  = timer_get_min(0);
   sec  = timer_get_sec(0);
   
-  // Á½¸ö¡°:¡±ºÅ
+  // ä¸¤ä¸ªâ€œ:â€å·
   led_set_dp(1);
   led_set_dp(2);
   led_set_dp(3);
@@ -131,13 +131,13 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
 
   CDBG("sm_clock_counter %bd %bd %bd\n", from, to, ev);
 
-  // °´set1½øÈëµ¹¼ÆÊ±´óÄ£Ê½
+  // æŒ‰set1è¿›å…¥å€’è®¡æ—¶å¤§æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_INIT && ev == EV_KEY_SET_LPRESS) {
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 5);
     return;
   }
   
-  // ÇĞ»»µ½µ¹¼ÆÊ±´óÄ£Ê½
+  // åˆ‡æ¢åˆ°å€’è®¡æ—¶å¤§æ¨¡å¼
   if(get_sm_ss_state(from) == SM_CLOCK_COUNTER_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH
     && ev == EV_KEY_SET_UP) {
@@ -148,19 +148,19 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // Ë¢ĞÂÏÔÊ¾
+  // åˆ·æ–°æ˜¾ç¤º
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_250MS) {
     update_hhmmss();
     return;
   } 
   
-  // set0Ğ¡Ê±++
+  // set0å°æ—¶++
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_HOUR);
     return;
   }
   
-   // set1Ğ¡Ê±¿ìËÙ++
+   // set1å°æ—¶å¿«é€Ÿ++
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_HOUR);
@@ -170,32 +170,32 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // setÌ§ÆğĞ¡Ê±¿ìËÙ++Í£Ö¹
+  // setæŠ¬èµ·å°æ—¶å¿«é€Ÿ++åœæ­¢
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_SET_UP) {
     write_only(IS_HOUR);
     lpress_start = 0;
     return;
   }
   
-  // Ë¢ĞÂÏÔÊ¾
+  // åˆ·æ–°æ˜¾ç¤º
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_250MS) {
     update_hhmmss();
     return;
   }   
   
-  // mod0½øÈëĞŞ¸Ä·ÖÖÓ×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹åˆ†é’ŸçŠ¶æ€
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_MIN);
     return;
   }  
   
-  // set0 ·ÖÖÓ++
+  // set0 åˆ†é’Ÿ++
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_MIN);
     return;
   }
   
-  // set1 ·ÖÖÓ¿ìËÙ++
+  // set1 åˆ†é’Ÿå¿«é€Ÿ++
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_MIN);
@@ -205,32 +205,32 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // set Ì§Æğ·ÖÖÓ¿ìËÙ++Í£Ö¹  
+  // set æŠ¬èµ·åˆ†é’Ÿå¿«é€Ÿ++åœæ­¢  
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_SET_UP) {
     write_only(IS_MIN);
     lpress_start = 0;
     return;
   }
   
-  // Ë¢ĞÂÏÔÊ¾
+  // åˆ·æ–°æ˜¾ç¤º
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_250MS) {
     update_hhmmss();
     return;
   }    
   
-  // mod0½øÈëĞŞ¸ÄÃë×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ç§’çŠ¶æ€
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_SEC);
     return;
   }  
   
-  // set0 Ãë++
+  // set0 ç§’++
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_SEC);
     return;
   }
   
-  // set1 Ãë¿ìËÙ++
+  // set1 ç§’å¿«é€Ÿ++
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_SEC);
@@ -240,14 +240,14 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // setÌ§ÆğÃë¿ìËÙ++Í£Ö¹
+  // setæŠ¬èµ·ç§’å¿«é€Ÿ++åœæ­¢
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_SET_UP) {
     write_only(IS_SEC);
     lpress_start = 0;
     return;
   }
   
-  // mod0 ¿ªÊ¼µ¹¼ÆÊ±
+  // mod0 å¼€å§‹å€’è®¡æ—¶
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_RUNNING && ev == EV_KEY_MOD_PRESS) {
     timer_set_led_autorefresh(1, TIMER_DISP_MODE_HHMMSS);
     led_clr_blink(1);
@@ -256,21 +256,21 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // set0 ÔİÍ£µ¹¼ÆÊ±
+  // set0 æš‚åœå€’è®¡æ—¶
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_PAUSE && ev == EV_KEY_SET_PRESS) {
     timer_stop();
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     return;
   }
   
-  // set0 ¼ÌĞøµ¹¼ÆÊ±
+  // set0 ç»§ç»­å€’è®¡æ—¶
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_RUNNING && ev == EV_KEY_SET_PRESS) {
     timer_set_led_autorefresh(1, TIMER_DISP_MODE_HHMMSS);
     timer_start();
     return;
   }
   
-  // µ¹¼ÆÊ±½áÊø
+  // å€’è®¡æ—¶ç»“æŸ
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_STOP && ev == EV_COUNTER) {
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     timer_clr();
@@ -279,7 +279,7 @@ void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
   }
    
   
-  // mod0 Çå³ı
+  // mod0 æ¸…é™¤
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_MOD_PRESS) {
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
     timer_clr();

@@ -4,8 +4,8 @@
 #include "sm.h"
 
 enum sm_clock_powersave_ss {
-  SM_CLOCK_POWERSAVE_INIT     = 0, // ��ʼ״̬
-  SM_CLOCK_POWERSAVE_PS       = 1, // �ڵ�״̬
+  SM_CLOCK_POWERSAVE_INIT     = 0, // 初始状态
+  SM_CLOCK_POWERSAVE_PS       = 1, // 节电状态
 };
 
 extern const char * code sm_clock_powersave_ss_name[];

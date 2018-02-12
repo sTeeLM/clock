@@ -6,7 +6,7 @@
 #include "beeper.h"
 #include "clock.h"
 
-// ÅÜ±í¹¦ÄÜ
+// è·‘è¡¨åŠŸèƒ½
 
 const char * code sm_clock_timer_ss_name[] = 
 {
@@ -30,7 +30,7 @@ static void show_slot_title(unsigned char slot)
 static void display_slot(unsigned char slot)
 {
   led_clear();
-  // Á½¸ö¡°:¡±ºÅ
+  // ä¸¤ä¸ªâ€œ:â€å·
   led_set_dp(1);
   led_set_dp(2);
   led_set_dp(3);
@@ -47,24 +47,24 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_timer %bd %bd %bd\n", from, to, ev);
   
-  // °´set1ÅÜ±í´óÄ£Ê½
+  // æŒ‰set1è·‘è¡¨å¤§æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_INIT && ev == EV_KEY_SET_LPRESS) {
     clock_display(0);
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 4);
     return;
   }
   
-  // ÇĞ»»µ½ÅÜ±í´óÄ£Ê½
+  // åˆ‡æ¢åˆ°è·‘è¡¨å¤§æ¨¡å¼
   if(get_sm_ss_state(from) == SM_CLOCK_TIMER_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_TIMER_CLEAR
     && ev == EV_KEY_SET_UP) {
     display_slot(0);
     timer_set_mode(TIMER_MODE_INC);
-    lpress_start = 1; // ¸´ÓÃlpress_start×÷Îªslot index
+    lpress_start = 1; // å¤ç”¨lpress_startä½œä¸ºslot index
     return;
   }
   
-  // mod0ÅÜ±í¿ªÊ¼ÅÜ
+  // mod0è·‘è¡¨å¼€å§‹è·‘
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_RUNNING && ev == EV_KEY_MOD_DOWN) {
     timer_set_led_autorefresh(1, TIMER_DISP_MODE_MMSSMM);
     timer_start();
@@ -72,7 +72,7 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // set0¼Æ´Î
+  // set0è®¡æ¬¡
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_RUNNING && ev == EV_KEY_SET_DOWN) {
     if(lpress_start < TIMER_SLOT_CNT) {
       timer_set_led_autorefresh(0, TIMER_DISP_MODE_MMSSMM);
@@ -90,7 +90,7 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
   
-  // mod0ÅÜ±íÍ£Ö¹
+  // mod0è·‘è¡¨åœæ­¢
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_STOP && ev == EV_KEY_MOD_DOWN) {
     timer_stop();
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_MMSSMM);
@@ -99,14 +99,14 @@ void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // mod0ÅÜ±íÇå0
+  // mod0è·‘è¡¨æ¸…0
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_CLEAR && ev == EV_KEY_MOD_DOWN) {
     timer_clr();
     display_slot(0);
     return;
   }
   
-  // set0Öğ´ÎÏÔÊ¾¼Æ´Î
+  // set0é€æ¬¡æ˜¾ç¤ºè®¡æ¬¡
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_STOP && ev == EV_KEY_SET_DOWN) {
     show_slot_title(lpress_start);
     return;

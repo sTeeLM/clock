@@ -3,14 +3,14 @@
 
 
 /*
-alarm£º
+alarmï¼š
 00  alarm0.day_mask = 0x7F;
 01  alarm0.hour = 12;
 02  alarm0.min  = 12;
 03  alarm0_is12 = 1;
 04  alarm1_enable = 1;
 
-beeper£º
+beeperï¼š
 05  beeper_music_index
 06  beep_enable
 
@@ -36,7 +36,7 @@ power:
 #define ROM_FUSE_THERMO_LO  12
 #define ROM_FUSE_TRIPWIRE_ONOFF  13
 #define ROM_FUSE_PASSWORD   14
-// 14 - 19£¬ 6×Ö½ÚÊÇpassword
+// 14 - 19ï¼Œ 6å­—èŠ‚æ˜¯password
 
 
 
@@ -47,7 +47,7 @@ power:
 #define ROM_LT_TIMER_MIN  24
 #define ROM_LT_TIMER_SEC  25
 
-// 40 ¿ªÊ¼£¬ÊÇËùÓÐµÄÍâÉèµÄ²âÊÔ½á¹û
+// 40 å¼€å§‹ï¼Œæ˜¯æ‰€æœ‰çš„å¤–è®¾çš„æµ‹è¯•ç»“æžœ
 #define ROM_FUSE0_BROKE_GOOD 40
 #define ROM_FUSE1_BROKE_GOOD 41
 #define ROM_TRIPWIRE_GOOD    42

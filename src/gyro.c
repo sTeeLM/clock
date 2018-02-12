@@ -20,11 +20,11 @@ static void gyro_power_on(void)
   serial_set_ctl_bit(SERIAL_BIT_GYRO_EN, 0);
   serial_ctl_out();
   
-  // Configuration Register 设置为全1，用于input
+  // Configuration Register 璁剧疆涓哄叏1锛岀敤浜巌nput
   I2C_Put(GYRO_I2C_ADDRESS, 0x3, 0xFF);
-  // Polarity Inversion Register 设置为全0
+  // Polarity Inversion Register 璁剧疆涓哄叏0
   I2C_Put(GYRO_I2C_ADDRESS, 0x2, 0x0);
-  // 读取一次端口寄存器消除中断
+  // 璇诲彇涓�娆＄鍙ｅ瘎瀛樺櫒娑堥櫎涓柇
   I2C_Get(GYRO_I2C_ADDRESS, 0x0, &val);
   CDBG("gyro port reg is %bx\n", val);
 }
@@ -60,7 +60,7 @@ void scan_gyro(void)
   
   CDBG("scan_gyro\n");
   
-  // 读取一次端口寄存器消除中断
+  // 璇诲彇涓�娆＄鍙ｅ瘎瀛樺櫒娑堥櫎涓柇
   I2C_Get(GYRO_I2C_ADDRESS, 0x0, &val);
   CDBG("gyro port reg is %bx\n", val);
   

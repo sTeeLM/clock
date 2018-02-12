@@ -43,7 +43,7 @@ void fuse_trigger(bit enable)
 {
   CDBG("fuse_trigger %bd\n", 
     enable ? 1 : 0);
-  // ÉıÑ¹
+  // å‡å‹
   POWER_5V_EN = !enable;
   
   // trigger

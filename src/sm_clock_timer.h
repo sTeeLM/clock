@@ -4,10 +4,10 @@
 #include "sm.h"
 
 enum sm_clock_timer_ss {
-  SM_CLOCK_TIMER_INIT     = 0, //��ʼ״̬
-  SM_CLOCK_TIMER_CLEAR    = 1, //����״̬
-  SM_CLOCK_TIMER_RUNNING  = 2, //��ʱ״̬
-  SM_CLOCK_TIMER_STOP     = 3, //ֹͣ״̬
+  SM_CLOCK_TIMER_INIT     = 0, //初始状态
+  SM_CLOCK_TIMER_CLEAR    = 1, //清零状态
+  SM_CLOCK_TIMER_RUNNING  = 2, //计时状态
+  SM_CLOCK_TIMER_STOP     = 3, //停止状态
 };
 
 extern const char * code sm_clock_timer_ss_name[];

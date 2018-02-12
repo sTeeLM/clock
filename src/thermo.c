@@ -36,10 +36,10 @@ static void thermo_power_on(void)
   thermo_hi_threshold_reset(); 
   thermo_lo_threshold_reset();
   
-  // Configuration Register ÉèÖÃÎªÈ«1£¬ÓÃÓÚinput
+  // Configuration Register è®¾ç½®ä¸ºå…¨1ï¼Œç”¨äºŽinput
   I2C_Put(THERMO_HUB_I2C_ADDRESS, 0x3, 0xFF);
   
-  // Polarity Inversion Register ÉèÖÃÎªÈ«0
+  // Polarity Inversion Register è®¾ç½®ä¸ºå…¨0
   I2C_Put(THERMO_HUB_I2C_ADDRESS, 0x2, 0x0);
 
   // DONE|THF|TLF|NVB|1|0|POL|1SHOT
@@ -50,13 +50,13 @@ static void thermo_power_on(void)
   // set thermo1 config
   I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);
 
-  // ¿ªÆô²âÎÂ
+  // å¼€å¯æµ‹æ¸©
   I2C_Put(THERMO_HI_I2C_ADDRESS, 0xEE, 0);
   I2C_Put(THERMO_LO_I2C_ADDRESS, 0xEE, 0);
 
   delay_ms(10); // delay 10 ms
 
-  // ¶ÁÈ¡Ò»´Î¶Ë¿Ú¼Ä´æÆ÷Ïû³ýÖÐ¶Ï
+  // è¯»å–ä¸€æ¬¡ç«¯å£å¯„å­˜å™¨æ¶ˆé™¤ä¸­æ–­
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, (unsigned char *)&val);
   CDBG("thermo int reg is %bx\n", val);
 }
@@ -92,7 +92,7 @@ void scan_thermo(void)
   
   CDBG("scan_thermo\n");
   
-  // ¶ÁÈ¡Ò»´Î¶Ë¿Ú¼Ä´æÆ÷Ïû³ýÖÐ¶Ï
+  // è¯»å–ä¸€æ¬¡ç«¯å£å¯„å­˜å™¨æ¶ˆé™¤ä¸­æ–­
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
   CDBG("thermo int reg is %bx\n", val);
   
@@ -293,7 +293,7 @@ unsigned char thermo_threshold_inc(unsigned char thres)
   }
 }
 
-// ±ØÐëÔÚpower_onºóÊ¹ÓÃ
+// å¿…é¡»åœ¨power_onåŽä½¿ç”¨
 char thermo_get_current(void)
 {
   unsigned int val;
@@ -304,7 +304,7 @@ char thermo_get_current(void)
   I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xAA, 2, (unsigned char *)&val);
   CDBG("get current temp return %x\n", val);
   
-  ret = (char)((val >> 8) & 0xFF); // ÕûÊý²¿·Ö
+  ret = (char)((val >> 8) & 0xFF); // æ•´æ•°éƒ¨åˆ†
   CDBG("current temp is %bd\n", ret);
   return ret;
 }

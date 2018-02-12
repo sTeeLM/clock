@@ -6,10 +6,10 @@ void beeper_enter_powersave(void);
 void beeper_leave_powersave(void);
 
 enum beeper_music{
-  BEEPER_MUSIC_BYGHX        = 0, // ���¹���
-  BEEPER_MUSIC_ZNPA         = 1, // ף��ƽ��
-  BEEPER_MUSIC_SB           = 2, // �ͱ� 
-  BEEPER_MUSIC_TWO_TAGER    = 3, // �ͱ�
+  BEEPER_MUSIC_BYGHX        = 0, // 八月桂花香
+  BEEPER_MUSIC_ZNPA         = 1, // 祝你平安
+  BEEPER_MUSIC_SB           = 2, // 送别 
+  BEEPER_MUSIC_TWO_TAGER    = 3, // 送别
   BEEPER_MUSIC_CNT
 };
 

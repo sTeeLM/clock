@@ -13,10 +13,10 @@ enum lt_timer_sync_type
 
 struct lt_timer_struct
 {
-  /* year mon ½ö¶Ô¾ø¶ÔÊ±¼äÓĞÒâÒå*/
+  /* year mon ä»…å¯¹ç»å¯¹æ—¶é—´æœ‰æ„ä¹‰*/
   unsigned char year;
   unsigned char month;
-  /* ÈçÏÂ×Ö¶Î¼ÈÊÇÏà¶ÔÊ±¼ä£¬ÓÖ±»ÓÃÓÚ¾ø¶ÔÊ±¼ä */
+  /* å¦‚ä¸‹å­—æ®µæ—¢æ˜¯ç›¸å¯¹æ—¶é—´ï¼Œåˆè¢«ç”¨äºç»å¯¹æ—¶é—´ */
   unsigned char date; // 0-99
   unsigned char hour; // 0-23
   unsigned char min;  // 0-59

@@ -2,11 +2,11 @@
 #define __CLOCK_RTC_H__
 
 enum rtc_data_type {
-  RTC_TYPE_TIME    = 0, // Ê±¼ä
-  RTC_TYPE_DATE    = 1, // ÈÕÆÚ
-  RTC_TYPE_ALARM0  = 2, // ÄÖÖÓ0
-  RTC_TYPE_ALARM1  = 3, // ÄÖÖÓ1
-  RTC_TYPE_TEMP    = 4, // ÎÂ¶È
+  RTC_TYPE_TIME    = 0, // æ—¶é—´
+  RTC_TYPE_DATE    = 1, // æ—¥æœŸ
+  RTC_TYPE_ALARM0  = 2, // é—¹é’Ÿ0
+  RTC_TYPE_ALARM1  = 3, // é—¹é’Ÿ1
+  RTC_TYPE_TEMP    = 4, // æ¸©åº¦
   RTC_TYPE_CTL     = 5,
 };
 
@@ -38,7 +38,7 @@ void rtc_leave_powersave(void);
 void rtc_read_data(enum rtc_data_type type);
 void rtc_write_data(enum rtc_data_type type);
 
-// ÔÚread_rtc_data(RTC_TYPE_TIME)Ö®ºóµ÷ÓÃ
+// åœ¨read_rtc_data(RTC_TYPE_TIME)ä¹‹åè°ƒç”¨
 unsigned char rtc_time_get_hour(void);
 void rtc_time_set_hour(unsigned char hour);
 void rtc_time_set_hour_12(bit enable);
@@ -48,7 +48,7 @@ void rtc_time_set_min(unsigned char min);
 unsigned char rtc_time_get_sec(void);
 void rtc_time_set_sec(unsigned char sec);
 
-// ÔÚrtc_read_data(RTC_TYPE_DATE)Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_data(RTC_TYPE_DATE)ä¹‹åè°ƒç”¨
 unsigned char rtc_date_get_year(void);
 void rtc_date_set_year(unsigned char year);
 unsigned char rtc_date_get_month(void);
@@ -58,7 +58,7 @@ bit rtc_date_set_date(unsigned char date);
 unsigned char rtc_date_get_day(void);
 void rtc_date_set_day(unsigned char day);
 
-// ÔÚrtc_read_data(RTC_TYPE_ALARM0)»òÕßRTC_TYPE_ALARM1Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_data(RTC_TYPE_ALARM0)æˆ–è€…RTC_TYPE_ALARM1ä¹‹åè°ƒç”¨
 bit rtc_alarm_get_hour_12();
 void rtc_alarm_set_hour_12(bit enable);
 unsigned char rtc_alarm_get_day(void);
@@ -75,7 +75,7 @@ enum rtc_alarm_mode rtc_alarm_get_mod(void);
 void rtc_alarm_set_mode(enum rtc_alarm_mode mode);
 enum rtc_alarm_mode rtc_alarm_get_mode(void);
 
-// ÔÚrtc_read_data(RTC_TYPE_TEMP)Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_data(RTC_TYPE_TEMP)ä¹‹åè°ƒç”¨
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt);
 
 enum rtc_alarm_index {
@@ -83,7 +83,7 @@ enum rtc_alarm_index {
   RTC_ALARM1
 };
 
-// ÔÚrtc_read_data£¨RTC_TYPE_CTL£©Ö®ºóµ÷ÓÃ
+// åœ¨rtc_read_dataï¼ˆRTC_TYPE_CTLï¼‰ä¹‹åè°ƒç”¨
 void rtc_enable_alarm_int(enum rtc_alarm_index index, bit enable);
 bit rtc_test_alarm_int(enum rtc_alarm_index index);
 bit rtc_test_alarm_int_flag(enum rtc_alarm_index index);

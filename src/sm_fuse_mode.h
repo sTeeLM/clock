@@ -4,9 +4,9 @@
 #include "sm.h"
 
 enum sm_fuse_mode_ss {
-  SM_FUSE_MODE_INIT      = 0, // ��ʼ״̬
-  SM_FUSE_MODE_TIMER     = 1, // ��ʱ����ģʽ
-  SM_FUSE_MODE_GRENADE   = 2, // ��ײ��������
+  SM_FUSE_MODE_INIT      = 0, // 初始状态
+  SM_FUSE_MODE_TIMER     = 1, // 定时防拆模式
+  SM_FUSE_MODE_GRENADE   = 2, // 碰撞触发测试
 };
 
 extern const char * code sm_fuse_mode_ss_name[];

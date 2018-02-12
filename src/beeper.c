@@ -6,14 +6,14 @@
 #include "misc.h"
 #include "rom.h"
 
-#define MAX_BEEPER_MUSIC_TO   60 // Ãë
+#define MAX_BEEPER_MUSIC_TO   60 // ç§’
 #define BEEPER_MUSIC_TO_STEP  30
 
-// ¸ñÊ½Îª£ºÆµÂÊ³£Êý£¬½ÚÅÄ³£Êý£¬ÆµÂÊ³£Êý£¬½ÚÅÄ³£Êý
-// ÆµÂÊ³£Êý£ºnÎª¶àÉÙ¸ö20usÑÓ³Ù
-// ½ÚÅÄ³£Êý£ºmÎª¶àÉÙ¸ö10msÑÓ³Ù£¨10ms = 500¸ö20usÑÓ³Ù£©
+// æ ¼å¼ä¸ºï¼šé¢‘çŽ‡å¸¸æ•°ï¼ŒèŠ‚æ‹å¸¸æ•°ï¼Œé¢‘çŽ‡å¸¸æ•°ï¼ŒèŠ‚æ‹å¸¸æ•°
+// é¢‘çŽ‡å¸¸æ•°ï¼šnä¸ºå¤šå°‘ä¸ª20uså»¶è¿Ÿ
+// èŠ‚æ‹å¸¸æ•°ï¼šmä¸ºå¤šå°‘ä¸ª10mså»¶è¿Ÿï¼ˆ10ms = 500ä¸ª20uså»¶è¿Ÿï¼‰
 
-// °ËÔÂ¹ð»¨Ïã
+// å…«æœˆæ¡‚èŠ±é¦™
 static unsigned char code music_table0[]={
   0x18,0x30,0x1c,0x10,0x20,0x40,0x1c,0x10,0x18,0x10,
   0x20,0x10,0x1c,0x10,0x18,0x40,0x1c,0x20,0x20,0x20,
@@ -36,7 +36,7 @@ static unsigned char code music_table0[]={
   0x26,0x40,0x13,0x60,0x18,0x20,0x15,0x40,0x13,0x40,
   0x18,0x80,0x00,0x00};  
 
-//×£ÄãÆ½°²
+//ç¥ä½ å¹³å®‰
 static unsigned char code music_table1[]=
 {
   0x26,0x20,0x20,0x20,0x20,0x20,0x26,0x10,0x20,0x10,
@@ -62,7 +62,7 @@ static unsigned char code music_table1[]=
   0x2b,0x40,0x40,0x10,0x40,0x10,0x20,0x10,0x20,0x10,
   0x2b,0x10,0x26,0x30,0x30,0x80,0x00,0x00};  
 
-//ËÍ±ð 
+//é€åˆ« 
 static unsigned char code music_table2[]={
   0x20,0x40,0x26,0x20,0x20,0x20,0x17,0x80,0x1c,0x40,
   0x17,0x40,0x20,0x80,0x20,0x40,0x2f,0x20,0x2a,0x20,
@@ -85,7 +85,7 @@ static unsigned char code music_table2[]={
   0x2f,0x80,0x00,0x00}; 
 
 
-// Á½Ö»ÀÏ»¢
+// ä¸¤åªè€è™Ž
 static unsigned char code music_table3[]={
   0x2f,0x40,0x2a,0x40,0x26,0x40,0x2f,0x40,
   0x2f,0x40,0x2a,0x40,0x26,0x40,0x2f,0x40,
@@ -111,7 +111,7 @@ static unsigned char pai;
 static unsigned char beeper_music_index;
 static unsigned char beeper_music_to;
 
-// Ã¿10ms µ÷ÓÃÒ»´Î
+// æ¯10ms è°ƒç”¨ä¸€æ¬¡
 static void beeper_ISR (void) interrupt 5 using 2 
 {
   //all_music[beeper_music_index]();
@@ -233,7 +233,7 @@ static bit _beepler_play(unsigned char * music, bit once)
           _beeper_stop_play();
           return 0;
         }
-        // Ö±µ½Ò»Ê×¸è²¥·ÅÍê±Ï²Å¼ì²é³¬Ê±
+        // ç›´åˆ°ä¸€é¦–æ­Œæ’­æ”¾å®Œæ¯•æ‰æ£€æŸ¥è¶…æ—¶
         if(time_diff_now(start_s) >= beeper_music_to) {
           _beeper_stop_play();
           return 0;

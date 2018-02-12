@@ -10,7 +10,7 @@ void alarm_proc(enum task_events ev);
 void alarm_dump(void);
 
 
-// ÄÖÖÓ0ÊÇÒ»¸ö¿ÉÒÔÉèÖÃÈÕÖØ¸´µÄÃ¿ÈÕÄÖÁå
+// é—¹é’Ÿ0æ˜¯ä¸€ä¸ªå¯ä»¥è®¾ç½®æ—¥é‡å¤çš„æ¯æ—¥é—¹é“ƒ
 struct alarm0_struct {
   unsigned char day_mask;                // 1->enable 0->disable
   unsigned char hour;                    // 0-23
@@ -29,7 +29,7 @@ void alarm0_inc_hour(void);
 //void alarm0_sync_from_rtc(void);
 void alarm0_sync_to_rtc(void);
 
-// ÄÖÖÓ1ÊÇÕûµã±¨Ê±ÄÖÖÓ
+// é—¹é’Ÿ1æ˜¯æ•´ç‚¹æŠ¥æ—¶é—¹é’Ÿ
 bit alarm1_test_enable(void);
 void alarm1_set_enable(bit enable);
 //void alarm1_sync_from_rtc(void);

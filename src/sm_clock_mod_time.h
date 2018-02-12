@@ -4,13 +4,13 @@
 #include "sm.h"
 
 enum sm_clock_mod_time_ss {
-  SM_CLOCK_MODIFY_TIME_INIT = 0, // ��ʼ״̬
-  SM_CLOCK_MODIFY_TIME_HH   = 1, // �޸�ʱ
-  SM_CLOCK_MODIFY_TIME_MM   = 2, // �޸ķ�
-  SM_CLOCK_MODIFY_TIME_SS   = 3, // �޸ķ�  
-  SM_CLOCK_MODIFY_TIME_YY   = 4, // �޸���
-  SM_CLOCK_MODIFY_TIME_MO   = 5, // �޸���
-  SM_CLOCK_MODIFY_TIME_DD   = 6, // �޸���   
+  SM_CLOCK_MODIFY_TIME_INIT = 0, // 初始状态
+  SM_CLOCK_MODIFY_TIME_HH   = 1, // 修改时
+  SM_CLOCK_MODIFY_TIME_MM   = 2, // 修改分
+  SM_CLOCK_MODIFY_TIME_SS   = 3, // 修改分  
+  SM_CLOCK_MODIFY_TIME_YY   = 4, // 修改年
+  SM_CLOCK_MODIFY_TIME_MO   = 5, // 修改月
+  SM_CLOCK_MODIFY_TIME_DD   = 6, // 修改日   
 };
 
 extern const char * code sm_clock_mod_time_name[];

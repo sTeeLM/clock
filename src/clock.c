@@ -11,8 +11,8 @@
 #include "timer.h"
 #include "lt_timer.h"
 
-// ISRÀï²»ÄÜµ÷´ø²ÎÊýº¯Êý¡£¡£¡£
-// 2000~2099Äê
+// ISRé‡Œä¸èƒ½è°ƒå¸¦å‚æ•°å‡½æ•°ã€‚ã€‚ã€‚
+// 2000~2099å¹´
 static unsigned char code date_table[100][12] = 
 {
 {31,29,31,30,31,30,31,31,30,31,30,31,}, // 2000
@@ -119,7 +119,7 @@ static unsigned char code date_table[100][12] =
 
 static struct clock_struct idata clk;
 static bit clk_is12;
-static unsigned char idata sec_256; // ÓÃÓÚ time_diff
+static unsigned char idata sec_256; // ç”¨äºŽ time_diff
 
 static bit display_enable;
 static unsigned char display_mode;
@@ -225,7 +225,7 @@ void clock_dump(void)
   CDBG("clk.is12 = %s\n", clk_is12 ? "ON" : "OFF"); 
 }
 
-// ¼ÆËãÄ³ÄêÄ³ÔÂÄ³ÈÕÐÇÆÚ¼¸
+// è®¡ç®—æŸå¹´æŸæœˆæŸæ—¥æ˜ŸæœŸå‡ 
 // year 0-99
 // mon 0-11
 // date 0-30
@@ -236,7 +236,7 @@ static unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, 
   d = date + 1;
   m = mon + 1;
   y = CLOCK_YEAR_BASE + year;
-  // ¾­µäµÄZeller¹«Ê½
+  // ç»å…¸çš„Zellerå…¬å¼
   return (d + 2 * m + 3 * (m + 1) /5 + y + y/4 - y/100 + y/400) % 7;
 }
 
@@ -379,7 +379,7 @@ static void clock0_ISR (void) interrupt 1 using 1
 }
 
 
-// ¸¨Öúº¯Êý
+// è¾…åŠ©å‡½æ•°
 bit clock_is_leap_year(unsigned char year)
 {
   if(year >= 100) year = 99;
@@ -408,10 +408,10 @@ void clock_initialize(void)
   // CT = 1
   // M1 = 1
   // M2 = 0
-  TMOD |= 0x06; // ¹¤×÷ÔÚÄ£Ê½2
-  TL0 = (256 - 128); // 32768HZ·½²¨ÊäÈë£¬3.90625msÖÐ¶ÏÒ»´Î£¨256¸öÖÐ¶ÏÊÇ1s£©
+  TMOD |= 0x06; // å·¥ä½œåœ¨æ¨¡å¼2
+  TL0 = (256 - 128); // 32768HZæ–¹æ³¢è¾“å…¥ï¼Œ3.90625msä¸­æ–­ä¸€æ¬¡ï¼ˆ256ä¸ªä¸­æ–­æ˜¯1sï¼‰
   TH0 = (256 - 128);
-  PT0 = 1; // ×î¸ßÓÅÏÈ¼¶ 
+  PT0 = 1; // æœ€é«˜ä¼˜å…ˆçº§ 
   display_mode = CLOCK_DISPLAY_MODE_HHMMSS;
   display_enable = 0;
   

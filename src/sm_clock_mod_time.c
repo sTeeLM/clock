@@ -132,13 +132,13 @@ static void update_hhmmss(void)
   min  = clock_get_min();
   sec  = clock_get_sec();
   
-  // Á½¸ö¡°:¡±ºÅ
+  // ä¸¤ä¸ªâ€œ:â€å·
   led_set_dp(1);
   led_set_dp(2);
   led_set_dp(3);
   led_set_dp(4); 
   
-  // Èç¹ûÊÇ12Ğ¡Ê±ÏÔÊ¾£¬ÒÔµÚÒ»Î»Êı×ÖµÄµã±íÊ¾¡°PM¡±
+  // å¦‚æœæ˜¯12å°æ—¶æ˜¾ç¤ºï¼Œä»¥ç¬¬ä¸€ä½æ•°å­—çš„ç‚¹è¡¨ç¤ºâ€œPMâ€
   if(clock_get_hour_12() && hour > 12) {
     led_set_dp(5);
     hour -= 12;
@@ -233,14 +233,14 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
 {
   CDBG("sm_clock_mod_time %bd %bd %bd\n", from, to, ev);
   
-  // °´mod1½øÈëĞŞ¸ÄÊ±¼äÄ£Ê½
+  // æŒ‰mod1è¿›å…¥ä¿®æ”¹æ—¶é—´æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_INIT && ev == EV_KEY_MOD_LPRESS) {
     clock_display(0);
     display_logo(DISPLAY_LOGO_TYPE_CLOCK, 1);
     return;
   }    
     
-  // ÇĞ»»µ½ĞŞ¸ÄÊ±¼ä´óÄ£Ê½
+  // åˆ‡æ¢åˆ°ä¿®æ”¹æ—¶é—´å¤§æ¨¡å¼
   if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH
     && ev == EV_KEY_MOD_UP) {
@@ -248,19 +248,19 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
     return;
   }
   
-  // °´mod0½øÈëĞŞ¸Ä·ÖÖÓÄ£Ê½
+  // æŒ‰mod0è¿›å…¥ä¿®æ”¹åˆ†é’Ÿæ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_MIN);
     return;
   }
   
-  // °´set0Ğ¡Ê±++²¢Ğ´Èërtc
+  // æŒ‰set0å°æ—¶++å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_HOUR);
     return;
   }
 
-  // set1Ğ¡Ê±Á¬Ğø++
+  // set1å°æ—¶è¿ç»­++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_HOUR);
@@ -270,32 +270,32 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
     return;
   }
   
-  // setÌ§ÆğÍ£Ö¹++²¢Ğ´Èërtc
+  // setæŠ¬èµ·åœæ­¢++å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_SET_UP) {
     write_only(IS_HOUR);
     lpress_start = 0;
     return;
   }
   
-  // Ã¿250ms¶ÁÒ»´Îrtc£¬Ë¢ĞÂĞŞ¸ÄĞ¡Ê±Ä£Ê½
+  // æ¯250msè¯»ä¸€æ¬¡rtcï¼Œåˆ·æ–°ä¿®æ”¹å°æ—¶æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_250MS) {
     update_hhmmss();
     return;
   }
   
-  // mod0 ½øÈëĞŞ¸ÄÃëÄ£Ê½
+  // mod0 è¿›å…¥ä¿®æ”¹ç§’æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_SS && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_SEC);
     return;
   } 
 
-  // set0 ·ÖÖÓ++²¢Ğ´Èërtc
+  // set0 åˆ†é’Ÿ++å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_MIN);
     return;
   } 
   
-  // set1 ·ÖÖÓ³ÖĞø++
+  // set1 åˆ†é’ŸæŒç»­++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_MIN);
@@ -305,50 +305,50 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
     return;
   }
 
-  // setÌ§ÆğÍ£Ö¹++²¢Ğ´Èërtc
+  // setæŠ¬èµ·åœæ­¢++å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_SET_UP) {
     write_only(IS_MIN);
     lpress_start = 0;
     return;
   }
   
-  // Ã¿250ms¶ÁÒ»ÏÂrtc£¬¸üĞÂĞŞ¸Ä·ÖÖÓÄ£Ê½
+  // æ¯250msè¯»ä¸€ä¸‹rtcï¼Œæ›´æ–°ä¿®æ”¹åˆ†é’Ÿæ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_250MS) {
     update_hhmmss();
     return;
   }
   
-  // mod0½øÈëĞŞ¸ÄÄêÄ£Ê½
+  // mod0è¿›å…¥ä¿®æ”¹å¹´æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_MOD_PRESS) {
     enter_yymmdd(IS_YEAR);
     return;
   } 
 
-  // set0½«ÃëÇå0²¢Ğ´Èërtc
+  // set0å°†ç§’æ¸…0å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_SS && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_SEC);
     return;
   }
 
-  // Ã¿250ms¶ÁÒ»´Îrtc£¬¸üĞÂĞŞ¸ÄÃëÄ£Ê½
+  // æ¯250msè¯»ä¸€æ¬¡rtcï¼Œæ›´æ–°ä¿®æ”¹ç§’æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_SS && ev == EV_250MS) {
     update_hhmmss();
     return;
   }
   
-  // °´mod0½øÈëĞŞ¸ÄÔÂÄ£Ê½
+  // æŒ‰mod0è¿›å…¥ä¿®æ”¹æœˆæ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_MOD_PRESS) {
     enter_yymmdd(IS_MON);
     return;
   }
   
-  // set0 Äê++
+  // set0 å¹´++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_YEAR);
     return;
   }
   
-  // ³¤°´setÄê³ÖĞø++
+  // é•¿æŒ‰setå¹´æŒç»­++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_YEAR);
@@ -358,32 +358,32 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
     return;
   } 
 
-  // Ì§ÆğsetÍ£Ö¹Äê++²¢Ğ´Èërtc
+  // æŠ¬èµ·setåœæ­¢å¹´++å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_SET_UP) {
     write_only(IS_YEAR);
     lpress_start = 0;
     return;
   } 
   
-  // Ã¿250ms¶ÁÈ¡Ò»´Îrtc £¬¸üĞÂĞŞ¸ÄÄêÄ£Ê½
+  // æ¯250msè¯»å–ä¸€æ¬¡rtc ï¼Œæ›´æ–°ä¿®æ”¹å¹´æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_250MS) {
     update_yymmdd();
     return;
   } 
 
-  // mod0 ½øÈëĞŞ¸ÄÈÕÄ£Ê½
+  // mod0 è¿›å…¥ä¿®æ”¹æ—¥æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_MOD_PRESS) {
     enter_yymmdd(IS_DAY);
     return;
   }
   
-  // set0 ÔÂ++
+  // set0 æœˆ++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_MON);
     return;
   }
   
-  // ³¤°´set ÔÂ³ÖĞø++
+  // é•¿æŒ‰set æœˆæŒç»­++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_MON);
@@ -393,32 +393,32 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
     return;
   }
   
-  // Ì§ÆğsetÍ£Ö¹ÔÂ++²¢Ğ´Èërtc
+  // æŠ¬èµ·setåœæ­¢æœˆ++å¹¶å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_SET_UP) {
     write_only(IS_MON);
     lpress_start = 0;
     return;
   }
   
-  // Ã¿250ms¶ÁÈ¡Ò»ÏÂrtc£¬Ë¢ĞÂĞŞ¸ÄÔÂÄ£Ê½
+  // æ¯250msè¯»å–ä¸€ä¸‹rtcï¼Œåˆ·æ–°ä¿®æ”¹æœˆæ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_250MS) {
     update_yymmdd();
     return;
   }
   
-  // mod0 ½øÈëĞŞ¸ÄĞ¡Ê±Ä£Ê½
+  // mod0 è¿›å…¥ä¿®æ”¹å°æ—¶æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_HOUR);
     return;
   }
 
-  // set0 ÈÕ++
+  // set0 æ—¥++
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_DAY);
     return;
   }
   
-  // set1 ÈÕ³ÖĞø++  
+  // set1 æ—¥æŒç»­++  
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_DAY);
@@ -428,14 +428,14 @@ void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev
     return;
   }
 
-  // setÌ§ÆğÍ£Ö¹ÈÕ++Ğ´Èërtc
+  // setæŠ¬èµ·åœæ­¢æ—¥++å†™å…¥rtc
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_SET_UP) {
     write_only(IS_DAY);
     lpress_start = 0;
     return;
   }
   
-  // Ã¿250ms¶ÁÈ¡Ò»ÏÂrtc£¬¸üĞÂĞŞ¸ÄÈÕÄ£Ê½
+  // æ¯250msè¯»å–ä¸€ä¸‹rtcï¼Œæ›´æ–°ä¿®æ”¹æ—¥æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_250MS) {
     update_yymmdd();
     return;

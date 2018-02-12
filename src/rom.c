@@ -53,8 +53,8 @@ static void rom_dump(void)
   rom_read(ROM_FUSE_PASSWORD);
   
   rom_read(ROM_LT_TIMER_YEAR);
-  rom_read(ROM_LT_TIMER_MONTH); // 8ÔÂ
-  rom_read(ROM_LT_TIMER_DATE); // 19ÈÕ
+  rom_read(ROM_LT_TIMER_MONTH); // 8æœˆ
+  rom_read(ROM_LT_TIMER_DATE); // 19æ—¥
   rom_read(ROM_LT_TIMER_HOUR);
   rom_read(ROM_LT_TIMER_MIN);
   rom_read(ROM_LT_TIMER_SEC); 
@@ -97,8 +97,8 @@ static void rom_reset(void)
   rom_write(ROM_FUSE_PASSWORD + 5, 6);
   
   rom_write(ROM_LT_TIMER_YEAR, 14);
-  rom_write(ROM_LT_TIMER_MONTH, 7); // 8ÔÂ
-  rom_write(ROM_LT_TIMER_DATE, 18); // 19ÈÕ
+  rom_write(ROM_LT_TIMER_MONTH, 7); // 8æœˆ
+  rom_write(ROM_LT_TIMER_DATE, 18); // 19æ—¥
   rom_write(ROM_LT_TIMER_HOUR, 12);
   rom_write(ROM_LT_TIMER_MIN, 15);
   rom_write(ROM_LT_TIMER_SEC, 10); 

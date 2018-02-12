@@ -63,7 +63,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
 
   CDBG("sm_clock_display %bd %bd %bd\n", from, to, ev);
 
-  // °´mod1½øÈëÏÔÊ¾Ê±¼ä´óÄ£Ê½
+  // æŒ‰mod1è¿›å…¥æ˜¾ç¤ºæ—¶é—´å¤§æ¨¡å¼
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
     lt_timer_switch_off();
     alarm_switch_on();
@@ -72,7 +72,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ÇĞ»»µ½Ê±¼äÏÔÊ¾´óÄ£Ê½
+  // åˆ‡æ¢åˆ°æ—¶é—´æ˜¾ç¤ºå¤§æ¨¡å¼
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
     && ev == EV_KEY_MOD_UP) {
@@ -83,7 +83,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
     
-  // ÇĞ»»»ØÊ±·ÖÃëÏÔÊ¾£¬´ÓĞ¡Ä£Ê½ÇĞ¹ıÀ´£¬»òÕß´ÓpacÇĞ¹ıÀ´
+  // åˆ‡æ¢å›æ—¶åˆ†ç§’æ˜¾ç¤ºï¼Œä»å°æ¨¡å¼åˆ‡è¿‡æ¥ï¼Œæˆ–è€…ä»pacåˆ‡è¿‡æ¥
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && 
     (ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
     clock_display(1);
@@ -92,7 +92,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
   
-  // 1SÌ½²âÏÂË¯Ãß³¬Ê±Ê±¼ä
+  // 1Sæ¢æµ‹ä¸‹ç¡çœ è¶…æ—¶æ—¶é—´
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_HHMMSS 
     && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
     && ev == EV_1S) {
@@ -100,7 +100,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
 
-  // ÇĞ»»µ½ÏÔÊ¾ÄêÔÂÈÕ
+  // åˆ‡æ¢åˆ°æ˜¾ç¤ºå¹´æœˆæ—¥
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
     //display_yymmdd();
     clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
@@ -109,7 +109,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   } 
   
-  // 1SÌ½²âÏÂ×Ô¶¯ÇĞ»ØÊ±¼ä
+  // 1Sæ¢æµ‹ä¸‹è‡ªåŠ¨åˆ‡å›æ—¶é—´
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_YYMMDD 
     && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD
     && ev == EV_1S) {
@@ -117,7 +117,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ÇĞ»»µ½ÏÔÊ¾ÖÜ¼¸
+  // åˆ‡æ¢åˆ°æ˜¾ç¤ºå‘¨å‡ 
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK && ev == EV_KEY_MOD_PRESS) {
     //display_week();
     clock_switch_display_mode(CLOCK_DISPLAY_MODE_WEEK);
@@ -126,7 +126,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // 1SÌ½²âÏÂ×Ô¶¯ÇĞ»ØÊ±¼ä
+  // 1Sæ¢æµ‹ä¸‹è‡ªåŠ¨åˆ‡å›æ—¶é—´
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_WEEK 
     && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK
     && ev == EV_1S) {
@@ -134,7 +134,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
   
-  // ÇĞ»»µ½ÏÔÊ¾ÎÂ¶È
+  // åˆ‡æ¢åˆ°æ˜¾ç¤ºæ¸©åº¦
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP && ev == EV_KEY_MOD_PRESS) {
     clock_display(0);
     display_temp();
@@ -143,7 +143,7 @@ void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
    
-  // 1SÌ½²âÏÂ×Ô¶¯ÇĞ»ØÊ±¼ä
+  // 1Sæ¢æµ‹ä¸‹è‡ªåŠ¨åˆ‡å›æ—¶é—´
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_TEMP 
     && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP
     && ev == EV_1S) {

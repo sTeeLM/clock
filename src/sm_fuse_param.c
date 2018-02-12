@@ -178,13 +178,13 @@ static void update_hhmmss(void)
   min  = lt_timer_get_min();
   sec  = lt_timer_get_sec();
   
-  // Á½¸ö¡°:¡±ºÅ
+  // ä¸¤ä¸ªâ€œ:â€å·
   led_set_dp(1);
   led_set_dp(2);
   led_set_dp(3);
   led_set_dp(4); 
   
-  // Èç¹ûÊÇ12Ğ¡Ê±ÏÔÊ¾£¬ÒÔµÚÒ»Î»Êı×ÖµÄµã±íÊ¾¡°PM¡±
+  // å¦‚æœæ˜¯12å°æ—¶æ˜¾ç¤ºï¼Œä»¥ç¬¬ä¸€ä½æ•°å­—çš„ç‚¹è¡¨ç¤ºâ€œPMâ€
   if(clock_get_hour_12() && hour > 12) {
     led_set_dp(5);
     hour -= 12;
@@ -387,7 +387,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ·ÀÖ¹Îó²Ù×÷
+  // é˜²æ­¢è¯¯æ“ä½œ
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY
     && (get_sm_ss_state(from) == SM_FUSE_PARAM_INIT || get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)
     && (ev == EV_KEY_SET_UP|| ev == EV_FUSE_SEL0)) {
@@ -397,7 +397,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
 
-  // µ÷ÕûÄê
+  // è°ƒæ•´å¹´
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_PRESS) {
     inc_and_write(IS_YEAR);
     update_yymmdd();
@@ -420,7 +420,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }   
   
-  // µ÷ÕûÔÂ
+  // è°ƒæ•´æœˆ
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_MOD_PRESS) {
     enter_yymmdd(IS_MON);
     return;
@@ -448,7 +448,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   } 
   
-  // µ÷ÕûÈÕ
+  // è°ƒæ•´æ—¥
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_MOD_PRESS) {
     enter_yymmdd(IS_DAY);
     return;
@@ -476,7 +476,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
 
-  // µ÷ÕûÊ±
+  // è°ƒæ•´æ—¶
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_HH && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_HOUR);
     return;
@@ -504,7 +504,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // µ÷Õû·Ö
+  // è°ƒæ•´åˆ†
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_MM && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_MIN);
     return;
@@ -532,7 +532,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // µ÷ÕûÃë
+  // è°ƒæ•´ç§’
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_SS && ev == EV_KEY_MOD_PRESS) {
     enter_hhmmss(IS_SEC);
     return;
@@ -560,7 +560,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // µ÷Õûhg on/off
+  // è°ƒæ•´hg on/off
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_HG_ONOFF && ev == EV_KEY_MOD_PRESS) {
     enter_onoff(IS_HG);
     return;
@@ -572,7 +572,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // µ÷Õûgyro on/off
+  // è°ƒæ•´gyro on/off
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_GYRO_ONOFF && ev == EV_KEY_MOD_PRESS) {
     enter_onoff(IS_GYRO);
     return;
@@ -584,7 +584,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }  
   
-  // µ÷Õûthermo hi
+  // è°ƒæ•´thermo hi
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_HI_ONOFF && ev == EV_KEY_MOD_PRESS) {
     enter_thermo(IS_THERMO_HI);
     return;
@@ -611,7 +611,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // µ÷Õûthermo lo
+  // è°ƒæ•´thermo lo
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_MOD_PRESS) {
     enter_thermo(IS_THERMO_LO);
     return;
@@ -637,7 +637,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     lpress_start = 0;
     return;
   }
-  // µ÷Õûtripwire on off
+  // è°ƒæ•´tripwire on off
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_TRIPWIRE_ONOFF && ev == EV_KEY_MOD_PRESS) {
     enter_onoff(IS_TRIPWIRE);
     return;
@@ -648,7 +648,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     update_onoff(IS_TRIPWIRE);
     return;
   }
-  // ÉèÖÃpassword
+  // è®¾ç½®password
   
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_MOD_PRESS) {
     if(get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD) {
@@ -659,7 +659,7 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
         return;
       }
     }
-    enter_password(IS_PASSWORD + common_state); // Ê¹ÓÃlast_display_s×÷ÎªpasswordµÄindex£¬ÎªÁË¼õÉÙramÊ¹ÓÃ¡£¡£¡£
+    enter_password(IS_PASSWORD + common_state); // ä½¿ç”¨last_display_sä½œä¸ºpasswordçš„indexï¼Œä¸ºäº†å‡å°‘ramä½¿ç”¨ã€‚ã€‚ã€‚
     return;
   }
   

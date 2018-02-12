@@ -5,7 +5,7 @@
 #include "mod_common.h"
 #include "led.h"
 
-static struct timer_struct idata tmr[TIMER_SLOT_CNT]; // slot0 µ±Ç°timer£¬1/2ÊÇÁ½¸öË²Ê±Öµ
+static struct timer_struct idata tmr[TIMER_SLOT_CNT]; // slot0 å½“å‰timerï¼Œ1/2æ˜¯ä¸¤ä¸ªç¬æ—¶å€¼
 
 static unsigned char tmr_mode;
 static bit tmr_display;
@@ -95,7 +95,7 @@ void timer_initialize(void)
 void timer_enter_powersave(void)
 {
   CDBG("timer_enter_powersave\n");
-  timer_clr(); // Ò»µ©½øÈë½ÚµçÄ£Ê½£¬×Ô¶¯Çå0£¬½ÚµçÄ£Ê½ÎŞ·¨ÓÃ£¡
+  timer_clr(); // ä¸€æ—¦è¿›å…¥èŠ‚ç”µæ¨¡å¼ï¼Œè‡ªåŠ¨æ¸…0ï¼ŒèŠ‚ç”µæ¨¡å¼æ— æ³•ç”¨ï¼
 }
 
 void timer_leave_powersave(void)

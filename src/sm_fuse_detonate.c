@@ -28,7 +28,7 @@ void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_detonate %bd %bd %bd\n", from, to, ev);
   
-  // ¸ÃÍ¨µçÁË
+  // è¯¥é€šç”µäº†
   if(get_sm_ss_state(to) == SM_FUSE_DETONATE_CHARGE && ev == EV_250MS) {
     display_detonate();
     fuse_trigger(1);
@@ -36,7 +36,7 @@ void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // ¼ÇÂ¼Í¨µçÊ±¼ä£¬30S»òÕßmod0Í£Ö¹
+  // è®°å½•é€šç”µæ—¶é—´ï¼Œ30Sæˆ–è€…mod0åœæ­¢
   if(get_sm_ss_state(to) == SM_FUSE_DETONATE_CHARGE && (ev == EV_1S || ev == EV_KEY_MOD_PRESS)) {
     common_state ++;
     if((ev == EV_1S && common_state > MAX_FUSE_CHARGE_TIME) || ev == EV_KEY_MOD_PRESS) {

@@ -64,18 +64,18 @@ void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_alarm %bd %bd %bd\n", from, to, ev);
   
-  // 闹钟0到时间了
+  // 闂归挓0鍒版椂闂翠簡
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {
     clock_display(0);
     display_alarm(IS_ALARM0);
     if(!beeper_play_music()) {
-    // 放完音乐自动切换
+    // 鏀惧畬闊充箰鑷姩鍒囨崲
       set_task(EV_KEY_SET_PRESS);
     }
     return;
   }
   
-  // 闹钟1到时间了
+  // 闂归挓1鍒版椂闂翠簡
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM1 && ev == EV_ALARM1) {
     clock_display(0);
     display_alarm(IS_ALARM1);

@@ -4,7 +4,7 @@
 #include "sm.h"
 
 enum sm_fuse_detonate_ss {
-  SM_FUSE_DETONATE_INIT      = 0, // ��ʼ״̬
+  SM_FUSE_DETONATE_INIT      = 0, // 初始状态
   SM_FUSE_DETONATE_CHARGE    = 1, // boom
 };
 

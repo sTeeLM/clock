@@ -6,26 +6,26 @@
 // max 16
 enum sm_states_clock
 {
-  SM_CLOCK_DISPLAY      = 0, // һ����ʾ״̬
-  SM_CLOCK_MODIFY_TIME  = 1, // �޸�ʱ��
-  SM_CLOCK_MODIFY_ALARM = 2, // �޸�����
-  SM_CLOCK_MODIFY_GLOBAL_FLAG = 3, // �޸�ȫ��״̬
-  SM_CLOCK_POWERSAVE    = 4, // �ڵ�
-  SM_CLOCK_ALARM        = 5, // ����/���㱨ʱ
-  SM_CLOCK_TIMER        = 6, // �������
-  SM_CLOCK_COUNTER      = 7, // ����ʱ����
+  SM_CLOCK_DISPLAY      = 0, // 一般显示状态
+  SM_CLOCK_MODIFY_TIME  = 1, // 修改时间
+  SM_CLOCK_MODIFY_ALARM = 2, // 修改闹钟
+  SM_CLOCK_MODIFY_GLOBAL_FLAG = 3, // 修改全局状态
+  SM_CLOCK_POWERSAVE    = 4, // 节电
+  SM_CLOCK_ALARM        = 5, // 闹钟/整点报时
+  SM_CLOCK_TIMER        = 6, // 秒表功能
+  SM_CLOCK_COUNTER      = 7, // 倒计时功能
 };
 
 // max 16
 enum sm_stats_fuse
 {
-  SM_FUSE_TEST          = 0, // fuse����
-  SM_FUSE_MODE          = 1, // fuseģʽѡ��
-  SM_FUSE_PARAM         = 2,// fuse��������
-  SM_FUSE_TIMER         = 3,// fuse��ʱģʽ
-  SM_FUSE_GRENADE       = 4,// fuse����ģʽ
+  SM_FUSE_TEST          = 0, // fuse测试
+  SM_FUSE_MODE          = 1, // fuse模式选择
+  SM_FUSE_PARAM         = 2,// fuse参数设置
+  SM_FUSE_TIMER         = 3,// fuse定时模式
+  SM_FUSE_GRENADE       = 4,// fuse触碰模式
   SM_FUSE_DETONATE      = 5,// boom!
-  SM_FUSE_POWERSAVE     = 6,// �ڵ�
+  SM_FUSE_POWERSAVE     = 6,// 节电
 };
 
 // max 256

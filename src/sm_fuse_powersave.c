@@ -28,16 +28,16 @@ static void stop_peripheral(void)
 void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_powersave %bd %bd %bd\n", from, to, ev);
-  // 该进入节电模式了
+  // 璇ヨ繘鍏ヨ妭鐢垫ā寮忎簡
   if(get_sm_ss_state(to) == SM_FUSE_POWERSAVE_PS && ev == EV_250MS) {
-    // 进入睡眠
+    // 杩涘叆鐫＄湢
     power_enter_powersave();
     power_leave_powersave();
     return;
   }
 
   if(get_sm_ss_state(to) == SM_FUSE_POWERSAVE_PREDETONATE) {
-    stop_peripheral(); // 关闭所有外围电路，以及lt_timer
+    stop_peripheral(); // 鍏抽棴鎵�鏈夊鍥寸數璺紝浠ュ強lt_timer
     lt_timer_reset();
     set_task(EV_FUSE_SEL0);
   }

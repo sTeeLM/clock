@@ -4,12 +4,12 @@
 #include "sm.h"
 
 enum sm_fuse_timer_ss {
-  SM_FUSE_TIMER_INIT      = 0, // ��ʼ״̬
-  SM_FUSE_TIMER_PREARMED  = 1, // ��ʼ�������ò���
-  SM_FUSE_TIMER_ARMED     = 2, // ���armed�ˣ�
-  SM_FUSE_TIMER_VERIFY    = 3, // ���password
-  SM_FUSE_TIMER_DISARMED  = 4, // �������
-  SM_FUSE_TIMER_PREDETONATE = 5, // ׼��detonate
+  SM_FUSE_TIMER_INIT      = 0, // 初始状态
+  SM_FUSE_TIMER_PREARMED  = 1, // 开始检查和设置参数
+  SM_FUSE_TIMER_ARMED     = 2, // 真的armed了！
+  SM_FUSE_TIMER_VERIFY    = 3, // 检查password
+  SM_FUSE_TIMER_DISARMED  = 4, // 被解除了
+  SM_FUSE_TIMER_PREDETONATE = 5, // 准备detonate
 };
 
 extern const char * code sm_fuse_timer_ss_name[];

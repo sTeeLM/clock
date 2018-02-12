@@ -12,8 +12,8 @@ static bit lt_tmr_stopped;
 static bit lt_tmr_display;
 static bit lt_tmr_disp_day;
 
-#define LT_TIMER_MAX_DAY 100 // ×î¶à100Ìì£¬·´Õıµç³Ø×î¶àÒ²Ö»ÄÜ¼á³Ö3¸öÔÂ£¿
-#define LT_MIN_SEC  30 // ±ØĞëÖÁÉÙÌáÇ°30s
+#define LT_TIMER_MAX_DAY 100 // æœ€å¤š100å¤©ï¼Œåæ­£ç”µæ± æœ€å¤šä¹Ÿåªèƒ½åšæŒ3ä¸ªæœˆï¼Ÿ
+#define LT_MIN_SEC  30 // å¿…é¡»è‡³å°‘æå‰30s
 
 
 static struct lt_timer_struct idata ltm; 
@@ -203,11 +203,11 @@ void lt_timer_reset(void)
   lt_tmr_disp_day = 0;  
 }
 
-//////// sub year/month/date/hour/min/sec and clk, ½á¹û·ÅÔÚltm
+//////// sub year/month/date/hour/min/sec and clk, ç»“æœæ”¾åœ¨ltm
 // return borrow min
 static bit lt_timer_sub_sec_min(void)
 {
-  // ¼õsec
+  // å‡sec
   bit borrow_min = 0;
   
   if(ltm.sec < clock_get_sec()) {
@@ -225,7 +225,7 @@ static bit lt_timer_sub_sec_min(void)
 // return borrow hour
 static bit lt_timer_sub_min_hour(bit borrow_min)
 {
-  // ¼õmin
+  // å‡min
   bit borrow_hour = 0;
   
   if(ltm.min < clock_get_min() + (borrow_min ? 1 : 0)) {
@@ -243,7 +243,7 @@ static bit lt_timer_sub_min_hour(bit borrow_min)
 // return borrow date
 static bit lt_timer_sub_hour_date(bit borrow_hour)
 {
-  // ¼õhour
+  // å‡hour
   bit borrow_date = 0;
   
   if(ltm.hour < clock_get_hour() + (borrow_hour ? 1 : 0)) {
@@ -267,7 +267,7 @@ static void lt_timer_sub_date(bit borrow_date)
   
   day = 0;
   
-  // ¼õdate
+  // å‡date
   for(i = clock_get_year();i < ltm.year; i ++)  
     day += clock_is_leap_year(i) ? 366 : 365;
   
@@ -284,7 +284,7 @@ static void lt_timer_sub_date(bit borrow_date)
   if(borrow_date)
     day --;
   
-  if(day < 0) { // ÔÚµ÷ÓÃº¯ÊıµÄÊ±ºò£¬ÆäÊµÒÑ¾­µ½Ê±¼äÁË£¡
+  if(day < 0) { // åœ¨è°ƒç”¨å‡½æ•°çš„æ—¶å€™ï¼Œå…¶å®å·²ç»åˆ°æ—¶é—´äº†ï¼
     ltm.date = 0;
     ltm.hour = 0;
     ltm.min = 0;
@@ -296,11 +296,11 @@ static void lt_timer_sub_date(bit borrow_date)
 
 
 /*
-//////// add ltm and clk, ½á¹û·ÅÔÚ year/month/date/hour/min/sec
+//////// add ltm and clk, ç»“æœæ”¾åœ¨ year/month/date/hour/min/sec
 // return min
 static unsigned char lt_timer_add_sec_min(unsigned char * sec)
 {
-  // ¼Ósec
+  // åŠ sec
   unsigned char min = 0;
   (*sec) = ltm.sec + clock_get_sec();
   if(*sec >= 60) {
@@ -313,7 +313,7 @@ static unsigned char lt_timer_add_sec_min(unsigned char * sec)
 // return hour
 static unsigned char lt_timer_add_min_hour(unsigned char * min)
 {
-  // ¼Ómin
+  // åŠ min
   unsigned char hour = 0;
   (*min) += ltm.min + clock_get_min();
   if(*min >= 60) {
@@ -326,7 +326,7 @@ static unsigned char lt_timer_add_min_hour(unsigned char * min)
 // return date
 static unsigned char lt_timer_add_hour_date(unsigned char * hour)
 {
-  // ¼Óhour
+  // åŠ hour
   unsigned char date = 0;
   (*hour) += ltm.hour + clock_get_hour();
   if(*hour >= 24) {
@@ -340,7 +340,7 @@ static unsigned char lt_timer_add_hour_date(unsigned char * hour)
 // return year
 static unsigned char lt_timer_add_date_month_year(unsigned char * date, unsigned char * month)
 {
-  // ¼Ódate, month, year
+  // åŠ date, month, year
   unsigned char year;
   (*date) += ltm.day + clock_get_date();
   (*month) = clock_get_month();
@@ -414,7 +414,7 @@ void lt_timer_dec_sec(void)
 #pragma AREGS 
 
 //////////////
-// ´Órom¶Á³ö¾ø¶ÔÊ±¼ä,·ÅÈëltm
+// ä»romè¯»å‡ºç»å¯¹æ—¶é—´,æ”¾å…¥ltm
 void lt_timer_sync_from_rom(void)
 {
   ltm.year  = rom_read(ROM_LT_TIMER_YEAR);
@@ -425,7 +425,7 @@ void lt_timer_sync_from_rom(void)
   ltm.sec   = rom_read(ROM_LT_TIMER_SEC);
 }
 
-// ½«¾ø¶ÔÊ±¼äĞ´Èërom£¡
+// å°†ç»å¯¹æ—¶é—´å†™å…¥romï¼
 void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
 {
   CDBG("lt_timer_sync_to_rom type = %bd\n", type);
@@ -451,12 +451,12 @@ void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
     
   }
 }
-// ltm¾ø¶ÔÊÇ¼ş×ª»»ÎªÏà¶ÔÊ±¼ä£¬Èç¹ûĞ¡ÓÚ30S£¬·µ»Ø0£¬·ñÔò·µ»Ø1
+// ltmç»å¯¹æ˜¯ä»¶è½¬æ¢ä¸ºç›¸å¯¹æ—¶é—´ï¼Œå¦‚æœå°äº30Sï¼Œè¿”å›0ï¼Œå¦åˆ™è¿”å›1
 bit lt_timer_get_relative(bit too_close_check)
 {
   bit borrow;
   
-  // ¼ÆËãÏà¶ÔÊ±¼ä£¬µ÷ÓÃºóltm.month Ã»ÓĞÒâÒåÁË,ltm.yearĞèÒª±£Áô
+  // è®¡ç®—ç›¸å¯¹æ—¶é—´ï¼Œè°ƒç”¨åltm.month æ²¡æœ‰æ„ä¹‰äº†,ltm.yearéœ€è¦ä¿ç•™
   clock_enable_interrupt(0);
   borrow = lt_timer_sub_sec_min();
   borrow = lt_timer_sub_min_hour(borrow);
@@ -467,7 +467,7 @@ bit lt_timer_get_relative(bit too_close_check)
   CDBG("lt_timer_get_relative: ltm.date = %bd, ltm.min = %bd, ltm.sec = %bd\n",
     ltm.date, ltm.min, ltm.sec);
   
-  // ËùÉèÖÃ¾ø¶ÔÊ±¼äÒÑ¾­³¬Ê±ÁË
+  // æ‰€è®¾ç½®ç»å¯¹æ—¶é—´å·²ç»è¶…æ—¶äº†
   if(ltm.date == 0 && ltm.hour == 0 && ltm.min == 0) {
     if(ltm.sec == 0) {
       CDBG("lt_timer_get_relative : already triggered!\n");
@@ -481,12 +481,12 @@ bit lt_timer_get_relative(bit too_close_check)
   return 1;
 }
 
-// ½«ltmÀïµÄ¾ø¶ÔÊ±¼äĞ´ÈëRTC
+// å°†ltmé‡Œçš„ç»å¯¹æ—¶é—´å†™å…¥RTC
 void lt_timer_sync_to_rtc(void)
 {
   CDBG("lt_timer_sync_to_rtc : ltm.date = %bd, ltm.hour = %bd, ltm.min = %bd, ltm.sec = %bd\n",
   ltm.date, ltm.hour, ltm.min, ltm.sec);
-  // ¾ø¶ÔÊ±¼äĞ´Èërtc
+  // ç»å¯¹æ—¶é—´å†™å…¥rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
   rtc_alarm_set_date(ltm.date + 1);
@@ -497,9 +497,9 @@ void lt_timer_sync_to_rtc(void)
 }
 
 /*
-// ½«µ±Ç°Ê±¼ä+ltm£¨Ïà¶ÔÊ±¼ä£©£¬Çó³ö¾ø¶ÔÊ±¼äĞ´Èërtc
+// å°†å½“å‰æ—¶é—´+ltmï¼ˆç›¸å¯¹æ—¶é—´ï¼‰ï¼Œæ±‚å‡ºç»å¯¹æ—¶é—´å†™å…¥rtc
 // test current time + ltm > 2099-12-31-23:59:59
-// Èç¹ûoverflow£¬·µ»Ø0£¬³É¹¦·µ»Ø1
+// å¦‚æœoverflowï¼Œè¿”å›0ï¼ŒæˆåŠŸè¿”å›1
 bit lt_timer_sync_to_rtc(void)
 {
   bit ret = 1;
@@ -561,7 +561,7 @@ bit lt_timer_sync_to_rtc(void)
   
   lt_timer_start_ram();
   
-  // ÏòrtcĞ´Èë£¬µ«ÊÇ²»Æô¶¯rtc
+  // å‘rtcå†™å…¥ï¼Œä½†æ˜¯ä¸å¯åŠ¨rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
   rtc_alarm_set_date(date);
@@ -570,7 +570,7 @@ bit lt_timer_sync_to_rtc(void)
   rtc_alarm_set_sec(sec);
   rtc_write_data(RTC_TYPE_ALARM0);
   
-  // year, monthĞ´Èërom£¡,Ã¿´Î´¥·¢Ê±ºò£¬ĞèÒª¿´¿´µ±Ç°year¡¢monÊÇ²»ÊÇmatch
+  // year, monthå†™å…¥romï¼,æ¯æ¬¡è§¦å‘æ—¶å€™ï¼Œéœ€è¦çœ‹çœ‹å½“å‰yearã€monæ˜¯ä¸æ˜¯match
   rom_write(ROM_LT_TIMER_YEAR, year);
   rom_write(ROM_LT_TIMER_MONTH, month);
   

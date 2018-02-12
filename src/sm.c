@@ -29,347 +29,347 @@
 #include "sm_fuse_powersave.h"
 
 // state machine translate defines
-// ³¬¼¶¸´ÔÓ±äÌ¬
+// è¶…çº§å¤æ‚å˜æ€
 static const struct sm_trans code sm_trans_clock_display[] = 
 {
   /* SM_CLOCK_DISPLAY */
-  // ´Ó±ğµÄ×´Ì¬ÇĞ¹ıÀ´£¬·ÀÖ¹Îó²Ù×÷
+  // ä»åˆ«çš„çŠ¶æ€åˆ‡è¿‡æ¥ï¼Œé˜²æ­¢è¯¯æ“ä½œ
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, EV_KEY_MOD_UP, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},  
-  // °´mod0ÏÔÊ¾ÄêÔÂÈÕ
+  // æŒ‰mod0æ˜¾ç¤ºå¹´æœˆæ—¥
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, sm_clock_display},
-  // °´mod1½øÈëĞŞ¸ÄÊ±¼äÄ£Ê½
+  // æŒ‰mod1è¿›å…¥ä¿®æ”¹æ—¶é—´æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_INIT, sm_clock_mod_time},
-  // ÄÖÖÓ0ÏìÁË
+  // é—¹é’Ÿ0å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
-  // ÄÖÖÓ1ÏìÁË
+  // é—¹é’Ÿ1å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_ALARM1, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},
-  // ¸Ã½øÈë½ÚµçÄ£Ê½ÁË
+  // è¯¥è¿›å…¥èŠ‚ç”µæ¨¡å¼äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_POWER_SAVE, SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_INIT, sm_clock_powersave},
-  // ½øÈëÅÜ±í¹¦ÄÜ
+  // è¿›å…¥è·‘è¡¨åŠŸèƒ½
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_INIT, sm_clock_timer},
-  // 1SÌ½²âÏÂË¯Ãß³¬Ê±Ê±¼ä
+  // 1Sæ¢æµ‹ä¸‹ç¡çœ è¶…æ—¶æ—¶é—´
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_1S, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
   
-  // °´modset1½øÈëfuse¹¦ÄÜ¼¯ºÏ
+  // æŒ‰modset1è¿›å…¥fuseåŠŸèƒ½é›†åˆ
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, EV_KEY_MOD_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
 
-  // °´mod0ÏÔÊ¾ĞÇÆÚ¼¸
+  // æŒ‰mod0æ˜¾ç¤ºæ˜ŸæœŸå‡ 
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, sm_clock_display},
-  // set0»Øµ½Ê±·ÖÃëÏÔÊ¾Ä£Ê½
+  // set0å›åˆ°æ—¶åˆ†ç§’æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // ÄÖÖÓ0ÏìÁË
+  // é—¹é’Ÿ0å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
-  // ÄÖÖÓ1ÏìÁË
+  // é—¹é’Ÿ1å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_ALARM1, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},
-  // 1SÌ½²âÏÂ×Ô¶¯ÇĞ»ØÊ±¼ä
+  // 1Sæ¢æµ‹ä¸‹è‡ªåŠ¨åˆ‡å›æ—¶é—´
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_1S, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, sm_clock_display},
   
-  // °´mod0ÏÔÊ¾ÎÂ¶È
+  // æŒ‰mod0æ˜¾ç¤ºæ¸©åº¦
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, sm_clock_display},
-  // set0»Øµ½Ê±·ÖÃëÏÔÊ¾Ä£Ê½
+  // set0å›åˆ°æ—¶åˆ†ç§’æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // ÄÖÖÓ0ÏìÁË
+  // é—¹é’Ÿ0å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
-  // ÄÖÖÓ1ÏìÁË
+  // é—¹é’Ÿ1å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_ALARM1, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},  
-  // 1SÌ½²âÏÂ×Ô¶¯ÇĞ»ØÊ±¼ä
+  // 1Sæ¢æµ‹ä¸‹è‡ªåŠ¨åˆ‡å›æ—¶é—´
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_1S, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, sm_clock_display},  
   
-  // °´mod0»Øµ½Ê±·ÖÃëÏÔÊ¾Ä£Ê½
+  // æŒ‰mod0å›åˆ°æ—¶åˆ†ç§’æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // set0»Øµ½Ê±·ÖÃëÏÔÊ¾Ä£Ê½
+  // set0å›åˆ°æ—¶åˆ†ç§’æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // ÄÖÖÓ0ÏìÁË
+  // é—¹é’Ÿ0å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
-  // ÄÖÖÓ1ÏìÁË
+  // é—¹é’Ÿ1å“äº†
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_ALARM1, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},
-  // 1SÌ½²âÏÂ×Ô¶¯ÇĞ»ØÊ±¼ä
+  // 1Sæ¢æµ‹ä¸‹è‡ªåŠ¨åˆ‡å›æ—¶é—´
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_1S, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, sm_clock_display},  
 };
 
 static const struct sm_trans code sm_trans_clock_mod_time[] = {
   /* SM_CLOCK_MODIFY_TIME */
-  // ´Ó±ğµÄ×´Ì¬½øÈë£¬·ÀÖ¹Îó²Ù×÷
+  // ä»åˆ«çš„çŠ¶æ€è¿›å…¥ï¼Œé˜²æ­¢è¯¯æ“ä½œ
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_INIT, EV_KEY_MOD_UP, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, sm_clock_mod_time}, 
-  // °´mod0½øÈëĞŞ¸Ä·ÖÖÓÄ£Ê½
+  // æŒ‰mod0è¿›å…¥ä¿®æ”¹åˆ†é’Ÿæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, sm_clock_mod_time},
-  // °´set0Ğ¡Ê±++²¢Ğ´Èërtc
+  // æŒ‰set0å°æ—¶++å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, sm_clock_mod_time},
-  // set1Ğ¡Ê±Á¬Ğø++
+  // set1å°æ—¶è¿ç»­++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, sm_clock_mod_time},
-  // setÌ§ÆğÍ£Ö¹++²¢Ğ´Èërtc
+  // setæŠ¬èµ·åœæ­¢++å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, sm_clock_mod_time},
-  // Ã¿250ms¶ÁÒ»´Îrtc
+  // æ¯250msè¯»ä¸€æ¬¡rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, EV_250MS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, sm_clock_mod_time},
-  // mod1 ½øÈëĞŞ¸ÄÄÖÖÓÄ£Ê½
+  // mod1 è¿›å…¥ä¿®æ”¹é—¹é’Ÿæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm},
-  // mod0 ½øÈëĞŞ¸ÄÃëÄ£Ê½
+  // mod0 è¿›å…¥ä¿®æ”¹ç§’æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, sm_clock_mod_time},
-  // set0 ·ÖÖÓ++²¢Ğ´Èërtc
+  // set0 åˆ†é’Ÿ++å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, sm_clock_mod_time},
-  // set1 ·ÖÖÓ³ÖĞø++
+  // set1 åˆ†é’ŸæŒç»­++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, sm_clock_mod_time},
-  // setÌ§ÆğÍ£Ö¹++²¢Ğ´Èërtc
+  // setæŠ¬èµ·åœæ­¢++å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, sm_clock_mod_time},
-  // Ã¿250ms¶ÁÒ»ÏÂrtc
+  // æ¯250msè¯»ä¸€ä¸‹rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, EV_250MS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, sm_clock_mod_time}, 
-  // mod1 ½øÈëĞŞ¸ÄÄÖÖÓÄ£Ê½
+  // mod1 è¿›å…¥ä¿®æ”¹é—¹é’Ÿæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MM, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÄêÄ£Ê½
+  // mod0è¿›å…¥ä¿®æ”¹å¹´æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, sm_clock_mod_time},
-  // set0½«ÃëÇå0²¢Ğ´Èërtc
+  // set0å°†ç§’æ¸…0å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, sm_clock_mod_time},
-  // Ã¿250ms¶ÁÒ»´Îrtc 
+  // æ¯250msè¯»ä¸€æ¬¡rtc 
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, EV_250MS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, sm_clock_mod_time},
-  // mod1½øÈëĞŞ¸ÄÄÖÖÓÄ£Ê½
+  // mod1è¿›å…¥ä¿®æ”¹é—¹é’Ÿæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_SS, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm},  
-  // °´mod0½øÈëĞŞ¸ÄÔÂÄ£Ê½
+  // æŒ‰mod0è¿›å…¥ä¿®æ”¹æœˆæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, sm_clock_mod_time},
-  // set0 Äê++
+  // set0 å¹´++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, sm_clock_mod_time},
-  // ³¤°´setÄê³ÖĞø++
+  // é•¿æŒ‰setå¹´æŒç»­++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, sm_clock_mod_time},
-  // Ì§ÆğsetÍ£Ö¹Äê++²¢Ğ´Èërtc
+  // æŠ¬èµ·setåœæ­¢å¹´++å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, sm_clock_mod_time},
-  // Ã¿250ms¶ÁÈ¡Ò»´Îrtc  
+  // æ¯250msè¯»å–ä¸€æ¬¡rtc  
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, EV_250MS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, sm_clock_mod_time},
-  // mod1 ½øÈëĞŞ¸ÄÄÖÖÓÄ£Ê½  
+  // mod1 è¿›å…¥ä¿®æ”¹é—¹é’Ÿæ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_YY, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm}, 
-  // mod0 ½øÈëĞŞ¸ÄÈÕÄ£Ê½
+  // mod0 è¿›å…¥ä¿®æ”¹æ—¥æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, sm_clock_mod_time},
-  // set0 ÔÂ++
+  // set0 æœˆ++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, sm_clock_mod_time},
-  // ³¤°´set ÔÂ³ÖĞø++
+  // é•¿æŒ‰set æœˆæŒç»­++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, sm_clock_mod_time}, 
-  // Ì§ÆğsetÍ£Ö¹ÔÂ++²¢Ğ´Èërtc
+  // æŠ¬èµ·setåœæ­¢æœˆ++å¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, sm_clock_mod_time}, 
-  // Ã¿250ms¶ÁÈ¡Ò»ÏÂrtc
+  // æ¯250msè¯»å–ä¸€ä¸‹rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, EV_250MS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, sm_clock_mod_time},
-  // mod1 ½øÈëĞŞ¸ÄÄÖÖÓÄ£Ê½  
+  // mod1 è¿›å…¥ä¿®æ”¹é—¹é’Ÿæ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_MO, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm},   
-  // mod0 ½øÈëĞŞ¸ÄĞ¡Ê±Ä£Ê½
+  // mod0 è¿›å…¥ä¿®æ”¹å°æ—¶æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_HH, sm_clock_mod_time},
-  // set0 ÈÕ++
+  // set0 æ—¥++
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, sm_clock_mod_time},
-  // set1 ÈÕ³ÖĞø++  
+  // set1 æ—¥æŒç»­++  
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, sm_clock_mod_time},
-  // setÌ§ÆğÍ£Ö¹ÈÕ++Ğ´Èërtc  
+  // setæŠ¬èµ·åœæ­¢æ—¥++å†™å…¥rtc  
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, sm_clock_mod_time},
-  // Ã¿250ms¶ÁÈ¡Ò»ÏÂrtc
+  // æ¯250msè¯»å–ä¸€ä¸‹rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, EV_250MS, SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, sm_clock_mod_time}, 
-  // mod1 ½øÈëĞŞ¸ÄÄÖÖÓÄ£Ê½
+  // mod1 è¿›å…¥ä¿®æ”¹é—¹é’Ÿæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_TIME<<4|SM_CLOCK_MODIFY_TIME_DD, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm},
 };
 
 static const struct sm_trans code sm_trans_clock_mod_alarm[] = {
   /* SM_CLOCK_MODIFY_ALARM */
-  // ´Ó±ğµÄ×´Ì¬½øÈë£¬·ÀÖ¹Îó²Ù×÷
+  // ä»åˆ«çš„çŠ¶æ€è¿›å…¥ï¼Œé˜²æ­¢è¯¯æ“ä½œ
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, EV_KEY_MOD_UP, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, sm_clock_mod_alarm},
-  // set0Ğ¡Ê±++  
+  // set0å°æ—¶++  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, sm_clock_mod_alarm},
-  // set1Ğ¡Ê±³ÖĞø++
+  // set1å°æ—¶æŒç»­++
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, sm_clock_mod_alarm},
-  // setÌ§ÆğÍ£Ö¹++£¬Ğ´Èërtc
+  // setæŠ¬èµ·åœæ­¢++ï¼Œå†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸Ä·ÖÖÓÄ£Ê½
+  // mod0è¿›å…¥ä¿®æ”¹åˆ†é’Ÿæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm},
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
   
-  // set0·ÖÖÓ++
+  // set0åˆ†é’Ÿ++
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm},
-  // set1·ÖÖÓ³ÖĞø++
+  // set1åˆ†é’ŸæŒç»­++
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm}, 
-  // setÌ§ÆğÍ£Ö¹++£¬Ğ´Èërtc  
+  // setæŠ¬èµ·åœæ­¢++ï¼Œå†™å…¥rtc  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm}, 
-  // mod0½øÈëµ÷ÕûÖØ¸´ÈÕ×´Ì¬
+  // mod0è¿›å…¥è°ƒæ•´é‡å¤æ—¥çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY1, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
  
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY1, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY1, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÏÂÒ»Ìì×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ä¸‹ä¸€å¤©çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY1, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY2, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY1, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY2, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY2, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÏÂÒ»Ìì×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ä¸‹ä¸€å¤©çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY2, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY3, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY2, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY3, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY3, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÏÂÒ»Ìì×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ä¸‹ä¸€å¤©çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY3, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY4, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY3, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY4, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY4, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÏÂÒ»Ìì×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ä¸‹ä¸€å¤©çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY4, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY5, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY4, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY5, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY5, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÏÂÒ»Ìì×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ä¸‹ä¸€å¤©çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY5, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY6, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY5, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY6, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY6, sm_clock_mod_alarm},
-  // mod0½øÈëĞŞ¸ÄÏÂÒ»Ìì×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ä¸‹ä¸€å¤©çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY6, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY7, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY6, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},
 
-  // set0µ÷Õû´ò¿ª¹Ø±Õ£¬²¢Ğ´Èërtc
+  // set0è°ƒæ•´æ‰“å¼€å…³é—­ï¼Œå¹¶å†™å…¥rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY7, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY7, sm_clock_mod_alarm},
-  // mod0»Øµ½µ÷ÕûÄÖÖÓĞ¡Ê±×´Ì¬
+  // mod0å›åˆ°è°ƒæ•´é—¹é’Ÿå°æ—¶çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY7, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, sm_clock_mod_alarm}, 
-  // mod1½øÈëĞŞ¸ÄÈ«¾Ö×´Ì¬Ä£Ê½  
+  // mod1è¿›å…¥ä¿®æ”¹å…¨å±€çŠ¶æ€æ¨¡å¼  
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY7, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, sm_clock_mod_global_flag},  
 };
 
 static const struct sm_trans code sm_trans_clock_mod_global_flag[] = {
   /* SM_CLOCK_MODIFY_GLOBAL_FLAG */
-  // ·ÀÖ¹Îó²Ù×÷
+  // é˜²æ­¢è¯¯æ“ä½œ
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT, EV_KEY_MOD_UP, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_PS, sm_clock_mod_global_flag},
-  // set0 Ê¡µçÄ£Ê½³¬Ê±Ê±¼äÉèÖÃ
+  // set0 çœç”µæ¨¡å¼è¶…æ—¶æ—¶é—´è®¾ç½®
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_PS, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_PS, sm_clock_mod_global_flag},
-  // mod0 ½øÈëÉèÖÃÕûµã±¨Ê±on/off×´Ì¬
+  // mod0 è¿›å…¥è®¾ç½®æ•´ç‚¹æŠ¥æ—¶on/offçŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_PS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BS, sm_clock_mod_global_flag},  
-  // mod1½øÈëÏÔÊ¾Ê±¼ä×´Ì¬
+  // mod1è¿›å…¥æ˜¾ç¤ºæ—¶é—´çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_PS, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set0 Õûµã±¨Ê±on/off
+  // set0 æ•´ç‚¹æŠ¥æ—¶on/off
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BS, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BS, sm_clock_mod_global_flag},
-  // mod0 ½øÈëÄÖÁåÒôÀÖÑ¡Ôñ
+  // mod0 è¿›å…¥é—¹é“ƒéŸ³ä¹é€‰æ‹©
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC, sm_clock_mod_global_flag},
-  // mod1½øÈëÏÔÊ¾Ê±¼ä×´Ì¬
+  // mod1è¿›å…¥æ˜¾ç¤ºæ—¶é—´çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BS, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display}, 
-  // set0 ÄÖÁåÒôÀÖÉèÖÃ
+  // set0 é—¹é“ƒéŸ³ä¹è®¾ç½®
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC, sm_clock_mod_global_flag},
-  // mod0 ½øÈë1°´¼üÒôÉèÖÃ
+  // mod0 è¿›å…¥1æŒ‰é”®éŸ³è®¾ç½®
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP, sm_clock_mod_global_flag}, 
-  // mod1½øÈëÏÔÊ¾Ê±¼ä×´Ì¬
+  // mod1è¿›å…¥æ˜¾ç¤ºæ—¶é—´çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display}, 
-  // set0 ´ò¿ª¹Ø±Õ°´¼üÒô
+  // set0 æ‰“å¼€å…³é—­æŒ‰é”®éŸ³
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP, sm_clock_mod_global_flag},
-  // mod0 ½øÈë1224Ğ¡Ê±ÉèÖÃ×´Ì¬
+  // mod0 è¿›å…¥1224å°æ—¶è®¾ç½®çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_1224, sm_clock_mod_global_flag}, 
-  // mod1½øÈëÏÔÊ¾Ê±¼ä×´Ì¬
+  // mod1è¿›å…¥æ˜¾ç¤ºæ—¶é—´çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display}, 
-  // set0 1224Ä£Ê½ÇĞ»»
+  // set0 1224æ¨¡å¼åˆ‡æ¢
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_1224, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_1224, sm_clock_mod_global_flag},
-  // mod0 ½øÈëÉèÖÃÊ¡µçÄ£Ê½×´Ì¬
+  // mod0 è¿›å…¥è®¾ç½®çœç”µæ¨¡å¼çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_1224, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_PS, sm_clock_mod_global_flag}, 
-  // mod1 ½øÈëÏÔÊ¾Ê±¼ä×´Ì¬
+  // mod1 è¿›å…¥æ˜¾ç¤ºæ—¶é—´çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_MODIFY_GLOBAL_FLAG<<4|SM_CLOCK_MODIFY_GLOBAL_FLAG_1224, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
 };
   
 static const struct sm_trans code sm_trans_clock_powersave[] = {
   /* SM_CLOCK_POWERSAVE */
-  // 250msºó½øÈëË¯Ãß
+  // 250msåè¿›å…¥ç¡çœ 
   {SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_INIT, EV_250MS, SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_PS, sm_clock_powersave},
-  // mod0»Øµ½Ê±¼äÏÔÊ¾Ä£Ê½ 
+  // mod0å›åˆ°æ—¶é—´æ˜¾ç¤ºæ¨¡å¼ 
   {SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_PS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // set0»Øµ½Ê±¼äÏÔÊ¾Ä£Ê½
+  // set0å›åˆ°æ—¶é—´æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_PS, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // ÄÖÁåÏìÁË£¬»½ĞÑ°É
+  // é—¹é“ƒå“äº†ï¼Œå”¤é†’å§
   {SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_PS, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
   {SM_CLOCK, SM_CLOCK_POWERSAVE<<4|SM_CLOCK_POWERSAVE_PS, EV_ALARM1, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},
 };  
 
 static const struct sm_trans code sm_trans_clock_alarm[] = {  
   /* SM_CLOCK_ALARM */
-  // mod0»Øµ½Ê±¼äÏÔÊ¾Ä£Ê½
+  // mod0å›åˆ°æ—¶é—´æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // set0»Øµ½Ê±¼äÏÔÊ¾Ä£Ê½
+  // set0å›åˆ°æ—¶é—´æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display}, 
-  // mod0»Øµ½Ê±¼äÏÔÊ¾Ä£Ê½
+  // mod0å›åˆ°æ—¶é—´æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display},
-  // set0»Øµ½Ê±¼äÏÔÊ¾Ä£Ê½
+  // set0å›åˆ°æ—¶é—´æ˜¾ç¤ºæ¨¡å¼
   {SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display}, 
-  // Õûµã±¨Ê±×Ô¶¯ÇĞ»»
+  // æ•´ç‚¹æŠ¥æ—¶è‡ªåŠ¨åˆ‡æ¢
   {SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, EV_1S, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM1, sm_clock_alarm},
 };
 
 static const struct sm_trans code sm_trans_clock_timer[] = {  
   /* SM_CLOCK_TIMER */
-  // ·ÀÖ¹Îó²Ù×÷
+  // é˜²æ­¢è¯¯æ“ä½œ
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_INIT, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_CLEAR, sm_clock_timer},
-  // set1½øÈëµ¹¼ÆÊ±Æ÷Ä£Ê½
+  // set1è¿›å…¥å€’è®¡æ—¶å™¨æ¨¡å¼
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_CLEAR, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_INIT, sm_clock_counter},
-  // mod0ÅÜ±í¿ªÊ¼ÅÜ
+  // mod0è·‘è¡¨å¼€å§‹è·‘
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_CLEAR, EV_KEY_MOD_DOWN, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_RUNNING, sm_clock_timer}, 
-  // set0¼Æ´Î
+  // set0è®¡æ¬¡
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_RUNNING, EV_KEY_SET_DOWN, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_RUNNING, sm_clock_timer},
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_RUNNING, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_RUNNING, sm_clock_timer},  
-  // mod0ÅÜ±íÍ£Ö¹  
+  // mod0è·‘è¡¨åœæ­¢  
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_RUNNING, EV_KEY_MOD_DOWN, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_STOP, sm_clock_timer},
-  // mod0ÅÜ±íÇåÁã
+  // mod0è·‘è¡¨æ¸…é›¶
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_STOP, EV_KEY_MOD_DOWN, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_CLEAR, sm_clock_timer},
-  // set0Öğ´ÎÏÔÊ¾¼Æ´Î
+  // set0é€æ¬¡æ˜¾ç¤ºè®¡æ¬¡
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_STOP, EV_KEY_SET_DOWN, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_STOP, sm_clock_timer},
   {SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_STOP, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_TIMER<<4|SM_CLOCK_TIMER_STOP, sm_clock_timer},  
 };  
 
 static const struct sm_trans code sm_trans_clock_counter[] = {  
   /* SM_CLOCK_COUNTER */
-  // ·ÀÖ¹Îó²Ù×÷
+  // é˜²æ­¢è¯¯æ“ä½œ
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_INIT, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter},
-  // mod0½øÈëĞŞ¸Ä·ÖÖÓ×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹åˆ†é’ŸçŠ¶æ€
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, sm_clock_counter},
-  // set0Ğ¡Ê±++
+  // set0å°æ—¶++
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter},
-  // set1Ğ¡Ê±¿ìËÙ++
+  // set1å°æ—¶å¿«é€Ÿ++
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter}, 
-  // setÌ§ÆğĞ¡Ê±¿ìËÙ++Í£Ö¹
+  // setæŠ¬èµ·å°æ—¶å¿«é€Ÿ++åœæ­¢
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter},   
-  // mod1ÇĞ»ØÊ±¼äÏÔÊ¾
+  // mod1åˆ‡å›æ—¶é—´æ˜¾ç¤º
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // Ã¿250msË¢ĞÂÏÔÊ¾
+  // æ¯250msåˆ·æ–°æ˜¾ç¤º
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, EV_250MS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter},
-  // mod0½øÈëĞŞ¸ÄÃë×´Ì¬
+  // mod0è¿›å…¥ä¿®æ”¹ç§’çŠ¶æ€
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, sm_clock_counter},
-  // set0 ·ÖÖÓ++
+  // set0 åˆ†é’Ÿ++
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, sm_clock_counter},
-  // set1 ·ÖÖÓ¿ìËÙ++
+  // set1 åˆ†é’Ÿå¿«é€Ÿ++
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, sm_clock_counter},
-  // set Ì§Æğ·ÖÖÓ¿ìËÙ++Í£Ö¹  
+  // set æŠ¬èµ·åˆ†é’Ÿå¿«é€Ÿ++åœæ­¢  
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, sm_clock_counter},
-  // mod1 »Øµ½Ê±¼äÏÔÊ¾  
+  // mod1 å›åˆ°æ—¶é—´æ˜¾ç¤º  
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},  
-  // Ã¿250msË¢ĞÂÏÔÊ¾
+  // æ¯250msåˆ·æ–°æ˜¾ç¤º
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, EV_250MS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_MM, sm_clock_counter},
-  // mod0 ¿ªÊ¼µ¹¼ÆÊ±
+  // mod0 å¼€å§‹å€’è®¡æ—¶
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_RUNNING, sm_clock_counter},
-  // set0 Ãë++
+  // set0 ç§’++
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, sm_clock_counter},
-  // set1 Ãë¿ìËÙ++
+  // set1 ç§’å¿«é€Ÿ++
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, EV_KEY_SET_LPRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, sm_clock_counter},
-  // setÌ§ÆğÃë¿ìËÙ++Í£Ö¹
+  // setæŠ¬èµ·ç§’å¿«é€Ÿ++åœæ­¢
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, sm_clock_counter},
-  // mod1»Øµ½Ê±¼äÏÔÊ¾  
+  // mod1å›åˆ°æ—¶é—´æ˜¾ç¤º  
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // Ã¿250msË¢ĞÂÏÔÊ¾
+  // æ¯250msåˆ·æ–°æ˜¾ç¤º
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, EV_250MS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_SS, sm_clock_counter},
-  // set0 ÔİÍ£µ¹¼ÆÊ±
+  // set0 æš‚åœå€’è®¡æ—¶
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_RUNNING, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_PAUSE, sm_clock_counter}, 
-  // set0 ¼ÌĞøµ¹¼ÆÊ±
+  // set0 ç»§ç»­å€’è®¡æ—¶
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_PAUSE, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_RUNNING, sm_clock_counter},
-  // mod0 Çå³ı
+  // mod0 æ¸…é™¤
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_PAUSE, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter},
-  // µ¹¼ÆÊ±½áÊø£¬ÏìÁå
+  // å€’è®¡æ—¶ç»“æŸï¼Œå“é“ƒ
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_RUNNING, EV_COUNTER, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_STOP, sm_clock_counter},
-  // mod0 Í£Ö¹ÏìÁå
+  // mod0 åœæ­¢å“é“ƒ
   {SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_STOP, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_COUNTER<<4|SM_CLOCK_COUNTER_MODIFY_HH, sm_clock_counter},  
 };
 
@@ -378,379 +378,379 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   /* SM_FUSE_TEST */
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_UP, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
 
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
-  // ²âÊÔfuse0 broke ÊÕµ½EV_FUSE0_BROKE, ¸üĞÂÏÔÊ¾
+  // æµ‹è¯•fuse0 broke æ”¶åˆ°EV_FUSE0_BROKE, æ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_FUSE0_BROKE, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔ fuse1 short
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯• fuse1 short
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
-  // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+  // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
   
 
   
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
-  // ²âÊÔfuse1 broke ÊÕµ½EV_FUSE1_BROKE, ¸üĞÂÏÔÊ¾
+  // æµ‹è¯•fuse1 broke æ”¶åˆ°EV_FUSE1_BROKE, æ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_FUSE1_BROKE, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_1S,SM_FUSE,  SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔtripwire
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯•tripwire
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
-  // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+  // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE1_BROKE, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
   
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
-  // ÊÕµ½ EV_TRIPWIRE ¸üĞÂÏÔÊ¾
+  // æ”¶åˆ° EV_TRIPWIRE æ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_TRIPWIRE, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔthermo hi
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯•thermo hi
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
-  // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+  // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_TRIPWIRE, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
   
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
-  // ÊÕµ½EV_THERMO_HI£¬¸üĞÂÏÔÊ¾
+  // æ”¶åˆ°EV_THERMO_HIï¼Œæ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_THERMO_HI, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔthermo lo
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯•thermo lo
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
-  // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+  // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
   
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
-  // ÊÕµ½EV_THERMO_LO£¬¸üĞÂÏÔÊ¾
+  // æ”¶åˆ°EV_THERMO_LOï¼Œæ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_THERMO_LO, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔ hg
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯• hg
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
-  // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+  // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
   
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
-  // ÊÕµ½EV_ROTATE£¬¸üĞÂÏÔÊ¾
+  // æ”¶åˆ°EV_ROTATEï¼Œæ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_ROTATE_HG, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔ gyro
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯• gyro
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
-  // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+  // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_mode},
 
   
-  // set0Æô¶¯²âÊÔ
+  // set0å¯åŠ¨æµ‹è¯•
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
-  // ÊÕµ½EV_ROTATE£¬¸üĞÂÏÔÊ¾
+  // æ”¶åˆ°EV_ROTATEï¼Œæ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_ROTATE_GYRO, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
-  // ÊÕµ½EV_ACC£¬¸üĞÂÏÔÊ¾
+  // æ”¶åˆ°EV_ACCï¼Œæ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_ACC_GYRO, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
-  // ÊÕµ½EV_DROP£¬¸üĞÂÏÔÊ¾
+  // æ”¶åˆ°EV_DROPï¼Œæ›´æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_DROP_GYRO, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},  
-  // ÊÕµ½EV_1S£¬¸üĞÂ×´Ì¬
+  // æ”¶åˆ°EV_1Sï¼Œæ›´æ–°çŠ¶æ€
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, sm_fuse_test},
-  // mod0 ÇĞ»»µ½²âÊÔ fuse0 short
+  // mod0 åˆ‡æ¢åˆ°æµ‹è¯• fuse0 short
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_FUSE0_BROKE, sm_fuse_test},
-   // mod1 ÇĞ»»»ØÊ±ÖÓÄ£Ê½
+   // mod1 åˆ‡æ¢å›æ—¶é’Ÿæ¨¡å¼
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display},
-  // set1 ÇĞ»»µ½²ÎÊıÉèÖÃ
+  // set1 åˆ‡æ¢åˆ°å‚æ•°è®¾ç½®
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_GYRO, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param},
 };
 
 static const struct sm_trans code sm_trans_fuse_mode[] = {  
   /* SM_FUSE_MODE */
-  // ´Ó±ğµÄ×´Ì¬ÇĞ¹ıÀ´£¬·ÀÖ¹Îó²Ù×÷
+  // ä»åˆ«çš„çŠ¶æ€åˆ‡è¿‡æ¥ï¼Œé˜²æ­¢è¯¯æ“ä½œ
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, EV_KEY_MOD_UP, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, sm_fuse_mode},
-  // set0 Ä£Ê½Ñ¡Ôñ
+  // set0 æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, sm_fuse_mode},
-  // mod0 ÇĞ»»µ½´¥ÅöÄ£Ê½
+  // mod0 åˆ‡æ¢åˆ°è§¦ç¢°æ¨¡å¼
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, sm_fuse_mode},
-  // EV_FUSE_SEL  ½øÈëarmed
+  // EV_FUSE_SEL  è¿›å…¥armed
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, sm_fuse_timer},
-  // EV_1SË¢ĞÂÏÔÊ¾
+  // EV_1Såˆ·æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, EV_1S, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, sm_fuse_mode},
-  // set0 Ä£Ê½Ñ¡Ôñ
+  // set0 æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, sm_fuse_mode},
-  // mod0 ÇĞ»»µ½¶¨Ê±Ä£Ê½
+  // mod0 åˆ‡æ¢åˆ°å®šæ—¶æ¨¡å¼
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_TIMER, sm_fuse_mode},
-  // EV_FUSE_SEL  ½øÈëarmed
+  // EV_FUSE_SEL  è¿›å…¥armed
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, sm_fuse_grenade},
-  // EV_1SË¢ĞÂÏÔÊ¾
+  // EV_1Såˆ·æ–°æ˜¾ç¤º
   {SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, EV_1S, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_GRENADE, sm_fuse_mode},
 };
 
 static const struct sm_trans code sm_trans_fuse_param[] = { 
   /* SM_FUSE_PARAM */
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},
-  // set0/1 µ÷ÕûÄê
+  // set0/1 è°ƒæ•´å¹´
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},
-  // mod0 ÇĞ»»µ÷ÕûÊ±
+  // mod0 åˆ‡æ¢è°ƒæ•´æ—¶
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0/1 µ÷ÕûÔÂ
+  // set0/1 è°ƒæ•´æœˆ
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param},
-  // mod0 ÇĞ»»µ÷ÕûÊ±
+  // mod0 åˆ‡æ¢è°ƒæ•´æ—¶
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0/1 µ÷ÕûÈÕ
+  // set0/1 è°ƒæ•´æ—¥
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, sm_fuse_param},
-  // mod0 ÇĞ»»µ÷ÕûÊ±
+  // mod0 åˆ‡æ¢è°ƒæ•´æ—¶
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_DD, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0/1 µ÷ÕûÊ±
+  // set0/1 è°ƒæ•´æ—¶
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, sm_fuse_param},
-  // mod0 ÇĞ»»µ÷Õû·Ö
+  // mod0 åˆ‡æ¢è°ƒæ•´åˆ†
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HH, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0/1 µ÷Õû·Ö
+  // set0/1 è°ƒæ•´åˆ†
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, sm_fuse_param},
-  // mod0 ÇĞ»»µ÷ÕûÃë
+  // mod0 åˆ‡æ¢è°ƒæ•´ç§’
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MM, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0/1 µ÷ÕûÃë
+  // set0/1 è°ƒæ•´ç§’
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, sm_fuse_param},
-  // mod0 ÇĞ»»HG on/off
+  // mod0 åˆ‡æ¢HG on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HG_ONOFF, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_SS, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0 µ÷ÕûHG on/off
+  // set0 è°ƒæ•´HG on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HG_ONOFF, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HG_ONOFF, sm_fuse_param},
-  // mod0 ÇĞ»»GYRO on/off
+  // mod0 åˆ‡æ¢GYRO on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HG_ONOFF, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_GYRO_ONOFF, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_HG_ONOFF, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0 µ÷ÕûGYRO on/off
+  // set0 è°ƒæ•´GYRO on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_GYRO_ONOFF, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_GYRO_ONOFF, sm_fuse_param},  
-  // mod0 ÇĞ»»THERMO_HI on/off
+  // mod0 åˆ‡æ¢THERMO_HI on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_GYRO_ONOFF, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_GYRO_ONOFF, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0 µ÷ÕûTHERMO_HI on/off
+  // set0 è°ƒæ•´THERMO_HI on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, sm_fuse_param},  
-  // mod0 ÇĞ»»THERMO_LO on/off
+  // mod0 åˆ‡æ¢THERMO_LO on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_HI_ONOFF, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0 µ÷ÕûTHERMO_LO on/off
+  // set0 è°ƒæ•´THERMO_LO on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, sm_fuse_param},
-  // mod0 ÇĞ»»TRIPWIRE on/off
+  // mod0 åˆ‡æ¢TRIPWIRE on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_TRIPWIRE_ONOFF, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_THERMO_LO_ONOFF, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0 µ÷ÕûTRIPWIRE on/off
+  // set0 è°ƒæ•´TRIPWIRE on/off
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_TRIPWIRE_ONOFF, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_TRIPWIRE_ONOFF, sm_fuse_param},
-  // mod0 ÇĞ»»password 
+  // mod0 åˆ‡æ¢password 
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_TRIPWIRE_ONOFF, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, sm_fuse_param},
-  // mod1 ÇĞ»»µ½Ä£Ê½Ñ¡Ôñ
+  // mod1 åˆ‡æ¢åˆ°æ¨¡å¼é€‰æ‹©
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_TRIPWIRE_ONOFF, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_MODE<<4|SM_FUSE_MODE_INIT, sm_fuse_mode},
-  // set0 µ÷Õûpassword 
+  // set0 è°ƒæ•´password 
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, sm_fuse_param},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, sm_fuse_param},  
-  // mod0 ÏÂÒ»Êı×Ö
+  // mod0 ä¸‹ä¸€æ•°å­—
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, sm_fuse_param}, 
-  // ½áÎ²´ÓÍ·¿ªÊ¼
+  // ç»“å°¾ä»å¤´å¼€å§‹
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param},  
-  // mod1 Ìø×ªµçÂ·²âÊÔ
+  // mod1 è·³è½¬ç”µè·¯æµ‹è¯•
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
 };
 
 static const struct sm_trans code sm_trans_fuse_timer[] = { 
   /* SM_FUSE_TIMER */ 
-  // ¹ı1Ãë½øÈëprearmed×´Ì¬
+  // è¿‡1ç§’è¿›å…¥prearmedçŠ¶æ€
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, EV_1S, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // ÉèÖÃ²ÎÊı
+  // è®¾ç½®å‚æ•°
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_1S, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer}, 
-  // ÉèÖÃ³É¹¦£¬×¼±¸¸É»îÁË
+  // è®¾ç½®æˆåŠŸï¼Œå‡†å¤‡å¹²æ´»äº†
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_FUSE_SEL1, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},
-  // ²ÎÊıÉèÖÃ²»³É¹¦£¬½øÈëµçÂ·²âÊÔ
+  // å‚æ•°è®¾ç½®ä¸æˆåŠŸï¼Œè¿›å…¥ç”µè·¯æµ‹è¯•
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  // ¼ÆÊ±Æ÷Ê±¼äµ½,´¥·¢
+  // è®¡æ—¶å™¨æ—¶é—´åˆ°,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_COUNTER, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // fuse0¼ô¶Ï,´¥·¢
+  // fuse0å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_FUSE0_BROKE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // fuse1¼ô¶Ï,´¥·¢
+  // fuse1å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_FUSE1_BROKE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_ROTATE_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_ROTATE_HG, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_DROP_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},
-  // ¼ÓËÙ¶È±ä»¯,´¥·¢
+  // åŠ é€Ÿåº¦å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_ACC_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer},  
-  // tripwire¶Ï,´¥·¢
+  // tripwireæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_TRIPWIRE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer}, 
-  // tripwire¶Ï,´¥·¢
+  // tripwireæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_THERMO_HI, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer}, 
-  // tripwire¶Ï,´¥·¢
+  // tripwireæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_THERMO_LO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer}, 
   
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_1S, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},
-  // set0ÔÚÏÔÊ¾ÈÕÆÚºÍhhmmssÖ®¼äÀ´»ØÇĞ»»
+  // set0åœ¨æ˜¾ç¤ºæ—¥æœŸå’Œhhmmssä¹‹é—´æ¥å›åˆ‡æ¢
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},
-  // mod0 ¿Õ²Ù×÷£¬¸üĞÂË¯ÃßÊ±¼ä  
+  // mod0 ç©ºæ“ä½œï¼Œæ›´æ–°ç¡çœ æ—¶é—´  
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer}, 
-  // mod0 ½øÈëÃÜÂëÑéÖ¤
+  // mod0 è¿›å…¥å¯†ç éªŒè¯
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, sm_fuse_timer}, 
-  // set0ĞŞ¸ÄÊı×Ö
+  // set0ä¿®æ”¹æ•°å­—
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, sm_fuse_timer},
-  // mod0 ÏÂÒ»Êı×Ö
+  // mod0 ä¸‹ä¸€æ•°å­—
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, sm_fuse_timer}, 
-  // ÑéÖ¤OK,½â³ı£¬½øÈëdisarmed×´Ì¬
+  // éªŒè¯OK,è§£é™¤ï¼Œè¿›å…¥disarmedçŠ¶æ€
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_DISARMED, sm_fuse_timer},
-  // disarmed×´Ì¬Çå³ıÍê±Ï£¬½øÈëµçÂ·²âÊÔ
+  // disarmedçŠ¶æ€æ¸…é™¤å®Œæ¯•ï¼Œè¿›å…¥ç”µè·¯æµ‹è¯•
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_DISARMED, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test}, 
-  // Ò»´ÎÑéÖ¤Ê§°Ü£¬·µ»Øµ¹¼ÆÊ±
+  // ä¸€æ¬¡éªŒè¯å¤±è´¥ï¼Œè¿”å›å€’è®¡æ—¶
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_FUSE_SEL1, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},
-  // set1,·µ»Øµ¹¼ÆÊ±  
+  // set1,è¿”å›å€’è®¡æ—¶  
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_param},  
   
-  // Èı´ÎÑéÖ¤Ê§°Ü,´¥·¢
+  // ä¸‰æ¬¡éªŒè¯å¤±è´¥,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_FUSE_SEL2, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ¼ÆÊ±Æ÷Ê±¼äµ½,´¥·¢
+  // è®¡æ—¶å™¨æ—¶é—´åˆ°,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_COUNTER, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // fuse0¼ô¶Ï,´¥·¢
+  // fuse0å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_FUSE0_BROKE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // fuse1¼ô¶Ï,´¥·¢
+  // fuse1å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_FUSE1_BROKE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_ROTATE_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_ROTATE_HG, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ¼ÓËÙ¶È±ä»¯,´¥·¢
+  // åŠ é€Ÿåº¦å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_ACC_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ÎÂ¶ÈÌ«¸ß,´¥·¢
+  // æ¸©åº¦å¤ªé«˜,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_THERMO_HI, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ÎÂ¶ÈÌ«µÍ,´¥·¢
+  // æ¸©åº¦å¤ªä½,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_THERMO_LO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // tripwire¼ô¶Ï,´¥·¢
+  // tripwireå‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_VERIFY, EV_TRIPWIRE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
   
-  // ¼ÆÊ±Æ÷Ê±¼äµ½,´¥·¢
+  // è®¡æ—¶å™¨æ—¶é—´åˆ°,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_COUNTER, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // fuse0¼ô¶Ï,´¥·¢
+  // fuse0å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_FUSE0_BROKE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // fuse1¼ô¶Ï,´¥·¢
+  // fuse1å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_FUSE1_BROKE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_ROTATE_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_ROTATE_HG, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ¼ÓËÙ¶È±ä»¯,´¥·¢
+  // åŠ é€Ÿåº¦å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_ACC_GYRO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ÎÂ¶ÈÌ«¸ß,´¥·¢
+  // æ¸©åº¦å¤ªé«˜,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_THERMO_HI, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // ÎÂ¶ÈÌ«µÍ,´¥·¢
+  // æ¸©åº¦å¤ªä½,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_THERMO_LO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
-  // tripwire¼ô¶Ï,´¥·¢
+  // tripwireå‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_TRIPWIRE, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, sm_fuse_timer},
   
-  // ÇåÀíÍê±Ï,½øÈëdetonate
+  // æ¸…ç†å®Œæ¯•,è¿›å…¥detonate
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREDETONATE, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
   
-  // ³¬Ê±£¬½øÈë½Úµç
+  // è¶…æ—¶ï¼Œè¿›å…¥èŠ‚ç”µ
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_POWER_SAVE, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_INIT, sm_fuse_powersave},
 };
 
 static const struct sm_trans code sm_trans_fuse_grenade[] = {
   /* SM_FUSE_GRENADE */
-  // ¹ı1Ãë½øÈëpre-armed×´Ì¬
+  // è¿‡1ç§’è¿›å…¥pre-armedçŠ¶æ€
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_INIT, EV_1S, SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, sm_fuse_grenade},
-  // ÊÕµ½mod1£¬½â³ı
+  // æ”¶åˆ°mod1ï¼Œè§£é™¤
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_DISARMED, sm_fuse_grenade},
-  // ²ÎÊıÉèÖÃ²»³É¹¦£¬½øÈëµçÂ·²âÊÔ
+  // å‚æ•°è®¾ç½®ä¸æˆåŠŸï¼Œè¿›å…¥ç”µè·¯æµ‹è¯•
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  // ÇåÀíÍê±Ï£¬½øµçÂ·²âÊÔ
+  // æ¸…ç†å®Œæ¯•ï¼Œè¿›ç”µè·¯æµ‹è¯•
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_DISARMED, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  // ÊÕµ½EV_DROP_GYRO,È·ÈÏ¼ÓËÙ¶È¸Ä±ä
+  // æ”¶åˆ°EV_DROP_GYRO,ç¡®è®¤åŠ é€Ÿåº¦æ”¹å˜
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREARMED, EV_DROP_GYRO, SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, sm_fuse_grenade},
-  // ÊÕµ½EV_ACC,²âÊÔ¼ÓËÙ¶È¸Ä±ä
+  // æ”¶åˆ°EV_ACC,æµ‹è¯•åŠ é€Ÿåº¦æ”¹å˜
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, EV_ACC_GYRO, SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, sm_fuse_grenade},
-  // ÂäµØ/´¥Åö,´¥·¢,½øÈëpredetonate
+  // è½åœ°/è§¦ç¢°,è§¦å‘,è¿›å…¥predetonate
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_ARMED, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREDETONATE, sm_fuse_grenade}, 
-  // ÇåÀíÍê±Ï,½øÈëdetonate
+  // æ¸…ç†å®Œæ¯•,è¿›å…¥detonate
   {SM_FUSE, SM_FUSE_GRENADE<<4|SM_FUSE_GRENADE_PREDETONATE, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
 };
 
 static const struct sm_trans code sm_trans_fuse_detonate[] = {
   /* SM_FUSE_DETONATE */
-  // ¹ı250ms½øÈëcharge×´Ì¬
+  // è¿‡250msè¿›å…¥chargeçŠ¶æ€
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, EV_250MS, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
-  // ³ÖĞøcharge 30Ãë
+  // æŒç»­charge 30ç§’
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_1S, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
-  // Í¨µç×´Ì¬£¬mod0½øÈëµçÂ·²âÊÔ
+  // é€šç”µçŠ¶æ€ï¼Œmod0è¿›å…¥ç”µè·¯æµ‹è¯•
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
-  // Í¨µçÂú30S
+  // é€šç”µæ»¡30S
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
 };
 
 static const struct sm_trans code sm_trans_fuse_powersave[] = {
   /* SM_FUSE_POWERSAVE */
-  // ¹ı250ms½øÈëpowersave
+  // è¿‡250msè¿›å…¥powersave
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_INIT, EV_250MS, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, sm_fuse_powersave},
-  // set0 »Øµ½ SM_FUSE_TIMER
+  // set0 å›åˆ° SM_FUSE_TIMER
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},
-  // mod0 »Øµ½ SM_FUSE_TIMER
+  // mod0 å›åˆ° SM_FUSE_TIMER
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer},  
-  // ¼ÆÊ±Æ÷Ê±¼äµ½,´¥·¢
+  // è®¡æ—¶å™¨æ—¶é—´åˆ°,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_COUNTER, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // fuse0¼ô¶Ï,´¥·¢
+  // fuse0å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_FUSE0_BROKE, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // fuse1¼ô¶Ï,´¥·¢
+  // fuse1å‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_FUSE1_BROKE, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_ROTATE_GYRO, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // ×ËÌ¬±ä»¯,´¥·¢
+  // å§¿æ€å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_ROTATE_HG,SM_FUSE,  SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // ¼ÓËÙ¶È±ä»¯,´¥·¢
+  // åŠ é€Ÿåº¦å˜åŒ–,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_ACC_GYRO, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // ÎÂ¶ÈÌ«¸ß,´¥·¢
+  // æ¸©åº¦å¤ªé«˜,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_THERMO_HI, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // ÎÂ¶ÈÌ«µÍ,´¥·¢
+  // æ¸©åº¦å¤ªä½,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_THERMO_LO, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
-  // tripwire¼ô¶Ï,´¥·¢
+  // tripwireå‰ªæ–­,è§¦å‘
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_TRIPWIRE, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave},
   
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate},
@@ -847,7 +847,7 @@ void time_proc(enum task_events ev)
   run_state_machine(ev);
 }
 
-/* ²»×öÈÎºÎ¹ıÂË */
+/* ä¸åšä»»ä½•è¿‡æ»¤ */
 void null_proc(enum task_events ev)
 {
   run_state_machine(ev);

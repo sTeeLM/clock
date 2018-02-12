@@ -4,8 +4,8 @@
 #include "sm.h"
 
 enum sm_clock_alarm_ss {
-  SM_CLOCK_ALARM_HIT_ALARM0     = 0, //Ò»°ãÄÖÖÓµ½Ê±¼ä
-  SM_CLOCK_ALARM_HIT_ALARM1     = 1, // Õûµã±¨Ê±µ½Ê±¼ä
+  SM_CLOCK_ALARM_HIT_ALARM0     = 0, //ä¸€èˆ¬é—¹é’Ÿåˆ°æ—¶é—´
+  SM_CLOCK_ALARM_HIT_ALARM1     = 1, // æ•´ç‚¹æŠ¥æ—¶åˆ°æ—¶é—´
 };
 
 extern const char * code sm_clock_alarm_ss_name[];

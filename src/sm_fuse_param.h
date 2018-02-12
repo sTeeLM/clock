@@ -4,7 +4,7 @@
 #include "sm.h"
 
 enum sm_fuse_param_ss {
-  SM_FUSE_PARAM_INIT      = 0, // ��ʼ״̬
+  SM_FUSE_PARAM_INIT      = 0, // 初始状态
   SM_FUSE_PARAM_YY        = 1,
   SM_FUSE_PARAM_MO        = 2,
   SM_FUSE_PARAM_DD        = 3,

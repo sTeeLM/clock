@@ -7,7 +7,7 @@
 #include "misc.h"
 
 
-// PCA9535 logic, 实际上可能会用TCA9535
+// PCA9535 logic, 瀹為檯涓婂彲鑳戒細鐢═CA9535
 #define SERIAL_HUB_I2C_ADDR 0x40 //0100 0000
 
 static unsigned char ctl_buffer[2];
@@ -68,16 +68,16 @@ void serial_hub_initialize(void)
 
   ctl_buffer[0] = ctl_buffer[1] = 0xFF;
   
-  // Configuration Register 设置为全0，用于output
+  // Configuration Register 璁剧疆涓哄叏0锛岀敤浜巓utput
   I2C_Put(SERIAL_HUB_I2C_ADDR, 0x6, 0x0);
   
-  // Polarity Inversion Register 设置为全0
+  // Polarity Inversion Register 璁剧疆涓哄叏0
   I2C_Put(SERIAL_HUB_I2C_ADDR, 0x7, 0x0);
   
-  // Configuration Register 设置为全0，用于output
+  // Configuration Register 璁剧疆涓哄叏0锛岀敤浜巓utput
   I2C_Put(SERIAL_HUB_I2C_ADDR, 0x4, 0x0);
   
-  // Polarity Inversion Register 设置为全0
+  // Polarity Inversion Register 璁剧疆涓哄叏0
   I2C_Put(SERIAL_HUB_I2C_ADDR, 0x5, 0x0);
   
   serial_ctl_out();

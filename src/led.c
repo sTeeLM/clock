@@ -85,24 +85,24 @@ static code char led_scan[6] =
 
 #pragma NOAREGS
 
-// ÔÚÊ±ÖÓÖĞ¶ÏÖĞµ÷ÓÃ£¡
+// åœ¨æ—¶é’Ÿä¸­æ–­ä¸­è°ƒç”¨ï¼
 void refresh_led(void)
 {
   P0 = 0xFF;
   
   if(led_powersave) return;
   
-  if(led_blink & (1 << led_index)) { // Èç¹ûÒªÇóÉÁ°¢ÉÁ
-    if(scan_loop_cnt > 15) {   // ²»ÏÔÊ¾Êı×Ö£¬Ö»ÏÔÊ¾µã£¬Èç¹ûÓĞµãµÄ»°
+  if(led_blink & (1 << led_index)) { // å¦‚æœè¦æ±‚é—ªé˜¿é—ª
+    if(scan_loop_cnt > 15) {   // ä¸æ˜¾ç¤ºæ•°å­—ï¼Œåªæ˜¾ç¤ºç‚¹ï¼Œå¦‚æœæœ‰ç‚¹çš„è¯
       P0 = (led_data[led_index] & 0x80) | 0x7F;
-    } else {               //  ÏÔÊ¾Êı×ÖºÍµã
+    } else {               //  æ˜¾ç¤ºæ•°å­—å’Œç‚¹
       P0 = led_data[led_index];
     }
-  } else {                 //  ÏÔÊ¾Êı×ÖºÍµã
+  } else {                 //  æ˜¾ç¤ºæ•°å­—å’Œç‚¹
     P0 = led_data[led_index];
   }
     
-  P2 = led_scan[led_index]; // P2Ä³¸ùÏß¹©µç
+  P2 = led_scan[led_index]; // P2æŸæ ¹çº¿ä¾›ç”µ
   
   led_index ++;
   if(led_index == 6 ) {
@@ -183,7 +183,7 @@ void led_set_dp(unsigned char i)
 }
 
 
-// cÎªasciiÂë£¬0ÎªÎÂ¶ÈµÄ¡®¶È¡¯£¬255ÎªÈ«ºÚ
+// cä¸ºasciiç ï¼Œ0ä¸ºæ¸©åº¦çš„â€˜åº¦â€™ï¼Œ255ä¸ºå…¨é»‘
 void led_set_code(unsigned char i, char c)
 {
   if( i < 6 ) {

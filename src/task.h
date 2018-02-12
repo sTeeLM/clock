@@ -4,36 +4,36 @@
 // max 32
 enum task_events
 {
-  EV_250MS            = 0, // ��Լÿ250msתһ��
-  EV_1S               = 1, // ��Լÿ1sתһ��  
-  EV_SCAN_KEY         = 2, // ɨ�谴�� 
-  EV_KEY_SET_DOWN     = 3, // set������
-  EV_KEY_SET_PRESS    = 4, // set���̰�
-  EV_KEY_SET_LPRESS   = 5, // set������
-  EV_KEY_SET_UP       = 6, // set��̧��
-  EV_KEY_MOD_DOWN     = 7, // mod������
-  EV_KEY_MOD_PRESS    = 8, // mod���̰�
-  EV_KEY_MOD_LPRESS   = 9, // mod������
-  EV_KEY_MOD_UP       = 10, // mod��̧�� 
-  EV_KEY_MOD_SET_PRESS    = 11, // mod set ��ͬʱ�̰�
-  EV_KEY_MOD_SET_LPRESS   = 12, // mod set ��ͬʱ���� 
-  EV_SCAN_INT_HUB     = 13, // ɨ��fuse��hg��gyro
-  EV_FUSE0_BROKE      = 14, // fuse0������
-  EV_FUSE1_BROKE      = 15, // fuse0������
-  EV_ROTATE_HG        = 16, // hg������б״̬�ı�
-  EV_ROTATE_GYRO      = 17, // gyro������б״̬�ı�	
-  EV_ACC_GYRO         = 18, // gyro �����ζ�
-  EV_DROP_GYRO         = 19, // gyro �������䣨ʧ�أ�
-  EV_THERMO_HI     = 20, // �¶�̫��
-  EV_THERMO_LO     = 21, // �¶�̫��
-  EV_TRIPWIRE         = 22, // tripwire������
-  EV_FUSE_SEL0         = 23, // fuse �����¼�0
-  EV_FUSE_SEL1         = 24, // fuse �����¼�1
-  EV_FUSE_SEL2         = 25, // fuse �����¼�2  
-  EV_ALARM0           = 26, // ����0Ӧ������
-  EV_ALARM1           = 27, // ����1Ӧ������
-  EV_COUNTER          = 28, // ��ʱ����ʱ��
-  EV_POWER_SAVE       = 29, // Ӧ�ý���PS״̬ 
+  EV_250MS            = 0, // 大约每250ms转一下
+  EV_1S               = 1, // 大约每1s转一下  
+  EV_SCAN_KEY         = 2, // 扫描按键 
+  EV_KEY_SET_DOWN     = 3, // set键按下
+  EV_KEY_SET_PRESS    = 4, // set键短按
+  EV_KEY_SET_LPRESS   = 5, // set键长按
+  EV_KEY_SET_UP       = 6, // set键抬起
+  EV_KEY_MOD_DOWN     = 7, // mod键按下
+  EV_KEY_MOD_PRESS    = 8, // mod键短按
+  EV_KEY_MOD_LPRESS   = 9, // mod键长按
+  EV_KEY_MOD_UP       = 10, // mod键抬起 
+  EV_KEY_MOD_SET_PRESS    = 11, // mod set 键同时短按
+  EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
+  EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
+  EV_FUSE0_BROKE      = 14, // fuse0被剪断
+  EV_FUSE1_BROKE      = 15, // fuse0被剪断
+  EV_ROTATE_HG        = 16, // hg检测出倾斜状态改变
+  EV_ROTATE_GYRO      = 17, // gyro检测出倾斜状态改变	
+  EV_ACC_GYRO         = 18, // gyro 检测出晃动
+  EV_DROP_GYRO         = 19, // gyro 检测出下落（失重）
+  EV_THERMO_HI     = 20, // 温度太高
+  EV_THERMO_LO     = 21, // 温度太低
+  EV_TRIPWIRE         = 22, // tripwire被剪断
+  EV_FUSE_SEL0         = 23, // fuse 虚拟事件0
+  EV_FUSE_SEL1         = 24, // fuse 虚拟事件1
+  EV_FUSE_SEL2         = 25, // fuse 虚拟事件2  
+  EV_ALARM0           = 26, // 闹钟0应该响起
+  EV_ALARM1           = 27, // 闹钟1应该响起
+  EV_COUNTER          = 28, // 计时器到时间
+  EV_POWER_SAVE       = 29, // 应该进入PS状态 
   EV_COUNT  
 };
 
@@ -48,7 +48,7 @@ void task_initialize (void);
 
 void task_dump(void);
 
-// ��Щ��Ҳ���ж��ﱻ���ã����Բ����Ǵ�����������ֻ���ú�ʵ����
+// 这些宏也在中断里被调用，所以不能是带参数函数，只能拿宏实现了
 #define set_task(ev1)             \
   do{                             \
     if(ev1 < 16)                  \
