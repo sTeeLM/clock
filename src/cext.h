@@ -40,6 +40,4 @@
 #define  time_diff_now(to) \
 (unsigned char)((unsigned char)clock_get_sec_256() - (unsigned char)to)
 
-#define OSCILLATO_6T // STC 6T
-
 #endif

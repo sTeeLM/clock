@@ -114,7 +114,7 @@ static void rom_reset(void)
 
 void rom_initialize(void)
 {
-  CDBG("rom_initialize ROM_RESET = %bd\n", ROM_RESET == 1 ? 1 : 0);
+  CDBG("rom_initialize ROM_RESET = %bd(%s)\n", ROM_RESET == 1 ? 1 : 0, ROM_RESET == 1? "OFF" : "ON");
   if(ROM_RESET == 0) { // reset rom
     CDBG("reset rom!\n");
     rom_reset();

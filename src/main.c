@@ -46,7 +46,6 @@ void main(void)
   com_initialize();                             // initialize interrupt driven serial I/O
   show_version();
   rom_initialize();                             // initialize rom
-  int_hub_initialize();                         // initialize interrupt hub 
   serial_hub_initialize();                      // initialize serial hub
   rtc_initialize();                             // initialize rtc
   clock_initialize();                           // initialize clock
@@ -62,6 +61,7 @@ void main(void)
   gyro_initialize();                            // initialize gyro
   hg_initialize();                              // initialize hg
   tripwire_initialize();                        // initialize tripwire
+  int_hub_initialize();                         // initialize interrupt hub 
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
 

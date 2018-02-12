@@ -7,6 +7,7 @@
 #include "alarm.h"
 #include "lt_timer.h"
 #include "rtc.h"
+#include "delay_task.h"
 
 /* state machine */
 #include "sm_clock_display.h"
@@ -720,7 +721,7 @@ static const struct sm_trans code sm_trans_fuse_detonate[] = {
   // 持续charge 30秒
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_1S, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
   // 通电状态，mod0进入电路测试
-  {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate},
+  {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
   // 通电满30S
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_FUSE_SEL0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test},
 };
@@ -838,6 +839,13 @@ static unsigned char sm_state;      // curent state hi 4 bits : state, lo 4 bits
 static unsigned char sm_curr_table; // current table;
 static unsigned char sm_new_table;
 
+void time_proc(enum task_events ev)
+{
+  if(ev == EV_1S)
+    delay_task_call();
+  
+  run_state_machine(ev);
+}
 
 /* 不做任何过滤 */
 void null_proc(enum task_events ev)

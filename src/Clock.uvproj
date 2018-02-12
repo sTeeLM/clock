@@ -308,7 +308,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__CLOCK_EMULATE__</Define>
+              <Define>__CLOCK_EMULATE__,OSCILLATO_6T</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -631,6 +631,11 @@
               <FileName>cmd_sm.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\cmd_sm.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_beeper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_beeper.c</FilePath>
             </File>
           </Files>
         </Group>

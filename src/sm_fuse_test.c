@@ -31,6 +31,8 @@ const char * code sm_fuse_test_ss_name[] =
   NULL
 };
 
+// common_state低4位上一次hg的状态，高4位是否和上一次有变化
+// hg_state_mask,对应位有2次变更，设置为1
 static unsigned char hg_state_mask;
 
 static void test_hg_state_mask(unsigned char state)
@@ -39,6 +41,7 @@ static void test_hg_state_mask(unsigned char state)
   
   CDBG("test_hg_state_mask pld_hg_state = %bx state = %bx hg_state_mask = %bx\n", common_state, state, hg_state_mask);
   
+  common_state &= 0xF0;
   common_state |= (state & 0xF);
   
   if((val & 1)) {
@@ -101,7 +104,7 @@ enum fuse_test_display_state {
 };
 
 enum fuse_test_phase {
-		FUSE_TEST_PHASE_FUSE0_BROKE,
+		FUSE_TEST_PHASE_FUSE0_BROKE = 0,
 		FUSE_TEST_PHASE_FUSE1_BROKE,
 		FUSE_TEST_PHASE_TRIPWIRE,	
 		FUSE_TEST_PHASE_THERMO_HI,	
@@ -239,7 +242,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
   CDBG("sm_fuse_test %bd %bd %bd\n", from, to, ev);
 
   // 按modset1进入fuse功能集合
-  if(get_sm_ss_state(to) == SM_FUSE_TEST_INIT && (ev == EV_KEY_MOD_SET_LPRESS || ev == EV_FUSE_SEL0)) {
+  if(get_sm_ss_state(to) == SM_FUSE_TEST_INIT && (ev == EV_KEY_MOD_SET_LPRESS || ev ==  EV_KEY_MOD_PRESS ||ev == EV_FUSE_SEL0)) {
     clock_display(0);
     display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
     alarm_switch_off();
@@ -259,7 +262,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(from) == SM_FUSE_TEST_INIT
     && get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE
     && ev == EV_KEY_MOD_UP ) {
-			display_fuse_state(SM_FUSE_TEST_FUSE0_BROKE, FUSE_DISPLAY_WAIT, 0);
+			display_fuse_state(FUSE_TEST_PHASE_FUSE0_BROKE, FUSE_DISPLAY_WAIT, 0);
 			CDBG("fuse0 broke begin test\n");
     return;
   }

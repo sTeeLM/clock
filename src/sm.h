@@ -56,6 +56,7 @@ struct sm_trans
 
 void run_state_machine(enum task_events);
 void null_proc(enum task_events ev);
+void time_proc(enum task_events ev);
 void sm_initialize (void);
 
 void sm_show_current(void);

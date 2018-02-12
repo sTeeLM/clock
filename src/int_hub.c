@@ -24,7 +24,7 @@ sbit EXT_INT        = P1 ^ 4;
 sbit INT_BIT        = P3 ^ 3;
 
 // PCA9535 logic, 实际上可能会用TCA9535
-#define INT_HUB_I2C_ADDR 0x41 //0100 0000
+#define INT_HUB_I2C_ADDR 0x42 //0100 0010
 
 
 static void int1_ISR (void) interrupt 2 using 1
@@ -32,7 +32,7 @@ static void int1_ISR (void) interrupt 2 using 1
   IE1 = 0; // 清除中断标志位
   set_task(EV_SCAN_INT_HUB);
 }
-
+#include "misc.h"
 void int_hub_initialize (void)
 {
   unsigned char val;
@@ -41,6 +41,8 @@ void int_hub_initialize (void)
   I2C_Put(INT_HUB_I2C_ADDR, 0x6, 0xFF);
   // Polarity Inversion Register 设置为全0
   I2C_Put(INT_HUB_I2C_ADDR, 0x4, 0x0);
+
+
   // 读取一次端口寄存器消除中断
   I2C_Get(INT_HUB_I2C_ADDR, 0x0, &val);
   CDBG("int hub 0 port reg is %bx\n", val);
@@ -49,6 +51,7 @@ void int_hub_initialize (void)
   I2C_Put(INT_HUB_I2C_ADDR, 0x7, 0xFF);
   // Polarity Inversion Register 设置为全0
   I2C_Put(INT_HUB_I2C_ADDR, 0x5, 0x0);
+
   // 读取一次端口寄存器消除中断
   I2C_Get(INT_HUB_I2C_ADDR, 0x1, &val);
   CDBG("int hub 1 port reg is %bx\n", val);
@@ -87,11 +90,14 @@ unsigned int int_hub_get_status(void)
 {
   unsigned int status = 0;
   unsigned char val;
-  
+
   I2C_Get(INT_HUB_I2C_ADDR, 0x1, &val); 
-  status = val; 
+  CDBG("int_hub_get_status hi is %bx\n", val);
+  status = val;
+  
   status = status << 8;
   I2C_Get(INT_HUB_I2C_ADDR, 0x0, &val);
+  CDBG("int_hub_get_status lo is %bx\n", val);
   status |= val;
   
   return status;
