@@ -12,6 +12,11 @@ unsigned char idata led_blink;
 static unsigned char idata led_index;
 static unsigned char idata scan_loop_cnt;
 
+unsigned char saved_led_data[6];
+unsigned char saved_led_blink;
+static unsigned char saved_led_index;
+static unsigned char saved_scan_loop_cnt;
+
 bit led_powersave;
 
 /*        A
@@ -219,4 +224,20 @@ void led_leave_powersave(void)
   led_clear();
   
   led_powersave = 0;
+}
+
+void led_save(void)
+{
+  memcpy(saved_led_data, led_data, sizeof(led_data)); 
+  saved_led_blink = led_blink;
+  saved_led_index = led_index;
+  saved_scan_loop_cnt = scan_loop_cnt;
+}
+
+void led_restore(void)
+{
+  memcpy(led_data, saved_led_data, sizeof(led_data)); 
+  led_blink = saved_led_blink;
+  led_index = saved_led_index;
+  scan_loop_cnt = saved_scan_loop_cnt;
 }

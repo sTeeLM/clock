@@ -225,19 +225,34 @@ void clock_dump(void)
   CDBG("clk.is12 = %s\n", clk_is12 ? "ON" : "OFF"); 
 }
 
-// 计算某年某月某日星期几
+// 计算某年某月某日星期几,  经典的Zeller公式
 // year 0-99
 // mon 0-11
 // date 0-30
-// return 0-6
-static unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date)
+// return 0-6, 0 is monday, 6 is monday
+unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date)
 {
-  unsigned int d,m,y;
+  unsigned int d,m,y,c;
   d = date + 1;
   m = mon + 1;
   y = CLOCK_YEAR_BASE + year;
-  // 经典的Zeller公式
-  return (d + 2 * m + 3 * (m + 1) /5 + y + y/4 - y/100 + y/400) % 7;
+  
+  if(m < 3){
+    y -= 1;
+    m += 12;
+  }
+  
+  c = (unsigned int)(y / 100);
+  y = y - 100 * c;
+  
+  c = (unsigned int)(c / 4) - 2 * c + y + (unsigned int) ( y / 4 ) + (26 * (m + 1) / 10) + d - 1;
+  c = (c % 7 + 7) % 7;
+
+  if(c == 0) {
+    return 6;
+  }
+  
+  return c - 1;
 }
 
 bit clock_get_hour_12(void)

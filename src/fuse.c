@@ -41,8 +41,7 @@ void fuse_initialize (void)
 
 void fuse_trigger(bit enable)
 {
-  CDBG("fuse_trigger %bd\n", 
-    enable ? 1 : 0);
+  CDBG("fuse_trigger %bd\n", enable ? 1 : 0);
   // 升压
   POWER_5V_EN = !enable;
   

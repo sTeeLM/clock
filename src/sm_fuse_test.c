@@ -294,7 +294,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		return;
 	}
 	
-	// 测试状态 fuse0 fuse1 short broke 
+	// 测试状态 fuse0 fuse1 broke 
 	if((get_sm_ss_state(to) == SM_FUSE_TEST_FUSE0_BROKE && (ev == EV_1S || ev == EV_FUSE0_BROKE))
 		|| (get_sm_ss_state(to) == SM_FUSE_TEST_FUSE1_BROKE && (ev == EV_1S || ev == EV_FUSE1_BROKE))
 		) {

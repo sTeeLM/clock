@@ -112,10 +112,15 @@ static void rom_reset(void)
   rom_write(ROM_GYRO_GOOD, 0);
 }
 
+bit rom_is_factory_reset(void)
+{
+  return ROM_RESET == 0;
+}
+
 void rom_initialize(void)
 {
   CDBG("rom_initialize ROM_RESET = %bd(%s)\n", ROM_RESET == 1 ? 1 : 0, ROM_RESET == 1? "OFF" : "ON");
-  if(ROM_RESET == 0) { // reset rom
+  if(rom_is_factory_reset()) { // reset rom
     CDBG("reset rom!\n");
     rom_reset();
   }

@@ -11,8 +11,6 @@
 #include "rom.h"
 #include "misc.h"
 
-sbit RTC_RESET = P1 ^ 5;
-
 #define RTC_I2C_ADDRESS  0xD0 //11010000
 
 #define RTC_TIME_OFFSET 0x00
@@ -68,47 +66,70 @@ void rtc_initialize (void)
   CDBG("rtc_initialize\n");
   
   is_lt_timer_mode = 0;
-  
-  // reset rtc
-  RTC_RESET = 0;
-  delay_ms(10);
-  RTC_RESET = 1;
     
   memset(rtc_data, 0, sizeof(rtc_data));
 
   // 初始化
-  // 调试用！
-  // 初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
   is12 = rom_read(ROM_ALARM0_IS12);
   
   I2C_Init();
   rtc_read_data(RTC_TYPE_TIME);
   CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
+  
+  // 12/24格式按照rom设置来，需要转换一次
+  count = rtc_time_get_hour();
   rtc_time_set_hour_12(is12);
+  rtc_time_set_hour(count);
+  
+  ///// 调试用，初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
   rtc_time_set_hour(12);
   rtc_time_set_min(10);
   rtc_time_set_sec(30); 
+  /////
+  
+  if(rom_is_factory_reset()) { // 00:00:00
+    rtc_time_set_hour(0);
+    rtc_time_set_min(0);
+    rtc_time_set_sec(0); 
+  }
+  
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);
   
   rtc_read_data(RTC_TYPE_DATE);
   CDBG("before date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
+  
+  ///// 调试用，初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
   rtc_date_set_year(14);
   rtc_date_set_month(8);
   rtc_date_set_date(19);
-  rtc_date_set_day(2);
+  /////
+  
+  if(rom_is_factory_reset()) { // 2000-1-1
+    rtc_date_set_year(0);
+    rtc_date_set_month(1);
+    rtc_date_set_date(1);
+  }
+  
+  rtc_date_set_day(clock_yymmdd_to_day(
+    rtc_date_get_year() ,
+    rtc_date_get_month() - 1,
+    rtc_date_get_date() - 1) + 1);
+  
   CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
    
-  
-  // 清除中断标志位
-  I2C_Get(RTC_I2C_ADDRESS, 0x0F, &count);
-  count &= ~0x3; // A1F,A2F = 00
-  I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);  
+  // 清除所有闹钟：闹钟配置由alarm自行从rom中读取，写入rtc
+  rtc_read_data(RTC_TYPE_CTL);
+  rtc_enable_alarm_int(RTC_ALARM0, 0);
+  rtc_clr_alarm_int_flag(RTC_ALARM0);
+  rtc_enable_alarm_int(RTC_ALARM1, 0);
+  rtc_clr_alarm_int_flag(RTC_ALARM1);
+  rtc_write_data(RTC_TYPE_CTL); 
 
   // 允许RTC发中断
   I2C_Get(RTC_I2C_ADDRESS, 0x0E, &count);
-  count |= 0x7; // INCN,A1E,A2E = 111
+  count |= 0x4; // INTCN,A1E,A2E = 100
   I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);
   
   // 启动32KHZ输出
@@ -617,7 +638,6 @@ bit rtc_test_alarm_int_flag(enum rtc_alarm_index index)
   }
   return 0;
 }
-
 
 void rtc_enter_powersave(void)
 {

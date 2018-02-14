@@ -53,6 +53,8 @@ unsigned char clock_get_ms39(void);
 bit clock_is_leap_year(unsigned char year); // year 0-99
 unsigned char clock_get_mon_date(unsigned char year, unsigned char mon); // mon 0-11
 
+unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date);
+
 enum clock_display_mode
 {
   CLOCK_DISPLAY_MODE_HHMMSS = 0,

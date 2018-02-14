@@ -24,7 +24,7 @@ static void hg_power_on(void)
   
   serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
   serial_ctl_out();
-    
+
   hg_state = 0xF;
 
   delay_task_reg(DELAY_TASK_HG, hg_cb_set_enable, HG_INITIALIZE_DELAY_SEC);

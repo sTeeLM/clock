@@ -75,6 +75,7 @@ enum rtc_alarm_mode rtc_alarm_get_mod(void);
 void rtc_alarm_set_mode(enum rtc_alarm_mode mode);
 enum rtc_alarm_mode rtc_alarm_get_mode(void);
 
+
 // 在rtc_read_data(RTC_TYPE_TEMP)之后调用
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt);
 

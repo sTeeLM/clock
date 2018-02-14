@@ -59,4 +59,5 @@ power:
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);
 void rom_initialize(void);
+bit rom_is_factory_reset(void);
 #endif

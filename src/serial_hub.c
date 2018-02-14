@@ -14,25 +14,25 @@ static unsigned char ctl_buffer[2];
 
 void serial_dump(void)
 {
-  printf("++++++serial_dump begin++++++\n");
-  printf("ctl_buffer[0] = %bx ctl_buffer[1] = %bx\n", ctl_buffer[0], ctl_buffer[1]);
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE6, serial_test_ctl_bit(SERIAL_BIT_UNUSE6) ? '1' : '0', "SERIAL_BIT_UNUSE6");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE5, serial_test_ctl_bit(SERIAL_BIT_UNUSE5) ? '1' : '0', "SERIAL_BIT_UNUSE5");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE4, serial_test_ctl_bit(SERIAL_BIT_UNUSE4) ? '1' : '0', "SERIAL_BIT_UNUSE4");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE3, serial_test_ctl_bit(SERIAL_BIT_UNUSE3) ? '1' : '0', "SERIAL_BIT_UNUSE3");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE2, serial_test_ctl_bit(SERIAL_BIT_UNUSE2) ? '1' : '0', "SERIAL_BIT_UNUSE2");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE1, serial_test_ctl_bit(SERIAL_BIT_UNUSE1) ? '1' : '0', "SERIAL_BIT_UNUSE1");  
-  printf("[%02bd] %c %s\n", SERIAL_BIT_TRIPWIRE_TEST, serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_TEST");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_FUSE1_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_BROKE_TEST");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_FUSE0_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_BROKE_TEST");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_FUSE1_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGER");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_FUSE0_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_UNUSE0, serial_test_ctl_bit(SERIAL_BIT_UNUSE0) ? '1' : '0', "SERIAL_BIT_UNUSE0");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_THERMO_EN, serial_test_ctl_bit(SERIAL_BIT_THERMO_EN) ? '1' : '0', "SERIAL_BIT_THERMO_EN");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_GYRO_EN, serial_test_ctl_bit(SERIAL_BIT_GYRO_EN) ? '1' : '0', "SERIAL_BIT_GYRO_EN");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_HG_EN, serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN");
-  printf("[%02bd] %c %s\n", SERIAL_BIT_FUSE_EN, serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN");
-  printf("++++++serial_dump end++++++++\n");
+  CDBG("++++++serial_dump begin++++++\n");
+  CDBG("ctl_buffer[0] = %bx ctl_buffer[1] = %bx\n", ctl_buffer[0], ctl_buffer[1]);
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE6, serial_test_ctl_bit(SERIAL_BIT_UNUSE6) ? '1' : '0', "SERIAL_BIT_UNUSE6");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE5, serial_test_ctl_bit(SERIAL_BIT_UNUSE5) ? '1' : '0', "SERIAL_BIT_UNUSE5");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE4, serial_test_ctl_bit(SERIAL_BIT_UNUSE4) ? '1' : '0', "SERIAL_BIT_UNUSE4");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE3, serial_test_ctl_bit(SERIAL_BIT_UNUSE3) ? '1' : '0', "SERIAL_BIT_UNUSE3");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE2, serial_test_ctl_bit(SERIAL_BIT_UNUSE2) ? '1' : '0', "SERIAL_BIT_UNUSE2");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE1, serial_test_ctl_bit(SERIAL_BIT_UNUSE1) ? '1' : '0', "SERIAL_BIT_UNUSE1");  
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_TRIPWIRE_TEST, serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_TEST");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE1_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_BROKE_TEST");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE0_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_BROKE_TEST");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE1_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGER");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE0_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE0, serial_test_ctl_bit(SERIAL_BIT_UNUSE0) ? '1' : '0', "SERIAL_BIT_UNUSE0");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_THERMO_EN, serial_test_ctl_bit(SERIAL_BIT_THERMO_EN) ? '1' : '0', "SERIAL_BIT_THERMO_EN");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_GYRO_EN, serial_test_ctl_bit(SERIAL_BIT_GYRO_EN) ? '1' : '0', "SERIAL_BIT_GYRO_EN");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_HG_EN, serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE_EN, serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN");
+  CDBG("++++++serial_dump end++++++++\n");
 }
 
 void serial_ctl_out(void)

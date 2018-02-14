@@ -23,4 +23,7 @@ extern unsigned char idata led_data[];
 extern unsigned char code led_code[];
 extern unsigned char idata led_blink;
 extern bit led_powersave;
+
+void led_save(void);
+void led_restore(void);
 #endif

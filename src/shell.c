@@ -105,6 +105,7 @@ void run_shell(void)
   
   // stop the clock
   clock_enter_shell();
+  led_save();
   led_clear();
   led_set_code(5, 'S');
   led_set_code(4, 'H'); 
@@ -165,5 +166,6 @@ void run_shell(void)
   } while (strcmp(shell_buf, "ex") != 0);
   
   led_clear();
+  led_restore();
   clock_leave_shell();  
 }

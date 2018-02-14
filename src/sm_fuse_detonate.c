@@ -40,6 +40,7 @@ void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events ev)
   if(get_sm_ss_state(to) == SM_FUSE_DETONATE_CHARGE && (ev == EV_1S || ev == EV_KEY_MOD_PRESS)) {
     common_state ++;
     if((ev == EV_1S && common_state > MAX_FUSE_CHARGE_TIME) || ev == EV_KEY_MOD_PRESS) {
+      CDBG("stop charge!\n");
       fuse_trigger(0);
       fuse_enable(0);
       set_task(EV_FUSE_SEL0);
