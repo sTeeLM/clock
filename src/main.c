@@ -16,7 +16,6 @@
 #include "gyro.h"
 #include "hg.h"
 #include "thermo.h"
-#include "tripwire.h"
 #include "int_hub.h"
 #include "serial_hub.h"
 #include "lt_timer.h"
@@ -60,7 +59,6 @@ void main(void)
   fuse_initialize();                            // initialize fuse
   gyro_initialize();                            // initialize gyro
   hg_initialize();                              // initialize hg
-  tripwire_initialize();                        // initialize tripwire
   int_hub_initialize();                         // initialize interrupt hub 
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine

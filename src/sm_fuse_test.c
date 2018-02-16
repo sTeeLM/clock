@@ -4,7 +4,6 @@
 #include "alarm.h"
 #include "lt_timer.h"
 #include "fuse.h"
-#include "tripwire.h"
 #include "thermo.h"
 #include "hg.h"
 #include "gyro.h"
@@ -463,7 +462,7 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
     lpress_start = 1;
     last_display_s = clock_get_sec_256();
     rom_write(ROM_TRIPWIRE_GOOD, 0);
-    tripwire_enable(1);
+    fuse_enable(1);
     display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TESTING_P1, 0);
 		return;
 	}
@@ -474,19 +473,19 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 		if(lpress_start == 1 && time_diff_now(last_display_s) > FUSE_TEST_TIMEO) {
 			lpress_start = 2;
 			last_display_s = clock_get_sec_256();
-      tripwire_set_broke(1);
+      fuse_set_tripwire_broke(1);
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TESTING_P2, 0);
 		// P2 Failed，没响应？
 		} else if(lpress_start == 2 && time_diff_now(last_display_s) > FUSE_TEST_TIMEO) {
 			lpress_start = 0;
-      tripwire_set_broke(0);
-      tripwire_enable(0);
+      fuse_set_tripwire_broke(0);
+      fuse_enable(0);
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TRIPWIRE_ERROR, 0);
 		}
 		return;
 	}
 	
-	if((get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE && ev == EV_TRIPWIRE)) {
+	if((get_sm_ss_state(to) == SM_FUSE_TEST_TRIPWIRE && ev == EV_FUSE_TRIPWIRE)) {
 		if(lpress_start == 1) { // P1 Failed， 已经处于断开状态/温度激活状态？
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_TRIPWIRE_BROKE, 0);
 		} else if(lpress_start == 2) { // P2 OK
@@ -494,8 +493,8 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
       display_fuse_state(FUSE_TEST_PHASE_TRIPWIRE, FUSE_DISPLAY_GOOD, 0);
 		}
     lpress_start = 0;
-    tripwire_set_broke(0);
-    tripwire_enable(0);
+    fuse_set_tripwire_broke(0);
+    fuse_enable(0);
 		return;
 	}
 	

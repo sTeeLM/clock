@@ -11,7 +11,6 @@
 #include "hg.h"
 #include "gyro.h"
 #include "thermo.h"
-#include "tripwire.h"
 #include "fuse.h"
 #include "cext.h"
 
@@ -32,7 +31,7 @@ static void int1_ISR (void) interrupt 2 using 1
   IE1 = 0; // 清除中断标志位
   set_task(EV_SCAN_INT_HUB);
 }
-#include "misc.h"
+
 void int_hub_initialize (void)
 {
   unsigned char val;
@@ -150,7 +149,6 @@ void scan_int_hub_proc (enum task_events ev)
     status  = int_hub_get_status();
     int_hub_dump_ext_status(status);
     scan_hg(status);
-    scan_tripwire(status);
     scan_fuse(status);
   }
 

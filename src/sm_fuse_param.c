@@ -20,7 +20,6 @@ const char * code sm_fuse_param_ss_name[] =
   "SM_FUSE_PARAM_GYRO_ONOFF",
   "SM_FUSE_PARAM_THERMO_HI_ONOFF",
   "SM_FUSE_PARAM_THERMO_LO_ONOFF",
-  "SM_FUSE_PARAM_TRIPWIRE_ONOFF",
   "SM_FUSE_PARAM_PASSWORD",
   NULL
 };
@@ -74,7 +73,6 @@ static void inc_only(unsigned char what)
       }
       break;
     case IS_HG:
-    case IS_TRIPWIRE:
     case IS_GYRO:
       last_display_s = !last_display_s;
       break;
@@ -147,10 +145,7 @@ static void write_only(unsigned char what)
       break;
     case IS_HG:
       rom_write(ROM_FUSE_HG_ONOFF, last_display_s);
-      break;  
-    case IS_TRIPWIRE:
-      rom_write(ROM_FUSE_TRIPWIRE_ONOFF, last_display_s);
-      break; 
+      break;   
     case IS_GYRO:
       rom_write(ROM_FUSE_GYRO_ONOFF, last_display_s);
       break;
@@ -322,9 +317,6 @@ static void update_onoff(unsigned char what)
     case IS_HG:
       led_set_code(5, 'H');
     break;
-    case IS_TRIPWIRE:
-      led_set_code(5, 'P');
-    break;
     case IS_GYRO:
       led_set_code(5, 'O');
     break;    
@@ -345,9 +337,6 @@ static void enter_onoff(unsigned char what)
   switch(what) {
     case IS_HG:
       last_display_s = rom_read(ROM_FUSE_HG_ONOFF);
-      break;
-    case IS_TRIPWIRE:
-      last_display_s = rom_read(ROM_FUSE_TRIPWIRE_ONOFF);
       break;
     case IS_GYRO:
       last_display_s = rom_read(ROM_FUSE_GYRO_ONOFF);
@@ -637,19 +626,8 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     lpress_start = 0;
     return;
   }
-  // 调整tripwire on off
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_TRIPWIRE_ONOFF && ev == EV_KEY_MOD_PRESS) {
-    enter_onoff(IS_TRIPWIRE);
-    return;
-  }
   
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_TRIPWIRE_ONOFF && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_TRIPWIRE);
-    update_onoff(IS_TRIPWIRE);
-    return;
-  }
   // 设置password
-  
   if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_MOD_PRESS) {
     if(get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD) {
       if(common_state > 0) {

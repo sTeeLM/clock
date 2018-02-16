@@ -10,6 +10,7 @@
 
 #define FUSE0_BROKE_MASK 0x1
 #define FUSE1_BROKE_MASK 0x2
+#define TRIPWIRE_HIT_MASK 0x40
 
 static bit fuse_enabled;
 
@@ -68,13 +69,22 @@ void scan_fuse(unsigned int status)
   
   if((status & FUSE0_BROKE_MASK) == 0) {
     CDBG("EV_FUSE0_BROKE\n");
-    set_task(EV_FUSE0_BROKE);
+    if(fuse_enabled)
+      set_task(EV_FUSE0_BROKE);
     has_event = 1;
   }
   
   if((status & FUSE1_BROKE_MASK) == 0) {
     CDBG("EV_FUSE1_BROKE\n");
-    set_task(EV_FUSE1_BROKE);
+    if(fuse_enabled)
+      set_task(EV_FUSE1_BROKE);
+    has_event = 1;
+  }
+  
+  if((TRIPWIRE_HIT_MASK & status) == 0) {
+    CDBG("EV_FUSE_TRIPWIRE\n");
+    if(fuse_enabled)
+      set_task(EV_FUSE_TRIPWIRE);
     has_event = 1;
   }
 
@@ -101,6 +111,14 @@ void fuse_set_fuse_broke(unsigned char index, bit enable)
   else
     serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, !enable);
 
+  serial_ctl_out();
+}
+
+void fuse_set_tripwire_broke(bit broke)
+{
+  CDBG("fuse_set_tripwire_broke %bd\n", broke ? 1: 0);
+  if(!fuse_enabled) return;
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, !broke);
   serial_ctl_out();
 }
 

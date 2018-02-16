@@ -21,7 +21,6 @@
 #include "gyro.h"
 #include "lt_timer.h"
 #include "thermo.h"
-#include "tripwire.h"
 
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
@@ -62,7 +61,6 @@ void power_enter_powersave(void)
   hg_enter_powersave();
   gyro_enter_powersave();
   thermo_enter_powersave();
-  tripwire_enter_powersave();
   com_enter_powersave();
   while(powersave_flag) {
  // should be 0x2
@@ -84,7 +82,6 @@ void power_leave_powersave(void)
 {
 
   com_leave_powersave(); 
-  tripwire_leave_powersave();
   thermo_leave_powersave();
   gyro_leave_powersave();
   hg_leave_powersave();

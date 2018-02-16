@@ -2,7 +2,6 @@
 #include "debug.h"
 #include "power.h"
 #include "fuse.h"
-#include "tripwire.h"
 #include "thermo.h"
 #include "gyro.h"
 #include "hg.h"
@@ -18,7 +17,6 @@ const char * code sm_fuse_powersave_ss_name[] =
 
 static void stop_peripheral(void)
 {
-  tripwire_enable(0);
   thermo_hi_enable(0);
   thermo_lo_enable(0);
   gyro_enable(0);

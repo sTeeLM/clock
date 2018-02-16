@@ -6,7 +6,6 @@
 #include "rom.h"
 #include "thermo.h"
 #include "gyro.h"
-#include "tripwire.h"
 #include "hg.h"
 #include "fuse.h"
 #include "power.h"
@@ -46,7 +45,6 @@ enum timer_param_step {
   TIMER_PARAM_GET_CUR_TEMP = 0,
   TIMER_PARAM_CHECK_SET_GYRO,
   TIMER_PARAM_CHECK_SET_HG,
-  TIMER_PARAM_CHECK_SET_TRIPWIRE,
   TIMER_PARAM_GET_CHECK_THERMO_HI_LO,
   TIMER_PARAM_CHECK_SET_THERMO_HI,
   TIMER_PARAM_CHECK_SET_THERMO_LO,
@@ -85,7 +83,6 @@ static void display_timer(enum timer_display_state state)
 
 static void stop_peripheral(void)
 {
-  tripwire_enable(0);
   thermo_hi_enable(0);
   thermo_lo_enable(0);
   gyro_enable(0);
@@ -148,18 +145,6 @@ static bit check_and_set_timer_param(unsigned char step)
         hg_enable(1);
       }
       break;
-    case TIMER_PARAM_CHECK_SET_TRIPWIRE:
-      // 如果打开了tripwire，必须是好的
-      val = rom_read(ROM_FUSE_TRIPWIRE_ONOFF);
-      if(val) {
-        val = rom_read(ROM_TRIPWIRE_GOOD);
-        if(!val) {
-          display_param_error(PARAM_ERROR_TRIPWIRE_BAD);
-          goto err;
-        }
-        tripwire_enable(1);
-      }
-      break;
     case TIMER_PARAM_GET_CHECK_THERMO_HI_LO:
       // 温度上下限不能倒置
       thermo_hi = rom_read(ROM_FUSE_THERMO_HI);
@@ -219,8 +204,8 @@ static bit check_and_set_timer_param(unsigned char step)
       }
       break;
     case TIMER_PARAM_CHECK_SET_FUSE:
-      if(rom_read(ROM_FUSE0_BROKE_GOOD)
-        || rom_read(ROM_FUSE1_BROKE_GOOD)
+      if((rom_read(ROM_FUSE0_BROKE_GOOD)
+        || rom_read(ROM_FUSE1_BROKE_GOOD)) && rom_read(ROM_TRIPWIRE_GOOD)
       ) {
         fuse_enable(1);
       } else {
@@ -318,7 +303,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     || ev == EV_FUSE0_BROKE 
     || ev == EV_FUSE1_BROKE
     || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
-    || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
+    || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
     rollback_param(); // 发生了错误，开始回滚
     param_step = TIMER_PARAM_ERROR;
@@ -433,7 +418,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     || ev == EV_FUSE0_BROKE 
     || ev == EV_FUSE1_BROKE
     || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
-    || ev == EV_ROTATE_HG || ev == EV_TRIPWIRE
+    || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
     display_timer(DISPLAY_TIMER_PREDETONATE);
     stop_peripheral(); // 关闭所有外围电路，以及lt_timer

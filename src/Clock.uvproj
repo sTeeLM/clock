@@ -478,11 +478,6 @@
               <FilePath>.\thermo.c</FilePath>
             </File>
             <File>
-              <FileName>tripwire.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\tripwire.c</FilePath>
-            </File>
-            <File>
               <FileName>rom.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\rom.c</FilePath>
