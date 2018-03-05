@@ -375,10 +375,12 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
     last_display_s = clock_get_sec_256();
     if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
       rom_write(ROM_THERMO_HI_GOOD, 0);
+      thermo_enable(1);
       thermo_hi_enable(1);
       display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_TESTING_P1, 0);
     } else {
       rom_write(ROM_THERMO_LO_GOOD, 0);
+      thermo_enable(1);
       thermo_lo_enable(1);
       display_fuse_state(FUSE_TEST_PHASE_THERMO_LO, FUSE_DISPLAY_TESTING_P1, 0);
     }
@@ -403,11 +405,13 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
         lpress_start = 0;
         thermo_hi_threshold_reset();
         thermo_hi_enable(0);
+        thermo_enable(0);
         display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_THERMO_HI_ERROR, 0);
       } else if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_LO && thermo_lo_threshold_reach_top()){
         lpress_start = 0;
         thermo_lo_threshold_reset();
         thermo_lo_enable(0);
+        thermo_enable(0);
         display_fuse_state(FUSE_TEST_PHASE_THERMO_LO, FUSE_DISPLAY_THERMO_LO_ERROR, 0);
       } else if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
         thermo_hi_threshold_dec();
@@ -427,10 +431,12 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
       if(get_sm_ss_state(to) == SM_FUSE_TEST_THERMO_HI) {
         thermo_hi_threshold_reset();
         thermo_hi_enable(0);
+        thermo_enable(0);
         display_fuse_state(FUSE_TEST_PHASE_THERMO_HI, FUSE_DISPLAY_THERMO_TOO_HI, 0);
       } else {
         thermo_lo_threshold_reset();
         thermo_lo_enable(0);
+        thermo_enable(0);
         display_fuse_state(FUSE_TEST_PHASE_THERMO_LO, FUSE_DISPLAY_THERMO_TOO_LO, 0);
       }
 		} else if(lpress_start == 2) { // P2 OK

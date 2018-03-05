@@ -42,12 +42,9 @@ static void display_param_error(unsigned int err)
 #define TIMER_PARAM_ERROR 0xFF
 
 enum timer_param_step {
-  TIMER_PARAM_GET_CUR_TEMP = 0,
-  TIMER_PARAM_CHECK_SET_GYRO,
+  TIMER_PARAM_CHECK_SET_GYRO = 0,
   TIMER_PARAM_CHECK_SET_HG,
-  TIMER_PARAM_GET_CHECK_THERMO_HI_LO,
-  TIMER_PARAM_CHECK_SET_THERMO_HI,
-  TIMER_PARAM_CHECK_SET_THERMO_LO,
+  TIMER_PARAM_CHECK_SET_THERMO,
   TIMER_PARAM_CHECK_SET_LT_TIME,
   TIMER_PARAM_CHECK_SET_FUSE, 
   TIMER_PARAM_DELAY0,
@@ -83,8 +80,7 @@ static void display_timer(enum timer_display_state state)
 
 static void stop_peripheral(void)
 {
-  thermo_hi_enable(0);
-  thermo_lo_enable(0);
+  thermo_enable(0);
   gyro_enable(0);
   hg_enable(0);
 }
@@ -116,11 +112,6 @@ static bit check_and_set_timer_param(unsigned char step)
   CDBG("check_and_set_timer_param %bd\n", step);
   
   switch (step) {
-    case TIMER_PARAM_GET_CUR_TEMP:
-      thermo_hi_enable(1);
-      current_temp = (unsigned char)thermo_get_current();
-      thermo_hi_enable(0);
-      break;
     case TIMER_PARAM_CHECK_SET_GYRO:
       // 如果打开了gyro，必须是好的
       val = rom_read(ROM_FUSE_GYRO_ONOFF);
@@ -145,51 +136,44 @@ static bit check_and_set_timer_param(unsigned char step)
         hg_enable(1);
       }
       break;
-    case TIMER_PARAM_GET_CHECK_THERMO_HI_LO:
-      // 温度上下限不能倒置
+    case TIMER_PARAM_CHECK_SET_THERMO:
       thermo_hi = rom_read(ROM_FUSE_THERMO_HI);
       thermo_lo = rom_read(ROM_FUSE_THERMO_LO);
-      if(thermo_hi != THERMO_THRESHOLED_INVALID 
-        && thermo_lo != THERMO_THRESHOLED_INVALID)
-      {
-        if((char)thermo_hi <= (char)thermo_lo) {
-          display_param_error(PARAM_ERROR_THERMO_HI_LESS_LO);
-          goto err;
-        }
-      }
-      break;
-    case TIMER_PARAM_CHECK_SET_THERMO_HI:
-      // 如果打开了thermo hi，必须是好的
-      thermo_hi = rom_read(ROM_FUSE_THERMO_HI);
-      if(thermo_hi != THERMO_THRESHOLED_INVALID) {
-        val = rom_read(ROM_THERMO_HI_GOOD);
-        if(!val) {
-          display_param_error(PARAM_ERROR_THERMO_HI_BAD);
-          goto err;
-        }
-        if((char)current_temp >= (char)thermo_hi) {
+      if(thermo_hi != THERMO_THRESHOLED_INVALID || thermo_lo != THERMO_THRESHOLED_INVALID) {
+        current_temp = thermo_get_current();
+        if(thermo_hi <= current_temp) {
           display_param_error(PARAM_ERROR_THERMO_TOO_HI);
           goto err;
         }
-        thermo_hi_enable(1);
-        thermo_hi_threshold_set(thermo_hi);
-      }
-      break;
-    case TIMER_PARAM_CHECK_SET_THERMO_LO:
-      // 如果打开了thermo lo，必须是好的
-      thermo_lo = rom_read(ROM_FUSE_THERMO_LO);
-      if(thermo_lo != THERMO_THRESHOLED_INVALID) {
-        val = rom_read(ROM_THERMO_LO_GOOD);
-        if(!val) {
-          display_param_error(PARAM_ERROR_THERMO_LO_BAD);
-          goto err;
-        }
-        if((char)current_temp <= (char)thermo_lo) {
+        if(thermo_lo >= current_temp) {
           display_param_error(PARAM_ERROR_THERMO_TOO_LOW);
           goto err;
         }
-        thermo_lo_enable(1);
-        thermo_lo_threshold_set(thermo_lo);
+        
+        if(thermo_hi != THERMO_THRESHOLED_INVALID && thermo_lo != THERMO_THRESHOLED_INVALID) {
+          if(thermo_lo >= thermo_hi) {
+            display_param_error(PARAM_ERROR_THERMO_HI_LESS_LO);
+            goto err;
+          }
+        }
+        thermo_enable(1);
+        if(thermo_hi != THERMO_THRESHOLED_INVALID) {
+          val = rom_read(ROM_THERMO_HI_GOOD);
+          if(!val) {
+            display_param_error(PARAM_ERROR_THERMO_HI_BAD);
+            goto err;
+          }
+          thermo_hi_enable(1);
+        }
+        
+        if(thermo_lo != THERMO_THRESHOLED_INVALID) {
+          val = rom_read(ROM_THERMO_LO_GOOD);
+          if(!val) {
+            display_param_error(PARAM_ERROR_THERMO_LO_BAD);
+            goto err;
+          }
+          thermo_lo_enable(1);
+        }
       }
       break;
     case TIMER_PARAM_CHECK_SET_LT_TIME:
@@ -208,6 +192,9 @@ static bit check_and_set_timer_param(unsigned char step)
         || rom_read(ROM_FUSE1_BROKE_GOOD)) && rom_read(ROM_TRIPWIRE_GOOD)
       ) {
         fuse_enable(1);
+      } else if(!rom_read(ROM_TRIPWIRE_GOOD)){
+        display_param_error(PARAM_ERROR_TRIPWIRE_BAD);
+        goto err;
       } else {
         display_param_error(PARAM_ERROR_FUSE_ERROR);
         goto err;

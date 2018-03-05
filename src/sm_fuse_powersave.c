@@ -17,8 +17,7 @@ const char * code sm_fuse_powersave_ss_name[] =
 
 static void stop_peripheral(void)
 {
-  thermo_hi_enable(0);
-  thermo_lo_enable(0);
+  thermo_enable(0);
   gyro_enable(0);
   hg_enable(0);
 }

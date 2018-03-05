@@ -15,6 +15,7 @@
 #include "cmd_task.h"
 #include "cmd_sm.h"
 #include "cmd_beeper.h"
+#include "cmd_thermo.h"
 #include "cext.h"
 
 #define SHELL_BUFFER_SIZE 41
@@ -58,7 +59,20 @@ struct shell_cmds code cmds[] =
                         "bp bebe: 'bebe'\n"
                         "bp next: next music\n"
                         "bp music: play music", cmd_beeper},
-  {"ex", "quit the shell", "ex", cmd_null}
+  {"th", "thermo test", "th : get current temperature\n"
+                        "th <on|off> : enable/disable\n"
+                        "th hi: get hi threshold\n"
+                        "th hi inc: inc hi threshold\n"
+                        "th hi dec: dec hi threshold\n"
+                        "th hi <num>: set hi threshold to num\n"
+                        "th hi rst: reset hi threshold\n"   
+                        "th lo: get hi threshold\n"
+                        "th lo inc: inc hi threshold\n"
+                        "th lo dec: dec hi threshold\n"
+                        "th lo <num>: set lo threshold to num\n"
+                        "th lo rst: reset lo threshold\n", cmd_thermo},
+  
+  {"ex", "quit the shell", "ex", cmd_null},
 }; 
 
 

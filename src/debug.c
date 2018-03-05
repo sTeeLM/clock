@@ -6,7 +6,7 @@ static bit debug_is_on;
   
 void debug_initialize(void)
 {
-  debug_is_on = 0;
+  debug_is_on = 1;
 }
 
 void debug_onoff(bit enable)
