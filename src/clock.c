@@ -229,7 +229,7 @@ void clock_dump(void)
 // year 0-99
 // mon 0-11
 // date 0-30
-// return 0-6, 0 is monday, 6 is monday
+// return 0-6, 0 is monday, 6 is sunday
 unsigned char clock_yymmdd_to_day(unsigned char year, unsigned char mon, unsigned char date)
 {
   unsigned int d,m,y,c;
