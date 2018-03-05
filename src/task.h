@@ -19,7 +19,7 @@ enum task_events
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
   EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
   EV_FUSE0_BROKE      = 14, // fuse0被剪断
-  EV_FUSE1_BROKE      = 15, // fuse0被剪断
+  EV_FUSE1_BROKE      = 15, // fuse1被剪断
   EV_FUSE_TRIPWIRE         = 16, // tripwire被剪断
   EV_ROTATE_HG        = 17, // hg检测出倾斜状态改变
   EV_ROTATE_GYRO      = 18, // gyro检测出倾斜状态改变	
