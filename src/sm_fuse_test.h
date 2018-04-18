@@ -11,7 +11,7 @@ enum sm_fuse_test_ss {
   SM_FUSE_TEST_THERMO_HI     = 4, // thermo hi测试
   SM_FUSE_TEST_THERMO_LO     = 5,  // thermo lo测试
   SM_FUSE_TEST_HG            = 6, // hg测试
-  SM_FUSE_TEST_GYRO          = 7  // gyro测试
+  SM_FUSE_TEST_MPU          = 7  // mpu测试
 };
 
 extern const char * code sm_fuse_test_ss_name[];

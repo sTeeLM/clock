@@ -5,7 +5,7 @@
 enum serial_hub_crl_bits{
   SERIAL_BIT_FUSE_EN = 0,
   SERIAL_BIT_HG_EN = 1,  
-  SERIAL_BIT_GYRO_EN = 2, 
+  SERIAL_BIT_MPU_EN = 2, 
   SERIAL_BIT_UNUSE0 = 3,
   SERIAL_BIT_UNUSE1 = 4,  
   SERIAL_BIT_FUSE0_TRIGGER = 5, 

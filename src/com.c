@@ -4,7 +4,7 @@
 #include "com.h"
 #include "cext.h"
 
-#ifdef     OSCILLATO_6T
+#ifdef     __OSCILLATO_6T__
 #define    XTAL 22118400
 #else
 #define    XTAL 11059200

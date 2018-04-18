@@ -31,7 +31,7 @@ power:
 #define ROM_POWERSAVE_TO    8
 
 #define ROM_FUSE_HG_ONOFF   9
-#define ROM_FUSE_GYRO_ONOFF 10
+#define ROM_FUSE_MPU_ONOFF 10
 #define ROM_FUSE_THERMO_HI  11
 #define ROM_FUSE_THERMO_LO  12
 #define ROM_FUSE_TRIPWIRE_ONOFF  13
@@ -54,7 +54,7 @@ power:
 #define ROM_THERMO_HI_GOOD   43
 #define ROM_THERMO_LO_GOOD   44
 #define ROM_HG_GOOD          45
-#define ROM_GYRO_GOOD        46
+#define ROM_MPU_GOOD        46
 
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);

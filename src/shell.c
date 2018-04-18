@@ -16,6 +16,7 @@
 #include "cmd_sm.h"
 #include "cmd_beeper.h"
 #include "cmd_thermo.h"
+#include "cmd_mpu.h"
 #include "cext.h"
 
 #define SHELL_BUFFER_SIZE 41
@@ -71,7 +72,10 @@ struct shell_cmds code cmds[] =
                         "th lo dec: dec hi threshold\n"
                         "th lo <num>: set lo threshold to num\n"
                         "th lo rst: reset lo threshold\n", cmd_thermo},
-  
+  {"mp", "mpu test",    "mp <on|off>: enable/disable\n"
+												"mp int: read interrupt status\n"
+												"mp lp: loop read mpu\n"
+												"mp rd: read mpu \n", cmd_mpu},
   {"ex", "quit the shell", "ex", cmd_null},
 }; 
 

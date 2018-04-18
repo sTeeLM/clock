@@ -17,7 +17,7 @@
 #include "int_hub.h"
 #include "hg.h"
 #include "thermo.h"
-#include "gyro.h"
+#include "mpu.h"
 
 #include "shell.h"
 #include "debug.h"
@@ -37,14 +37,14 @@
   EV_KEY_MOD_UP       = 10, // mod键抬起 
   EV_KEY_MOD_SET_PRESS    = 11, // mod set 键同时短按
   EV_KEY_MOD_SET_LPRESS   = 12, // mod set 键同时长按 
-  EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro
+  EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，mpu
   EV_FUSE0_BROKE      = 14, // fuse0被剪断
   EV_FUSE1_BROKE      = 15, // fuse1被剪断
   EV_FUSE_TRIPWIRE         = 16, // tripwire被剪断
   EV_ROTATE_HG        = 17, // hg检测出倾斜状态改变
-  EV_ROTATE_GYRO      = 18, // gyro检测出倾斜状态改变	
-  EV_ACC_GYRO         = 19, // gyro 检测出晃动
-  EV_DROP_GYRO         = 20, // gyro 检测出下落（失重）
+  EV_ROTATE_MPU      = 18, // mpu检测出倾斜状态改变	
+  EV_ACC_MPU         = 19, // mpu 检测出晃动
+  EV_DROP_MPU         = 20, // mpu 检测出下落（失重）
   EV_THERMO_HI     = 21, // 温度太高
   EV_THERMO_LO     = 22, // 温度太低
   EV_FUSE_SEL0         = 23, // fuse 虚拟事件0
@@ -77,9 +77,9 @@ const char * code task_name[] =
   "EV_FUSE1_BROKE",
   "EV_FUSE_TRIPWIRE",
   "EV_ROTATE_HG",
-  "EV_ROTATE_GYRO",
-  "EV_ACC_GYRO",
-  "EV_DROP_GYRO",
+  "EV_ROTATE_MPU",
+  "EV_ACC_MPU",
+  "EV_DROP_MPU",
   "EV_THERMO_HI",
   "EV_THERMO_LO",
   "EV_FUSE_SEL0",
@@ -112,7 +112,7 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   /* EV_KEY_MOD_SET_XX */
   mod_set_proc,
   mod_set_proc, 
-  /* EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，gyro */
+  /* EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，mpu */
   scan_int_hub_proc,
   /* EV_FUSE_XX */
   fuse_proc,
@@ -121,11 +121,11 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   fuse_proc,
   /* EV_ROTATE_HG */
 	null_proc,
-  /* EV_ROTATE_GYRO */
+  /* EV_ROTATE_MPU */
   null_proc,
-  /* EV_ACC_GYRO */
+  /* EV_ACC_MPU */
   null_proc,
-  /* EV_DROP_GYRO */
+  /* EV_DROP_MPU */
   null_proc,
   /* EV_THERMO_XX */
   thermo_proc,

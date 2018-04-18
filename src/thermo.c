@@ -223,18 +223,8 @@ static void thermo_power_on(void)
 {
   unsigned char val;
   
-//  I2C_Get(THERMO_I2C_ADDRESS, 0x1, &val);
-//  val &= ~1;
-  val = 0x02;
-  I2C_Put(THERMO_I2C_ADDRESS, 0x1, val);
-}
-
-void thermo_initialize (void)
-{
-  unsigned char val;
-  CDBG("thermo_initialize\n");
-  
-  thermo_hi_enabled = thermo_lo_enabled = 0;
+  // genenal call reset
+  I2C_Get(0x0, 0x6, &val);
   
   // TLOW Register
   CDBG("before thermo lo reset: %bd\n", thermo_lo_threshold_get());
@@ -254,6 +244,17 @@ void thermo_initialize (void)
   // shutdown mode off = 0
   val = 0x2; // 00000010
   I2C_Put(THERMO_I2C_ADDRESS, 0x1, val);
+}
+
+
+void thermo_initialize (void)
+{
+  unsigned char val;
+  CDBG("thermo_initialize\n");
+  
+  thermo_hi_enabled = thermo_lo_enabled = 0;
+  
+  thermo_power_on();
   
   thermo_power_off();
 }

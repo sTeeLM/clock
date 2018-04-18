@@ -29,7 +29,7 @@ void serial_dump(void)
   CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE0_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER");
   CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE1, serial_test_ctl_bit(SERIAL_BIT_UNUSE1) ? '1' : '0', "SERIAL_BIT_UNUSE1");
   CDBG("[%02bd] %c %s\n", SERIAL_BIT_UNUSE0, serial_test_ctl_bit(SERIAL_BIT_UNUSE0) ? '1' : '0', "SERIAL_BIT_UNUSE0");
-  CDBG("[%02bd] %c %s\n", SERIAL_BIT_GYRO_EN, serial_test_ctl_bit(SERIAL_BIT_GYRO_EN) ? '1' : '0', "SERIAL_BIT_GYRO_EN");
+  CDBG("[%02bd] %c %s\n", SERIAL_BIT_MPU_EN, serial_test_ctl_bit(SERIAL_BIT_MPU_EN) ? '1' : '0', "SERIAL_BIT_MPU_EN");
   CDBG("[%02bd] %c %s\n", SERIAL_BIT_HG_EN, serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN");
   CDBG("[%02bd] %c %s\n", SERIAL_BIT_FUSE_EN, serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN");
   CDBG("++++++serial_dump end++++++++\n");

@@ -58,7 +58,7 @@ static char i2c_write(char arg1, char arg2)
   
   I2C_Init();
   ret = I2C_Put(write_addr, cmd, val);
-  printf("i2c write [%02bx %02bx] -> %02bx %s\n", addr, cmd, val, ret ? "FAILED" : "SUCCESS");
+  printf("i2c write [%02bx %02bx] -> %02bx %s\n", write_addr, cmd, val, ret ? "FAILED" : "SUCCESS");
   
   return 0;
 }

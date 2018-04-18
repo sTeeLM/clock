@@ -3,7 +3,7 @@
 #include "mod_common.h"
 #include "rom.h"
 #include "led.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "fuse.h"
 
 const char * code sm_fuse_grenade_ss_name[] = 
@@ -19,21 +19,21 @@ const char * code sm_fuse_grenade_ss_name[] =
 static bit grenade_check_set_param(void)
 {
   unsigned char val;
-  // gyro必须在配置里打开
-  val = rom_read(ROM_FUSE_GYRO_ONOFF);
+  // mpu必须在配置里打开
+  val = rom_read(ROM_FUSE_MPU_ONOFF);
   if(!val) {
-    display_param_error(PARAM_ERROR_NEED_GYRO);
+    display_param_error(PARAM_ERROR_NEED_MPU);
     return 0;
   }
   
-  // gyro 必须是好的
-  val = rom_read(ROM_GYRO_GOOD);
+  // mpu 必须是好的
+  val = rom_read(ROM_MPU_GOOD);
   if(!val) {
-    display_param_error(PARAM_ERROR_GYRO_BAD);
+    display_param_error(PARAM_ERROR_MPU_BAD);
     return 0;
   }
   
-  gyro_enable(1);
+  mpu_enable(1);
   
   if(rom_read(ROM_FUSE0_BROKE_GOOD)
     || rom_read(ROM_FUSE1_BROKE_GOOD)
@@ -41,7 +41,7 @@ static bit grenade_check_set_param(void)
     fuse_enable(1);
   } else {
     display_param_error(PARAM_ERROR_FUSE_ERROR);
-    gyro_enable(0);
+    mpu_enable(0);
     return 0;
   }
   return 1;
@@ -110,7 +110,7 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_DISARMED && ev == EV_KEY_MOD_LPRESS) {
     // 清理，关闭fuse
     display_grenade(DISPLAY_GRENADE_DISARMED);
-    gyro_enable(0);
+    mpu_enable(0);
     fuse_enable(0);
     set_task(EV_FUSE_SEL0);
     return;
@@ -118,14 +118,14 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
     
   // 脱手
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_PREARMED
-    && get_sm_ss_state(to) == SM_FUSE_GRENADE_ARMED && ev == EV_DROP_GYRO) {
+    && get_sm_ss_state(to) == SM_FUSE_GRENADE_ARMED && ev == EV_DROP_MPU) {
     display_grenade(DISPLAY_GRENADE_ARMED);
     return;
   }
     
   // 触碰
   if(get_sm_ss_state(from) == SM_FUSE_GRENADE_ARMED
-    && get_sm_ss_state(to) == SM_FUSE_GRENADE_ARMED && ev == EV_ACC_GYRO) {
+    && get_sm_ss_state(to) == SM_FUSE_GRENADE_ARMED && ev == EV_ACC_MPU) {
     display_grenade(DISPLAY_GRENADE_ARMED);
     set_task(EV_FUSE_SEL0);
     return;
@@ -136,7 +136,7 @@ void sm_fuse_grenade(unsigned char from, unsigned char to, enum task_events ev)
     && get_sm_ss_state(to) == SM_FUSE_GRENADE_PREDETONATE && ev == EV_FUSE_SEL0) {
     display_grenade(DISPLAY_GRENADE_PREDETONATE);
     // 清理，不关fuse
-    gyro_enable(0);
+    mpu_enable(0);
     set_task(EV_FUSE_SEL0);
     return;
   }

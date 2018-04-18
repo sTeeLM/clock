@@ -13,7 +13,7 @@
 #include "timer.h"
 #include "beeper.h"
 #include "fuse.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "hg.h"
 #include "thermo.h"
 #include "int_hub.h"
@@ -57,7 +57,7 @@ void main(void)
   beeper_initialize();                          // initialize beeper
   thermo_initialize();                          // initialize thermo
   fuse_initialize();                            // initialize fuse
-  gyro_initialize();                            // initialize gyro
+  mpu_initialize();                            // initialize mpu
   hg_initialize();                              // initialize hg
   int_hub_initialize();                         // initialize interrupt hub 
   task_initialize();                            // initialize task manager

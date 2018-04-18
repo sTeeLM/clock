@@ -133,7 +133,7 @@ void beeper_initialize (void)
    T2CON = 0;
 
    // Load clock2 autoreload bytes  
-#ifdef OSCILLATO_6T
+#ifdef __OSCILLATO_6T__
    TH2 = (0xFFFF-10000)/128;
    TL2 = (0xFFFF-10000)%128;
    RCAP2H = (0xFFFF-10000)/128;

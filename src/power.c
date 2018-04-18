@@ -18,7 +18,7 @@
 #include "rom.h"
 #include "fuse.h"
 #include "hg.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "lt_timer.h"
 #include "thermo.h"
 
@@ -59,7 +59,7 @@ void power_enter_powersave(void)
   beeper_enter_powersave();
   fuse_enter_powersave();
   hg_enter_powersave();
-  gyro_enter_powersave();
+  mpu_enter_powersave();
   thermo_enter_powersave();
   com_enter_powersave();
   while(powersave_flag) {
@@ -83,7 +83,7 @@ void power_leave_powersave(void)
 
   com_leave_powersave(); 
   thermo_leave_powersave();
-  gyro_leave_powersave();
+  mpu_leave_powersave();
   hg_leave_powersave();
   fuse_leave_powersave();
   beeper_leave_powersave();

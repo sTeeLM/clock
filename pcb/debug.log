@@ -35,3 +35,17 @@
 [1105/123807:WARNING:backend_impl.cc(1593)] Messed up entry found.
 [1105/123807:WARNING:backend_impl.cc(1807)] Destroying invalid entry.
 [1106/111317:ERROR:browser_gpu_channel_host_factory.cc(119)] Failed to launch GPU process.
+[0326/095335:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0326/181018:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0326/213506:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0327/093957:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0329/135202:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0330/233550:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0331/003450:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0331/003450:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0331/201434:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0415/154059:WARNING:backend_impl.cc(1807)] Destroying invalid entry.
+[0415/213615:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0417/102603:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0417/202139:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0417/202144:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.

@@ -9,7 +9,7 @@
 #include "beeper.h"
 #include "task.h"
 #include "hg.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "thermo.h"
 #include "fuse.h"
 #include "cext.h"
@@ -17,7 +17,7 @@
 
 
 sbit RTC_INT        = P1 ^ 1;
-sbit GYRO_INT       = P1 ^ 2;
+sbit MPU_INT        = P1 ^ 2;
 sbit THERMO_INT     = P1 ^ 3;
 sbit EXT_INT        = P1 ^ 4;
 sbit INT_BIT        = P3 ^ 3;
@@ -56,7 +56,7 @@ void int_hub_initialize (void)
   CDBG("int hub 1 port reg is %bx\n", val);
   
   RTC_INT = 1;
-  GYRO_INT   = 1;
+  MPU_INT   = 1;
   THERMO_INT = 1;
   EXT_INT    = 1;
   INT_BIT    = 1;
@@ -76,12 +76,12 @@ bit int_hub_test_bit(unsigned char index, unsigned int status)
 
 void int_hub_dump(void)
 {
-  //RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT
+  //RTC_INT || !EXT_INT || !THERMO_INT || !MPU_INT
   CDBG("++++++int_hub_dump begin++++++\n");
   CDBG("[RTC_INT] %c\n", RTC_INT ? '1' : '0');
   CDBG("[EXT_INT] %c\n", EXT_INT ? '1' : '0');  
   CDBG("[THERMO_INT] %c\n", THERMO_INT ? '1' : '0');
-  CDBG("[GYRO_INT] %c\n", GYRO_INT ? '1' : '0');  
+  CDBG("[MPU_INT] %c\n", MPU_INT ? '1' : '0');  
   CDBG("++++++int_hub_dump end++++++\n");
 }
 
@@ -157,11 +157,11 @@ void scan_int_hub_proc (enum task_events ev)
     scan_thermo();
   }
   
-  if(!GYRO_INT) {
-    scan_gyro();  
+  if(!MPU_INT) {
+    scan_mpu();  
   }
   
-  if(!RTC_INT || !EXT_INT || !THERMO_INT || !GYRO_INT ) {
+  if(!RTC_INT || !EXT_INT || !THERMO_INT || !MPU_INT ) {
     set_task(EV_SCAN_INT_HUB);
   }
  

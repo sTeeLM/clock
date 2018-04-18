@@ -40,7 +40,7 @@ static void rom_dump(void)
   rom_read(ROM_POWERSAVE_TO);
   
   rom_read(ROM_FUSE_HG_ONOFF);
-  rom_read(ROM_FUSE_GYRO_ONOFF);
+  rom_read(ROM_FUSE_MPU_ONOFF);
   rom_read(ROM_FUSE_THERMO_HI);
   rom_read(ROM_FUSE_THERMO_LO);
   rom_read(ROM_FUSE_TRIPWIRE_ONOFF);
@@ -65,7 +65,7 @@ static void rom_dump(void)
   rom_read(ROM_THERMO_HI_GOOD);
   rom_read(ROM_THERMO_LO_GOOD);
   rom_read(ROM_HG_GOOD);
-  rom_read(ROM_GYRO_GOOD);
+  rom_read(ROM_MPU_GOOD);
 }
 
 static void rom_reset(void)
@@ -84,7 +84,7 @@ static void rom_reset(void)
   rom_write(ROM_POWERSAVE_TO, 1);
   
   rom_write(ROM_FUSE_HG_ONOFF, 1);
-  rom_write(ROM_FUSE_GYRO_ONOFF, 1);
+  rom_write(ROM_FUSE_MPU_ONOFF, 1);
   rom_write(ROM_FUSE_THERMO_HI, 40);
   rom_write(ROM_FUSE_THERMO_LO, 216);
   rom_write(ROM_FUSE_TRIPWIRE_ONOFF, 1);
@@ -109,7 +109,7 @@ static void rom_reset(void)
   rom_write(ROM_THERMO_HI_GOOD, 0);
   rom_write(ROM_THERMO_LO_GOOD, 0);
   rom_write(ROM_HG_GOOD, 0);
-  rom_write(ROM_GYRO_GOOD, 0);
+  rom_write(ROM_MPU_GOOD, 0);
 }
 
 bit rom_is_factory_reset(void)

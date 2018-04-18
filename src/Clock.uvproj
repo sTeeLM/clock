@@ -10,6 +10,7 @@
       <TargetName>default</TargetName>
       <ToolsetNumber>0x0</ToolsetNumber>
       <ToolsetName>MCS-51</ToolsetName>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STC89C516RD+</Device>
@@ -82,6 +83,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopA1X>0</nStopA1X>
+            <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
@@ -144,10 +147,9 @@
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreSysVw>1</RestoreSysVw>
-            <UsePdscDebugDescription>1</UsePdscDebugDescription>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>9</TargetSelection>
+          <TargetSelection>10</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -204,8 +206,8 @@
             <Mode2>0</Mode2>
             <useCB>0</useCB>
             <useXB>0</useXB>
-            <useL251>0</useL251>
-            <useA251>0</useA251>
+            <useL251>1</useL251>
+            <useA251>1</useA251>
             <Mx51>0</Mx51>
             <ModC812>0</ModC812>
             <ModCont>0</ModCont>
@@ -308,7 +310,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>OSCILLATO_6T</Define>
+              <Define>__OSCILLATO_6T__</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -458,11 +460,6 @@
               <FilePath>.\hg.c</FilePath>
             </File>
             <File>
-              <FileName>gyro.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\gyro.c</FilePath>
-            </File>
-            <File>
               <FileName>lt_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lt_timer.c</FilePath>
@@ -496,6 +493,11 @@
               <FileName>debug.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\mpu.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -636,6 +638,11 @@
               <FileName>cmd_thermo.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\cmd_thermo.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmd_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_mpu.c</FilePath>
             </File>
           </Files>
         </Group>

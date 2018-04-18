@@ -1,7 +1,7 @@
 #include <STC89C5xRC.H>
 #include "fuse.h"
 #include "hg.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "task.h"
 #include "debug.h"
 #include "serial_hub.h"

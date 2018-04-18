@@ -2,7 +2,7 @@
 #include "misc.h"
 #include "cext.h"
 
-#ifdef OSCILLATO_6T
+#ifdef __OSCILLATO_6T__
 // 时钟频率22118400
 static void internal_delay_10us(void) 
 {

@@ -9,7 +9,7 @@
 #define IS_DAY   5
 #define IS_DAY_ONOFF 6
 #define IS_HG    7
-#define IS_GYRO  8
+#define IS_MPU  8
 #define IS_THERMO_HI 9
 #define IS_THERMO_LO 10
 #define IS_TRIPWIRE 11
@@ -45,8 +45,8 @@ void display_logo(enum display_logo_type type, unsigned char num);
 
 enum param_error
 {
-  PARAM_ERROR_GYRO_BAD  = 501,
-  PARAM_ERROR_NEED_GYRO  = 502,
+  PARAM_ERROR_MPU_BAD  = 501,
+  PARAM_ERROR_NEED_MPU  = 502,
   PARAM_ERROR_LT_TIMER_OVERFLOW = 503,
   PARAM_ERROR_HG_BAD = 504,
   PARAM_ERROR_TRIPWIRE_BAD = 505,

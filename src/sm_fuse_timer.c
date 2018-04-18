@@ -5,7 +5,7 @@
 #include "lt_timer.h"
 #include "rom.h"
 #include "thermo.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "hg.h"
 #include "fuse.h"
 #include "power.h"
@@ -42,7 +42,7 @@ static void display_param_error(unsigned int err)
 #define TIMER_PARAM_ERROR 0xFF
 
 enum timer_param_step {
-  TIMER_PARAM_CHECK_SET_GYRO = 0,
+  TIMER_PARAM_CHECK_SET_MPU = 0,
   TIMER_PARAM_CHECK_SET_HG,
   TIMER_PARAM_CHECK_SET_THERMO,
   TIMER_PARAM_CHECK_SET_LT_TIME,
@@ -81,7 +81,7 @@ static void display_timer(enum timer_display_state state)
 static void stop_peripheral(void)
 {
   thermo_enable(0);
-  gyro_enable(0);
+  mpu_enable(0);
   hg_enable(0);
 }
 
@@ -112,16 +112,16 @@ static bit check_and_set_timer_param(unsigned char step)
   CDBG("check_and_set_timer_param %bd\n", step);
   
   switch (step) {
-    case TIMER_PARAM_CHECK_SET_GYRO:
-      // 如果打开了gyro，必须是好的
-      val = rom_read(ROM_FUSE_GYRO_ONOFF);
+    case TIMER_PARAM_CHECK_SET_MPU:
+      // 如果打开了mpu，必须是好的
+      val = rom_read(ROM_FUSE_MPU_ONOFF);
       if(val) {
-        val = rom_read(ROM_GYRO_GOOD);
+        val = rom_read(ROM_MPU_GOOD);
         if(!val) {
-          display_param_error(PARAM_ERROR_GYRO_BAD);
+          display_param_error(PARAM_ERROR_MPU_BAD);
           goto err;
         }
-        gyro_enable(1);
+        mpu_enable(1);
       }
       break;
     case TIMER_PARAM_CHECK_SET_HG:
@@ -289,7 +289,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     && (ev == EV_COUNTER 
     || ev == EV_FUSE0_BROKE 
     || ev == EV_FUSE1_BROKE
-    || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
+    || ev == EV_ROTATE_MPU || ev == EV_DROP_MPU || ev == EV_ACC_MPU 
     || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
     rollback_param(); // 发生了错误，开始回滚
@@ -404,7 +404,7 @@ void sm_fuse_timer(unsigned char from, unsigned char to, enum task_events ev)
     && (ev == EV_COUNTER || ev == EV_FUSE_SEL2
     || ev == EV_FUSE0_BROKE 
     || ev == EV_FUSE1_BROKE
-    || ev == EV_ROTATE_GYRO || ev == EV_DROP_GYRO || ev == EV_ACC_GYRO 
+    || ev == EV_ROTATE_MPU || ev == EV_DROP_MPU || ev == EV_ACC_MPU 
     || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
     || ev == EV_THERMO_HI || ev == EV_THERMO_LO)) {
     display_timer(DISPLAY_TIMER_PREDETONATE);

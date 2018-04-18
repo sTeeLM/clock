@@ -6,7 +6,7 @@
 #include "fuse.h"
 #include "thermo.h"
 #include "hg.h"
-#include "gyro.h"
+#include "mpu.h"
 #include "clock.h"
 #include "cext.h"
 #include "led.h"
@@ -15,7 +15,7 @@
 
 #define FUSE_TEST_TIMEO 5
 #define HG_TEST_TIMEO   60
-#define GYRO_TEST_TIMEO 60
+#define MPU_TEST_TIMEO 60
 
 const char * code sm_fuse_test_ss_name[] = 
 {
@@ -26,7 +26,7 @@ const char * code sm_fuse_test_ss_name[] =
   "SM_FUSE_TEST_THERMO_HI",
   "SM_FUSE_TEST_THERMO_LO",
   "SM_FUSE_TEST_HG",
-  "SM_FUSE_TEST_GYRO",
+  "SM_FUSE_TEST_MPU",
   NULL
 };
 
@@ -97,8 +97,8 @@ enum fuse_test_display_state {
 	FUSE_DISPLAY_THERMO_LO_ERROR,  // 203
 // hg
 	FUSE_DISPLAY_HG_ERROR,    // 301
-// gyro
-	FUSE_DISPLAY_GYRO_ERROR,   // 401
+// mpu
+	FUSE_DISPLAY_MPU_ERROR,   // 401
 	FUSE_DISPLAY_GOOD 
 };
 
@@ -109,7 +109,7 @@ enum fuse_test_phase {
 		FUSE_TEST_PHASE_THERMO_HI,	
 		FUSE_TEST_PHASE_THERMO_LO,
 		FUSE_TEST_PHASE_HG,
-		FUSE_TEST_PHASE_GYRO	
+		FUSE_TEST_PHASE_MPU	
 };
 
 static void display_error_code(enum fuse_test_phase phase, int err)
@@ -220,8 +220,8 @@ static void display_fuse_state(enum fuse_test_phase phase, enum fuse_test_displa
 		case FUSE_DISPLAY_HG_ERROR:    // 301
 			err = 301; 
 			break;
-// gyro
-		case FUSE_DISPLAY_GYRO_ERROR:   // 401
+// mpu
+		case FUSE_DISPLAY_MPU_ERROR:   // 401
 			err = 401; 
 			break;
 		case FUSE_DISPLAY_GOOD:
@@ -545,45 +545,45 @@ void sm_fuse_test(unsigned char from, unsigned char to, enum task_events ev)
 	
 	
 	// 进入Gyro测试
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_KEY_MOD_PRESS && lpress_start == 0) {
-		display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_WAIT, 0);
+	if(get_sm_ss_state(to) == SM_FUSE_TEST_MPU && ev == EV_KEY_MOD_PRESS && lpress_start == 0) {
+		display_fuse_state(FUSE_TEST_PHASE_MPU, FUSE_DISPLAY_WAIT, 0);
 		return;
 	}
 	// 启动Gyro测试
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_KEY_SET_PRESS && lpress_start == 0) {
-    rom_write(ROM_GYRO_GOOD, 0);
+	if(get_sm_ss_state(to) == SM_FUSE_TEST_MPU && ev == EV_KEY_SET_PRESS && lpress_start == 0) {
+    rom_write(ROM_MPU_GOOD, 0);
 		lpress_start = 1;
 		last_display_s = clock_get_sec_256();
-		gyro_enable(1);
-		display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_TESTING_P1, 0);
+		mpu_enable(1);
+		display_fuse_state(FUSE_TEST_PHASE_MPU, FUSE_DISPLAY_TESTING_P1, 0);
 		return;
 	}
 	// 等待人去晃
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_ACC_GYRO && lpress_start == 1) {
-    display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_TESTING_P2, 0);
+	if(get_sm_ss_state(to) == SM_FUSE_TEST_MPU && ev == EV_ACC_MPU && lpress_start == 1) {
+    display_fuse_state(FUSE_TEST_PHASE_MPU, FUSE_DISPLAY_TESTING_P2, 0);
 		lpress_start = 2;
 		last_display_s = clock_get_sec_256();
 		return;
 	}
 	// 等待人丢
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_DROP_GYRO && lpress_start == 2) {
-		display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_TESTING_P3, 0);
+	if(get_sm_ss_state(to) == SM_FUSE_TEST_MPU && ev == EV_DROP_MPU && lpress_start == 2) {
+		display_fuse_state(FUSE_TEST_PHASE_MPU, FUSE_DISPLAY_TESTING_P3, 0);
 		lpress_start = 3;
 		last_display_s = clock_get_sec_256();
 		return;
 	}
 	// 等待人去转
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_ROTATE_GYRO && lpress_start == 3) {
-		display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_GOOD, 0);
+	if(get_sm_ss_state(to) == SM_FUSE_TEST_MPU && ev == EV_ROTATE_MPU && lpress_start == 3) {
+		display_fuse_state(FUSE_TEST_PHASE_MPU, FUSE_DISPLAY_GOOD, 0);
 		lpress_start = 0;
 		return;
 	}
 	// 检查是否超时
-	if(get_sm_ss_state(to) == SM_FUSE_TEST_GYRO && ev == EV_1S) {
-		if(time_diff_now(last_display_s) > GYRO_TEST_TIMEO) {
-      rom_write(ROM_GYRO_GOOD, 1);
-			gyro_enable(0);
-			display_fuse_state(FUSE_TEST_PHASE_GYRO, FUSE_DISPLAY_GYRO_ERROR, 0);
+	if(get_sm_ss_state(to) == SM_FUSE_TEST_MPU && ev == EV_1S) {
+		if(time_diff_now(last_display_s) > MPU_TEST_TIMEO) {
+      rom_write(ROM_MPU_GOOD, 1);
+			mpu_enable(0);
+			display_fuse_state(FUSE_TEST_PHASE_MPU, FUSE_DISPLAY_MPU_ERROR, 0);
 			lpress_start = 0;
 		}
 		return;

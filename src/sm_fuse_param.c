@@ -17,7 +17,7 @@ const char * code sm_fuse_param_ss_name[] =
   "SM_FUSE_PARAM_MM",
   "SM_FUSE_PARAM_SS",
   "SM_FUSE_PARAM_HG_ONOFF",
-  "SM_FUSE_PARAM_GYRO_ONOFF",
+  "SM_FUSE_PARAM_MPU_ONOFF",
   "SM_FUSE_PARAM_THERMO_HI_ONOFF",
   "SM_FUSE_PARAM_THERMO_LO_ONOFF",
   "SM_FUSE_PARAM_PASSWORD",
@@ -73,7 +73,7 @@ static void inc_only(unsigned char what)
       }
       break;
     case IS_HG:
-    case IS_GYRO:
+    case IS_MPU:
       last_display_s = !last_display_s;
       break;
     case IS_THERMO_HI:
@@ -146,8 +146,8 @@ static void write_only(unsigned char what)
     case IS_HG:
       rom_write(ROM_FUSE_HG_ONOFF, last_display_s);
       break;   
-    case IS_GYRO:
-      rom_write(ROM_FUSE_GYRO_ONOFF, last_display_s);
+    case IS_MPU:
+      rom_write(ROM_FUSE_MPU_ONOFF, last_display_s);
       break;
     case IS_THERMO_HI:
       rom_write(ROM_FUSE_THERMO_HI, last_display_s);
@@ -317,7 +317,7 @@ static void update_onoff(unsigned char what)
     case IS_HG:
       led_set_code(5, 'H');
     break;
-    case IS_GYRO:
+    case IS_MPU:
       led_set_code(5, 'O');
     break;    
   }
@@ -338,8 +338,8 @@ static void enter_onoff(unsigned char what)
     case IS_HG:
       last_display_s = rom_read(ROM_FUSE_HG_ONOFF);
       break;
-    case IS_GYRO:
-      last_display_s = rom_read(ROM_FUSE_GYRO_ONOFF);
+    case IS_MPU:
+      last_display_s = rom_read(ROM_FUSE_MPU_ONOFF);
       break;
   }
   update_onoff(what);
@@ -561,15 +561,15 @@ void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
     return;
   }
   
-  // 调整gyro on/off
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_GYRO_ONOFF && ev == EV_KEY_MOD_PRESS) {
-    enter_onoff(IS_GYRO);
+  // 调整mpu on/off
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MPU_ONOFF && ev == EV_KEY_MOD_PRESS) {
+    enter_onoff(IS_MPU);
     return;
   }
   
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_GYRO_ONOFF && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_GYRO);
-    update_onoff(IS_GYRO);
+  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MPU_ONOFF && ev == EV_KEY_SET_PRESS) {
+    inc_and_write(IS_MPU);
+    update_onoff(IS_MPU);
     return;
   }  
   
