@@ -28,6 +28,11 @@ static void fuse_power_off(void)
 {
   CDBG("fuse_power_off\n");
   serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
+	serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, 1);
+	serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, 1);
+	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, 1);
   serial_ctl_out();
 }
 
@@ -43,6 +48,9 @@ void fuse_initialize (void)
 void fuse_trigger(bit enable)
 {
   CDBG("fuse_trigger %bd\n", enable ? 1 : 0);
+	
+	if(!fuse_enabled) return;
+	
   // 升压
   POWER_5V_EN = !enable;
   

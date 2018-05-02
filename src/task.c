@@ -25,6 +25,7 @@
 
 /*
   EV_250MS            = 0, // 大约每250ms转一下
+  EV_250MS            = 0, // 大约每250ms转一下
   EV_1S               = 1, // 大约每1s转一下  
   EV_SCAN_KEY         = 2, // 扫描按键 
   EV_KEY_SET_DOWN     = 3, // set键按下
@@ -40,21 +41,19 @@
   EV_SCAN_INT_HUB     = 13, // 扫描fuse，hg，mpu
   EV_FUSE0_BROKE      = 14, // fuse0被剪断
   EV_FUSE1_BROKE      = 15, // fuse1被剪断
-  EV_FUSE_TRIPWIRE         = 16, // tripwire被剪断
+  EV_FUSE_TRIPWIRE    = 16, // tripwire被剪断
   EV_ROTATE_HG        = 17, // hg检测出倾斜状态改变
-  EV_ROTATE_MPU      = 18, // mpu检测出倾斜状态改变	
-  EV_ACC_MPU         = 19, // mpu 检测出晃动
-  EV_DROP_MPU         = 20, // mpu 检测出下落（失重）
-  EV_THERMO_HI     = 21, // 温度太高
-  EV_THERMO_LO     = 22, // 温度太低
-  EV_FUSE_SEL0         = 23, // fuse 虚拟事件0
-  EV_FUSE_SEL1         = 24, // fuse 虚拟事件1
-  EV_FUSE_SEL2         = 25, // fuse 虚拟事件2  
-  EV_ALARM0           = 26, // 闹钟0应该响起
-  EV_ALARM1           = 27, // 闹钟1应该响起
-  EV_COUNTER          = 28, // 计时器到时间
-  EV_POWER_SAVE       = 29, // 应该进入PS状态 
-  EV_COUNT     
+  EV_MOT_MPU          = 18, // mpu检测出震动	
+  EV_THERMO_HI        = 19, // 温度太高
+  EV_THERMO_LO        = 20, // 温度太低
+  EV_KEY_V0           = 21, // 虚拟事件0
+	EV_KEY_V1						= 22, // 虚拟事件1
+	EV_KEY_V2						= 23, // 虚拟事件2
+  EV_ALARM0           = 24, // 闹钟0应该响起
+  EV_ALARM1           = 25, // 闹钟1应该响起
+  EV_COUNTER          = 26, // 计时器到时间
+  EV_POWER_SAVE       = 27, // 应该进入PS状态 
+  EV_COUNT  
 */
 
 const char * code task_name[] =
@@ -77,14 +76,12 @@ const char * code task_name[] =
   "EV_FUSE1_BROKE",
   "EV_FUSE_TRIPWIRE",
   "EV_ROTATE_HG",
-  "EV_ROTATE_MPU",
-  "EV_ACC_MPU",
-  "EV_DROP_MPU",
+  "EV_MOT_MPU",
   "EV_THERMO_HI",
   "EV_THERMO_LO",
-  "EV_FUSE_SEL0",
-  "EV_FUSE_SEL1",
-  "EV_FUSE_SEL2",
+  "EV_KEY_V0",
+  "EV_KEY_V1",	
+  "EV_KEY_V2",
   "EV_ALARM0",
   "EV_ALARM1",
   "EV_COUNTER",
@@ -121,25 +118,21 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   fuse_proc,
   /* EV_ROTATE_HG */
 	null_proc,
-  /* EV_ROTATE_MPU */
-  null_proc,
-  /* EV_ACC_MPU */
-  null_proc,
-  /* EV_DROP_MPU */
+  /* EV_MOT_MPU */
   null_proc,
   /* EV_THERMO_XX */
   thermo_proc,
   thermo_proc,
-  /* EV_FUSE_SEL_XX */
+  /* EV_KEY_V0/1/2 */
   null_proc,
   null_proc,
   null_proc,
   /* EV_ALARM_XX */
   alarm_proc,
   alarm_proc,
-  /* EV_COUNTER          = 28, // 计时器到时间 */
+  /* EV_COUNTER          = 26, // 计时器到时间 */
   null_proc,
-  /* EV_POWER_SAVE       = 29, // 应该进入PS状态 */
+  /* EV_POWER_SAVE       = 27, // 应该进入PS状态 */
   power_proc  
 };
 

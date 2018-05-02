@@ -25,7 +25,7 @@
 #include "shell.h"
 
 
-#define __CLOCK__VERSION__ "1.0.0.0"
+#define __CLOCK__VERSION__ "2.0.0.0"
 
 
 static void show_version(void)

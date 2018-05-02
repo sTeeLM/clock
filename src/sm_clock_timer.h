@@ -12,6 +12,8 @@ enum sm_clock_timer_ss {
 
 extern const char * code sm_clock_timer_ss_name[];
 
-void sm_clock_timer(unsigned char from, unsigned char to, enum task_events);
-
+void sm_clock_timer_init(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_timer_submod0(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_timer_submod1(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_timer_submod2(unsigned char from, unsigned char to, enum task_events);
 #endif

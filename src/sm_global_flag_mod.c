@@ -1,4 +1,4 @@
-#include "sm_clock_mod_global_flag.h"
+#include "sm_global_flag_mod.h"
 #include "mod_common.h"
 #include "led.h"
 #include "beeper.h"
@@ -8,25 +8,18 @@
 #include "debug.h"
 #include "rom.h"
 
-const char * code sm_clock_mod_global_flag_name[] = 
+const char * code sm_global_flag_mod_ss_name[] = 
 {
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG_INIT",
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG_PS",
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG_BS",
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG_ALARM_MUSIC",
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG_BEEP",
-  "SM_CLOCK_MODIFY_GLOBAL_FLAG_1224",
+  "SM_GLOBAL_FLAG_MODIFY_INIT",
+  "SM_GLOBAL_FLAG_MODIFY_PS",
+  "SM_GLOBAL_FLAG_MODIFY_BEEP",
+  "SM_GLOBAL_FLAG_MODIFY_1224",
   NULL
 };
 
 static void display_global_flag(unsigned char what)
 {
-  bit baoshi,is_24;
 
-  baoshi = alarm1_test_enable();
-
-  is_24 = !clock_get_hour_12();
-  
   led_clear();
   
   CDBG("display_global_flag %bd\n", what);
@@ -43,28 +36,6 @@ static void display_global_flag(unsigned char what)
         led_set_code(1, (power_get_powersave_to_s() / 10) + 0x30);
         led_set_code(0, (power_get_powersave_to_s() % 10) + 0x30);
       }
-      break;
-    case IS_BS:
-      led_set_code(5, 'B');
-      led_set_code(4, 'S');
-      if(baoshi) {
-        led_set_code(2, LED_CODE_BLACK);
-        led_set_code(1, 'O');
-        led_set_code(0, 'N');
-      } else {
-        led_set_code(2, 'O');
-        led_set_code(1, 'F');
-        led_set_code(0, 'F');
-      }
-      break;
-    case IS_MUSIC:
-      led_set_code(5, 'S');
-      led_set_code(4, 'O');
-      led_set_code(3, 'U');
-      led_set_code(2, 'N');
-      led_set_code(1, 'D');  
-      CDBG("beeper_get_music_index return %bd\n", beeper_get_music_index());
-      led_set_code(0, beeper_get_music_index() + 1 + 0x30);
       break;
     case IS_BEEP:
       led_set_code(5, 'B');
@@ -84,7 +55,7 @@ static void display_global_flag(unsigned char what)
       led_set_code(5, 'D');
       led_set_code(4, 'S');
       led_set_code(3, 'P');    
-      if(is_24) {
+      if(!clock_get_hour_12()) {
         led_set_code(1, '2');
         led_set_code(0, '4');
       } else {
@@ -102,18 +73,9 @@ static void inc_write(unsigned char what)
       power_inc_powersave_to();
       rom_write(ROM_POWERSAVE_TO, power_get_powersave_to());
       break;
-    case IS_BS:
-      alarm1_set_enable(!alarm1_test_enable());
-      alarm1_sync_to_rtc();
-      rom_write(ROM_ALARM1_ENABLE, alarm1_test_enable() ? 1 : 0);
-      break;
-    case IS_MUSIC:
-      beeper_inc_music_index();
-      rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
-      break;
     case IS_BEEP:
       beeper_set_beep_enable(!beeper_get_beep_enable());
-    rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
+			rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
       break;
     case IS_1224:
       clock_set_hour_12(!clock_get_hour_12());
@@ -125,7 +87,45 @@ static void inc_write(unsigned char what)
   }
 }
 
+void sm_global_flag_mod_init(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_global_flag_mod_init %bd %bd %bd\n", from, to, ev);
+	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 3);
+}
 
+static void sm_global_flag_mod(unsigned char what,  enum task_events ev)
+{
+	if(ev == EV_KEY_MOD_UP || ev == EV_KEY_MOD_PRESS) {
+		display_global_flag(what);
+		return;
+	}
+	
+	if(ev == EV_KEY_SET_PRESS) {
+		inc_write(what);
+		display_global_flag(what);
+		return;
+	}
+}
+
+void sm_global_flag_mod_init_submod0(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_global_flag_mod_init_submod0 %bd %bd %bd\n", from, to, ev);
+	sm_global_flag_mod(IS_PS, ev);
+}
+
+void sm_global_flag_mod_init_submod1(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_global_flag_mod_init_submod1 %bd %bd %bd\n", from, to, ev);
+	sm_global_flag_mod(IS_BEEP, ev);
+}
+
+void sm_global_flag_mod_init_submod2(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_global_flag_mod_init_submod2 %bd %bd %bd\n", from, to, ev);
+	sm_global_flag_mod(IS_1224, ev);
+}
+
+/*
 void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_global_flag %bd %bd %bd\n", from, to, ev);
@@ -210,3 +210,4 @@ void sm_clock_mod_global_flag(unsigned char from, unsigned char to, enum task_ev
     return;
   }
 }
+*/

@@ -451,7 +451,9 @@ void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
     
   }
 }
-// ltm绝对是件转换为相对时间，如果小于30S，返回0，否则返回1
+// ltm绝对时间转换为相对时间，
+// 如果too_close_check & 小于30S，返回0，否则返回1
+// 如果!too_close_check，忽略30S逻辑
 bit lt_timer_get_relative(bit too_close_check)
 {
   bit borrow;

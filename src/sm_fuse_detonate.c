@@ -24,6 +24,31 @@ static void display_detonate(void)
   }
 }
 
+void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_detonate_init %bd %bd %bd\n", from, to, ev);
+	if(ev == EV_250MS) {
+    display_detonate();
+    fuse_trigger(1);
+    common_state = 0;
+	}
+}
+
+
+void sm_fuse_detonate_submod0(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_detonate_submod0 %bd %bd %bd\n", from, to, ev);
+	if(ev == EV_1S || ev == EV_KEY_MOD_PRESS) {
+		common_state ++;
+		if(common_state > MAX_FUSE_CHARGE_TIME) {
+      fuse_trigger(0);
+      fuse_enable(0);
+			set_task(EV_KEY_V0);
+		}
+	}
+}
+
+/*
 void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_detonate %bd %bd %bd\n", from, to, ev);
@@ -47,6 +72,5 @@ void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events ev)
     }
     return;
   }
-  
-  
 }
+*/

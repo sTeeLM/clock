@@ -15,6 +15,11 @@ enum sm_clock_mod_time_ss {
 
 extern const char * code sm_clock_mod_time_name[];
 
-void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events);
-
+void sm_clock_mod_time_init(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_mod_time_submod1(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_mod_time_submod2(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_mod_time_submod3(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_mod_time_submod4(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_mod_time_submod5(unsigned char from, unsigned char to, enum task_events);
 #endif

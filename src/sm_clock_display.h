@@ -13,6 +13,9 @@ enum sm_clock_display_ss {
 
 extern const char * code sm_clock_display_ss_name[];
 
-void sm_clock_display(unsigned char from, unsigned char to, enum task_events);
-
+void sm_clock_display_init(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_display_submod1(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_display_submod2(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_display_submod3(unsigned char from, unsigned char to, enum task_events);
 #endif

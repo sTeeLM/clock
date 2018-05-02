@@ -10,8 +10,7 @@
 #define THERMO_THRESHOLED_MAX (85)
 #define THERMO_THRESHOLED_MIN (-55)
 
-#define THERMO_THRESHOLED_STEP 5
-#define THERMO_THRESHOLED_SMALL_STEP 1
+#define THERMO_THRESHOLED_STEP 1
 
 static bit thermo_hi_enabled;
 static bit thermo_lo_enabled;
@@ -412,7 +411,7 @@ unsigned char thermo_threshold_inc(unsigned char thres)
   if(thres != THERMO_THRESHOLED_INVALID) {
     value = (char)thres;
     if(value < THERMO_THRESHOLED_MAX) {
-      value += THERMO_THRESHOLED_SMALL_STEP;
+      value += THERMO_THRESHOLED_STEP;
       return (unsigned char) value;
     }else {
       return THERMO_THRESHOLED_INVALID;
@@ -459,6 +458,7 @@ void thermo_enable(bit enable)
     thermo_power_on();
   } else {
     thermo_power_off();
+		thermo_hi_enabled = thermo_hi_enabled = 0;
   }
 }
 

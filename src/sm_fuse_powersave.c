@@ -15,13 +15,38 @@ const char * code sm_fuse_powersave_ss_name[] =
   NULL
 };
 
-static void stop_peripheral(void)
+static void roll_back(void)
 {
   thermo_enable(0);
   mpu_enable(0);
   hg_enable(0);
+  lt_timer_reset();
 }
 
+void sm_fuse_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_powersave_init %bd %bd %bd\n", from, to, ev);
+}
+
+void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_powersave_submod0 %bd %bd %bd\n", from, to, ev);
+	if(ev == EV_250MS) {
+    // 进入睡眠
+    power_enter_powersave();
+    power_leave_powersave();
+		return;
+	}
+}
+
+void sm_fuse_powersave_submod1(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_powersave_submod1 %bd %bd %bd\n", from, to, ev);
+    roll_back(); // 关闭所有外围电路，以及lt_timer
+    set_task(EV_KEY_V0);
+}
+
+/*
 void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_powersave %bd %bd %bd\n", from, to, ev);
@@ -39,3 +64,4 @@ void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events ev
     set_task(EV_FUSE_SEL0);
   }
 }
+*/

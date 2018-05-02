@@ -49,3 +49,18 @@
 [0417/102603:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0417/202139:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0417/202144:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0419/195525:ERROR:rankings.cc(785)] Inconsistent LRU.
+[0419/195525:ERROR:backend_impl.cc(1037)] Critical error found -8
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:ERROR:entry_impl.cc(1035)] No file for c1030014
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:WARNING:storage_block-inl.h(131)] Failed data load.
+[0419/195525:ERROR:cache_util_win.cc(20)] Unable to move the cache: 5
+[0419/195525:ERROR:cache_util.cc(134)] Unable to move cache folder C:\ProgramData\Altium\Altium Designer {5DA7D401-C375-4F78-8000-55AE010C1741}\BrowserCache to C:\ProgramData\Altium\Altium Designer {5DA7D401-C375-4F78-8000-55AE010C1741}\old_BrowserCache_000
+[0419/195525:ERROR:backend_impl.cc(2020)] Corrupt Index file
+[0423/101054:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0423/101055:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.

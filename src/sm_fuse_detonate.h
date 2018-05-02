@@ -10,6 +10,7 @@ enum sm_fuse_detonate_ss {
 
 extern const char * code sm_fuse_detonate_ss_name[];
 
-void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events);
+void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_events ev);
+void sm_fuse_detonate_submod0(unsigned char from, unsigned char to, enum task_events ev);
 
 #endif

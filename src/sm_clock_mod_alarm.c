@@ -5,31 +5,27 @@
 #include "led.h"
 #include "debug.h"
 #include "rom.h"
+#include "beeper.h"
 
 const char * code sm_clock_mod_alarm_ss_name[] = 
 {
   "SM_CLOCK_MODIFY_ALARM_INIT",
   "SM_CLOCK_MODIFY_ALARM_HH",
   "SM_CLOCK_MODIFY_ALARM_MM",
-  "SM_CLOCK_MODIFY_ALARM_DAY1",
-  "SM_CLOCK_MODIFY_ALARM_DAY2",
-  "SM_CLOCK_MODIFY_ALARM_DAY3",
-  "SM_CLOCK_MODIFY_ALARM_DAY4",
-  "SM_CLOCK_MODIFY_ALARM_DAY5",
-  "SM_CLOCK_MODIFY_ALARM_DAY6",
-  "SM_CLOCK_MODIFY_ALARM_DAY7",
+  "SM_CLOCK_MODIFY_ALARM_DAY",
+	"SM_CLOCK_MODIFY_ALARM_BS",
+	"SM_CLOCK_MODIFY_ALARM_MUSIC",
   NULL
 };
 
+#define alarm_index common_state
+
 static void update_alarm(unsigned char what, unsigned char day)
 {
-  unsigned char hour, min;
-
-  led_set_code(5, 'A');
-  led_set_code(4, 'L');     
-
+  unsigned char hour, min; 
   if(what == IS_HOUR || what == IS_MIN) {
-    
+		led_set_code(5, 'A');
+		led_set_code(4, 'L'); 
     hour = alarm0_get_hour();
     min  = alarm0_get_min();
     led_set_dp(1);
@@ -54,8 +50,10 @@ static void update_alarm(unsigned char what, unsigned char day)
     led_set_code(1, (min / 10)+ 0x30);
     led_set_code(0, (min % 10) + 0x30); 
     
-  } else {
-     CDBG("update_alarm %s\n", alarm0_test_enable(day)? "ON":"OFF");
+  } else if (what == IS_ONOFF){
+		CDBG("update_alarm %s\n", alarm0_test_enable(day)? "ON":"OFF");
+		led_set_code(5, 'A');
+		led_set_code(4, 'L'); 
     led_set_code(3, day + 0x30);
     if(alarm0_test_enable(day)) {
       led_set_code(2, LED_CODE_BLACK);
@@ -66,7 +64,27 @@ static void update_alarm(unsigned char what, unsigned char day)
       led_set_code(1, 'F');
       led_set_code(0, 'F');
     }
-  }
+  } else if(what == IS_BS) {
+      led_set_code(5, 'B');
+      led_set_code(4, 'S');
+		if(alarm1_test_enable()) {
+      led_set_code(2, LED_CODE_BLACK);
+      led_set_code(1, 'O');
+      led_set_code(0, 'N');
+		} else {
+      led_set_code(2, 'O');
+      led_set_code(1, 'F');
+      led_set_code(0, 'F');
+		}
+	} else { // IS_MUSIC
+      led_set_code(5, 'S');
+      led_set_code(4, 'O');
+      led_set_code(3, 'U');
+      led_set_code(2, 'N');
+      led_set_code(1, 'D');  
+      CDBG("beeper_get_music_index return %bd\n", beeper_get_music_index());
+      led_set_code(0, beeper_get_music_index() + 1 + 0x30);
+	}
 }
 
 
@@ -83,11 +101,11 @@ static void enter_alarm(unsigned char what, unsigned char day)
       led_set_blink(1);
       led_set_blink(0);    
       break;      
-    case IS_DAY_ONOFF:
+    case IS_ONOFF:
       led_set_blink(2);
       led_set_blink(1);
       led_set_blink(0);
-      break;      
+      break; 
   }
   update_alarm(what, day);
 }
@@ -113,7 +131,7 @@ static void write_only(unsigned char what)
       }
       rom_write(ROM_ALARM0_HOUR, alarm0_get_min());
       break;
-    case IS_DAY_ONOFF:
+    case IS_ONOFF:
       rom_write(ROM_ALARM0_DAY_MASK, alarm0_get_day_mask());
       break;
   } 
@@ -122,8 +140,8 @@ static void write_only(unsigned char what)
 static void toggle_alarm(unsigned char day)
 {
   alarm0_set_enable(day, !alarm0_test_enable(day));
-  update_alarm(IS_DAY_ONOFF, day);
-  write_only(IS_DAY_ONOFF);
+  update_alarm(IS_ONOFF, day);
+  write_only(IS_ONOFF);
 }
 
 static void inc_only(unsigned char what)
@@ -155,7 +173,146 @@ static void inc_write(unsigned char what)
   write_only(what);
 }
 
+static void toggle_alarm_bs(void)
+{
+	alarm1_set_enable(!alarm1_test_enable());
+	alarm1_sync_to_rtc();
+	rom_write(ROM_ALARM1_ENABLE, alarm1_test_enable() ? 1 : 0);
+	update_alarm(IS_BS, 0);
+}
 
+static void toggle_alarm_music(void)
+{
+	beeper_inc_music_index();
+	rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
+	update_alarm(IS_MUSIC, 0);
+}
+
+void sm_clock_mod_alarm_init(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_alarm_init %bd %bd %bd\n", from, to, ev);
+	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
+}
+
+void sm_clock_mod_alarm_summod0(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_alarm_init %bd %bd %bd\n", from, to, ev);
+ // 切换到修改闹钟
+  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_INIT 
+    && ev == EV_KEY_MOD_UP) {
+    enter_alarm(IS_HOUR, 0);
+    return;
+  }
+  
+  // set0小时++ 
+  if(ev == EV_KEY_SET_PRESS) {
+    inc_write(IS_HOUR);
+    return;
+  }
+  
+  // set1小时持续++
+  if(ev == EV_KEY_SET_LPRESS) {
+    if((lpress_start % LPRESS_INC_DELAY) == 0) {
+      inc_only(IS_HOUR);
+    }
+    lpress_start++;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
+    return;
+  }
+  
+  // set抬起停止++，写入rtc
+  if(ev == EV_KEY_SET_UP) {
+    write_only(IS_HOUR);
+    lpress_start = 0;
+    return;
+  }
+}
+
+void sm_clock_mod_alarm_summod1(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_alarm_summod1 %bd %bd %bd\n", from, to, ev);
+  // mod0进入修改分钟模式
+  if(ev == EV_KEY_MOD_PRESS) {
+    enter_alarm(IS_MIN, 0);
+    return;
+  } 
+  
+  
+  // set0分钟++
+  if(ev == EV_KEY_SET_PRESS) {
+    inc_write(IS_MIN);
+    return;
+  }
+  
+  // set1分钟持续++
+  if(ev == EV_KEY_SET_LPRESS) {
+    if((lpress_start % LPRESS_INC_DELAY) == 0) {
+      inc_only(IS_MIN);
+    }
+    lpress_start++;
+    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
+    return;
+  }
+  
+  // set抬起停止++，写入rtc 
+  if(ev == EV_KEY_SET_UP) {
+    write_only(IS_MIN);
+    lpress_start = 0;
+    return;
+  }
+}
+
+void sm_clock_mod_alarm_summod2(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_alarm_summod2 %bd %bd %bd\n", from, to, ev);
+	
+	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_MM) {
+		alarm_index = 1;
+		enter_alarm(IS_ONOFF, alarm_index);
+		return;
+	}
+	
+	if(ev == EV_KEY_SET_PRESS) {
+		toggle_alarm(alarm_index);
+	}
+	
+	if(ev == EV_KEY_MOD_PRESS) {
+		alarm_index ++;
+		if(alarm_index <= 7) {
+			enter_alarm(IS_ONOFF, alarm_index);
+		} else {
+			set_task(EV_KEY_V0);
+		}
+	}
+}
+
+void sm_clock_mod_alarm_summod3(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_alarm_summod3 %bd %bd %bd\n", from, to, ev);
+	
+	if(ev == EV_KEY_MOD_PRESS) {
+		enter_alarm(IS_BS, 0);
+	}
+	
+	if(ev == EV_KEY_SET_PRESS) {
+		toggle_alarm_bs();
+	}
+}
+
+void sm_clock_mod_alarm_summod4(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_alarm_summod4 %bd %bd %bd\n", from, to, ev);
+	
+	if(ev == EV_KEY_MOD_PRESS) {
+		enter_alarm(IS_MUSIC, 0);
+	}
+	
+	if(ev == EV_KEY_SET_PRESS) {
+		toggle_alarm_music();
+	}
+}
+
+/*
 void sm_clock_mod_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm %bd %bd %bd\n", from, to, ev);
@@ -317,3 +474,4 @@ void sm_clock_mod_alarm(unsigned char from, unsigned char to, enum task_events e
     return;
   }
 }
+*/

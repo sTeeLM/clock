@@ -15,6 +15,12 @@ enum sm_clock_counter_ss {
 
 extern const char * code sm_clock_counter_ss_name[];
   
-void sm_clock_counter(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_init(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_submod1(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_submod2(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_submod3(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_submod4(unsigned char from, unsigned char to, enum task_events);
+void sm_clock_counter_submod5(unsigned char from, unsigned char to, enum task_events);
 
 #endif

@@ -11,6 +11,8 @@ enum sm_fuse_powersave_ss {
 
 extern const char * code sm_fuse_powersave_ss_name[];
 
-void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events);
+void sm_fuse_powersave_init(unsigned char from, unsigned char to, enum task_events);
+void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_events);
+void sm_fuse_powersave_submod1(unsigned char from, unsigned char to, enum task_events);
 
 #endif

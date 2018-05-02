@@ -9,30 +9,42 @@ enum sm_states_clock
   SM_CLOCK_DISPLAY      = 0, // 一般显示状态
   SM_CLOCK_MODIFY_TIME  = 1, // 修改时间
   SM_CLOCK_MODIFY_ALARM = 2, // 修改闹钟
-  SM_CLOCK_MODIFY_GLOBAL_FLAG = 3, // 修改全局状态
-  SM_CLOCK_POWERSAVE    = 4, // 节电
-  SM_CLOCK_ALARM        = 5, // 闹钟/整点报时
-  SM_CLOCK_TIMER        = 6, // 秒表功能
-  SM_CLOCK_COUNTER      = 7, // 倒计时功能
+  SM_CLOCK_POWERSAVE    = 3, // 节电
+  SM_CLOCK_ALARM        = 4, // 闹钟/整点报时
+  SM_CLOCK_TIMER        = 5, // 秒表功能
+  SM_CLOCK_COUNTER      = 6, // 倒计时功能
+};
+
+// max 16
+enum sm_states_power_pack
+{
+	SM_POWER_PACK_DISPLAY = 0,  // 电量展示
+	SM_POWER_PACK_POWERSAVE = 1,// 节电模式
 };
 
 // max 16
 enum sm_stats_fuse
 {
   SM_FUSE_TEST          = 0, // fuse测试
-  SM_FUSE_MODE          = 1, // fuse模式选择
-  SM_FUSE_PARAM         = 2,// fuse参数设置
-  SM_FUSE_TIMER         = 3,// fuse定时模式
-  SM_FUSE_GRENADE       = 4,// fuse触碰模式
-  SM_FUSE_DETONATE      = 5,// boom!
-  SM_FUSE_POWERSAVE     = 6,// 节电
+  SM_FUSE_PARAM         = 1,//  fuse参数设置
+  SM_FUSE_TIMER         = 2,//  fuse定时模式
+  SM_FUSE_DETONATE      = 3,// boom!
+  SM_FUSE_POWERSAVE     = 4,// 节电
+};
+
+// max 16
+enum sm_states_global_flag
+{
+	SM_GLOBAL_FLAG_MODIFY = 0, // 修改全局参数
 };
 
 // max 256
 enum sm_tables
 {
   SM_CLOCK  = 0,
-  SM_FUSE   = 1,
+	SM_POWER_PACK = 1,
+  SM_FUSE   = 2,
+	SM_GLOBAL_FLAG = 3,
   SM_TABLE_CNT
 };
 

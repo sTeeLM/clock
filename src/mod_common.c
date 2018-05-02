@@ -28,13 +28,3 @@ void display_logo(enum display_logo_type type, unsigned char num)
   beeper_beep_beep_always();
 }
 
-void display_param_error(unsigned int err)
-{
-  led_clear();
-  led_set_code(5, 'E');
-  led_set_code(4, 'R');
-  led_set_code(3, 'R');    
-  led_set_code(2, (err / 100) + 0x30);
-  led_set_code(1, ((err % 100)/10) + 0x30);  
-  led_set_code(0, (err % 10) + 0x30); 
-}

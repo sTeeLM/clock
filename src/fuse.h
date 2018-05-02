@@ -7,6 +7,8 @@ void fuse_proc(enum task_events ev);
 
 void fuse_set_fuse_broke(unsigned char index, bit enable);
 void fuse_set_tripwire_broke(bit broke);
+
+// 如果fuse_enable(0), fuse_broke,tripwire_broke, trigger全部disable
 void fuse_enable(bit enable);
 
 void fuse_enter_powersave(void);

@@ -38,19 +38,18 @@ static void rom_dump(void)
   
   //0=off 1=15s 2=30s 
   rom_read(ROM_POWERSAVE_TO);
-  
+	
   rom_read(ROM_FUSE_HG_ONOFF);
-  rom_read(ROM_FUSE_MPU_ONOFF);
+  rom_read(ROM_FUSE_MPU);
   rom_read(ROM_FUSE_THERMO_HI);
   rom_read(ROM_FUSE_THERMO_LO);
-  rom_read(ROM_FUSE_TRIPWIRE_ONOFF);
   
   rom_read(ROM_FUSE_PASSWORD);
-  rom_read(ROM_FUSE_PASSWORD);
-  rom_read(ROM_FUSE_PASSWORD);
-  rom_read(ROM_FUSE_PASSWORD);
-  rom_read(ROM_FUSE_PASSWORD);
-  rom_read(ROM_FUSE_PASSWORD);
+  rom_read(ROM_FUSE_PASSWORD + 1);
+  rom_read(ROM_FUSE_PASSWORD + 2);
+  rom_read(ROM_FUSE_PASSWORD + 3);
+  rom_read(ROM_FUSE_PASSWORD + 4);
+  rom_read(ROM_FUSE_PASSWORD + 5);
   
   rom_read(ROM_LT_TIMER_YEAR);
   rom_read(ROM_LT_TIMER_MONTH); // 8月
@@ -58,14 +57,6 @@ static void rom_dump(void)
   rom_read(ROM_LT_TIMER_HOUR);
   rom_read(ROM_LT_TIMER_MIN);
   rom_read(ROM_LT_TIMER_SEC); 
-  
-  rom_read(ROM_FUSE0_BROKE_GOOD);
-  rom_read(ROM_FUSE1_BROKE_GOOD);
-  rom_read(ROM_TRIPWIRE_GOOD);
-  rom_read(ROM_THERMO_HI_GOOD);
-  rom_read(ROM_THERMO_LO_GOOD);
-  rom_read(ROM_HG_GOOD);
-  rom_read(ROM_MPU_GOOD);
 }
 
 static void rom_reset(void)
@@ -84,10 +75,9 @@ static void rom_reset(void)
   rom_write(ROM_POWERSAVE_TO, 1);
   
   rom_write(ROM_FUSE_HG_ONOFF, 1);
-  rom_write(ROM_FUSE_MPU_ONOFF, 1);
+  rom_write(ROM_FUSE_MPU, 1);
   rom_write(ROM_FUSE_THERMO_HI, 40);
   rom_write(ROM_FUSE_THERMO_LO, 216);
-  rom_write(ROM_FUSE_TRIPWIRE_ONOFF, 1);
   
   rom_write(ROM_FUSE_PASSWORD,     1);
   rom_write(ROM_FUSE_PASSWORD + 1, 2);
@@ -102,14 +92,6 @@ static void rom_reset(void)
   rom_write(ROM_LT_TIMER_HOUR, 12);
   rom_write(ROM_LT_TIMER_MIN, 15);
   rom_write(ROM_LT_TIMER_SEC, 10); 
-  
-  rom_write(ROM_FUSE0_BROKE_GOOD, 0);
-  rom_write(ROM_FUSE1_BROKE_GOOD, 0);
-  rom_write(ROM_TRIPWIRE_GOOD, 0);
-  rom_write(ROM_THERMO_HI_GOOD, 0);
-  rom_write(ROM_THERMO_LO_GOOD, 0);
-  rom_write(ROM_HG_GOOD, 0);
-  rom_write(ROM_MPU_GOOD, 0);
 }
 
 bit rom_is_factory_reset(void)

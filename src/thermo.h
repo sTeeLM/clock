@@ -9,7 +9,9 @@ void thermo_initialize (void);
 void scan_thermo(void);
 void thermo_proc(enum task_events ev);
 
-void thermo_enable(bit enable);
+// 1: 加电，加载 hi/lo threshold设置， thermo_hi_enable，thermo_lo_enable全部处于disable状态
+// 0: 休眠，thermo_hi_enable， thermo_lo_enable 全部disable
+void thermo_enable(bit enable); 
 
 void thermo_hi_enable(bit enable);
 void thermo_lo_enable(bit enable);
@@ -19,11 +21,12 @@ bit thermo_hi_threshold_reach_top();
 bit thermo_lo_threshold_reach_bottom();
 bit thermo_lo_threshold_reach_top();
 
-char thermo_hi_threshold_get();
+char thermo_hi_threshold_get(); 
 char thermo_lo_threshold_get();
 
-void thermo_hi_threshold_dec();
+void thermo_hi_threshold_dec(); 
 void thermo_hi_threshold_inc();
+
 void thermo_lo_threshold_dec();
 void thermo_lo_threshold_inc();
 

@@ -31,21 +31,20 @@ power:
 #define ROM_POWERSAVE_TO    8
 
 #define ROM_FUSE_HG_ONOFF   9
-#define ROM_FUSE_MPU_ONOFF 10
+#define ROM_FUSE_MPU        10
 #define ROM_FUSE_THERMO_HI  11
 #define ROM_FUSE_THERMO_LO  12
-#define ROM_FUSE_TRIPWIRE_ONOFF  13
-#define ROM_FUSE_PASSWORD   14
-// 14 - 19， 6字节是password
+#define ROM_FUSE_PASSWORD   13
+// 6字节是password
 
 
 
-#define ROM_LT_TIMER_YEAR 20
-#define ROM_LT_TIMER_MONTH  21
-#define ROM_LT_TIMER_DATE  22
-#define ROM_LT_TIMER_HOUR 23
-#define ROM_LT_TIMER_MIN  24
-#define ROM_LT_TIMER_SEC  25
+#define ROM_LT_TIMER_YEAR 30
+#define ROM_LT_TIMER_MONTH  31
+#define ROM_LT_TIMER_DATE  32
+#define ROM_LT_TIMER_HOUR 33
+#define ROM_LT_TIMER_MIN  34
+#define ROM_LT_TIMER_SEC  35
 
 // 40 开始，是所有的外设的测试结果
 #define ROM_FUSE0_BROKE_GOOD 40

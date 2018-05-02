@@ -310,7 +310,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__OSCILLATO_6T__</Define>
+              <Define>__OSCILLATO_6T__,__CLOCK_EMULATE__</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -535,11 +535,6 @@
               <FilePath>.\sm_clock_alarm.c</FilePath>
             </File>
             <File>
-              <FileName>sm_clock_mod_global_flag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_clock_mod_global_flag.c</FilePath>
-            </File>
-            <File>
               <FileName>sm_clock_mod_time.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_clock_mod_time.c</FilePath>
@@ -547,13 +542,23 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>fuse</GroupName>
+          <GroupName>power_pack</GroupName>
           <Files>
             <File>
-              <FileName>sm_fuse_mode.c</FileName>
+              <FileName>sm_power_pack_display.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\sm_fuse_mode.c</FilePath>
+              <FilePath>.\sm_power_pack_display.c</FilePath>
             </File>
+            <File>
+              <FileName>sm_power_pack_powersave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_power_pack_powersave.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>fuse</GroupName>
+          <Files>
             <File>
               <FileName>sm_fuse_test.c</FileName>
               <FileType>1</FileType>
@@ -570,11 +575,6 @@
               <FilePath>.\sm_fuse_timer.c</FilePath>
             </File>
             <File>
-              <FileName>sm_fuse_grenade.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sm_fuse_grenade.c</FilePath>
-            </File>
-            <File>
               <FileName>sm_fuse_detonate.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_fuse_detonate.c</FilePath>
@@ -583,6 +583,16 @@
               <FileName>sm_fuse_powersave.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_fuse_powersave.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>global_flag</GroupName>
+          <Files>
+            <File>
+              <FileName>sm_global_flag_mod.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_global_flag_mod.c</FilePath>
             </File>
           </Files>
         </Group>

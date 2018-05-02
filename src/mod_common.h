@@ -7,24 +7,27 @@
 #define IS_YEAR  3
 #define IS_MON   4
 #define IS_DAY   5
-#define IS_DAY_ONOFF 6
-#define IS_HG    7
-#define IS_MPU  8
-#define IS_THERMO_HI 9
-#define IS_THERMO_LO 10
-#define IS_TRIPWIRE 11
-#define IS_PASSWORD 12
+#define IS_ONOFF 6
+#define IS_TEST  7
+#define IS_FUSE0 8
+#define IS_FUSE1 9
+#define IS_HG    10
+#define IS_MPU   11
+#define IS_THERMO_HI 12
+#define IS_THERMO_LO 13
+#define IS_TRIPWIRE 14
+#define IS_PASSWORD 15
 #define IS_PASSWORD5 (IS_PASSWORD + 5)
 
-#define IS_PS    0
-#define IS_BS    1
-#define IS_MUSIC 2
-#define IS_BEEP  3
-#define IS_1224  4
+#define IS_PS    16
+#define IS_BS    17
+#define IS_MUSIC 18
+#define IS_BEEP  19
+#define IS_1224  20
 
-#define IS_ALARM0 0
-#define IS_ALARM1 1
-#define IS_COUNTER 2
+#define IS_ALARM0 21
+#define IS_ALARM1 22
+#define IS_COUNTER 23
 
 #define LPRESS_INC_DELAY 5
 #define LPRESS_INC_OVERFLOW 50
@@ -41,23 +44,5 @@ enum display_logo_type {
 };
 
 void display_logo(enum display_logo_type type, unsigned char num);
-
-
-enum param_error
-{
-  PARAM_ERROR_MPU_BAD  = 501,
-  PARAM_ERROR_NEED_MPU  = 502,
-  PARAM_ERROR_LT_TIMER_OVERFLOW = 503,
-  PARAM_ERROR_HG_BAD = 504,
-  PARAM_ERROR_TRIPWIRE_BAD = 505,
-  PARAM_ERROR_THERMO_HI_BAD = 506,
-  PARAM_ERROR_THERMO_TOO_HI = 507,
-  PARAM_ERROR_THERMO_LO_BAD = 508,
-  PARAM_ERROR_THERMO_TOO_LOW = 509,
-  PARAM_ERROR_THERMO_HI_LESS_LO = 510,
-  PARAM_ERROR_FUSE_ERROR = 511,
-};
-
-void display_param_error(unsigned int err);
 
 #endif
