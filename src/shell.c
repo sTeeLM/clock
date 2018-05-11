@@ -73,9 +73,7 @@ struct shell_cmds code cmds[] =
                         "th lo <num>: set lo threshold to num\n"
                         "th lo rst: reset lo threshold\n", cmd_thermo},
   {"mp", "mpu test",    "mp <on|off>: enable/disable\n"
-												"mp int: read interrupt status\n"
-												"mp lp: loop read mpu\n"
-												"mp rd: read mpu \n", cmd_mpu},
+												"mp int: read interrupt status\n", cmd_mpu},
   {"ex", "quit the shell", "ex", cmd_null},
 }; 
 

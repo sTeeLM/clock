@@ -11,7 +11,7 @@
 #include "cext.h"
 
 #define KEY_PRESS_DELAY 200 // 防止抖动，检测延迟时间，200 us
-#define KEY_LPRESS_DELAY 3 // 长按时间，5s
+#define KEY_LPRESS_DELAY 3 // 长按时间，3s
 #define KEY_2_KEY_LPRESS_DELAY 2 // 同时按下长按时间，2s
 
 static unsigned char last_mod_tmr_count; 

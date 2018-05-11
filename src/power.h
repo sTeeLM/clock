@@ -24,7 +24,8 @@ void power_proc(enum task_events ev);
 
 void power_set_flag(void);
 void power_clr_flag(void);
-
 bit power_test_flag(void);
+
+void power_5v_enable(bit enable);
 
 #endif

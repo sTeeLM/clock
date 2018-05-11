@@ -164,5 +164,4 @@ void scan_int_hub_proc (enum task_events ev)
   if(!RTC_INT || !EXT_INT || !THERMO_INT || !MPU_INT ) {
     set_task(EV_SCAN_INT_HUB);
   }
- 
 }

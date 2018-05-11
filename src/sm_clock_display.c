@@ -9,6 +9,7 @@
 #include "mod_common.h"
 #include "alarm.h"
 #include "lt_timer.h"
+#include "power.h"
 
 #define SM_CLOCK_DISPLAY_SWITCH_S 3 // 5s
 
@@ -64,6 +65,7 @@ void sm_clock_display_init(unsigned char from, unsigned char to, enum task_event
   lt_timer_switch_off();
   alarm_switch_on();
   rtc_set_lt_timer(0);
+	power_5v_enable(0);
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 0);
 }
 

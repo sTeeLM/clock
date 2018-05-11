@@ -23,6 +23,7 @@
 #include "cext.h"
 #include "rom.h"
 #include "shell.h"
+#include "delay_task.h"
 
 
 #define __CLOCK__VERSION__ "2.0.0.0"
@@ -57,12 +58,12 @@ void main(void)
   beeper_initialize();                          // initialize beeper
   thermo_initialize();                          // initialize thermo
   fuse_initialize();                            // initialize fuse
-  mpu_initialize();                            // initialize mpu
+  mpu_initialize();                             // initialize mpu
   hg_initialize();                              // initialize hg
   int_hub_initialize();                         // initialize interrupt hub 
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
-
+	delay_task_initialize();											// initialize delay task
   while(1) {                                    //loop forever
     run_task();                                 // run task procs
     run_shell();                                // run shell

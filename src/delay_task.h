@@ -13,6 +13,7 @@ struct delay_task {
   DELAY_TASK_PROC task;
 };
 
+void delay_task_initialize(void);
 void delay_task_reg(unsigned char index, DELAY_TASK_PROC task, unsigned char delay_sec);
 void delay_task_call(void);
 #endif

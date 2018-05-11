@@ -22,6 +22,8 @@
 #include "lt_timer.h"
 #include "thermo.h"
 
+sbit POWER_5V_EN  = P3 ^ 6;
+
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
 bit powersave_flag;
@@ -37,6 +39,7 @@ void power_initialize(void)
     case POWERSAVE_30S: powersave_to_s = 30; break;
   }
   powersave_flag = 0;
+	POWER_5V_EN = 1;
 }
 
 void power_proc(enum task_events ev)
@@ -48,7 +51,7 @@ void power_proc(enum task_events ev)
 void power_enter_powersave(void)
 {
   CDBG("power_enter_powersave\n");
-  powersave_flag = 1;
+  power_set_flag();
   led_enter_powersave(); 
   timer_enter_powersave(); 
   lt_timer_enter_powersave();
@@ -62,17 +65,16 @@ void power_enter_powersave(void)
   mpu_enter_powersave();
   thermo_enter_powersave();
   com_enter_powersave();
-  while(powersave_flag) {
- // should be 0x2
+  while(power_test_flag()) {
 #ifdef __CLOCK_EMULATE__    
-    PCON |= 0x1;
+    PCON |= 0x1; // proteus 不支持0x2
 #else
     PCON |= 0x2;
 #endif
     com_leave_powersave(); 
     scan_int_hub_proc(EV_SCAN_INT_HUB);
     com_enter_powersave();
-    if(!powersave_flag) {
+    if(!power_test_flag()) {
       break;
     }
   }
@@ -153,4 +155,21 @@ void power_clr_flag(void)
 void power_reset_powersave_to(void)
 {
   last_ps_s = clock_get_sec_256();
+}
+
+void power_5v_enable(bit enable)
+{
+	CDBG("power_5v_enable %bd\n", enable ? 1 : 0);
+	
+	POWER_5V_EN = !enable;
+}
+
+unsigned char power_get_volume(void)
+{
+#ifdef __CLOCK_EMULATE__
+	return 97;
+#else
+	// 读取ADC读数，并转换为电量百分比
+	return 0;
+#endif
 }

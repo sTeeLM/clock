@@ -4,55 +4,13 @@
 #include "serial_hub.h"
 #include "sm.h"
 #include "power.h"
+#include "int_hub.h"
 #include "delay_task.h"
 
 static bit hg_enabled;
 static unsigned char hg_state; // 只有低四位有效
 
 #define HG_INITIALIZE_DELAY_SEC 2
-
-static void hg_cb_set_enable(void)
-{
-  CDBG("hg_cb_set_enable\n");
-  hg_enabled = 1;
-}
-
-
-static void hg_power_on(void)
-{
-  CDBG("hg_power_on\n");
-  
-  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
-  serial_ctl_out();
-
-  hg_state = 0xF;
-
-  delay_task_reg(DELAY_TASK_HG, hg_cb_set_enable, HG_INITIALIZE_DELAY_SEC);
-  
-  // hg_enabled = 1; set by hg_cb_set_enable
-}
-
-static void hg_power_off(void)
-{
-  CDBG("hg_power_off\n");
-  
-  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);
-  serial_ctl_out();
-  
-  hg_enabled = 0;
-}
-
-static unsigned char _hg_get_state(unsigned int status)
-{
-  return ((status & 0x3C) >> 2) & 0x0F;
-}
-
-void hg_initialize (void)
-{
-  CDBG("hg_initialize\n");
-  hg_enabled = 0;
-  hg_state   = 0xF;
-}
 
 void hg_enter_powersave(void)
 {
@@ -62,6 +20,21 @@ void hg_enter_powersave(void)
 void hg_leave_powersave(void)
 {
   CDBG("hg_leave_powersave\n");
+}
+
+static unsigned char _hg_get_state(unsigned int status)
+{
+  return ((status & 0x3C) >> 2) & 0xF;
+}
+
+static void hg_cb_set_enable(void)
+{
+	unsigned int status;
+  CDBG("hg_cb_set_enable\n");
+	
+	status = int_hub_get_status();
+	hg_state = _hg_get_state(status);
+  hg_enabled = 1;
 }
 
 void scan_hg(unsigned int status)
@@ -88,14 +61,35 @@ void scan_hg(unsigned int status)
   
 }
 
+static void hg_power_on(void)
+{
+	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
+	serial_ctl_out();
+	hg_state = 0xF;
+	delay_task_reg(DELAY_TASK_HG, hg_cb_set_enable, HG_INITIALIZE_DELAY_SEC);
+}
+
+static void hg_power_off(void)
+{
+	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);  
+	serial_ctl_out();
+	hg_enabled = 0;
+}
+
+void hg_initialize (void)
+{
+  CDBG("hg_initialize\n");
+  hg_power_off();
+}
 
 void hg_enable(bit enable)
 {
   CDBG("hg_enable %bd\n", enable ? 1 : 0);
   if(enable && !hg_enabled) {
-    hg_power_on();
+		hg_power_on();
+		// hg_enabled = 1 set by hg_cb_set_enable
   } else if(!enable && hg_enabled){
-    hg_power_off();
+		hg_power_off();
   }
 }
 

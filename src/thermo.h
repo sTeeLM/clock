@@ -3,38 +3,35 @@
 
 #include "task.h"
 
-#define THERMO_THRESHOLED_INVALID 0xFF
+#define THERMO_THRESHOLD_INVALID (0xFF)
+#define THERMO_THRESHOLD_MAX (85)
+#define THERMO_THRESHOLD_MIN (-55)
 
 void thermo_initialize (void);
 void scan_thermo(void);
 void thermo_proc(enum task_events ev);
 
-// 1: 加电，加载 hi/lo threshold设置， thermo_hi_enable，thermo_lo_enable全部处于disable状态
-// 0: 休眠，thermo_hi_enable， thermo_lo_enable 全部disable
 void thermo_enable(bit enable); 
 
-void thermo_hi_enable(bit enable);
-void thermo_lo_enable(bit enable);
+bit thermo_hi_threshold_reach_bottom(void);
+bit thermo_hi_threshold_reach_top(void);
+bit thermo_lo_threshold_reach_bottom(void);
+bit thermo_lo_threshold_reach_top(void);
 
-bit thermo_hi_threshold_reach_bottom();
-bit thermo_hi_threshold_reach_top();
-bit thermo_lo_threshold_reach_bottom();
-bit thermo_lo_threshold_reach_top();
+char thermo_hi_threshold_get(void); 
+char thermo_lo_threshold_get(void);
 
-char thermo_hi_threshold_get(); 
-char thermo_lo_threshold_get();
+void thermo_hi_threshold_dec(void); 
+void thermo_hi_threshold_inc(void);
 
-void thermo_hi_threshold_dec(); 
-void thermo_hi_threshold_inc();
-
-void thermo_lo_threshold_dec();
-void thermo_lo_threshold_inc();
-
-void thermo_hi_threshold_reset();
-void thermo_lo_threshold_reset();
+void thermo_lo_threshold_dec(void);
+void thermo_lo_threshold_inc(void);
 
 void thermo_hi_threshold_set(char val);
 void thermo_lo_threshold_set(char val);
+
+void thermo_hi_threshold_reset(void);
+void thermo_lo_threshold_reset(void);
 
 unsigned char thermo_threshold_inc(unsigned char thres);
 

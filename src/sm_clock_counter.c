@@ -129,7 +129,7 @@ static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 void sm_clock_counter_init(unsigned char from, unsigned char to, enum task_events ev)
 {
 	CDBG("sm_clock_counter_init %bd %bd %bd\n", from, to, ev);
-	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 5);
+	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 4);
 }
 
 void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_events ev)

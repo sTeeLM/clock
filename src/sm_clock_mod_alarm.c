@@ -194,7 +194,7 @@ void sm_clock_mod_alarm_init(unsigned char from, unsigned char to, enum task_eve
 	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
 }
 
-void sm_clock_mod_alarm_summod0(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm_init %bd %bd %bd\n", from, to, ev);
  // 切换到修改闹钟
@@ -228,9 +228,9 @@ void sm_clock_mod_alarm_summod0(unsigned char from, unsigned char to, enum task_
   }
 }
 
-void sm_clock_mod_alarm_summod1(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_mod_alarm_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_summod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod1 %bd %bd %bd\n", from, to, ev);
   // mod0进入修改分钟模式
   if(ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_MIN, 0);
@@ -262,9 +262,9 @@ void sm_clock_mod_alarm_summod1(unsigned char from, unsigned char to, enum task_
   }
 }
 
-void sm_clock_mod_alarm_summod2(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_mod_alarm_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_summod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod2 %bd %bd %bd\n", from, to, ev);
 	
 	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_MM) {
 		alarm_index = 1;
@@ -286,9 +286,9 @@ void sm_clock_mod_alarm_summod2(unsigned char from, unsigned char to, enum task_
 	}
 }
 
-void sm_clock_mod_alarm_summod3(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_mod_alarm_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_summod3 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod3 %bd %bd %bd\n", from, to, ev);
 	
 	if(ev == EV_KEY_MOD_PRESS) {
 		enter_alarm(IS_BS, 0);
@@ -299,9 +299,9 @@ void sm_clock_mod_alarm_summod3(unsigned char from, unsigned char to, enum task_
 	}
 }
 
-void sm_clock_mod_alarm_summod4(unsigned char from, unsigned char to, enum task_events ev)
+void sm_clock_mod_alarm_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_summod4 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod4 %bd %bd %bd\n", from, to, ev);
 	
 	if(ev == EV_KEY_MOD_PRESS) {
 		enter_alarm(IS_MUSIC, 0);

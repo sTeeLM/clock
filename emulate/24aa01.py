@@ -35,25 +35,23 @@ a[7] = 30
 a[8] = 0
 
 #define ROM_FUSE_HG_ONOFF   9
-#define ROM_FUSE_GYRO_ONOFF 10
+#define ROM_FUSE_MPU        10
 #define ROM_FUSE_THERMO_HI  11
 #define ROM_FUSE_THERMO_LO  12
-#define ROM_FUSE_TRIPWIRE_ONOFF  13
-#define ROM_FUSE_PASSWORD   14
-# 14 - 19 is password, 6 bytes
+#define ROM_FUSE_PASSWORD   13
+# 13 - 18 is password, 6 bytes
 
 a[9] = 1
 a[10] = 1
 a[11] = 40
 a[12] = 216
-a[13] = 1
 
-a[14] = 1
-a[15] = 2
-a[16] = 3
-a[17] = 4
-a[18] = 5
-a[19] = 6
+a[13] = 1
+a[14] = 2
+a[15] = 3
+a[16] = 4
+a[17] = 5
+a[18] = 6
 
 #define ROM_LT_TIMER_YEAR 20
 #define ROM_LT_TIMER_MONTH  21
@@ -68,22 +66,6 @@ a[22] = 18 # 0-30
 a[23] = 12
 a[24] = 15
 a[25] = 10
-
-#define ROM_FUSE0_BROKE_GOOD 40
-#define ROM_FUSE1_BROKE_GOOD 41
-#define ROM_TRIPWIRE_GOOD    42
-#define ROM_THERMO_HI_GOOD   43
-#define ROM_THERMO_LO_GOOD   44
-#define ROM_HG_GOOD          45
-#define ROM_GYRO_GOOD        46
-
-a[40] = 1
-a[41] = 1
-a[42] = 1
-a[43] = 1
-a[44] = 1
-a[45] = 1
-a[46] = 1
 
 with open('24aa01.bin', 'wb') as f:
 	f.write(a);

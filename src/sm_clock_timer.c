@@ -47,7 +47,7 @@ void sm_clock_timer_init(unsigned char from, unsigned char to, enum task_events 
 {
 	CDBG("sm_clock_timer_init %bd %bd %bd\n", from, to, ev);
 	clock_display(0);
-	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 4);
+	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 3);
 }
 
 void sm_clock_timer_submod0(unsigned char from, unsigned char to, enum task_events ev)

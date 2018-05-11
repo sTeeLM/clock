@@ -107,21 +107,21 @@ static void sm_global_flag_mod(unsigned char what,  enum task_events ev)
 	}
 }
 
-void sm_global_flag_mod_init_submod0(unsigned char from, unsigned char to, enum task_events ev)
+void sm_global_flag_mod_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_init_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_submod0 %bd %bd %bd\n", from, to, ev);
 	sm_global_flag_mod(IS_PS, ev);
 }
 
-void sm_global_flag_mod_init_submod1(unsigned char from, unsigned char to, enum task_events ev)
+void sm_global_flag_mod_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_init_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_submod1 %bd %bd %bd\n", from, to, ev);
 	sm_global_flag_mod(IS_BEEP, ev);
 }
 
-void sm_global_flag_mod_init_submod2(unsigned char from, unsigned char to, enum task_events ev)
+void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_init_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_submod2 %bd %bd %bd\n", from, to, ev);
 	sm_global_flag_mod(IS_1224, ev);
 }
 
