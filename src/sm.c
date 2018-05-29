@@ -31,6 +31,7 @@
 
 // state machine translate defines
 // 超级复杂变态
+// 
 static const struct sm_trans code sm_trans_clock_display[] = 
 {
   /* SM_CLOCK_DISPLAY */
@@ -57,7 +58,7 @@ static const struct sm_trans code sm_trans_clock_display[] =
   // 按mod0显示星期几
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, sm_clock_display_submod2},
   // set0回到时分秒显示模式
-  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod1},
+  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod0},
   // 闹钟0响了
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_YYMMDD, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
   // 闹钟1响了
@@ -68,7 +69,7 @@ static const struct sm_trans code sm_trans_clock_display[] =
   // 按mod0显示温度
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, sm_clock_display_submod3},
   // set0回到时分秒显示模式
-  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod1},
+  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod0},
   // 闹钟0响了
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
   // 闹钟1响了
@@ -77,9 +78,9 @@ static const struct sm_trans code sm_trans_clock_display[] =
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, EV_1S, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_WEEK, sm_clock_display_submod2},  
   
   // 按mod0回到时分秒显示模式
-  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod1},
+  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod0},
   // set0回到时分秒显示模式
-  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod1},
+  {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_HHMMSS, sm_clock_display_submod0},
   // 闹钟0响了
   {SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_TEMP, EV_ALARM0, SM_CLOCK, SM_CLOCK_ALARM<<4|SM_CLOCK_ALARM_HIT_ALARM0, sm_clock_alarm},
   // 闹钟1响了
@@ -174,7 +175,11 @@ static const struct sm_trans code sm_trans_clock_mod_alarm[] = {
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_SET_UP, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, sm_clock_mod_alarm_submod0},
   // mod0进入修改分钟模式
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm_submod1},
-   
+
+	// mod1进入修改时钟显示
+  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
+ 
+  
   // set0分钟++
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm_submod1},
   // set1分钟持续++
@@ -185,11 +190,9 @@ static const struct sm_trans code sm_trans_clock_mod_alarm[] = {
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod2}, 
 
   // set0调整打开关闭，并写入rtc
-  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod1},
+  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod2},
   // mod0进入修改下一天状态
-  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod1},
-  // mod0进入修改下一天状态
-  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod1},	
+  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod2},
   // EV_KEY_V0进入修改整点报时
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_V0, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_BS, sm_clock_mod_alarm_submod3},	
 	
@@ -311,16 +314,17 @@ static const struct sm_trans code sm_trans_power_pack_display[] = {
   /* SM_POWER_PACK_DISPLAY */
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_INIT, EV_KEY_MOD_UP, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_INIT, EV_KEY_SET_UP, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
+  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_SET_PRESS, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},	
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_MOD_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test_init},	
-  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_1S, SM_FUSE, SM_POWER_PACK<<4|SM_POWER_PACK_DISPLAY, sm_power_pack_display_submod0},	
+  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_1S, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},	
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_POWER_SAVE, SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_INIT, sm_power_pack_powersave_init},
 };
 
 static const struct sm_trans code sm_trans_power_pack_powersave[] = {
   {SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_INIT, EV_250MS, SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_SLEEP, sm_power_pack_powersave_submod0},
-  {SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_SLEEP, EV_KEY_SET_PRESS, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_INIT, sm_power_pack_powersave_init},
-  {SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_SLEEP, EV_KEY_MOD_PRESS, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_INIT, sm_power_pack_powersave_init},
+  {SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_SLEEP, EV_KEY_SET_PRESS, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
+  {SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_SLEEP, EV_KEY_MOD_PRESS, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
 };
 
 static const struct sm_trans code sm_trans_fuse_test[] = {  
@@ -340,9 +344,13 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, sm_fuse_test_submod1},
   // mod1 切换回时钟模式
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
+
   // set1 切换到定时参数设置
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param_init},
+  // modset1 切换到全局参数设置
+  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_KEY_MOD_SET_LPRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_INIT, sm_global_flag_mod_init},
   
+	
 	// set0设置thermo hi参数
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, sm_fuse_test_submod1},
 	// set0设置thermo hi参数++
@@ -359,10 +367,6 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test_submod2},
   // mod0 切换到设置thermo lo
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, sm_fuse_test_submod3},
-  // mod1 切换回时钟模式
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
-  // set1 切换到参数设置
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param_init},
   
   // set0设置thermo lo参数
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, sm_fuse_test_submod3},
@@ -373,18 +377,14 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
 	// mod0切换到测试模式
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
 	// set0启动测试
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
+  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
   // 收到EV_THERMO_LO，更新显示
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_THERMO_LO, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
   // 收到EV_1S，更新状态
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
   // mod0 切换到测试 hg
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG_SET, sm_fuse_test_submod5},
-  // mod1 切换回时钟模式
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
-  // set1 切换到参数设置
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param_init},
-  
+ 
   // set0调整ON/OFF
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG_SET, sm_fuse_test_submod5},
   // mod0切换到测试模式
@@ -397,11 +397,6 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, sm_fuse_test_submod6},
   // mod0 切换到测试 mpu
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, sm_fuse_test_submod7},
-  // mod1 切换回时钟模式
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
-  // set1 切换到参数设置
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_HG, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param_init},
-
   
   // set0敏感度+
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, sm_fuse_test_submod7},
@@ -410,7 +405,7 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
 	// set0设置敏感度++停止
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, sm_fuse_test_submod7},
   // mod0切换到测试模式
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, sm_fuse_test_submod8},
+  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, sm_fuse_test_submod8},
   // set0启动测试
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, sm_fuse_test_submod8},
   // 收到EV_MOT_MPU，更新显示
@@ -419,22 +414,22 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, sm_fuse_test_submod8},
   // mod0 切换到测试 fuse
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
-   // mod1 切换回时钟模式
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
-  // set1 切换到参数设置
-  {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param_init},
 };
 
 
 static const struct sm_trans code sm_trans_fuse_param[] = { 
   /* SM_FUSE_PARAM */
-  {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param_init},
+  {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param_submod0},
   // set0/1 调整年
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param_submod0},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param_submod0},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param_submod0},
   // mod0 切换调整时
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param_submod1},
+
+	// mod1 进入ARM
+  {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, sm_fuse_timer_init},
+
   // set0/1 调整月
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param_submod1},
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param_submod1},
@@ -472,7 +467,7 @@ static const struct sm_trans code sm_trans_fuse_param[] = {
   // mod0 下一数字
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, sm_fuse_param_submod6}, 
   // 结尾从头开始
-  {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_V0, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_INIT, sm_fuse_param_init},  
+  {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_V0, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, sm_fuse_param_submod0},  
   // set1 跳转fuse_timer
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_PASSWORD, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, sm_fuse_timer_init},
 };
@@ -480,7 +475,7 @@ static const struct sm_trans code sm_trans_fuse_param[] = {
 static const struct sm_trans code sm_trans_fuse_timer[] = { 
   /* SM_FUSE_TIMER */ 
   // 过1秒进入prearmed状态
-  {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer_submod0},
+  {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, EV_KEY_MOD_UP, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer_submod0},
   // 启动传感器
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_1S, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer_submod0}, 
   // 启动传感器，准备干活了
@@ -503,7 +498,7 @@ static const struct sm_trans code sm_trans_fuse_timer[] = {
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_THERMO_HI, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer_submod0}, 
   // tripwire断,触发
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, EV_THERMO_LO, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_PREARMED, sm_fuse_timer_submod0}, 
-  
+  // 测试是否进入超时节电
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_1S, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer_submod1},
   // set0在显示日期和hhmmss之间来回切换
   {SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_ARMED, sm_fuse_timer_submod1},
@@ -573,6 +568,8 @@ static const struct sm_trans code sm_trans_fuse_detonate[] = {
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_1S, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate_submod0},
   // 通电状态，mod0进入电路测试
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate_submod0},
+  // 通电状态，set0进入电路测试
+  {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, sm_fuse_detonate_submod0},
   // 通电满30S
   {SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_CHARGE, EV_KEY_V0, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test_init},
 };
@@ -613,6 +610,7 @@ static const struct sm_trans code sm_trans_global_flag_mod[] = {
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_PS, EV_KEY_SET_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_PS, sm_global_flag_mod_submod0},
   // mod0 进入按键音ON/OFF设置
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_PS, EV_KEY_MOD_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_BEEP, sm_global_flag_mod_submod1},  
+
   // mod1进入显示时间状态
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_PS, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
 
@@ -620,15 +618,11 @@ static const struct sm_trans code sm_trans_global_flag_mod[] = {
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_BEEP, EV_KEY_SET_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_BEEP, sm_global_flag_mod_submod1}, 
  // mod0 进入1224小时设置状态
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_BEEP, EV_KEY_MOD_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, sm_global_flag_mod_submod2}, 
-   // mod1进入显示时间状态
-  {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_BEEP, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init}, 
 
   // set0 1224模式切换
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, EV_KEY_SET_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, sm_global_flag_mod_submod2},
   // mod0 进入设置省电模式状态
-  {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, EV_KEY_MOD_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_INIT, sm_global_flag_mod_init}, 
-  // mod1 进入显示时间状态
-  {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
+  {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, EV_KEY_MOD_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_PS, sm_global_flag_mod_submod0}, 
 };
 
 struct sm_trans_group
@@ -728,9 +722,9 @@ static const struct sm_table_names code sm_names[] =
   {NULL, NULL}
 };
 
-static unsigned char sm_state;      // curent state hi 4 bits : state, lo 4 bits: sub-state 
-static unsigned char sm_curr_table; // current table;
-static unsigned char sm_new_table;
+static unsigned char sm_state;  // curent state hi 4 bits : state, lo 4 bits: sub-state 
+unsigned char sm_curr_table; // current table
+unsigned char sm_new_table; // new table
 
 void time_proc(enum task_events ev)
 {

@@ -81,16 +81,16 @@ void rtc_initialize (void)
   rtc_time_set_hour_12(is12);
   rtc_time_set_hour(count);
   
-  ///// 调试用，初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
+  ///// 调试用，2014-08-19, 12:10:30 PM
   rtc_time_set_hour(12);
   rtc_time_set_min(10);
   rtc_time_set_sec(30); 
   /////
   
-  if(rom_is_factory_reset()) { // 00:00:00
-    rtc_time_set_hour(0);
-    rtc_time_set_min(0);
-    rtc_time_set_sec(0); 
+  if(rom_is_factory_reset()) { //2014-08-19, 12:10:30 PM
+		rtc_time_set_hour(12);
+		rtc_time_set_min(10);
+		rtc_time_set_sec(30); 
   }
   
   CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
@@ -98,17 +98,17 @@ void rtc_initialize (void)
   
   rtc_read_data(RTC_TYPE_DATE);
   CDBG("before date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
-  
+ 
   ///// 调试用，初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
-  rtc_date_set_year(14);
-  rtc_date_set_month(8);
-  rtc_date_set_date(19);
+	rtc_date_set_year(14);
+	rtc_date_set_month(8);
+	rtc_date_set_date(19);
   /////
   
   if(rom_is_factory_reset()) { // 2000-1-1
-    rtc_date_set_year(0);
-    rtc_date_set_month(1);
-    rtc_date_set_date(1);
+		rtc_date_set_year(14);
+		rtc_date_set_month(8);
+		rtc_date_set_date(19);
   }
   
   rtc_date_set_day(clock_yymmdd_to_day(
@@ -451,9 +451,9 @@ void rtc_alarm_set_sec( unsigned char sec)
 {
   if(last_read == RTC_TYPE_ALARM0) {
     rtc_data[0] &= 0xF0;
-    rtc_data[0] |= sec / 10;
+    rtc_data[0] |= sec % 10;
     rtc_data[0] &= 0x8F;
-    rtc_data[0] |= sec % 10;    
+    rtc_data[0] |= ((sec / 10) << 4);    
   }
 }
 // DY A1M4 A1M3 A1M2 A1M1

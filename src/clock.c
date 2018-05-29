@@ -181,7 +181,9 @@ static void clock_inc_ms39(void)
       if(clk_is12 && clk.hour > 12) {
         hour -= 12;
         is_pm = 1;
-      }
+      } else if(clk_is12 && clk.hour == 12) { // 中午12点是PM。。
+				is_pm = 1;
+			}
       
       if(hour / 10 != 0) {
         led_data[5] = led_code[hour / 10 + 4] | (is_pm ? 0 : 0x80);
@@ -340,13 +342,12 @@ void clock_inc_year(void)
 void clock_sync_from_rtc(enum clock_sync_type type)
 {
   CDBG("clock_sync_from_rtc = %bd\n", type);
-  clock_enable_interrupt(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     clk.hour = rtc_time_get_hour();   // 0 - 23
     clk.min  = rtc_time_get_min();    // 0 - 59
     clk.sec  = rtc_time_get_sec();    // 0 - 59
-    clk.ms39 = 60;   // 0 - 255
+    clk.ms39 = 255;   // 0 - 255
     clk_is12     = rtc_time_get_hour_12();
   } else if(type == CLOCK_SYNC_DATE) {
     rtc_read_data(RTC_TYPE_DATE);
@@ -355,7 +356,6 @@ void clock_sync_from_rtc(enum clock_sync_type type)
     clk.date = rtc_date_get_date() - 1;      // 0 - 30(29/28/27)
     clk.day  = rtc_date_get_day() - 1;       // 0 - 6
   }
-  clock_enable_interrupt(1);
 }
 
 void clock_sync_to_rtc(enum clock_sync_type type)

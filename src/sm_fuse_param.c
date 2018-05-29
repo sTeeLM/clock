@@ -87,7 +87,7 @@ static void write_only(unsigned char what)
   switch(what) {
     case IS_HOUR:
       if(lpress_lock_year_hour == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_HOUR);
+        lt_timer_save_to_rom(LT_TIMER_SYNC_HOUR);
         lpress_lock_year_hour = 0;
         led_set_blink(5);
         led_set_blink(4);
@@ -95,7 +95,7 @@ static void write_only(unsigned char what)
       break;
     case IS_MIN:
       if(lpress_lock_month_min == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_MIN);
+        lt_timer_save_to_rom(LT_TIMER_SYNC_MIN);
         lpress_lock_month_min = 0;
         led_set_blink(3);
         led_set_blink(2); 
@@ -103,7 +103,7 @@ static void write_only(unsigned char what)
       break; 
     case IS_SEC:
       if(lpress_lock_day_sec == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_SEC);
+        lt_timer_save_to_rom(LT_TIMER_SYNC_SEC);
         lpress_lock_day_sec = 0;
         led_set_blink(1);
         led_set_blink(0); 
@@ -111,7 +111,7 @@ static void write_only(unsigned char what)
       break;
     case IS_DAY:
       if(lpress_lock_day_sec == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_DATE);
+        lt_timer_save_to_rom(LT_TIMER_SYNC_DATE);
         lpress_lock_day_sec = 0;
         led_set_blink(1);
         led_set_blink(0); 
@@ -119,7 +119,7 @@ static void write_only(unsigned char what)
       break;
     case IS_MON:
       if(lpress_lock_month_min == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_MONTH);
+        lt_timer_save_to_rom(LT_TIMER_SYNC_MONTH);
         lpress_lock_month_min = 0;
         led_set_blink(3);
         led_set_blink(2);      
@@ -127,7 +127,7 @@ static void write_only(unsigned char what)
       break;
     case IS_YEAR:
       if(lpress_lock_year_hour == 1) {
-        lt_timer_sync_to_rom(LT_TIMER_SYNC_YEAR);
+        lt_timer_save_to_rom(LT_TIMER_SYNC_YEAR);
         lpress_lock_year_hour = 0;
         led_set_blink(5);
         led_set_blink(4);
@@ -183,6 +183,8 @@ static void update_time(unsigned char what)
 		if(clock_get_hour_12() && hour > 12) {
 			led_set_dp(5);
 			hour -= 12;
+		} else if(clock_get_hour_12() && hour == 12){
+			led_set_dp(5);
 		} else {
 			led_clr_dp(5);
 		}
@@ -252,7 +254,7 @@ void sm_fuse_param_init(unsigned char from, unsigned char to, enum task_events e
 {
   CDBG("sm_fuse_param_init %bd %bd %bd\n", from, to, ev);
 	display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
-	password_index = 5;
+
 	if(ev == EV_KEY_V0) {
 		set_task(EV_KEY_SET_UP);
 	}
@@ -292,6 +294,12 @@ static void sm_fuse_param_set_time(unsigned char what, unsigned char ev)
 void sm_fuse_param_submod0(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_submod0 %bd %bd %bd\n", from, to, ev);	
+	if((ev == EV_KEY_SET_UP && get_sm_ss_state(from) == SM_FUSE_PARAM_INIT)
+		|| (ev == EV_KEY_V0 && get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)) {
+		ev = EV_KEY_MOD_PRESS;
+	}
+	password_index = 5;
+	lt_timer_load_from_rom();
 	sm_fuse_param_set_time(IS_YEAR, ev);
 }
 
@@ -365,300 +373,3 @@ void sm_fuse_param_submod6(unsigned char from, unsigned char to, enum task_event
     return;
   }
 }
-
-/*
-void sm_fuse_param(unsigned char from, unsigned char to, enum task_events ev)
-{
-  CDBG("sm_fuse_param %bd %bd %bd\n", from, to, ev);
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_INIT && ev == EV_KEY_SET_LPRESS) {
-    display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
-    return;
-  }
-  
-  // 防止误操作
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY
-    && (get_sm_ss_state(from) == SM_FUSE_PARAM_INIT || get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)
-    && (ev == EV_KEY_SET_UP|| ev == EV_FUSE_SEL0)) {
-    lt_timer_sync_from_rom();
-    enter_yymmdd(IS_YEAR);
-    return;
-  }  
-
-  // 调整年
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_YEAR);
-    update_yymmdd();
-    return;
-  } 
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_YEAR);
-      update_yymmdd();
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_YY && ev == EV_KEY_SET_UP) {
-    write_only(IS_YEAR);
-    lpress_start = 0;
-    return;
-  }   
-  
-  // 调整月
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_MON);
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MON);
-    update_yymmdd();
-    return;
-  } 
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MON);
-      update_yymmdd();
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MO && ev == EV_KEY_SET_UP) {
-    write_only(IS_MON);
-    lpress_start = 0;
-    return;
-  } 
-  
-  // 调整日
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_DAY);
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_DAY);
-    update_yymmdd();
-    return;
-  } 
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_DAY);
-      update_yymmdd();
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_DD && ev == EV_KEY_SET_UP) {
-    write_only(IS_DAY);
-    lpress_start = 0;
-    return;
-  }  
-
-  // 调整时
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_HH && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_HOUR);
-    return;
-  }
-    
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_HH && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_HOUR);
-    update_hhmmss();
-    return;
-  } 
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_HH && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_HOUR);
-      update_hhmmss();
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_HH && ev == EV_KEY_SET_UP) {
-    write_only(IS_HOUR);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 调整分
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MM && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_MIN);
-    return;
-  }
-    
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MM && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MIN);
-    update_hhmmss();
-    return;
-  } 
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MM && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MIN);
-      update_hhmmss();
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MM && ev == EV_KEY_SET_UP) {
-    write_only(IS_MIN);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 调整秒
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_SS && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_SEC);
-    return;
-  }
-    
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_SS && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_SEC);
-    update_hhmmss();
-    return;
-  } 
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_SS && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_SEC);
-      update_hhmmss();
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_SS && ev == EV_KEY_SET_UP) {
-    write_only(IS_SEC);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 调整hg on/off
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_HG_ONOFF && ev == EV_KEY_MOD_PRESS) {
-    enter_onoff(IS_HG);
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_HG_ONOFF && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_HG);
-    update_onoff(IS_HG);
-    return;
-  }
-  
-  // 调整mpu on/off
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MPU_ONOFF && ev == EV_KEY_MOD_PRESS) {
-    enter_onoff(IS_MPU);
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_MPU_ONOFF && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MPU);
-    update_onoff(IS_MPU);
-    return;
-  }  
-  
-  // 调整thermo hi
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_HI_ONOFF && ev == EV_KEY_MOD_PRESS) {
-    enter_thermo(IS_THERMO_HI);
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_HI_ONOFF && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_THERMO_HI);
-    update_thermo(IS_THERMO_HI);
-    return;
-  } 
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_HI_ONOFF && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_THERMO_HI);
-      update_thermo(IS_THERMO_HI);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_HI_ONOFF && ev == EV_KEY_SET_UP) {
-    write_only(IS_THERMO_HI);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 调整thermo lo
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_MOD_PRESS) {
-    enter_thermo(IS_THERMO_LO);
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_THERMO_LO);
-    update_thermo(IS_THERMO_LO);
-    return;
-  }
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_THERMO_LO);
-      update_thermo(IS_THERMO_LO);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_THERMO_LO_ONOFF && ev == EV_KEY_SET_UP) {
-    write_only(IS_THERMO_LO);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 设置password
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_MOD_PRESS) {
-    if(get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD) {
-      if(password_index > 0) {
-        password_index --;
-      } else {
-        set_task(EV_FUSE_SEL0);
-        return;
-      }
-    }
-    enter_password(IS_PASSWORD + password_index); // 使用last_index作为password的index，为了减少ram使用。。。
-    return;
-  }
-  
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_PASSWORD + password_index);
-    update_password(IS_PASSWORD + password_index);
-    return;
-  }
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_PASSWORD + password_index);
-      update_password(IS_PASSWORD + password_index);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  if(get_sm_ss_state(to) == SM_FUSE_PARAM_PASSWORD && ev == EV_KEY_SET_UP) {
-    write_only(IS_PASSWORD + password_index);
-    lpress_start = 0;
-    return;
-  }
-}
-*/

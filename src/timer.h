@@ -25,7 +25,7 @@ struct timer_struct {
   unsigned char ms39;
 };
 
-#define TIMER_SLOT_CNT 3
+#define TIMER_SLOT_CNT 5
 
 void timer_set_led_autorefresh(bit enable, enum timer_display_mode mode);
 void timer_set_mode(enum timer_mode mode);

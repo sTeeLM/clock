@@ -4,6 +4,7 @@
 #include "task.h"
 
 // max 16
+// SM_CLOCK
 enum sm_states_clock
 {
   SM_CLOCK_DISPLAY      = 0, // 一般显示状态
@@ -16,6 +17,7 @@ enum sm_states_clock
 };
 
 // max 16
+// SM_POWER_PACK
 enum sm_states_power_pack
 {
 	SM_POWER_PACK_DISPLAY = 0,  // 电量展示
@@ -23,6 +25,7 @@ enum sm_states_power_pack
 };
 
 // max 16
+// SM_FUSE
 enum sm_stats_fuse
 {
   SM_FUSE_TEST          = 0, // fuse测试
@@ -33,6 +36,7 @@ enum sm_stats_fuse
 };
 
 // max 16
+// SM_GLOBAL_FLA
 enum sm_states_global_flag
 {
 	SM_GLOBAL_FLAG_MODIFY = 0, // 修改全局参数
@@ -79,5 +83,8 @@ void sm_dump_sub_state(void);
 bit sm_set_table_by_name(const char * table_name);
 bit sm_set_state_by_name(const char * state_name);
 bit sm_set_sub_state_by_name(const char * sub_state_name);
+
+extern unsigned char sm_curr_table; // current table;
+extern unsigned char sm_new_table;
 
 #endif

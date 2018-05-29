@@ -3,7 +3,7 @@
 
 #include "task.h"
 
-#define THERMO_THRESHOLD_INVALID (0xFF)
+#define THERMO_THRESHOLD_INVALID (128)
 #define THERMO_THRESHOLD_MAX (85)
 #define THERMO_THRESHOLD_MIN (-55)
 

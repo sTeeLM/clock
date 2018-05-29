@@ -32,11 +32,40 @@ static char thermo_threshold_lo;
 #define THERMO_I2C_ADDRESS 0x90 //1001 0000
 #endif
 
+static void thermo_load_config(void)
+{
+	CDBG("thermo_load_config\n");
+	// 从rom中读取配置
+	thermo_threshold_hi = (char)rom_read(ROM_FUSE_THERMO_HI);
+	thermo_threshold_lo = (char)rom_read(ROM_FUSE_THERMO_LO);
+	CDBG("thermo_threshold_hi = %bd\n", thermo_threshold_hi);
+	CDBG("thermo_threshold_lo = %bd\n", thermo_threshold_lo);	
+}
+
 static void thermo_power_off(void)
 {
 	unsigned char val;
 	
+	thermo_load_config();
+	
 #ifdef __CLOCK_EMULATE__
+
+  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
+  // 0|0|0|0|0|0|0|0
+  // set thermo0 config
+  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xAC, 0x00);
+  // 0|0|0|0|0|0|1|0
+  // set thermo1 config
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);
+	
+	// set alert threshold
+	thermo_hi_threshold_reset();
+	thermo_lo_threshold_reset();	
+
+  // stop thermo T
+  I2C_Put(THERMO_HI_I2C_ADDRESS, 0x22, 0);
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x22, 0);
+	
   // 设置thermo hub 为output, disable thermo
   // Configuration Register 设置为全0，用于output
   I2C_Put(THERMO_HUB_I2C_ADDRESS, 0x3, 0x0);
@@ -47,31 +76,34 @@ static void thermo_power_off(void)
   // 读取一次端口寄存器消除中断
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
 	
-  // stop thermo T
-  I2C_Put(THERMO_HI_I2C_ADDRESS, 0x22, 0);
-  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x22, 0);
 #else
+  // genenal call reset
+  I2C_Get(0x0, 0x6, &val);
+  
+  // TLOW Register
+  thermo_lo_threshold_reset();
+  
+  // THIGH Register
+  thermo_hi_threshold_reset();
+	
   val = 0x01;
   I2C_Put(THERMO_I2C_ADDRESS, 0x1, val);
 #endif	
 }
 
-
 // 读取rom配置，thermo处于节电状态，中断禁止
 void thermo_initialize (void)
 {	
   CDBG("thermo_initialize\n");
-	// 从rom中读取配置
-	thermo_threshold_hi = (char)rom_read(ROM_FUSE_THERMO_HI);
-	thermo_threshold_lo = (char)rom_read(ROM_FUSE_THERMO_LO);
-	CDBG("thermo_threshold_hi = %bd\n", thermo_threshold_hi);
-	CDBG("thermo_threshold_lo = %bd\n", thermo_threshold_lo);
 	thermo_power_off();
 }
 
 static void thermo_power_on(void)
 {
 	unsigned char val;
+	
+	thermo_load_config();
+	
 #ifdef __CLOCK_EMULATE__
   // DONE|THF|TLF|NVB|1|0|POL|1SHOT
   // 0|0|0|0|0|0|0|0
@@ -253,7 +285,7 @@ void thermo_hi_threshold_set(char temp)
   unsigned int val;
   CDBG("thermo_hi_threshold_set %bd\n", temp);
   
-	if(temp == THERMO_THRESHOLD_INVALID)
+	if(temp == (char)THERMO_THRESHOLD_INVALID)
 		temp = THERMO_THRESHOLD_MAX_INVALID;
 	else {
 		if (temp > THERMO_THRESHOLD_MAX)
@@ -276,7 +308,7 @@ void thermo_lo_threshold_set(char temp)
   unsigned int val;
   CDBG("thermo_lo_threshold_set %bd\n", temp);
   
-	if(temp == THERMO_THRESHOLD_INVALID)
+	if(temp == (char)THERMO_THRESHOLD_INVALID)
 		temp = THERMO_THRESHOLD_MIN_INVALID;
 	else {
 		if (temp > THERMO_THRESHOLD_MAX)
@@ -355,17 +387,20 @@ void thermo_lo_threshold_inc()
 unsigned char thermo_threshold_inc(unsigned char thres)
 {
   char value;
+	unsigned char ret;
   if(thres != THERMO_THRESHOLD_INVALID) {
     value = (char)thres;
     if(value < THERMO_THRESHOLD_MAX) {
       value ++;
-      return (unsigned char) value;
+      ret =  (unsigned char) value;
     }else {
-      return THERMO_THRESHOLD_INVALID;
+      ret = (unsigned char) THERMO_THRESHOLD_INVALID;
     }
   } else {
-    return (unsigned char)THERMO_THRESHOLD_MIN;
+    ret = (unsigned char) THERMO_THRESHOLD_MIN;
   }
+	CDBG("thermo_threshold_inc from %bd to %bd\n", thres, ret);
+	return ret;
 }
 
 bit thermo_hi_threshold_reach_bottom()
@@ -404,7 +439,7 @@ void thermo_hi_threshold_reset(void)
 
 void thermo_lo_threshold_reset(void)
 {
-	thermo_lo_threshold_set(THERMO_THRESHOLD_MIN_INVALID);
+	thermo_lo_threshold_set(thermo_threshold_lo);
 }
 
 void thermo_proc(enum task_events ev)

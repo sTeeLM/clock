@@ -28,7 +28,10 @@ void display_logo(enum display_logo_type type, unsigned char num)
 			break;
 		case DISPLAY_LOGO_TYPE_FUSE:
 			led_set_code(5, 'F');
-			break;		
+			break;
+		case DISPLAY_LOGO_TYPE_GLOBAL_FLAG:
+			led_set_code(5, 'G');
+			break;
 	}
   led_set_code(1, (num / 10) + 0x30);
   led_set_code(0, (num % 10) + 0x30);

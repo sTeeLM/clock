@@ -36,7 +36,6 @@ static void rom_dump(void)
   rom_read(ROM_BEEPER_ENABLE);
   rom_read(ROM_BEEPER_MUSIC_TO);
   
-  //0=off 1=15s 2=30s 
   rom_read(ROM_POWERSAVE_TO);
 	
   rom_read(ROM_FUSE_HG_ONOFF);
@@ -52,8 +51,8 @@ static void rom_dump(void)
   rom_read(ROM_FUSE_PASSWORD + 5);
   
   rom_read(ROM_LT_TIMER_YEAR);
-  rom_read(ROM_LT_TIMER_MONTH); // 8月
-  rom_read(ROM_LT_TIMER_DATE); // 19日
+  rom_read(ROM_LT_TIMER_MONTH);
+  rom_read(ROM_LT_TIMER_DATE);
   rom_read(ROM_LT_TIMER_HOUR);
   rom_read(ROM_LT_TIMER_MIN);
   rom_read(ROM_LT_TIMER_SEC); 

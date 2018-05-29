@@ -16,10 +16,19 @@
 
 static unsigned char mpu_threshold;
 
+static void mpu_load_config(void)
+{
+  CDBG("mpu_load_config\n");
+	mpu_threshold = rom_read(ROM_FUSE_MPU);
+	CDBG("mpu_threshold = %bd\n", mpu_threshold);
+}
+
 static void mpu_power_on(void)
 {
   unsigned char val;
   CDBG("mpu_power_on\n");
+	
+	mpu_load_config();
 	
 #ifdef __CLOCK_EMULATE__
   // Configuration Register 设置为全1，用于input
@@ -149,7 +158,7 @@ void mpu_initialize (void)
 {
   CDBG("mpu_initialize\n");
 	
-	mpu_threshold = rom_read(ROM_FUSE_MPU);
+	mpu_load_config();
 	
 	mpu_power_off();
 }

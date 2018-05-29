@@ -32,7 +32,7 @@ a[7] = 30
 #define ROM_POWERSAVE_TO    8
 # 0=off 1=15s 2=30s
 
-a[8] = 0
+a[8] = 1
 
 #define ROM_FUSE_HG_ONOFF   9
 #define ROM_FUSE_MPU        10
@@ -64,7 +64,7 @@ a[20] = 14
 a[21] = 7  # 0-11
 a[22] = 18 # 0-30
 a[23] = 12
-a[24] = 15
+a[24] = 13
 a[25] = 10
 
 with open('24aa01.bin', 'wb') as f:

@@ -29,7 +29,7 @@
 #define IS_ALARM1 22
 #define IS_COUNTER 23
 
-#define LPRESS_INC_DELAY 5
+#define LPRESS_INC_DELAY 2
 #define LPRESS_INC_OVERFLOW 50
 
 extern bit lpress_lock_year_hour;
@@ -41,7 +41,8 @@ extern unsigned char common_state;
 enum display_logo_type {
   DISPLAY_LOGO_TYPE_CLOCK = 0,
 	DISPLAY_LOGO_TYPE_POWER_PACK = 1,
-  DISPLAY_LOGO_TYPE_FUSE  = 2,  
+  DISPLAY_LOGO_TYPE_FUSE  = 2, 
+	DISPLAY_LOGO_TYPE_GLOBAL_FLAG = 3
 };
 
 void display_logo(enum display_logo_type type, unsigned char num);

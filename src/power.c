@@ -164,6 +164,12 @@ void power_5v_enable(bit enable)
 	POWER_5V_EN = !enable;
 }
 
+bit power_5v_get_enable(void)
+{
+	return !POWER_5V_EN;
+}
+
+// return 0~100
 unsigned char power_get_volume(void)
 {
 #ifdef __CLOCK_EMULATE__

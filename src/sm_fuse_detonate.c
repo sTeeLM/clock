@@ -27,50 +27,30 @@ static void display_detonate(void)
 void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_detonate_init %bd %bd %bd\n", from, to, ev);
-	if(ev == EV_250MS) {
-    display_detonate();
-    fuse_trigger(1);
-    common_state = 0;
-	}
+  display_detonate();
 }
 
 
 void sm_fuse_detonate_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_detonate_submod0 %bd %bd %bd\n", from, to, ev);
-	if(ev == EV_1S || ev == EV_KEY_MOD_PRESS) {
-		common_state ++;
+	
+	if(ev == EV_250MS) {
+		fuse_trigger(1);
+		common_state = 0;
+		return;
+	}
+	
+	if(ev == EV_1S || ev == EV_KEY_MOD_PRESS || ev == EV_KEY_SET_PRESS) {
+		if(ev == EV_1S)
+			common_state ++;
+		else
+			common_state = MAX_FUSE_CHARGE_TIME + 1;
 		if(common_state > MAX_FUSE_CHARGE_TIME) {
       fuse_trigger(0);
       fuse_enable(0);
 			set_task(EV_KEY_V0);
 		}
+		return;
 	}
 }
-
-/*
-void sm_fuse_detonate(unsigned char from, unsigned char to, enum task_events ev)
-{
-  CDBG("sm_fuse_detonate %bd %bd %bd\n", from, to, ev);
-  
-  // 该通电了
-  if(get_sm_ss_state(to) == SM_FUSE_DETONATE_CHARGE && ev == EV_250MS) {
-    display_detonate();
-    fuse_trigger(1);
-    common_state = 0;
-    return;
-  }
-  
-  // 记录通电时间，30S或者mod0停止
-  if(get_sm_ss_state(to) == SM_FUSE_DETONATE_CHARGE && (ev == EV_1S || ev == EV_KEY_MOD_PRESS)) {
-    common_state ++;
-    if((ev == EV_1S && common_state > MAX_FUSE_CHARGE_TIME) || ev == EV_KEY_MOD_PRESS) {
-      CDBG("stop charge!\n");
-      fuse_trigger(0);
-      fuse_enable(0);
-      set_task(EV_FUSE_SEL0);
-    }
-    return;
-  }
-}
-*/

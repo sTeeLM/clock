@@ -44,8 +44,8 @@ unsigned char lt_timer_get_min(void);
 unsigned char lt_timer_get_sec(void);
 
 
-void lt_timer_sync_to_rom(enum lt_timer_sync_type type);
-void lt_timer_sync_from_rom(void);
+void lt_timer_save_to_rom(enum lt_timer_sync_type type);
+void lt_timer_load_from_rom(void);
 void lt_timer_sync_to_rtc(void);
 bit lt_timer_get_relative(bit too_close_check);
 

@@ -16,5 +16,10 @@ void sm_power_pack_powersave_init(unsigned char from, unsigned char to, enum tas
 void sm_power_pack_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_power_pack_powersave_submod0 %bd %bd %bd\n", from, to, ev);
-
+  // ∏√ÀØ√ﬂ¡À
+  if(ev == EV_250MS) {
+    power_enter_powersave();
+    power_leave_powersave();
+    return;
+  } 
 }

@@ -59,7 +59,7 @@ void sm_fuse_test_init(unsigned char from, unsigned char to, enum task_events ev
 	power_5v_enable(0);
 	test_stage = 0;
 	test_to    = 0;
-	if(ev == EV_KEY_V0) { // 从拆除切换过来
+	if(ev == EV_KEY_V0) { // 从SM_FUSE_TIMER_DISARMED/SM_FUSE_TIMER_PREARMED/SM_FUSE_DETONATE_CHARGE切换过来
 		set_task(EV_KEY_MOD_UP);
 	}
 }
@@ -80,7 +80,7 @@ static unsigned char update_hg_mask(unsigned char state, unsigned char mask)
 static void display_test(unsigned char what, unsigned char stage, unsigned char val, unsigned char errcode)
 {
 	char tmp;
-	CDBG("display_fuse_test %bd %bd %bd，%bd\n", what, stage, val, errcode);
+	CDBG("display_test what = %bd stage = %bd val = %bd errcode = %bd\n", what, stage, val, errcode);
 	
 	led_clear();
 	
@@ -93,13 +93,11 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
 		led_set_code(1, 'S');
 		led_set_code(0, 'S');
 	} else if(errcode == FUSE_ERR_BROKE){
-		led_set_code(3, stage + 0x30);
-		led_set_code(2, '-');			
+		led_set_code(3, stage + 0x30);		
 		led_set_code(1, 'B');
 		led_set_code(0, 'R');
 	} else if(errcode == FUSE_ERR_NOT_RESPONSE) {
-		led_set_code(3, stage + 0x30);
-		led_set_code(2, '-');			
+		led_set_code(3, stage + 0x30);			
 		led_set_code(1, 'R');
 		led_set_code(0, 'E');
 	}
@@ -110,21 +108,23 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
 		case IS_TRIPWIRE:
 			led_set_code(5, 'F');
 			led_set_code(4, 'U');
-			if(what == IS_FUSE0) {
-				val = '0';
-			}else if(what == IS_FUSE1) {
-				val = '1';
-			} else {
-				val = 'T';
-			}
 			if(errcode == FUSE_ERR_WAIT) {
 				led_set_code(3, stage + 0x30);
-				led_set_code(2, val); // fuse0, fuse1 or tripwire			
+				led_set_code(2, '-');	
 				led_set_code(1, '-');
 				led_set_code(0, '-');
 				led_set_blink(2);
 				led_set_blink(1);
 				led_set_blink(0);				
+			} else if(errcode == FUSE_ERR_BROKE || errcode == FUSE_ERR_NOT_RESPONSE) {
+				if(what == IS_FUSE0) {
+					val = '0';
+				} else if(what == IS_FUSE1) {
+					val = '1';
+				} else {
+					val = 'T';
+				}
+				led_set_code(2, val); // fuse0, fuse1 or tripwire		
 			}
 			break;
 		case IS_THERMO_HI:
@@ -137,13 +137,19 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
 			}
 			if(errcode == FUSE_ERR_WAIT) { // 显示温度变化
 				led_set_code(3, stage + 0x30);
-				tmp = (char) val;
-				if(tmp < 0) {
-					led_set_code(2, '-');	
-					tmp = 0 - tmp;
-				}		
-				led_set_code(1, (tmp / 10) + 0x30);
-				led_set_code(0, (tmp % 10) + 0x30);			
+				if(val != THERMO_THRESHOLD_INVALID) {
+					tmp = (char) val;
+					if(tmp < 0) {
+						led_set_code(2, '-');	
+						tmp = 0 - tmp;
+					}		
+					led_set_code(1, (tmp / 10) + 0x30);
+					led_set_code(0, (tmp % 10) + 0x30);
+				} else {
+					led_set_code(2, 'O');	
+					led_set_code(1, 'F');
+					led_set_code(0, 'F');
+				}
 			}
 			break;
 		case IS_HG:
@@ -167,8 +173,16 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
 				led_set_code(3, 'S'); // shake me !
 				led_set_code(2, '-');
 				// IS_HG显示hg_mask变化, IS_MPU时为敏感度
-				led_set_code(1, (val / 16) + 0x30); 
-				led_set_code(0, (val % 16) + 0x30);	
+				if((val / 16) < 10) {
+					led_set_code(1, (val / 16) + 0x30);
+				} else {
+					led_set_code(1, (val / 16) + 0x37);
+				}
+				if((val % 16) < 10) {
+					led_set_code(0, (val % 16) + 0x30);
+				} else {
+					led_set_code(0, (val % 16) + 0x37);
+				}
 			}
 			break;
 	}
@@ -177,6 +191,7 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
 static void update_set(unsigned char what)
 {
 	char val;
+	
 	switch(what) {
 		case IS_THERMO_HI: // TH
 		case IS_THERMO_LO: // TL
@@ -189,6 +204,8 @@ static void update_set(unsigned char what)
 				if(val < 0) {
 					led_set_code(2, '-');
 					val = 0 - val;
+				} else {
+					led_set_code(2, LED_CODE_BLACK);
 				}
 				led_set_code(1, val / 10 + 0x30);
 				led_set_code(0, val % 10 + 0x30); 
@@ -211,6 +228,7 @@ static void update_set(unsigned char what)
 				led_set_code(1, 'F');
 				led_set_code(0, 'F');
 			} else {
+				led_set_code(2, LED_CODE_BLACK);		
 				led_set_code(1, set_value / 10 + 0x30);
 				led_set_code(0, set_value % 10 + 0x30); 
 			}
@@ -287,9 +305,9 @@ static void write_only(unsigned char what)
 	
   if(lpress_lock) {
 		lpress_lock = 0;
-		led_clr_blink(2);
-		led_clr_blink(1);
-		led_clr_blink(0);	
+		led_set_blink(2);
+		led_set_blink(1);
+		led_set_blink(0);	
 	}
 	
   switch (what) {
@@ -317,13 +335,15 @@ static void inc_write(unsigned char what)
 
 static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 {
-	char val;
+	unsigned char val;
 	if(ev == EV_KEY_MOD_PRESS) {
 		// 初始化
 		test_stage = 0;
 		test_to    = 0;
 		thermo_enable(0);
-		display_test(what, test_stage, 0, FUSE_ERR_WAIT);
+		display_test(what, test_stage, 
+			what == IS_THERMO_HI ? thermo_hi_threshold_get() : thermo_lo_threshold_get(), 
+			FUSE_ERR_WAIT);
 		return;
 	}
 	
@@ -333,6 +353,7 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 			val = rom_read(ROM_FUSE_THERMO_HI);
 		else
 			val = rom_read(ROM_FUSE_THERMO_LO);
+		CDBG("sm_fuse_test_thermo val = %bd\n", val);
 		if(val != THERMO_THRESHOLD_INVALID) {
 			// 开始测试
 			test_stage = 1;
@@ -418,7 +439,7 @@ static void sm_fuse_set(unsigned char what, enum task_events ev)
 	
 	if(ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MIN);
+      inc_only(what);
     }
     lpress_start++;
     if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
@@ -436,8 +457,8 @@ static void sm_fuse_set(unsigned char what, enum task_events ev)
 // 0: 未开始
 // 1: fuse 加电
 // 2: fuse 设置 fuse0 broke
-// 3: fuse 设置 fuse1 broke
-// 4：fuse 设置 tripwire broke
+// 3: fuse 设置 fuse0 broke 取消， 设置fuse1 broke
+// 4：fuse 设置 fuse1 broke取消，tripwire broke
 void sm_fuse_test_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
 	CDBG("sm_fuse_test_submod0 %bd %bd %bd\n", from, to, ev);
@@ -613,7 +634,7 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 		} else if(what == IS_MPU && val != MPU_THRESHOLD_INVALID){
 			test_stage = 1;
 			test_to = clock_get_sec_256();
-			hg_enable(1);
+			mpu_enable(1);
 			hg_mask = mpu_threshold_get();
 			display_test(IS_MPU, test_stage, hg_mask, FUSE_ERR_WAIT);
 		} else {
@@ -626,8 +647,8 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 	if(ev == EV_ROTATE_HG) {
 		if(test_stage == 2) {
 			hg_mask = update_hg_mask(hg_get_state(), hg_mask);
-			display_test(IS_HG, test_stage, hg_mask, FUSE_ERR_WAIT);
-			if(hg_mask == 0xF0) {
+			display_test(IS_HG, test_stage, hg_mask, FUSE_ERR_MANUAL);
+			if((hg_mask & 0xF0) == 0xF0) {
 				// 测试成功
 				display_test(IS_HG, test_stage, hg_mask, FUSE_ERR_OK);
 				test_stage = 0;
@@ -647,12 +668,12 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 			// 测试成功
 			display_test(IS_MPU, test_stage, hg_mask, FUSE_ERR_OK);
 			test_stage = 0;
-			hg_enable(0);
+			mpu_enable(0);
 		} else if(test_stage == 1) {
 			// 错误，加电未晃动就有EV_MOT_MPU产生
 			display_test(IS_MPU, test_stage, hg_mask, FUSE_ERR_BROKE);
 			test_stage = 0;
-			hg_enable(0);
+			mpu_enable(0);
 		}
 		return;
 	}
@@ -663,6 +684,11 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 				// 加电等待一段时间，不应该有EV_ROTATE_HG/EV_ROTATE_MPU产生，开始测试晃动
 				test_stage = 2;
 				test_to = clock_get_sec_256();
+				if(what == IS_HG) {
+					hg_mask = hg_get_state() & 0xF; // 最后更新一下hg的状态
+				} else {
+					hg_mask = mpu_threshold_get();
+				}
 				display_test(what, test_stage, hg_mask, FUSE_ERR_MANUAL);
 			}
 		} else if(test_stage == 2) {
@@ -670,7 +696,11 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 				// 错误：等待晃动超时
 				display_test(what, test_stage, hg_mask, FUSE_ERR_NOT_RESPONSE);
 				test_stage = 0;
-				hg_enable(0);
+				if(what == IS_HG) {
+					hg_enable(0);
+				} else {
+					mpu_enable(0);
+				}
 			}
 		}
 		return;

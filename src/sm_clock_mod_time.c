@@ -18,6 +18,72 @@ const char * code sm_clock_mod_time_name[] =
   NULL
 };
 
+static void update_hhmmss(void)
+{
+  unsigned char hour, min, sec;
+	
+  hour = clock_get_hour();
+  min  = clock_get_min();
+  sec  = clock_get_sec();
+  
+  // 两个“:”号
+  led_set_dp(1);
+  led_set_dp(2);
+  led_set_dp(3);
+  led_set_dp(4); 
+  
+  // 如果是12小时显示，以第一位数字的点表示“PM”
+  if(clock_get_hour_12() && hour > 12) {
+    led_set_dp(5);
+    hour -= 12;
+  } else if(clock_get_hour_12() && hour == 12) {
+		led_set_dp(5);
+	} else {
+    led_clr_dp(5);
+  }
+  
+  
+  CDBG("update_hhmmss %bd:%bd:%bd\n", hour, min, sec);  
+  
+  if((hour / 10) != 0) {
+    led_set_code(5, (hour / 10) + 0x30);
+  } else {
+    led_set_code(5, LED_CODE_BLACK);
+  }
+  led_set_code(4, (hour % 10) + 0x30);
+  led_set_code(3, (min / 10)  + 0x30);
+  led_set_code(2, (min % 10) + 0x30);
+  led_set_code(1, (sec / 10) + 0x30);
+  led_set_code(0, (sec % 10) + 0x30);
+}
+
+static void update_yymmdd(void)
+{
+  unsigned char year, mon, date;
+  
+  
+  year = clock_get_year();
+  mon  = clock_get_month();
+  date  = clock_get_date();
+  
+  led_set_dp(2);
+  led_set_dp(4);
+
+  CDBG("update_yymmdd %bd-%bd-%bd\n", year, mon, date);
+  
+  if((year / 10) != 0) {
+    led_set_code(5, (year / 10) + 0x30);
+  } else {
+    led_set_code(5, LED_CODE_BLACK);
+  }
+  led_set_code(4, (year % 10) + 0x30);
+  led_set_code(3, (mon / 10)+ 0x30);
+  led_set_code(2, (mon % 10) + 0x30);
+  led_set_code(1, (date / 10) + 0x30);
+  led_set_code(0, (date % 10) + 0x30);  
+}
+
+
 static void inc_only(unsigned char what)
 {
   switch (what) {
@@ -61,6 +127,16 @@ static void inc_only(unsigned char what)
       }
       break;
   }
+	
+	if(what == IS_HOUR 
+		|| what == IS_MIN 
+		|| what == IS_SEC) {
+		update_hhmmss();
+	} else if(what == IS_YEAR 
+		|| what == IS_MON 
+		|| what == IS_DAY) {
+		update_yymmdd();
+	}
 }
 
 static void write_only(unsigned char what)
@@ -124,68 +200,6 @@ static void inc_and_write(unsigned char what)
   write_only(what);
 }
 
-static void update_hhmmss(void)
-{
-  unsigned char hour, min, sec;
-  
-  hour = clock_get_hour();
-  min  = clock_get_min();
-  sec  = clock_get_sec();
-  
-  // 两个“:”号
-  led_set_dp(1);
-  led_set_dp(2);
-  led_set_dp(3);
-  led_set_dp(4); 
-  
-  // 如果是12小时显示，以第一位数字的点表示“PM”
-  if(clock_get_hour_12() && hour > 12) {
-    led_set_dp(5);
-    hour -= 12;
-  } else {
-    led_clr_dp(5);
-  }
-  
-  
-  CDBG("update_hhmmss %bd:%bd:%bd\n", hour, min, sec);  
-  
-  if((hour / 10) != 0) {
-    led_set_code(5, (hour / 10) + 0x30);
-  } else {
-    led_set_code(5, LED_CODE_BLACK);
-  }
-  led_set_code(4, (hour % 10) + 0x30);
-  led_set_code(3, (min / 10)  + 0x30);
-  led_set_code(2, (min % 10) + 0x30);
-  led_set_code(1, (sec / 10) + 0x30);
-  led_set_code(0, (sec % 10) + 0x30);
-}
-
-static void update_yymmdd(void)
-{
-  unsigned char year, mon, date;
-  
-  
-  year = clock_get_year();
-  mon  = clock_get_month();
-  date  = clock_get_date();
-  
-  led_set_dp(2);
-  led_set_dp(4);
-
-  CDBG("update_yymmdd %bd-%bd-%bd\n", year, mon, date);
-  
-  if((year / 10) != 0) {
-    led_set_code(5, (year / 10) + 0x30);
-  } else {
-    led_set_code(5, LED_CODE_BLACK);
-  }
-  led_set_code(4, (year % 10) + 0x30);
-  led_set_code(3, (mon / 10)+ 0x30);
-  led_set_code(2, (mon % 10) + 0x30);
-  led_set_code(1, (date / 10) + 0x30);
-  led_set_code(0, (date % 10) + 0x30);  
-}
 
 static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 {
@@ -235,437 +249,107 @@ void sm_clock_mod_time_init(unsigned char from, unsigned char to, enum task_even
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 1);
 }
 
-void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_events ev)
+static void sm_clock_mod_time(unsigned char what, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod0 %bd %bd %bd\n", from, to, ev);
-  
-	// 切换到修改时间大模式
-  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
-		&& ev == EV_KEY_MOD_UP) {
-    enter_hhmmss(IS_HOUR);
+  // 按mod0进入新模式
+  if(ev == EV_KEY_MOD_PRESS) {
+		if(what == IS_HOUR 
+			|| what == IS_MIN 
+			|| what == IS_SEC) {
+			enter_hhmmss(what);
+		} else if(what == IS_YEAR 
+			|| what == IS_MON 
+			|| what == IS_DAY) {
+			enter_yymmdd(what);
+		}
     return;
   }
-  // 按set0小时++并写入rtc
+  // set0 分钟++并写入rtc
   if(ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_HOUR);
+    inc_and_write(what);
     return;
-  }
-
-  // set1小时连续++
+  } 
+  
+  // set1 分钟持续++
   if(ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_HOUR);
+      inc_only(what);
     }
     lpress_start++;
     if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
     return;
   }
-  
+
   // set抬起停止++并写入rtc
   if(ev == EV_KEY_SET_UP) {
-    write_only(IS_HOUR);
+    write_only(what);
     lpress_start = 0;
     return;
   }
   
-  // 每250ms读一次rtc，刷新修改小时模式
+  // 每250ms读一下rtc，更新数据
   if(ev == EV_250MS) {
-    update_hhmmss();
+		if(lpress_lock_year_hour 
+			|| lpress_lock_month_min
+		  || lpress_lock_day_sec) {
+			return;
+		}
+		if(what == IS_HOUR 
+			|| what == IS_MIN 
+			|| what == IS_SEC) {
+			update_hhmmss();
+		} else if(what == IS_YEAR 
+			|| what == IS_MON 
+			|| what == IS_DAY) {
+			update_yymmdd();
+		}
     return;
   }
+}
+
+void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_clock_mod_time_submod0 %bd %bd %bd\n", from, to, ev);
+  
+	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
+		&& ev == EV_KEY_MOD_UP) {
+			ev = EV_KEY_MOD_PRESS;
+	}
+	
+	sm_clock_mod_time(IS_HOUR, ev);
 }
 
 void sm_clock_mod_time_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod1 %bd %bd %bd\n", from, to, ev);
 	
-  // 按mod0进入修改分钟模式
-  if(ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_MIN);
-    return;
-  }
-  // set0 分钟++并写入rtc
-  if(ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MIN);
-    return;
-  } 
-  
-  // set1 分钟持续++
-  if(ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MIN);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-
-  // set抬起停止++并写入rtc
-  if(ev == EV_KEY_SET_UP) {
-    write_only(IS_MIN);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读一下rtc，更新修改分钟模式
-  if(ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }
+	sm_clock_mod_time(IS_MIN, ev);
 }
 
 void sm_clock_mod_time_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod2 %bd %bd %bd\n", from, to, ev);
   
-	// mod0 进入修改秒模式
-  if(ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_SEC);
-    return;
-  } 
-  // set0将秒清0并写入rtc
-  if(ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_SEC);
-    return;
-  }
-
-  // 每250ms读一次rtc，更新修改秒模式
-  if(ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }
+	sm_clock_mod_time(IS_SEC, ev);
 }
 
 void sm_clock_mod_time_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod3 %bd %bd %bd\n", from, to, ev);
   
-	// mod0进入修改年模式
-  if(ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_YEAR);
-    return;
-  } 
-  // set0 年++
-  if(ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_YEAR);
-    return;
-  }
-  
-  // 长按set年持续++
-  if(ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_YEAR);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  // 抬起set停止年++并写入rtc
-  if(ev == EV_KEY_SET_UP) {
-    write_only(IS_YEAR);
-    lpress_start = 0;
-    return;
-  } 
-  
-  // 每250ms读取一次rtc ，更新修改年模式
-  if(ev == EV_250MS) {
-    update_yymmdd();
-    return;
-  } 
+	sm_clock_mod_time(IS_YEAR, ev);
 }
 
 void sm_clock_mod_time_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod4 %bd %bd %bd\n", from, to, ev);
 
-  // 按mod0进入修改月模式
-  if(ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_MON);
-    return;
-  }
-	
-  // set0 月++
-  if(ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MON);
-    return;
-  }
-  
-  // 长按set 月持续++
-  if(ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MON);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-  
-  // 抬起set停止月++并写入rtc
-  if(ev == EV_KEY_SET_UP) {
-    write_only(IS_MON);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读取一下rtc，刷新修改月模式
-  if( ev == EV_250MS) {
-    update_yymmdd();
-    return;
-  }
+	sm_clock_mod_time(IS_MON, ev);
 }
 
 void sm_clock_mod_time_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod5 %bd %bd %bd\n", from, to, ev);
 
-  // mod0 进入修改日模式
-  if(ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_DAY);
-    return;
-  }
-	
-  // set0 日++
-  if(ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_DAY);
-    return;
-  }
-  
-  // set1 日持续++  
-  if(ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_DAY);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-
-  // set抬起停止日++写入rtc
-  if(ev == EV_KEY_SET_UP) {
-    write_only(IS_DAY);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读取一下rtc，更新修改日模式
-  if(ev == EV_250MS) {
-    update_yymmdd();
-    return;
-  }
+	sm_clock_mod_time(IS_DAY, ev);
 }
-
-/*
-void sm_clock_mod_time(unsigned char from, unsigned char to, enum task_events ev)
-{
-  CDBG("sm_clock_mod_time %bd %bd %bd\n", from, to, ev);
-  
-  // 按mod1进入修改时间模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_INIT && ev == EV_KEY_MOD_LPRESS) {
-    clock_display(0);
-    display_logo(DISPLAY_LOGO_TYPE_CLOCK, 1);
-    return;
-  }    
-    
-  // 切换到修改时间大模式
-  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
-    && get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH
-    && ev == EV_KEY_MOD_UP) {
-    enter_hhmmss(IS_HOUR);
-    return;
-  }
-  
-  // 按mod0进入修改分钟模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_MIN);
-    return;
-  }
-  
-  // 按set0小时++并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_HOUR);
-    return;
-  }
-
-  // set1小时连续++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_HOUR);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-  
-  // set抬起停止++并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_SET_UP) {
-    write_only(IS_HOUR);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读一次rtc，刷新修改小时模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }
-  
-  // mod0 进入修改秒模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_SS && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_SEC);
-    return;
-  } 
-
-  // set0 分钟++并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MIN);
-    return;
-  } 
-  
-  // set1 分钟持续++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MIN);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-
-  // set抬起停止++并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_KEY_SET_UP) {
-    write_only(IS_MIN);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读一下rtc，更新修改分钟模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MM && ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }
-  
-  // mod0进入修改年模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_YEAR);
-    return;
-  } 
-
-  // set0将秒清0并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_SS && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_SEC);
-    return;
-  }
-
-  // 每250ms读一次rtc，更新修改秒模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_SS && ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }
-  
-  // 按mod0进入修改月模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_MON);
-    return;
-  }
-  
-  // set0 年++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_YEAR);
-    return;
-  }
-  
-  // 长按set年持续++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_YEAR);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  } 
-
-  // 抬起set停止年++并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_KEY_SET_UP) {
-    write_only(IS_YEAR);
-    lpress_start = 0;
-    return;
-  } 
-  
-  // 每250ms读取一次rtc ，更新修改年模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_YY && ev == EV_250MS) {
-    update_yymmdd();
-    return;
-  } 
-
-  // mod0 进入修改日模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_MOD_PRESS) {
-    enter_yymmdd(IS_DAY);
-    return;
-  }
-  
-  // set0 月++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MON);
-    return;
-  }
-  
-  // 长按set 月持续++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MON);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-  
-  // 抬起set停止月++并写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_KEY_SET_UP) {
-    write_only(IS_MON);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读取一下rtc，刷新修改月模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_MO && ev == EV_250MS) {
-    update_yymmdd();
-    return;
-  }
-  
-  // mod0 进入修改小时模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_HH && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_HOUR);
-    return;
-  }
-
-  // set0 日++
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_DAY);
-    return;
-  }
-  
-  // set1 日持续++  
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_DAY);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-
-  // set抬起停止日++写入rtc
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_KEY_SET_UP) {
-    write_only(IS_DAY);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读取一下rtc，更新修改日模式
-  if(get_sm_ss_state(to) == SM_CLOCK_MODIFY_TIME_DD && ev == EV_250MS) {
-    update_yymmdd();
-    return;
-  }
-}
-*/

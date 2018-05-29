@@ -27,5 +27,8 @@ void power_clr_flag(void);
 bit power_test_flag(void);
 
 void power_5v_enable(bit enable);
+bit power_5v_get_enable(void);
+
+unsigned char power_get_volume(void);
 
 #endif

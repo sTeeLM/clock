@@ -29,11 +29,7 @@ static unsigned char _hg_get_state(unsigned int status)
 
 static void hg_cb_set_enable(void)
 {
-	unsigned int status;
   CDBG("hg_cb_set_enable\n");
-	
-	status = int_hub_get_status();
-	hg_state = _hg_get_state(status);
   hg_enabled = 1;
 }
 

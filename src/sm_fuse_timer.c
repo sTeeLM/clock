@@ -36,8 +36,6 @@ enum timer_arm_step {
   TIMER_ARM_DELAY0,
   TIMER_ARM_DELAY1,
   TIMER_ARM_DELAY2,
-  TIMER_ARM_DELAY3,
-  TIMER_ARM_DELAY4,
   TIMER_ARM_STEP_CNT
 };
 
@@ -66,7 +64,7 @@ enum timer_display_state
 static unsigned char check_and_set(unsigned char step)
 {
 	unsigned char ret = TIMER_ERR_OK;
-	char val, val1;
+	unsigned char val, val1;
 	switch(step) {
 		case TIMER_ARM_FUSE: 
 			fuse_enable(1);
@@ -77,14 +75,14 @@ static unsigned char check_and_set(unsigned char step)
 			break;
 		case TIMER_ARM_HG:
 			val = rom_read(ROM_FUSE_HG_ONOFF);
-			mpu_enable(val == 1);
+			hg_enable(val == 1);
 			break;
 		case TIMER_ARM_THERMO:
 			val = rom_read(ROM_FUSE_THERMO_HI);
 			val1 = rom_read(ROM_FUSE_THERMO_LO);
 			if(val != THERMO_THRESHOLD_INVALID || val1 != THERMO_THRESHOLD_INVALID) {
 				if(val != THERMO_THRESHOLD_INVALID && val1 != THERMO_THRESHOLD_INVALID) {
-					if(val <= val1) {
+					if((char)val <= (char)val1) {
 						ret = TIMER_ERR_THERMO_LO_GE_HI;
 						break;
 					}
@@ -93,7 +91,7 @@ static unsigned char check_and_set(unsigned char step)
 			}
 			break;
 		case TIMER_ARM_LT_TIMER:
-     lt_timer_sync_from_rom();
+     lt_timer_load_from_rom();
       lt_timer_sync_to_rtc();
       if(!lt_timer_get_relative(1)) {
         ret = TIMER_ERR_LT_TIMER_TOO_CLOSE;
@@ -105,8 +103,6 @@ static unsigned char check_and_set(unsigned char step)
 		case TIMER_ARM_DELAY0:
 		case TIMER_ARM_DELAY1:
 		case TIMER_ARM_DELAY2:
-		case TIMER_ARM_DELAY3:
-		case TIMER_ARM_DELAY4:	
 			break;
 	}
 	return ret;
@@ -114,6 +110,7 @@ static unsigned char check_and_set(unsigned char step)
 
 static void roll_back(bit include_fuse)
 {
+	CDBG("roll_back include_fuse = %bd\n", include_fuse ? 1 : 0);
   thermo_enable(0);
   mpu_enable(0);
   hg_enable(0);
@@ -122,16 +119,52 @@ static void roll_back(bit include_fuse)
 		fuse_enable(0);
 	}
 }
+/*
+  TIMER_ARM_FUSE = 0, 
+  TIMER_ARM_MPU,
+  TIMER_ARM_HG,
+  TIMER_ARM_THERMO,
+  TIMER_ARM_LT_TIMER
+  TIMER_ARM_DELAY0,
+  TIMER_ARM_DELAY1,
+  TIMER_ARM_DELAY2,
+*/
 
 static void display_prearm(unsigned char step, unsigned char err)
 {
   led_clear();
-  led_set_code(5, 'P');
-  led_set_code(4, 'R');
+	
+	switch(step) {
+		case TIMER_ARM_FUSE:
+			led_set_code(5, 'F');
+			led_set_code(4, 'U');
+		break;
+		case TIMER_ARM_MPU:
+			led_set_code(5, 'P');
+			led_set_code(4, 'U');
+		break;
+		case TIMER_ARM_HG:
+			led_set_code(5, 'H');
+			led_set_code(4, 'G');
+		break;
+		case TIMER_ARM_THERMO:
+			led_set_code(5, 'T');
+			led_set_code(4, 'H');
+		break;
+		case TIMER_ARM_LT_TIMER:
+			led_set_code(5, 'L');
+			led_set_code(4, 'T');
+		break;
+		case TIMER_ARM_DELAY0:
+		case TIMER_ARM_DELAY1:
+		case TIMER_ARM_DELAY2:
+			led_set_code(5, (step - TIMER_ARM_LT_TIMER) / 10 + 0x30);
+			led_set_code(4, (step - TIMER_ARM_LT_TIMER) % 10 + 0x30);
+	}
   led_set_code(3, '-');
-	led_set_code(2, step + 0x30);
-  led_set_code(1, '-');
-  led_set_code(0, err + 0x30);
+	led_set_code(2, '-');
+  led_set_code(1, (err / 10) + 0x30);
+  led_set_code(0, (err % 10) + 0x30);
 }
 
 static void display_timer(unsigned char what)
@@ -205,7 +238,7 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
 	unsigned char err;
   CDBG("sm_fuse_timer_submod0 %bd %bd %bd\n", from, to, ev);
 	
-	if(ev == EV_KEY_SET_UP) {
+	if(ev == EV_KEY_MOD_UP) {
 		err = TIMER_ERR_OK;
 		next_arm_step = 0;
 		in_rollback   = 0;
@@ -330,6 +363,10 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
 		return;
 	}
 	
+	if(ev == EV_1S) {
+		
+		return;
+	}
 }
 
 // dis-armed
@@ -351,6 +388,6 @@ void sm_fuse_timer_submod4(unsigned char from, unsigned char to, enum task_event
 {
   CDBG("sm_fuse_timer_submod4 %bd %bd %bd\n", from, to, ev);
 	roll_back(0); // 关闭所有传感器，除了fuse
-	set_task(EV_KEY_V0);
 	display_timer(DISPLAY_TIMER_PREDETONATE);
+	set_task(EV_KEY_V0);
 }

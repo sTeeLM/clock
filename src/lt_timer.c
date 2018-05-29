@@ -41,7 +41,7 @@ void lt_timer_leave_powersave(void)
   CDBG("lt_timer_leave_powersave\n");
   if(rtc_is_lt_timer()) {
     lt_timer_stop_rtc();
-    lt_timer_sync_from_rom();
+    lt_timer_load_from_rom();
     if(!lt_timer_get_relative(0)) {
       lt_tmr_stopped = 1;
       set_task(EV_COUNTER);
@@ -54,7 +54,9 @@ void lt_timer_leave_powersave(void)
 void lt_timer_switch_on(void)
 {
   CDBG("lt_timer_switch_on\n");
+	lt_timer_load_from_rom();
   lt_timer_sync_to_rtc();
+	lt_timer_stop_rtc();
 }
 
 void lt_timer_switch_off(void)
@@ -78,10 +80,9 @@ void scan_lt_timer(void)
   rtc_write_data(RTC_TYPE_CTL);
   
   if(alarm0_hit) {
-    rtc_read_data(RTC_TYPE_CTL);
-    
     rtc_read_data(RTC_TYPE_DATE);
-    if(rtc_date_get_year() == ltm.year) {
+    if(rtc_date_get_year() == lt_timer_get_year() 
+			&& rtc_date_get_month()== lt_timer_get_month()) {
       if(power_test_flag()) {
         power_clr_flag();
       }
@@ -92,7 +93,7 @@ void scan_lt_timer(void)
 
 void lt_timer_inc_year(void)
 {
-  ltm.year = (++ ltm.year) % 99;
+  ltm.year = (++ ltm.year) % 100;
 }
 
 void lt_timer_inc_month(void)
@@ -102,7 +103,7 @@ void lt_timer_inc_month(void)
 
 void lt_timer_inc_date(void)
 {
-  ltm.date = (++ ltm.date) % LT_TIMER_MAX_DAY;
+  ltm.date = (++ ltm.date) % clock_get_mon_date(ltm.year, ltm.month);;
 }
 
 void lt_timer_inc_hour(void)
@@ -415,7 +416,7 @@ void lt_timer_dec_sec(void)
 
 //////////////
 // 从rom读出绝对时间,放入ltm
-void lt_timer_sync_from_rom(void)
+void lt_timer_load_from_rom(void)
 {
   ltm.year  = rom_read(ROM_LT_TIMER_YEAR);
   ltm.month = rom_read(ROM_LT_TIMER_MONTH);
@@ -426,9 +427,9 @@ void lt_timer_sync_from_rom(void)
 }
 
 // 将绝对时间写入rom！
-void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
+void lt_timer_save_to_rom(enum lt_timer_sync_type type)
 {
-  CDBG("lt_timer_sync_to_rom type = %bd\n", type);
+  CDBG("lt_timer_save_to_rom type = %bd\n", type);
   switch (type) { 
     case LT_TIMER_SYNC_YEAR:
       rom_write(ROM_LT_TIMER_YEAR, ltm.year);
@@ -579,7 +580,7 @@ bit lt_timer_sync_to_rtc(void)
   return ret;
 }
 
-void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
+void lt_timer_save_to_rom(enum lt_timer_sync_type type)
 {
   switch (type) { 
     case LT_TIMER_SYNC_DAY:
@@ -598,7 +599,7 @@ void lt_timer_sync_to_rom(enum lt_timer_sync_type type)
   }
 }
 
-void lt_timer_sync_from_rom(void)
+void lt_timer_load_from_rom(void)
 {
   ltm.day  = rom_read(ROM_LT_TIMER_DAY);
   ltm.hour = rom_read(ROM_LT_TIMER_HOUR);

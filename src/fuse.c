@@ -17,7 +17,6 @@ static bit fuse_enabled;
 static void fuse_power_on(void)
 {
 	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
 	serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
 	serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
 	serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, 1);
@@ -29,7 +28,6 @@ static void fuse_power_on(void)
 
 static void fuse_power_off(void)
 {
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
 	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
 	serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
 	serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
