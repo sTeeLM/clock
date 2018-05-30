@@ -47,7 +47,7 @@ unsigned char lt_timer_get_sec(void);
 void lt_timer_save_to_rom(enum lt_timer_sync_type type);
 void lt_timer_load_from_rom(void);
 void lt_timer_sync_to_rtc(void);
-bit lt_timer_get_relative(bit too_close_check);
+unsigned char lt_timer_get_relative(bit too_close_check);
 
 void lt_timer_dec_sec(void);
 
@@ -63,5 +63,8 @@ void lt_timer_display(bit enable);
 
 void lt_timer_enter_powersave(void);
 void lt_timer_leave_powersave(void);
+
+bit lt_timer_get_hour_12(void);
+void lt_timer_set_hour_12(bit val);
 
 #endif

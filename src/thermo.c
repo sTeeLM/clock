@@ -133,7 +133,7 @@ static void thermo_power_on(void)
   // 读取一次端口寄存器消除中断
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
 	
-  CDBG("thermo int reg is %bx\n", val);
+  CDBG("thermo int reg is %0xbx\n", val);
 #else
   // genenal call reset
   I2C_Get(0x0, 0x6, &val);
@@ -170,7 +170,7 @@ void scan_thermo(void)
   
   // 读取一次端口寄存器消除中断
   I2C_Get(THERMO_HUB_I2C_ADDRESS, 0x0, &val);
-  CDBG("thermo int reg is %bx\n", val);
+  CDBG("thermo int reg is %0xbx\n", val);
   
   if((val & 0x1) == 0 && (thermo_threshold_hi != THERMO_THRESHOLD_INVALID)) {
     CDBG("EV_THERMO_HI!\n");
@@ -209,7 +209,7 @@ static unsigned int thermo_temp_to_hex(char temp)
   unsigned int ret = temp;
   ret &= 0xFF;
   ret <<= 8;
-  CDBG("thermo_temp_to_hex %bd -> x%x\n", temp, ret);
+  CDBG("thermo_temp_to_hex %d -> 0x%04x\n", temp, ret);
   return ret;
 }
 
@@ -217,7 +217,7 @@ static char thermo_hex_to_temp(unsigned int val)
 {
   char temp;
   temp = (val >> 8) & 0xFF;
-  CDBG("thermo_hex_to_temp x%x -> %bd\n", val, temp);
+  CDBG("thermo_hex_to_temp x%02bx -> %d\n", val, temp);
   return temp;
 }
 
@@ -229,7 +229,7 @@ char thermo_get_current(void)
 #ifdef __CLOCK_EMULATE__
 	UNUSED_PARAM(tmp);
   I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xAA, 2, (unsigned char *)&val);
-  CDBG("get current temp return %x\n", val);
+  CDBG("get current temp return 0x%x\n", val);
   
   return thermo_hex_to_temp(val);;
 #else
@@ -241,7 +241,7 @@ char thermo_get_current(void)
   delay_ms(50); // delay 50 ms
   
   I2C_Gets(THERMO_I2C_ADDRESS, 0x0, 2, (unsigned char *)&val);
-	CDBG("get current temp return %x\n", val);
+	CDBG("get current temp return 0x%x\n", val);
   
   return thermo_hex_to_temp(val);
 #endif
@@ -283,7 +283,7 @@ char thermo_lo_threshold_get()
 void thermo_hi_threshold_set(char temp)
 {
   unsigned int val;
-  CDBG("thermo_hi_threshold_set %bd\n", temp);
+  CDBG("thermo_hi_threshold_set %d\n", temp);
   
 	if(temp == (char)THERMO_THRESHOLD_INVALID)
 		temp = THERMO_THRESHOLD_MAX_INVALID;
@@ -306,7 +306,7 @@ void thermo_hi_threshold_set(char temp)
 void thermo_lo_threshold_set(char temp)
 {
   unsigned int val;
-  CDBG("thermo_lo_threshold_set %bd\n", temp);
+  CDBG("thermo_lo_threshold_set %d\n", temp);
   
 	if(temp == (char)THERMO_THRESHOLD_INVALID)
 		temp = THERMO_THRESHOLD_MIN_INVALID;
@@ -399,7 +399,7 @@ unsigned char thermo_threshold_inc(unsigned char thres)
   } else {
     ret = (unsigned char) THERMO_THRESHOLD_MIN;
   }
-	CDBG("thermo_threshold_inc from %bd to %bd\n", thres, ret);
+	CDBG("thermo_threshold_inc from %bd to %bd\n", (char)thres, (char)ret);
 	return ret;
 }
 

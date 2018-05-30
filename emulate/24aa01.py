@@ -12,19 +12,19 @@ for i in range(256) :
 #define ROM_ALARM0_DAY_MASK 0
 #define ROM_ALARM0_HOUR     1
 #define ROM_ALARM0_MIN      2
-#define ROM_ALARM0_IS12     3
-#define ROM_ALARM1_ENABLE   4
+#define ROM_ALARM1_ENABLE   3
 
 a[0] = 0x7F
 a[1] = 12
 a[2] = 12
 a[3] = 1
-a[4] = 1
 
+#define ROM_TIME_IS12       4
 #define ROM_BEEPER_MUSIC_INDEX 5
 #define ROM_BEEPER_ENABLE      6
 #define ROM_BEEPER_MUSIC_TO    7
 
+a[4] = 1
 a[5] = 0
 a[6] = 1
 a[7] = 30

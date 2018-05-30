@@ -36,11 +36,11 @@ static void hg_cb_set_enable(void)
 void scan_hg(unsigned int status)
 {
   unsigned char hg_new_state;
-  CDBG("scan_hg %x\n", status);
+  CDBG("scan_hg 0x%04x\n", status);
   
   hg_new_state = _hg_get_state(status);
   
-  CDBG("scan_hg hg_state = %bx, hg_new_state = %bx\n", hg_state, hg_new_state);
+  CDBG("scan_hg hg_state = %02bx, hg_new_state = %02bx\n", hg_state, hg_new_state);
   
   if(hg_new_state != hg_state) {
     if(hg_enabled) {
@@ -51,7 +51,7 @@ void scan_hg(unsigned int status)
       power_clr_flag();
     }
     
-    CDBG("hg_state: %bd->%bd\n", hg_state, hg_new_state);
+    CDBG("hg_state: 0x%02bx->0x%02bx\n", hg_state, hg_new_state);
     hg_state = hg_new_state;
   }
   
@@ -80,7 +80,7 @@ void hg_initialize (void)
 
 void hg_enable(bit enable)
 {
-  CDBG("hg_enable %bd\n", enable ? 1 : 0);
+  CDBG("hg_enable %bu\n", enable ? 1 : 0);
   if(enable && !hg_enabled) {
 		hg_power_on();
 		// hg_enabled = 1 set by hg_cb_set_enable
@@ -91,7 +91,7 @@ void hg_enable(bit enable)
 
 unsigned char hg_get_state(void)
 {
-  CDBG("hg_get_state return %bx\n", hg_state);
+  CDBG("hg_get_state return %02bx\n", hg_state);
   return hg_state;
 }
 

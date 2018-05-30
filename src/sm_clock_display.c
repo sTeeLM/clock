@@ -31,7 +31,7 @@ static void display_temp(void)
   rtc_read_data(RTC_TYPE_TEMP);
   sign = rtc_get_temperature(&inti, &flt);
   
-  CDBG("display_temp %c%bd.%bd\n", sign? '-':'+', inti, flt);
+  CDBG("display_temp %c%bu.%bu\n", sign? '-':'+', inti, flt);
   
   led_clear();
   
@@ -61,7 +61,7 @@ static void test_autoswitch(void)
 
 void sm_clock_display_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display_init %bu %bu %bu\n", from, to, ev);
   lt_timer_switch_off();
   alarm_switch_on();
   rtc_set_lt_timer(0);
@@ -71,7 +71,7 @@ void sm_clock_display_init(unsigned char from, unsigned char to, enum task_event
 
 void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display_submod0 %bu %bu %bu\n", from, to, ev);
 	
   // 切换到时间显示大模式
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
@@ -100,7 +100,7 @@ void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_display_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display_submod1 %bu %bu %bu\n", from, to, ev);
   // 切换到显示年月日
   if(ev == EV_KEY_MOD_PRESS) {
     //display_yymmdd();
@@ -119,7 +119,7 @@ void sm_clock_display_submod1(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_display_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display_submod2 %bu %bu %bu\n", from, to, ev);
   // 切换到显示周几
   if(ev == EV_KEY_MOD_PRESS) {
     //display_week();
@@ -138,7 +138,7 @@ void sm_clock_display_submod2(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_display_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display_submod2 %bu %bu %bu\n", from, to, ev);
   // 切换到显示温度
   if(ev == EV_KEY_MOD_PRESS) {
     clock_display(0);
@@ -159,7 +159,7 @@ void sm_clock_display_submod3(unsigned char from, unsigned char to, enum task_ev
 void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
 {
 
-  CDBG("sm_clock_display %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_display %bu %bu %bu\n", from, to, ev);
 
   // 按mod1进入显示时间大模式
   if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {

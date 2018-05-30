@@ -156,7 +156,7 @@ static void update_time(unsigned char what)
 		led_set_dp(2);
 		led_set_dp(4);
 
-		CDBG("update_yymmdd %bd-%bd-%bd\n", year, mon, date);
+		CDBG("update_yymmdd %bu-%bu-%bu\n", year, mon, date);
 		
 		if((year / 10) != 0) {
 			led_set_code(5, (year / 10) + 0x30);
@@ -180,17 +180,17 @@ static void update_time(unsigned char what)
 		led_set_dp(4); 
 		
 		// 如果是12小时显示，以第一位数字的点表示“PM”
-		if(clock_get_hour_12() && hour > 12) {
+		if(lt_timer_get_hour_12() && hour > 12) {
 			led_set_dp(5);
 			hour -= 12;
-		} else if(clock_get_hour_12() && hour == 12){
+		} else if(lt_timer_get_hour_12() && hour == 12){
 			led_set_dp(5);
 		} else {
 			led_clr_dp(5);
 		}
 		
 		
-		CDBG("update_hhmmss %bd:%bd:%bd\n", hour, min, sec);  
+		CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
 		
 		if((hour / 10) != 0) {
 			led_set_code(5, (hour / 10) + 0x30);
@@ -252,7 +252,7 @@ static void enter_password(unsigned char index)
 
 void sm_fuse_param_init(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_param_init %bu %bu %bu\n", from, to, ev);
 	display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
 
 	if(ev == EV_KEY_V0) {
@@ -293,7 +293,7 @@ static void sm_fuse_param_set_time(unsigned char what, unsigned char ev)
 
 void sm_fuse_param_submod0(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod0 %bd %bd %bd\n", from, to, ev);	
+  CDBG("sm_fuse_param_submod0 %bu %bu %bu\n", from, to, ev);	
 	if((ev == EV_KEY_SET_UP && get_sm_ss_state(from) == SM_FUSE_PARAM_INIT)
 		|| (ev == EV_KEY_V0 && get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)) {
 		ev = EV_KEY_MOD_PRESS;
@@ -305,37 +305,37 @@ void sm_fuse_param_submod0(unsigned char from, unsigned char to, enum task_event
 
 void sm_fuse_param_submod1(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_param_submod1 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_param_set_time(IS_MON, ev);
 }
 
 void sm_fuse_param_submod2(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_param_submod2 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_param_set_time(IS_DAY, ev);
 }
 
 void sm_fuse_param_submod3(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod3 %bd %bd %bd\n", from, to, ev);	
+  CDBG("sm_fuse_param_submod3 %bu %bu %bu\n", from, to, ev);	
 	sm_fuse_param_set_time(IS_HOUR, ev);
 }
 
 void sm_fuse_param_submod4(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod4 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_param_submod4 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_param_set_time(IS_MIN, ev);
 }
 
 void sm_fuse_param_submod5(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod5 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_param_submod5 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_param_set_time(IS_SEC, ev);
 }
 
 void sm_fuse_param_submod6(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod6 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_param_submod6 %bu %bu %bu\n", from, to, ev);
 	
   // 设置password
   if(ev == EV_KEY_MOD_PRESS) {

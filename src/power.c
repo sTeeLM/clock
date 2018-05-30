@@ -44,7 +44,7 @@ void power_initialize(void)
 
 void power_proc(enum task_events ev)
 {
-  CDBG("power_proc %bd\n", ev);
+  CDBG("power_proc %bu\n", ev);
   run_state_machine(ev);
 }
 
@@ -159,7 +159,7 @@ void power_reset_powersave_to(void)
 
 void power_5v_enable(bit enable)
 {
-	CDBG("power_5v_enable %bd\n", enable ? 1 : 0);
+	CDBG("power_5v_enable %bu\n", enable ? 1 : 0);
 	
 	POWER_5V_EN = !enable;
 }

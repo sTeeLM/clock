@@ -21,7 +21,7 @@ char cmd_beeper(char arg1, char arg2)
   } else if(arg1 != 0 && arg2 == 0 && strcmp("next", shell_buf + arg1) == 0) {
     index = beeper_get_music_index();
     beeper_inc_music_index();
-    printf("set music index : %bd -> %bd\n", index, beeper_get_music_index());
+    printf("set music index : %bu -> %bu\n", index, beeper_get_music_index());
   } else if(arg1 != 0 && arg2 == 0 && strcmp("music", shell_buf + arg1) == 0) {
     printf("press MOD or SET key to stop music\n");
     beeper_play_music();

@@ -13,7 +13,7 @@ void delay_task_initialize(void)
 
 void delay_task_reg(unsigned char index, DELAY_TASK_PROC task, unsigned char delay_sec)
 {
-  CDBG("delay_task_reg %bd, delay_sec = %bd\n", index, delay_sec);
+  CDBG("delay_task_reg %bu, delay_sec = %bu\n", index, delay_sec);
   if(index > DELAU_TASK_CNT) {
     return;
   }
@@ -29,7 +29,7 @@ void delay_task_call(void)
   
   for(i = 0 ; i < DELAU_TASK_CNT ; i++) {
     if(delay_tasks[i].task != NULL && --delay_tasks[i].delay_sec == 0) {
-      CDBG("delay_task_call: index = %bd\n", i);
+      CDBG("delay_task_call: index = %bu\n", i);
       delay_tasks[i].task(); 
       delay_tasks[i].task = NULL;
     }

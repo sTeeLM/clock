@@ -26,15 +26,87 @@ static unsigned char rtc_data[4];
 static unsigned char last_read;
 static bit is_lt_timer_mode;
 
-void dump_rtc(void)
+
+static const char * code rtc_alarm_mode_str[] = 
+{
+  "RTC_ALARM0_MOD_PER_SEC",
+  "RTC_ALARM0_MOD_MATCH_SEC",  
+  "RTC_ALARM0_MOD_MATCH_MIN_SEC", 
+  "RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC", 
+  "RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC",   
+  "RTC_ALARM0_MOD_MATCH_DAY_HOUR_MIN_SEC",
+  "RTC_ALARM0_MOD_CNT", 
+  "RTC_ALARM1_MOD_PER_MIN",
+  "RTC_ALARM1_MOD_MATCH_MIN",  
+  "RTC_ALARM1_MOD_MATCH_HOUR_MIN", 
+  "RTC_ALARM1_MOD_MATCH_DATE_HOUR_MIN",   
+  "RTC_ALARM1_MOD_MATCH_DAY_HOUR_MIN", 
+};
+
+static const char * code rtc_square_rate_str[] = 
+{
+	"RTC_SQUARE_RATE_1HZ",
+	"RTC_SQUARE_RATE_1024HZ",
+	"RTC_SQUARE_RATE_4096HZ",
+	"RTC_SQUARE_RATE_8192HZ"
+};
+
+static void rtc_dump_raw(void)
 {
   unsigned char addr;
   unsigned char c;
-  // dump rtc contents
+	CDBG("RTC raw content:\n");
   for(addr = 0; addr < 0x15; addr ++) {
     I2C_Get(RTC_I2C_ADDRESS, addr, &c);
-    CDBG("rtc [%02bx] = 0x%bx\n", addr,  c);
+    CDBG("rtc [%02bx] = 0x%02bx\n", addr,  c);
   }
+}
+
+void rtc_dump(void)
+{
+	rtc_read_data(RTC_TYPE_DATE);
+	CDBG("date/day: %02bu-%02bu-%02bu/%bu\n",
+		rtc_date_get_year(), rtc_date_get_month(), rtc_date_get_date(),
+		rtc_date_get_day()
+	);
+	
+	rtc_read_data(RTC_TYPE_TIME);
+	CDBG("time: %02bu:%02bu:%02bu, is12: %s\n",
+		rtc_time_get_hour(), rtc_time_get_min(), rtc_time_get_sec(),
+		rtc_time_get_hour_12() ? "ON" : "OFF"
+	);
+	
+	rtc_read_data(RTC_TYPE_ALARM0);
+	CDBG("alarm0 mode: %s\n", rtc_alarm_get_mod_str());
+	CDBG("  day:%02bu\n", rtc_alarm_get_day());
+	CDBG("  date:%02bu\n", rtc_alarm_get_date());	
+	CDBG("  hour:%02bu\n", rtc_alarm_get_hour());
+	CDBG("  min:%02bu\n", rtc_alarm_get_min());	
+	CDBG("  sec:%02bu\n", rtc_alarm_get_sec());
+	CDBG("  is12:%s\n", rtc_alarm_get_hour_12() ? "ON" : "OFF");	
+
+	rtc_read_data(RTC_TYPE_ALARM1);
+	CDBG("alarm1 mode: %s\n", rtc_alarm_get_mod_str());
+	CDBG("  day:%02bu\n", rtc_alarm_get_day());
+	CDBG("  date:%02bu\n", rtc_alarm_get_date());	
+	CDBG("  hour:%02bu\n", rtc_alarm_get_hour());
+	CDBG("  min:%02bu\n", rtc_alarm_get_min());	
+  CDBG("  is12:%s\n", rtc_alarm_get_hour_12() ? "ON" : "OFF");
+	
+	rtc_read_data(RTC_TYPE_CTL);
+	CDBG("control:\n");
+	CDBG("  alarm0 int enable:%s\n", rtc_test_alarm_int(RTC_ALARM0) ? "ON" : "OFF");
+	CDBG("  alarm1 int enable:%s\n", rtc_test_alarm_int(RTC_ALARM1) ? "ON" : "OFF");
+	CDBG("  alarm0 int flag:%s\n", rtc_test_alarm_int_flag(RTC_ALARM0) ? "ON" : "OFF");
+	CDBG("  alarm1 int flag:%s\n", rtc_test_alarm_int_flag(RTC_ALARM1) ? "ON" : "OFF");
+	CDBG("  eosc:%c\n", rtc_test_eosc() ? '1' : '0');	
+	CDBG("  bbsqw:%c\n", rtc_test_bbsqw() ? '1' : '0');	
+	CDBG("  conv:%c\n", rtc_test_conv() ? '1' : '0');	
+	CDBG("  square_rate:%s\n", rtc_get_square_rate_str());
+	CDBG("  intcn:%c\n", rtc_test_intcn() ? '1' : '0');	
+	CDBG("  osf:%c\n", rtc_test_osf() ? '1' : '0');	
+	CDBG("  en32khz:%c\n", rtc_test_en32khz() ? '1' : '0');	
+	CDBG("  bsy:%c\n", rtc_test_bsy() ? '1' : '0');	
 }
 
 bit rtc_is_lt_timer(void)
@@ -65,17 +137,20 @@ void rtc_initialize (void)
 
   CDBG("rtc_initialize\n");
   
+	CDBG("RTC before initialize:\n");
+	rtc_dump_raw();
+	rtc_dump();
+	
   is_lt_timer_mode = 0;
     
   memset(rtc_data, 0, sizeof(rtc_data));
 
   // 初始化
-  is12 = rom_read(ROM_ALARM0_IS12);
+  is12 = rom_read(ROM_TIME_IS12);
   
   I2C_Init();
   rtc_read_data(RTC_TYPE_TIME);
-  CDBG("before time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);
-  
+
   // 12/24格式按照rom设置来，需要转换一次
   count = rtc_time_get_hour();
   rtc_time_set_hour_12(is12);
@@ -92,12 +167,10 @@ void rtc_initialize (void)
 		rtc_time_set_min(10);
 		rtc_time_set_sec(30); 
   }
-  
-  CDBG("after time %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]);  
   rtc_write_data(RTC_TYPE_TIME);
   
+	
   rtc_read_data(RTC_TYPE_DATE);
-  CDBG("before date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
  
   ///// 调试用，初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
 	rtc_date_set_year(14);
@@ -116,7 +189,6 @@ void rtc_initialize (void)
     rtc_date_get_month() - 1,
     rtc_date_get_date() - 1) + 1);
   
-  CDBG("after date %bx %bx %bx %bx\n", rtc_data[0], rtc_data[1], rtc_data[2], rtc_data[3]); 
   rtc_write_data(RTC_TYPE_DATE);
    
   // 清除所有闹钟：闹钟配置由alarm自行从rom中读取，写入rtc
@@ -125,20 +197,15 @@ void rtc_initialize (void)
   rtc_clr_alarm_int_flag(RTC_ALARM0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
   rtc_clr_alarm_int_flag(RTC_ALARM1);
-  rtc_write_data(RTC_TYPE_CTL); 
-
   // 允许RTC发中断
-  I2C_Get(RTC_I2C_ADDRESS, 0x0E, &count);
-  count |= 0x4; // INTCN,A1E,A2E = 100
-  I2C_Put(RTC_I2C_ADDRESS, 0x0E, count);
-  
-  // 启动32KHZ输出
-  rtc_read_data(RTC_TYPE_CTL);
-  rtc_data[1] |= 0x48;
-  rtc_write_data(RTC_TYPE_CTL);  
-  
-  dump_rtc();
-  
+  rtc_set_intcn(1);
+  // 启动32KHZ输出  
+	rtc_set_en32khz(1);
+  rtc_write_data(RTC_TYPE_CTL); 
+	
+	CDBG("RTC after initialize:\n");
+	rtc_dump_raw();
+	rtc_dump();
 }
 
 
@@ -556,6 +623,11 @@ void rtc_alarm_set_mode(enum rtc_alarm_mode mode)
   }
 }
 
+const char * rtc_alarm_get_mod_str(void)
+{
+	return rtc_alarm_mode_str[rtc_alarm_get_mode()];
+}
+
 // 在rtc_read_data(RTC_TYPE_TEMP)之后调用
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 {
@@ -639,13 +711,107 @@ bit rtc_test_alarm_int_flag(enum rtc_alarm_index index)
   return 0;
 }
 
+bit rtc_test_eosc(void)
+{
+	return (rtc_data[0] & 0x80) != 0;
+}
+
+void rtc_set_eosc(bit val)
+{
+	rtc_data[0] &= ~0x80;
+	if(val)
+		rtc_data[0] |= 0x80;
+}
+
+bit rtc_test_bbsqw(void)
+{
+	return (rtc_data[0] & 0x40) != 0;
+}
+
+void rtc_set_bbsqw(bit val)
+{
+	rtc_data[0] &= ~0x40;
+	if(val)
+		rtc_data[0] |= 0x40;
+}
+
+bit rtc_test_conv(void)
+{
+	return (rtc_data[0] & 0x20) != 0;
+}
+
+void rtc_set_conv(bit val)
+{
+	rtc_data[0] &= ~0x20;
+	if(val)
+		rtc_data[0] |= 0x20;
+}
+
+enum rtc_square_rate rtc_get_square_rate(void)
+{
+	return (((rtc_data[0] & 0x18) >> 3) & 0x3);
+}
+
+void rtc_set_square_rate(enum rtc_square_rate rt)
+{
+	unsigned char val = rt;
+	rtc_data[0] &= ~0x18;
+	rtc_data[0] |= val << 3;
+}
+
+const char * rtc_get_square_rate_str(void)
+{
+	return rtc_square_rate_str[rtc_get_square_rate()];
+}
+
+bit rtc_test_intcn(void)
+{
+	return (rtc_data[0] & 0x4) != 0;
+}
+
+void rtc_set_intcn(bit val)
+{
+	rtc_data[0] &= ~0x4;
+	if(val)
+		rtc_data[0] |= 0x4;
+}
+
+bit rtc_test_osf(void)
+{
+	return (rtc_data[1] & 0x80) != 0;
+}
+
+void rtc_set_osf(bit val)
+{
+	rtc_data[1] &= ~0x80;
+	if(val)
+		rtc_data[1] |= 0x80;
+}
+
+bit rtc_test_en32khz(void)
+{
+	return (rtc_data[1] & 0x8) != 0;
+}
+
+void rtc_set_en32khz(bit val)
+{
+	rtc_data[1] &= ~0x8;
+	if(val)
+		rtc_data[1] |= 0x8;
+}
+
+bit rtc_test_bsy(void)
+{
+	return (rtc_data[1] & 0x4) != 0;
+}
+
 void rtc_enter_powersave(void)
 {
   
   CDBG("rtc_enter_powersave\n");
   // 停止32KHZ输出
   rtc_read_data(RTC_TYPE_CTL);
-  rtc_data[1] &= ~0x48;
+  rtc_set_en32khz(0);
   rtc_write_data(RTC_TYPE_CTL);
   
 }
@@ -655,7 +821,7 @@ void rtc_leave_powersave(void)
   CDBG("rtc_leave_powersave\n");
   // 启动32KHZ输出
   rtc_read_data(RTC_TYPE_CTL);
-  rtc_data[1] |= 0x48;
+  rtc_set_en32khz(1);
   rtc_write_data(RTC_TYPE_CTL);
   
 }

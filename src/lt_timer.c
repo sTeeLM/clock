@@ -12,8 +12,10 @@ static bit lt_tmr_stopped;
 static bit lt_tmr_display;
 static bit lt_tmr_disp_day;
 
-#define LT_TIMER_MAX_DAY 100 // 最多100天，反正电池最多也只能坚持3个月？
-#define LT_MIN_SEC  30 // 必须至少提前30s
+static bit lt_timer_is_12;
+
+#define LT_TIMER_MAX_DAY  99 // 最多100天，反正电池最多也只能坚持3个月？
+#define LT_TIMER_MIN_SEC  30 // 必须至少提前30s
 
 
 static struct lt_timer_struct idata ltm; 
@@ -25,6 +27,17 @@ void lt_timer_initialize (void)
   lt_tmr_stopped  = 1;
   lt_tmr_display  = 0;
   lt_tmr_disp_day = 0;
+	lt_timer_is_12  = 0;
+}
+
+bit lt_timer_get_hour_12(void)
+{
+	return lt_timer_is_12;
+}
+
+void lt_timer_set_hour_12(bit val)
+{
+	lt_timer_is_12 = val;
 }
 
 void lt_timer_enter_powersave(void)
@@ -42,7 +55,7 @@ void lt_timer_leave_powersave(void)
   if(rtc_is_lt_timer()) {
     lt_timer_stop_rtc();
     lt_timer_load_from_rom();
-    if(!lt_timer_get_relative(0)) {
+    if(lt_timer_get_relative(0) != 0) {
       lt_tmr_stopped = 1;
       set_task(EV_COUNTER);
     } else {
@@ -57,6 +70,7 @@ void lt_timer_switch_on(void)
 	lt_timer_load_from_rom();
   lt_timer_sync_to_rtc();
 	lt_timer_stop_rtc();
+	rtc_dump();
 }
 
 void lt_timer_switch_off(void)
@@ -66,6 +80,7 @@ void lt_timer_switch_off(void)
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
   rtc_write_data(RTC_TYPE_CTL);
+	rtc_dump();
 }
 
 void scan_lt_timer(void)
@@ -185,12 +200,12 @@ void lt_timer_stop_ram(void)
 void lt_timer_switch_display(void)
 {
   lt_tmr_disp_day = !lt_tmr_disp_day;
-  CDBG("lt_timer_switch_display %bd\n", lt_tmr_disp_day ? 1 : 0);
+  CDBG("lt_timer_switch_display %bu\n", lt_tmr_disp_day ? 1 : 0);
 }
 
 void lt_timer_display(bit enable)
 {
-  CDBG("lt_timer_display %bd\n", enable ? 1 : 0);
+  CDBG("lt_timer_display %bu\n", enable ? 1 : 0);
   lt_tmr_display = enable;
 }
 
@@ -264,7 +279,7 @@ static const unsigned char code leap_month[][12]={{31,28,31,30,31,30,31,31,30,31
 static void lt_timer_sub_date(bit borrow_date)
 {
   unsigned char i, j;
-  int day;
+  long int day;
   
   day = 0;
   
@@ -290,9 +305,11 @@ static void lt_timer_sub_date(bit borrow_date)
     ltm.hour = 0;
     ltm.min = 0;
     ltm.sec = 0;
-  } else {
-    ltm.date = (unsigned char) day;
+  } else if(day > 255){
+    day = 255;
   }
+	
+	ltm.date = (unsigned char) day;
 }
 
 
@@ -424,12 +441,13 @@ void lt_timer_load_from_rom(void)
   ltm.hour  = rom_read(ROM_LT_TIMER_HOUR);
   ltm.min   = rom_read(ROM_LT_TIMER_MIN);
   ltm.sec   = rom_read(ROM_LT_TIMER_SEC);
+	lt_timer_is_12 = rom_read(ROM_TIME_IS12);
 }
 
 // 将绝对时间写入rom！
 void lt_timer_save_to_rom(enum lt_timer_sync_type type)
 {
-  CDBG("lt_timer_save_to_rom type = %bd\n", type);
+  CDBG("lt_timer_save_to_rom type = %bu\n", type);
   switch (type) { 
     case LT_TIMER_SYNC_YEAR:
       rom_write(ROM_LT_TIMER_YEAR, ltm.year);
@@ -454,8 +472,12 @@ void lt_timer_save_to_rom(enum lt_timer_sync_type type)
 }
 // ltm绝对时间转换为相对时间，
 // 如果too_close_check & 小于30S，返回0，否则返回1
-// 如果!too_close_check，忽略30S逻辑
-bit lt_timer_get_relative(bit too_close_check)
+// 如果!too_close_check，忽略LT_TIMER_MIN_SEC逻辑
+// return:
+// 0: OK
+// 1: 已经触发，或者too_close_check设置时，小于LT_TIMER_MIN_SEC
+// 2: 天大于LT_TIMER_MAX_DAY
+unsigned char lt_timer_get_relative(bit too_close_check)
 {
   bit borrow;
   
@@ -467,143 +489,40 @@ bit lt_timer_get_relative(bit too_close_check)
   lt_timer_sub_date(borrow);
   clock_enable_interrupt(1);
   
-  CDBG("lt_timer_get_relative: ltm.date = %bd, ltm.min = %bd, ltm.sec = %bd\n",
+  CDBG("lt_timer_get_relative: ltm.date = %bu, ltm.min = %bu, ltm.sec = %bu\n",
     ltm.date, ltm.min, ltm.sec);
   
   // 所设置绝对时间已经超时了
   if(ltm.date == 0 && ltm.hour == 0 && ltm.min == 0) {
     if(ltm.sec == 0) {
       CDBG("lt_timer_get_relative : already triggered!\n");
-      return 0;
-    } else if(ltm.sec < LT_MIN_SEC && too_close_check) {
-     CDBG("lt_timer_get_relative : too close!\n");
-      return 0;
+      return 1;
+    } else if(ltm.sec < LT_TIMER_MIN_SEC && too_close_check) {
+      CDBG("lt_timer_get_relative : too close!\n");
+      return 1;
     } 
   }
+	
+	if(ltm.date > LT_TIMER_MAX_DAY) {
+		CDBG("lt_timer_get_relative : ltm.date > %bu\n", LT_TIMER_MAX_DAY);
+		return 2;
+	}
   
-  return 1;
+  return 0;
 }
 
 // 将ltm里的绝对时间写入RTC
 void lt_timer_sync_to_rtc(void)
 {
-  CDBG("lt_timer_sync_to_rtc : ltm.date = %bd, ltm.hour = %bd, ltm.min = %bd, ltm.sec = %bd\n",
+  CDBG("lt_timer_sync_to_rtc : ltm.date = %bu, ltm.hour = %bu, ltm.min = %bu, ltm.sec = %bu\n",
   ltm.date, ltm.hour, ltm.min, ltm.sec);
   // 绝对时间写入rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
+	rtc_alarm_set_hour_12(lt_timer_is_12);
   rtc_alarm_set_date(ltm.date + 1);
   rtc_alarm_set_hour(ltm.hour);
   rtc_alarm_set_min(ltm.min);
   rtc_alarm_set_sec(ltm.sec);
   rtc_write_data(RTC_TYPE_ALARM0);  
 }
-
-/*
-// 将当前时间+ltm（相对时间），求出绝对时间写入rtc
-// test current time + ltm > 2099-12-31-23:59:59
-// 如果overflow，返回0，成功返回1
-bit lt_timer_sync_to_rtc(void)
-{
-  bit ret = 1;
-  //unsigned char temp0, temp1;
-  unsigned char sec, min, hour, date, month, year;
-  
-  // about 280 ms!
-  //temp0 = clock_get_ms39();
-  clock_enable_interrupt(0);
-  min = lt_timer_add_sec_min(&sec);
-  hour = lt_timer_add_min_hour(&min);
-  date = lt_timer_add_hour_date(&hour);
-  year = lt_timer_add_date_month_year(&date, &month);
-  clock_enable_interrupt(1);
-  //temp1 = clock_get_ms39();
-
-  //CDBG("temp0 = %bx temp1 = %bx\n", temp0, temp1);
-  
-  CDBG("lt_timer_is_overflow: [%02bd-%02bd-%02bd %02bd:%02bd:%02bd] + [%02bd %02bd:%02bd:%02bd] = [%02bd-%02bd-%02bd %02bd:%02bd:%02bd]\n", 
-    clock_get_year(), clock_get_month(), clock_get_date(), clock_get_hour(), clock_get_min(), clock_get_sec(),
-    ltm.day, ltm.hour, ltm.min, ltm.sec,
-    year, month, date, hour, min, sec
-  );  
-  
-  if(year > CLOCK_YEAR_BASE + 99) {
-    ret = 0;
-  } else if(year < CLOCK_YEAR_BASE + 99) {
-    ret = 1;
-  } else if(month > 11){
-    ret = 0;
-  } else if(month < 11) {
-    ret = 1;
-  } else if(date > 30) {
-    ret = 0;
-  } else if(date < 30) {
-    ret = 1;
-  } else if(hour > 59) {
-    ret = 0;
-  } else if(hour < 59) {
-    ret = 1;
-  } else if(min > 59) {
-    ret = 0;
-  } else if(min < 59) {
-    ret = 1;
-  } else if(sec > 59) {
-    ret = 0;
-  } else if(sec < 59) {
-    ret = 1;
-  } else {
-    ret = 0;
-  }
-  
-  if(!ret) {
-    CDBG("lt_timer_is_overflow: is overflowed!\n");
-    return ret;
-  }
-  
-  ltm.ms39 = 0;
-  
-  lt_timer_start_ram();
-  
-  // 向rtc写入，但是不启动rtc
-  rtc_read_data(RTC_TYPE_ALARM0);
-  rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
-  rtc_alarm_set_date(date);
-  rtc_alarm_set_hour(hour);
-  rtc_alarm_set_min(min);
-  rtc_alarm_set_sec(sec);
-  rtc_write_data(RTC_TYPE_ALARM0);
-  
-  // year, month写入rom！,每次触发时候，需要看看当前year、mon是不是match
-  rom_write(ROM_LT_TIMER_YEAR, year);
-  rom_write(ROM_LT_TIMER_MONTH, month);
-  
-  return ret;
-}
-
-void lt_timer_save_to_rom(enum lt_timer_sync_type type)
-{
-  switch (type) { 
-    case LT_TIMER_SYNC_DAY:
-      rom_write(ROM_LT_TIMER_DAY, ltm.day);
-      break;
-    case LT_TIMER_SYNC_HOUR:
-      rom_write(ROM_LT_TIMER_HOUR, ltm.hour);
-      break;
-    case LT_TIMER_SYNC_MIN:
-      rom_write(ROM_LT_TIMER_MIN, ltm.min);
-      break;
-    case LT_TIMER_SYNC_SEC:
-      rom_write(ROM_LT_TIMER_SEC, ltm.sec);
-      break;
-    
-  }
-}
-
-void lt_timer_load_from_rom(void)
-{
-  ltm.day  = rom_read(ROM_LT_TIMER_DAY);
-  ltm.hour = rom_read(ROM_LT_TIMER_HOUR);
-  ltm.min  = rom_read(ROM_LT_TIMER_MIN);
-  ltm.sec  = rom_read(ROM_LT_TIMER_SEC);
-}
-*/

@@ -64,7 +64,7 @@ static void display_alarm(unsigned char what)
 
 void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_alarm %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_alarm %bu %bu %bu\n", from, to, ev);
   
   // 闹钟0到时间了
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {

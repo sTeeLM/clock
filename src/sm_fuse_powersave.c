@@ -25,12 +25,12 @@ static void roll_back(void)
 
 void sm_fuse_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_powersave_init %bu %bu %bu\n", from, to, ev);
 }
 
 void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_powersave_submod0 %bu %bu %bu\n", from, to, ev);
 	if(ev == EV_250MS) {
     // 进入睡眠
     power_enter_powersave();
@@ -41,7 +41,7 @@ void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_e
 
 void sm_fuse_powersave_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_powersave_submod1 %bu %bu %bu\n", from, to, ev);
     roll_back(); // 关闭所有外围电路，以及lt_timer
     set_task(EV_KEY_V0);
 }
@@ -49,7 +49,7 @@ void sm_fuse_powersave_submod1(unsigned char from, unsigned char to, enum task_e
 /*
 void sm_fuse_powersave(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_powersave %bu %bu %bu\n", from, to, ev);
   // 该进入节电模式了
   if(get_sm_ss_state(to) == SM_FUSE_POWERSAVE_PS && ev == EV_250MS) {
     // 进入睡眠

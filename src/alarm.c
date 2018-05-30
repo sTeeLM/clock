@@ -67,7 +67,7 @@ static void alarm_load_rom(void)
   alarm0.day_mask = rom_read(ROM_ALARM0_DAY_MASK);
   alarm0.hour = rom_read(ROM_ALARM0_HOUR);
   alarm0.min  = rom_read(ROM_ALARM0_MIN);
-  alarm0_is12 = rom_read(ROM_ALARM0_IS12);
+  alarm0_is12 = rom_read(ROM_TIME_IS12);
   alarm1_enable = rom_read(ROM_ALARM1_ENABLE); 
 }
 
@@ -76,23 +76,23 @@ static void alarm_save_rom(void)
   rom_write(ROM_ALARM0_DAY_MASK, alarm0.day_mask);
   rom_write(ROM_ALARM0_HOUR, alarm0.hour);
   rom_write(ROM_ALARM0_MIN, alarm0.min);
-  rom_write(ROM_ALARM0_IS12, alarm0_is12 ? 1 : 0);
+  rom_write(ROM_TIME_IS12, alarm0_is12 ? 1 : 0);
   rom_write(ROM_ALARM1_ENABLE, alarm1_enable);
 }
 
 void alarm_initialize (void)
 {
   CDBG("alarm_initialize\n");
-  // 从ROM中读取配置
-  alarm_load_rom();  
-  alarm_dump();
 }
 
 void alarm_switch_on(void)
 {
   CDBG("alarm_switch_on\n");
+	alarm_load_rom();
+	alarm_dump();
   alarm0_sync_to_rtc();
   alarm1_sync_to_rtc();
+	rtc_dump();
 }
 
 void alarm_switch_off(void)
@@ -102,13 +102,14 @@ void alarm_switch_off(void)
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
   rtc_write_data(RTC_TYPE_CTL);
+	rtc_dump();
 }
 
 void alarm_dump(void)
 {
-  CDBG("alarm0.day_mask = %bx\n", alarm0.day_mask);
-  CDBG("alarm0.hour = %bd\n", alarm0.hour);
-  CDBG("alarm0.min  = %bd\n", alarm0.min);
+  CDBG("alarm0.day_mask = 0x%02bx\n", alarm0.day_mask);
+  CDBG("alarm0.hour = %bu\n", alarm0.hour);
+  CDBG("alarm0.min  = %bu\n", alarm0.min);
   CDBG("alarm0.is12 = %s\n",  alarm0_is12 ? "ON" : "OFF");  
   CDBG("alarm1.enable = %s\n",  alarm1_enable ? "ON" : "OFF");  
 }
@@ -126,21 +127,21 @@ void alarm_leave_powersave(void)
 // day  1-7
 bit alarm0_test_enable(unsigned char day)
 {
-  CDBG("alarm0_test_enable %bx %bd!\n", alarm0.day_mask, day);
+  CDBG("alarm0_test_enable 0x%02bx %bu!\n", alarm0.day_mask, day);
   return (alarm0.day_mask & (1 << (day - 1))) != 0;
 }
 
 // day  1-7
 void alarm0_set_enable(unsigned char day, bit enable)
 {
-  CDBG("alarm0_set_enable %bd %s!\n", day, enable ? "ON" : "OFF");
+  CDBG("alarm0_set_enable %bu %s!\n", day, enable ? "ON" : "OFF");
   day = 1 << (day - 1);
   if(enable) {
     alarm0.day_mask |= day;
   } else {
     alarm0.day_mask &= ~day;
   }
-  CDBG("alarm0_set_enable res %bx!\n", alarm0.day_mask);
+  CDBG("alarm0_set_enable res 0x%02bx!\n", alarm0.day_mask);
   
 }
 
@@ -185,10 +186,10 @@ void alarm0_sync_to_rtc(void)
   CDBG("alarm0_sync_to_rtc!\n");
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC);
+  rtc_alarm_set_hour_12(alarm0_is12);
   rtc_alarm_set_hour(alarm0.hour);
   rtc_alarm_set_min(alarm0.min);
   rtc_alarm_set_sec(0);
-  rtc_alarm_set_hour_12(alarm0_is12);
   rtc_write_data(RTC_TYPE_ALARM0);
   
   rtc_read_data(RTC_TYPE_CTL);
@@ -212,6 +213,8 @@ void alarm1_sync_to_rtc(void)
   CDBG("alarm1_sync_to_rtc!\n");
   rtc_read_data(RTC_TYPE_ALARM1);
   rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_MIN);
+	rtc_alarm_set_hour_12(alarm0_is12);
+  rtc_alarm_set_hour(0);
   rtc_alarm_set_min(0);
   rtc_write_data(RTC_TYPE_ALARM1);
   

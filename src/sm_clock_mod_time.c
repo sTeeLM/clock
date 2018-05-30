@@ -43,7 +43,7 @@ static void update_hhmmss(void)
   }
   
   
-  CDBG("update_hhmmss %bd:%bd:%bd\n", hour, min, sec);  
+  CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
   
   if((hour / 10) != 0) {
     led_set_code(5, (hour / 10) + 0x30);
@@ -69,7 +69,7 @@ static void update_yymmdd(void)
   led_set_dp(2);
   led_set_dp(4);
 
-  CDBG("update_yymmdd %bd-%bd-%bd\n", year, mon, date);
+  CDBG("update_yymmdd %bu-%bu-%bu\n", year, mon, date);
   
   if((year / 10) != 0) {
     led_set_code(5, (year / 10) + 0x30);
@@ -244,7 +244,7 @@ static void enter_yymmdd(unsigned char what) // blink year:0, month:1, day:2
 
 void sm_clock_mod_time_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_init %bu %bu %bu\n", from, to, ev);
   clock_display(0);
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 1);
 }
@@ -309,7 +309,7 @@ static void sm_clock_mod_time(unsigned char what, enum task_events ev)
 
 void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_submod0 %bu %bu %bu\n", from, to, ev);
   
 	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
 		&& ev == EV_KEY_MOD_UP) {
@@ -321,35 +321,35 @@ void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_e
 
 void sm_clock_mod_time_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_submod1 %bu %bu %bu\n", from, to, ev);
 	
 	sm_clock_mod_time(IS_MIN, ev);
 }
 
 void sm_clock_mod_time_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_submod2 %bu %bu %bu\n", from, to, ev);
   
 	sm_clock_mod_time(IS_SEC, ev);
 }
 
 void sm_clock_mod_time_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod3 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_submod3 %bu %bu %bu\n", from, to, ev);
   
 	sm_clock_mod_time(IS_YEAR, ev);
 }
 
 void sm_clock_mod_time_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod4 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_submod4 %bu %bu %bu\n", from, to, ev);
 
 	sm_clock_mod_time(IS_MON, ev);
 }
 
 void sm_clock_mod_time_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod5 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_time_submod5 %bu %bu %bu\n", from, to, ev);
 
 	sm_clock_mod_time(IS_DAY, ev);
 }

@@ -193,7 +193,7 @@ void beeper_inc_music_to(void)
 void beeper_inc_music_index(void)
 {
   beeper_music_index = (++beeper_music_index) % BEEPER_MUSIC_CNT;
-  CDBG("beeper_inc_music_index %bd\n", beeper_music_index);
+  CDBG("beeper_inc_music_index %bu\n", beeper_music_index);
 }
 
 enum beeper_music beeper_get_music_index()

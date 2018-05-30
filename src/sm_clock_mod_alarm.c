@@ -41,7 +41,7 @@ static void update_alarm(unsigned char what, unsigned char day)
       led_clr_dp(3);
     }
  
-    CDBG("update_alarm %bd:%bd\n", hour, min);
+    CDBG("update_alarm %bu:%bu\n", hour, min);
       
     if((hour / 10) != 0) {
       led_set_code(3, (hour / 10) + 0x30);
@@ -84,7 +84,7 @@ static void update_alarm(unsigned char what, unsigned char day)
       led_set_code(3, 'U');
       led_set_code(2, 'N');
       led_set_code(1, 'D');  
-      CDBG("beeper_get_music_index return %bd\n", beeper_get_music_index());
+      CDBG("beeper_get_music_index return %bu\n", beeper_get_music_index());
       led_set_code(0, beeper_get_music_index() + 1 + 0x30);
 	}
 }
@@ -192,13 +192,13 @@ static void toggle_alarm_music(void)
 
 void sm_clock_mod_alarm_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_init %bu %bu %bu\n", from, to, ev);
 	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
 }
 
 void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_init %bu %bu %bu\n", from, to, ev);
  // 切换到修改闹钟
   if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_INIT 
     && ev == EV_KEY_MOD_UP) {
@@ -232,7 +232,7 @@ void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod1 %bu %bu %bu\n", from, to, ev);
   // mod0进入修改分钟模式
   if(ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_MIN, 0);
@@ -266,7 +266,7 @@ void sm_clock_mod_alarm_submod1(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod2 %bu %bu %bu\n", from, to, ev);
 	
 	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_MM) {
 		alarm_index = 1;
@@ -290,7 +290,7 @@ void sm_clock_mod_alarm_submod2(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod3 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod3 %bu %bu %bu\n", from, to, ev);
 	
 	if(ev == EV_KEY_V0) {
 		enter_alarm(IS_BS, 0);
@@ -303,7 +303,7 @@ void sm_clock_mod_alarm_submod3(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod4 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_mod_alarm_submod4 %bu %bu %bu\n", from, to, ev);
 	
 	if(ev == EV_KEY_MOD_PRESS) {
 		enter_alarm(IS_MUSIC, 0);

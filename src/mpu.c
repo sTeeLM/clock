@@ -20,7 +20,7 @@ static void mpu_load_config(void)
 {
   CDBG("mpu_load_config\n");
 	mpu_threshold = rom_read(ROM_FUSE_MPU);
-	CDBG("mpu_threshold = %bd\n", mpu_threshold);
+	CDBG("mpu_threshold = %bu\n", mpu_threshold);
 }
 
 static void mpu_power_on(void)
@@ -40,7 +40,7 @@ static void mpu_power_on(void)
 	// 读取一次端口寄存器消除中断
   I2C_Get(MPU_I2C_ADDRESS, 0x0, &val);
 	
-  CDBG("mpu port reg is %bx\n", val);
+  CDBG("mpu port reg is 0x%02bx\n", val);
 #else
   /* Device reset */
   val = 0x80;
@@ -130,7 +130,7 @@ static void mpu_power_off(void)
 	// 读取一次端口寄存器消除中断
   I2C_Get(MPU_I2C_ADDRESS, 0x0, &val);
 	
-  CDBG("mpu port reg is %bx\n", val);
+  CDBG("mpu port reg is 0x%02bx\n", val);
 #else
 	// into sleep
 	// 01001000 = 0x48
@@ -198,7 +198,7 @@ void scan_mpu(void)
 
 void mpu_enable(bit enable)
 {
-  CDBG("mpu_enable %bd\n", enable ? 1 : 0 );
+  CDBG("mpu_enable %bu\n", enable ? 1 : 0 );
   if(enable) {
     mpu_power_on();
   } else {
@@ -240,7 +240,7 @@ unsigned char mpu_threshold_get(void)
 
 void mpu_threshold_set(unsigned char val)
 {
-	CDBG("mpu_threshold_set %bd\n", val);
+	CDBG("mpu_threshold_set %bu\n", val);
 #ifdef __CLOCK_EMULATE__
 	return;
 #else
@@ -266,7 +266,7 @@ unsigned char mpu_read_int_status(void)
 #else
 	I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
 #endif
-	CDBG("mpu int reg is %bx\n", val);
+	CDBG("mpu int reg is 0x%02bx\n", val);
 	return val;
 }
 

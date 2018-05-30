@@ -92,7 +92,7 @@ void scan_key_proc(enum task_events ev)
 
 void mod_proc(enum task_events ev)
 {
-  CDBG("mod_proc %bd\n",ev);
+  CDBG("mod_proc %bu\n",ev);
 
   switch (ev) {
     case EV_KEY_MOD_DOWN:
@@ -116,7 +116,7 @@ void mod_proc(enum task_events ev)
 
 void set_proc(enum task_events ev)
 {
-  CDBG("set_proc %bd\n", ev);
+  CDBG("set_proc %bu\n", ev);
   
   switch (ev) {
     case EV_KEY_SET_DOWN:
@@ -139,7 +139,7 @@ void set_proc(enum task_events ev)
 
 void mod_set_proc(enum task_events ev)
 {
-  CDBG("mod_set_proc %bd\n", ev);
+  CDBG("mod_set_proc %bu\n", ev);
   
   switch (ev) {
     case EV_KEY_MOD_SET_PRESS:

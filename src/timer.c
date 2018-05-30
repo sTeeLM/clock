@@ -120,7 +120,7 @@ void timer_set_mode(enum timer_mode mode)
 
 void timer_start(void)
 {
-  CDBG("timer_start mode is %bd\n", tmr_mode);
+  CDBG("timer_start mode is %bu\n", tmr_mode);
   tmr_countdown_stop = 0;
   tmr_start = 1;
 }

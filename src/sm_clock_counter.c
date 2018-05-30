@@ -95,7 +95,7 @@ static void update_hhmmss(void)
   led_set_dp(3);
   led_set_dp(4); 
   
-  CDBG("update_hhmmss %bd:%bd:%bd\n", hour, min, sec);  
+  CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
   
   led_set_code(5, (hour / 10) + 0x30);
   led_set_code(4, (hour % 10) + 0x30);
@@ -128,13 +128,13 @@ static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 
 void sm_clock_counter_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_init %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_init %bu %bu %bu\n", from, to, ev);
 	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 4);
 }
 
 void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_submod0 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_submod0 %bu %bu %bu\n", from, to, ev);
   // 切换到倒计时大模式
   if(get_sm_ss_state(from) == SM_CLOCK_COUNTER_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH
@@ -186,7 +186,7 @@ void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_submod1 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_submod1 %bu %bu %bu\n", from, to, ev);
   // 刷新显示
   if(ev == EV_250MS) {
     update_hhmmss();
@@ -225,7 +225,7 @@ void sm_clock_counter_submod1(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_submod2 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_submod2 %bu %bu %bu\n", from, to, ev);
   // 刷新显示
   if(ev == EV_250MS) {
     update_hhmmss();
@@ -264,7 +264,7 @@ void sm_clock_counter_submod2(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_submod3 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_submod3 %bu %bu %bu\n", from, to, ev);
   
 	// mod0 开始倒计时
   if(ev == EV_KEY_MOD_PRESS) {
@@ -285,7 +285,7 @@ void sm_clock_counter_submod3(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_submod4 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_submod4 %bu %bu %bu\n", from, to, ev);
 	
   // set0 暂停倒计时
   if(ev == EV_KEY_SET_PRESS) {
@@ -297,7 +297,7 @@ void sm_clock_counter_submod4(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_counter_submod5 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_counter_submod5 %bu %bu %bu\n", from, to, ev);
   // 倒计时结束
   if(ev == EV_COUNTER) {
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
@@ -311,7 +311,7 @@ void sm_clock_counter_submod5(unsigned char from, unsigned char to, enum task_ev
 void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
 {
 
-  CDBG("sm_clock_counter %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_counter %bu %bu %bu\n", from, to, ev);
 
   // 按set1进入倒计时大模式
   if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_INIT && ev == EV_KEY_SET_LPRESS) {

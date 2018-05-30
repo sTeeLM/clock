@@ -7,6 +7,7 @@
 #include "alarm.h"
 #include "debug.h"
 #include "rom.h"
+#include "lt_timer.h"
 
 const char * code sm_global_flag_mod_ss_name[] = 
 {
@@ -22,7 +23,7 @@ static void display_global_flag(unsigned char what)
 
   led_clear();
   
-  CDBG("display_global_flag %bd\n", what);
+  CDBG("display_global_flag %bu\n", what);
   
   switch(what) {
     case IS_PS:
@@ -55,7 +56,7 @@ static void display_global_flag(unsigned char what)
       led_set_code(5, 'D');
       led_set_code(4, 'S');
       led_set_code(3, 'P');    
-      if(!clock_get_hour_12()) {
+      if(!rom_read(ROM_TIME_IS12)) {
         led_set_code(1, '2');
         led_set_code(0, '4');
       } else {
@@ -68,6 +69,7 @@ static void display_global_flag(unsigned char what)
 
 static void inc_write(unsigned char what)
 {
+	bit is12;
   switch(what) {
     case IS_PS:
       power_inc_powersave_to();
@@ -78,18 +80,20 @@ static void inc_write(unsigned char what)
 			rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
       break;
     case IS_1224:
-      clock_set_hour_12(!clock_get_hour_12());
+			is12 = rom_read(ROM_TIME_IS12);
+      clock_set_hour_12(!is12);
       clock_sync_to_rtc(CLOCK_SYNC_TIME);
-      alarm0_set_hour_12(!alarm0_get_hour_12());
-      alarm0_sync_to_rtc();
-      rom_write(ROM_ALARM0_IS12, alarm0_get_hour_12() ? 1 : 0);
+      alarm0_set_hour_12(!is12);
+      lt_timer_set_hour_12(!is12);
+      rom_write(ROM_TIME_IS12, !is12);
       break;
   }
 }
 
 void sm_global_flag_mod_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_init %bu %bu %bu\n", from, to, ev);
+	lt_timer_switch_off();
 	display_logo(DISPLAY_LOGO_TYPE_GLOBAL_FLAG, 0);
 }
 
@@ -109,19 +113,19 @@ static void sm_global_flag_mod(unsigned char what,  enum task_events ev)
 
 void sm_global_flag_mod_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_submod0 %bu %bu %bu\n", from, to, ev);
 	sm_global_flag_mod(IS_PS, ev);
 }
 
 void sm_global_flag_mod_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_submod1 %bu %bu %bu\n", from, to, ev);
 	sm_global_flag_mod(IS_BEEP, ev);
 }
 
 void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_global_flag_mod_submod2 %bu %bu %bu\n", from, to, ev);
 	sm_global_flag_mod(IS_1224, ev);
 }
 

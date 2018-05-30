@@ -10,12 +10,12 @@ const char * code sm_power_pack_powersave_ss_name[] = {
 
 void sm_power_pack_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_power_pack_powersave_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_power_pack_powersave_init %bu %bu %bu\n", from, to, ev);
 }
 
 void sm_power_pack_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_power_pack_powersave_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_power_pack_powersave_submod0 %bu %bu %bu\n", from, to, ev);
   // ∏√ÀØ√ﬂ¡À
   if(ev == EV_250MS) {
     power_enter_powersave();

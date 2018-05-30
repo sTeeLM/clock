@@ -51,7 +51,7 @@ enum timer_arm_err {
 	TIMER_ERR_MPU_HIT,
 	TIMER_ERR_LT_TIMER_HIT,
 	TIMER_ERR_LT_TIMER_TOO_CLOSE,
-	
+	TIMER_ERR_LT_TIMER_TOO_LONG
 };
 
 enum timer_display_state
@@ -91,14 +91,18 @@ static unsigned char check_and_set(unsigned char step)
 			}
 			break;
 		case TIMER_ARM_LT_TIMER:
-     lt_timer_load_from_rom();
+			lt_timer_load_from_rom();
       lt_timer_sync_to_rtc();
-      if(!lt_timer_get_relative(1)) {
-        ret = TIMER_ERR_LT_TIMER_TOO_CLOSE;
+			val = lt_timer_get_relative(1);
+			if(val == 1) {
+				ret = TIMER_ERR_LT_TIMER_TOO_CLOSE;
         break;
-      } else {
-        lt_timer_start_ram();
-      }
+			} else if(val == 2) {
+				ret = TIMER_ERR_LT_TIMER_TOO_LONG;
+        break;
+			} else {
+				lt_timer_start_ram();
+			}
       break;
 		case TIMER_ARM_DELAY0:
 		case TIMER_ARM_DELAY1:
@@ -110,7 +114,7 @@ static unsigned char check_and_set(unsigned char step)
 
 static void roll_back(bit include_fuse)
 {
-	CDBG("roll_back include_fuse = %bd\n", include_fuse ? 1 : 0);
+	CDBG("roll_back include_fuse = %bu\n", include_fuse ? 1 : 0);
   thermo_enable(0);
   mpu_enable(0);
   hg_enable(0);
@@ -197,9 +201,9 @@ static void verify_password()
   
   if(res == password_content) {
     verify_state |= (1 << password_index);
-    CDBG("verify_password %bd : %bd <->%bd success\n", password_index, res, password_content);
+    CDBG("verify_password %bu : %bu <->%bu success\n", password_index, res, password_content);
   } else {
-    CDBG("verify_password %bd : %bd <->%bd failed\n", password_index, res, password_content);
+    CDBG("verify_password %bu : %bu <->%bu failed\n", password_index, res, password_content);
   }
   return;
 }
@@ -226,7 +230,7 @@ static void inc_password(void)
 
 void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_timer_init %bu %bu %bu\n", from, to, ev);
 	display_logo(DISPLAY_LOGO_TYPE_FUSE, 3);
 	next_arm_step = 0;
 	in_rollback   = 1;
@@ -236,7 +240,7 @@ void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events e
 void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
 	unsigned char err;
-  CDBG("sm_fuse_timer_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_timer_submod0 %bu %bu %bu\n", from, to, ev);
 	
 	if(ev == EV_KEY_MOD_UP) {
 		err = TIMER_ERR_OK;
@@ -288,7 +292,7 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
 // armed
 void sm_fuse_timer_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_timer_submod1 %bu %bu %bu\n", from, to, ev);
 	
 	if(ev == EV_KEY_V1 || ev == EV_KEY_SET_LPRESS) {
 		lt_timer_display(1);
@@ -320,7 +324,7 @@ void sm_fuse_timer_submod1(unsigned char from, unsigned char to, enum task_event
 // verify
 void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_timer_submod2 %bu %bu %bu\n", from, to, ev);
 	if(ev == EV_KEY_MOD_PRESS) {
 		// 进入密码验证状态
 		if(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED) {
@@ -349,7 +353,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
 					set_task(EV_KEY_V2); // 校验多次不OK，挂了
 				} else {
 					verify_state += 0x40;
-					CDBG("verify failed, count is %0bx!\n", (verify_state & 0xC0));
+					CDBG("verify failed, count is 0x%02bx!\n", (verify_state & 0xC0));
 					set_task(EV_KEY_V1);
 				}
 			}
@@ -372,7 +376,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
 // dis-armed
 void sm_fuse_timer_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod3 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_timer_submod3 %bu %bu %bu\n", from, to, ev);
 
 	if(ev == EV_KEY_V0) {
 		roll_back(1); // 关闭所有传感器
@@ -386,7 +390,7 @@ void sm_fuse_timer_submod3(unsigned char from, unsigned char to, enum task_event
 // pre-detonate
 void sm_fuse_timer_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod4 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_timer_submod4 %bu %bu %bu\n", from, to, ev);
 	roll_back(0); // 关闭所有传感器，除了fuse
 	display_timer(DISPLAY_TIMER_PREDETONATE);
 	set_task(EV_KEY_V0);

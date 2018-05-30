@@ -26,14 +26,14 @@ static void display_detonate(void)
 
 void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_detonate_init %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_detonate_init %bu %bu %bu\n", from, to, ev);
   display_detonate();
 }
 
 
 void sm_fuse_detonate_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_detonate_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_fuse_detonate_submod0 %bu %bu %bu\n", from, to, ev);
 	
 	if(ev == EV_250MS) {
 		fuse_trigger(1);

@@ -44,7 +44,7 @@ void int_hub_initialize (void)
 
   // 读取一次端口寄存器消除中断
   I2C_Get(INT_HUB_I2C_ADDR, 0x0, &val);
-  CDBG("int hub 0 port reg is %bx\n", val);
+  CDBG("int hub 0 port reg is %02bx\n", val);
   
   // Configuration Register 设置为全1，用于input
   I2C_Put(INT_HUB_I2C_ADDR, 0x7, 0xFF);
@@ -53,7 +53,7 @@ void int_hub_initialize (void)
 
   // 读取一次端口寄存器消除中断
   I2C_Get(INT_HUB_I2C_ADDR, 0x1, &val);
-  CDBG("int hub 1 port reg is %bx\n", val);
+  CDBG("int hub 1 port reg is %02bx\n", val);
   
   RTC_INT = 1;
   MPU_INT   = 1;
@@ -91,12 +91,12 @@ unsigned int int_hub_get_status(void)
   unsigned char val;
 
   I2C_Get(INT_HUB_I2C_ADDR, 0x1, &val); 
-  CDBG("int_hub_get_status hi is %bx\n", val);
+  CDBG("int_hub_get_status hi is 0x%02bx\n", val);
   status = val;
   
   status = status << 8;
   I2C_Get(INT_HUB_I2C_ADDR, 0x0, &val);
-  CDBG("int_hub_get_status lo is %bx\n", val);
+  CDBG("int_hub_get_status lo is 0x%02bx\n", val);
   status |= val;
   
   return status;
@@ -105,22 +105,22 @@ unsigned int int_hub_get_status(void)
 void int_hub_dump_ext_status(unsigned int status)
 {
   CDBG("++++++int_hub_dump_ext_status begin++++++\n");
-  CDBG("[%02bd] %c %s\n", INT_HUB_FUSE0_BROKE, int_hub_test_bit(INT_HUB_FUSE0_BROKE, status) ? '1' : '0', "INT_HUB_FUSE0_BROKE");
-  CDBG("[%02bd] %c %s\n", INT_HUB_FUSE1_BROKE, int_hub_test_bit(INT_HUB_FUSE1_BROKE, status) ? '1' : '0', "INT_HUB_FUSE1_BROKE");
-  CDBG("[%02bd] %c %s\n", INT_HUB_HG0_HIT, int_hub_test_bit(INT_HUB_HG0_HIT, status) ? '1' : '0', "INT_HUB_HG0_HIT");
-  CDBG("[%02bd] %c %s\n", INT_HUB_HG1_HIT, int_hub_test_bit(INT_HUB_HG1_HIT, status) ? '1' : '0', "INT_HUB_HG1_HIT");
-  CDBG("[%02bd] %c %s\n", INT_HUB_HG2_HIT, int_hub_test_bit(INT_HUB_HG2_HIT, status) ? '1' : '0', "INT_HUB_HG2_HIT");
-  CDBG("[%02bd] %c %s\n", INT_HUB_HG3_HIT, int_hub_test_bit(INT_HUB_HG3_HIT, status) ? '1' : '0', "INT_HUB_HG3_HIT"); 
-  CDBG("[%02bd] %c %s\n", INT_HUB_TRIPWIRE_HIT, int_hub_test_bit(INT_HUB_TRIPWIRE_HIT, status) ? '1' : '0', "INT_HUB_TRIPWIRE_HIT");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED0, int_hub_test_bit(INT_HUB_UNSUSED0, status) ? '1' : '0', "INT_HUB_UNSUSED0");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED1, int_hub_test_bit(INT_HUB_UNSUSED1, status) ? '1' : '0', "INT_HUB_UNSUSED1");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED2, int_hub_test_bit(INT_HUB_UNSUSED2, status) ? '1' : '0', "INT_HUB_UNSUSED2");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED3, int_hub_test_bit(INT_HUB_UNSUSED3, status) ? '1' : '0', "INT_HUB_UNSUSED3");  
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED4, int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED5, int_hub_test_bit(INT_HUB_UNSUSED5, status) ? '1' : '0', "INT_HUB_UNSUSED5");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED6, int_hub_test_bit(INT_HUB_UNSUSED6, status) ? '1' : '0', "INT_HUB_UNSUSED6");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED7, int_hub_test_bit(INT_HUB_UNSUSED7, status) ? '1' : '0', "INT_HUB_UNSUSED7");
-  CDBG("[%02bd] %c %s\n", INT_HUB_UNSUSED8, int_hub_test_bit(INT_HUB_UNSUSED8, status) ? '1' : '0', "INT_HUB_UNSUSED8");
+  CDBG("[%02bu] %c %s\n", INT_HUB_FUSE0_BROKE, int_hub_test_bit(INT_HUB_FUSE0_BROKE, status) ? '1' : '0', "INT_HUB_FUSE0_BROKE");
+  CDBG("[%02bu] %c %s\n", INT_HUB_FUSE1_BROKE, int_hub_test_bit(INT_HUB_FUSE1_BROKE, status) ? '1' : '0', "INT_HUB_FUSE1_BROKE");
+  CDBG("[%02bu] %c %s\n", INT_HUB_HG0_HIT, int_hub_test_bit(INT_HUB_HG0_HIT, status) ? '1' : '0', "INT_HUB_HG0_HIT");
+  CDBG("[%02bu] %c %s\n", INT_HUB_HG1_HIT, int_hub_test_bit(INT_HUB_HG1_HIT, status) ? '1' : '0', "INT_HUB_HG1_HIT");
+  CDBG("[%02bu] %c %s\n", INT_HUB_HG2_HIT, int_hub_test_bit(INT_HUB_HG2_HIT, status) ? '1' : '0', "INT_HUB_HG2_HIT");
+  CDBG("[%02bu] %c %s\n", INT_HUB_HG3_HIT, int_hub_test_bit(INT_HUB_HG3_HIT, status) ? '1' : '0', "INT_HUB_HG3_HIT"); 
+  CDBG("[%02bu] %c %s\n", INT_HUB_TRIPWIRE_HIT, int_hub_test_bit(INT_HUB_TRIPWIRE_HIT, status) ? '1' : '0', "INT_HUB_TRIPWIRE_HIT");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED0, int_hub_test_bit(INT_HUB_UNSUSED0, status) ? '1' : '0', "INT_HUB_UNSUSED0");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED1, int_hub_test_bit(INT_HUB_UNSUSED1, status) ? '1' : '0', "INT_HUB_UNSUSED1");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED2, int_hub_test_bit(INT_HUB_UNSUSED2, status) ? '1' : '0', "INT_HUB_UNSUSED2");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED3, int_hub_test_bit(INT_HUB_UNSUSED3, status) ? '1' : '0', "INT_HUB_UNSUSED3");  
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED4, int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED5, int_hub_test_bit(INT_HUB_UNSUSED5, status) ? '1' : '0', "INT_HUB_UNSUSED5");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED6, int_hub_test_bit(INT_HUB_UNSUSED6, status) ? '1' : '0', "INT_HUB_UNSUSED6");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED7, int_hub_test_bit(INT_HUB_UNSUSED7, status) ? '1' : '0', "INT_HUB_UNSUSED7");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED8, int_hub_test_bit(INT_HUB_UNSUSED8, status) ? '1' : '0', "INT_HUB_UNSUSED8");
   CDBG("++++++int_hub_dump_ext_status ends++++++\n");
 }
 

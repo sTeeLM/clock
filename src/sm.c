@@ -598,7 +598,7 @@ static const struct sm_trans code sm_trans_fuse_powersave[] = {
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_THERMO_LO, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave_submod1},
   // tripwire剪断,触发
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PS, EV_FUSE_TRIPWIRE, SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, sm_fuse_powersave_submod1},
-  
+  // 进入detonate
   {SM_FUSE, SM_FUSE_POWERSAVE<<4|SM_FUSE_POWERSAVE_PREDETONATE, EV_KEY_V0, SM_FUSE, SM_FUSE_DETONATE<<4|SM_FUSE_DETONATE_INIT, sm_fuse_detonate_init},
 };  
 

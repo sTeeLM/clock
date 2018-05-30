@@ -216,13 +216,13 @@ static void clock_inc_ms39(void)
 
 void clock_dump(void)
 {
-  CDBG("clk.year = %bd\n", clk.year);
-  CDBG("clk.mon  = %bd\n", clk.mon);
-  CDBG("clk.date = %bd\n", clk.date); 
-  CDBG("clk.day  = %bd\n", clk.day);
-  CDBG("clk.hour = %bd\n", clk.hour);
-  CDBG("clk.min  = %bd\n", clk.min);
-  CDBG("clk.sec  = %bd\n", clk.sec);  
+  CDBG("clk.year = %bu\n", clk.year);
+  CDBG("clk.mon  = %bu\n", clk.mon);
+  CDBG("clk.date = %bu\n", clk.date); 
+  CDBG("clk.day  = %bu\n", clk.day);
+  CDBG("clk.hour = %bu\n", clk.hour);
+  CDBG("clk.min  = %bu\n", clk.min);
+  CDBG("clk.sec  = %bu\n", clk.sec);  
   CDBG("clk.ms39 = %bu\n", clk.ms39);
   CDBG("clk.is12 = %s\n", clk_is12 ? "ON" : "OFF"); 
 }
@@ -341,7 +341,7 @@ void clock_inc_year(void)
 
 void clock_sync_from_rtc(enum clock_sync_type type)
 {
-  CDBG("clock_sync_from_rtc = %bd\n", type);
+  CDBG("clock_sync_from_rtc = %bu\n", type);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     clk.hour = rtc_time_get_hour();   // 0 - 23
@@ -360,14 +360,14 @@ void clock_sync_from_rtc(enum clock_sync_type type)
 
 void clock_sync_to_rtc(enum clock_sync_type type)
 {
-  CDBG("clock_sync_to_rtc = %bd\n", type);
+  CDBG("clock_sync_to_rtc = %bu\n", type);
   clock_enable_interrupt(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
+    rtc_time_set_hour_12(clk_is12);
     rtc_time_set_hour(clk.hour);
     rtc_time_set_min(clk.min);
     rtc_time_set_sec(clk.sec);
-    rtc_time_set_hour_12(clk_is12);
     rtc_write_data(RTC_TYPE_TIME);
   } else if(type == CLOCK_SYNC_DATE) {
     rtc_read_data(RTC_TYPE_DATE);

@@ -50,10 +50,9 @@ enum sm_fuse_err
 
 void sm_fuse_test_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_init %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_init %bu %bu %bu\n", from, to, ev);
 	clock_display(0);
 	display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
-	alarm_switch_off();
 	lt_timer_switch_on();
 	rtc_set_lt_timer(1);
 	power_5v_enable(0);
@@ -67,20 +66,20 @@ void sm_fuse_test_init(unsigned char from, unsigned char to, enum task_events ev
 static unsigned char update_hg_mask(unsigned char state, unsigned char mask)
 {
 	unsigned char val;
-	CDBG("before update_hg_mask state = %bx, mask = %bx\n", state, mask);
+	CDBG("before update_hg_mask state = 0x%02bx, mask = 0x%02bx\n", state, mask);
 	val = (state ^ mask) & 0xF; // 变化的位设置为1
 	val = val << 4; // 低4位移到高4位
 	mask |= val;    // 与原有高4位取或
 	mask &= 0xF0;   // 清除低4位
 	mask |= (state & 0xF); // 保存低4位为新状态
-	CDBG("after update_hg_mask state = %bx, mask = %bx\n", state, mask);
+	CDBG("after update_hg_mask state = 0x%02bx, mask = 0x%02bx\n", state, mask);
 	return mask;
 }
 
 static void display_test(unsigned char what, unsigned char stage, unsigned char val, unsigned char errcode)
 {
 	char tmp;
-	CDBG("display_test what = %bd stage = %bd val = %bd errcode = %bd\n", what, stage, val, errcode);
+	CDBG("display_test what = %bu stage = %bu val = %bu errcode = %bu\n", what, stage, val, errcode);
 	
 	led_clear();
 	
@@ -239,7 +238,7 @@ static void update_set(unsigned char what)
 // thermo_hi,thermo_lo,hg,mpu
 static void enter_set(unsigned char what)
 {
-	CDBG("display_set %bd\n", what);
+	CDBG("display_set %bu\n", what);
 	led_clear();
 	led_set_dp(4);
 	led_set_dp(3);
@@ -275,7 +274,7 @@ static void enter_set(unsigned char what)
 static void inc_only(unsigned char what)
 {
 
-	CDBG("inc_only %bd\n", what);
+	CDBG("inc_only %bu\n", what);
 
   if(!lpress_lock) {
 		lpress_lock = 1;
@@ -301,7 +300,7 @@ static void inc_only(unsigned char what)
 
 static void write_only(unsigned char what)
 {
-	CDBG("write_only %bd\n", what);
+	CDBG("write_only %bu\n", what);
 	
   if(lpress_lock) {
 		lpress_lock = 0;
@@ -328,7 +327,7 @@ static void write_only(unsigned char what)
 
 static void inc_write(unsigned char what)
 {
-	CDBG("inc_write %bd\n", what);
+	CDBG("inc_write %bu\n", what);
 	inc_only(what);
 	write_only(what);
 }
@@ -353,7 +352,7 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 			val = rom_read(ROM_FUSE_THERMO_HI);
 		else
 			val = rom_read(ROM_FUSE_THERMO_LO);
-		CDBG("sm_fuse_test_thermo val = %bd\n", val);
+		CDBG("sm_fuse_test_thermo val = %bu\n", val);
 		if(val != THERMO_THRESHOLD_INVALID) {
 			// 开始测试
 			test_stage = 1;
@@ -461,7 +460,7 @@ static void sm_fuse_set(unsigned char what, enum task_events ev)
 // 4：fuse 设置 fuse1 broke取消，tripwire broke
 void sm_fuse_test_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod0 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod0 %bu %bu %bu\n", from, to, ev);
 	
 	if(ev == EV_KEY_MOD_UP || ev ==  EV_KEY_MOD_PRESS ) {
 		// 初始化
@@ -571,7 +570,7 @@ void sm_fuse_test_submod0(unsigned char from, unsigned char to, enum task_events
 
 void sm_fuse_test_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod1 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod1 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_set(IS_THERMO_HI, ev);
 }
 
@@ -582,25 +581,25 @@ void sm_fuse_test_submod1(unsigned char from, unsigned char to, enum task_events
 // 2: 开始下调hi/上调lo
 void sm_fuse_test_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod2 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod2 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_test_thermo(IS_THERMO_HI, ev);
 }
 
 void sm_fuse_test_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod3 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod3 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_set(IS_THERMO_LO, ev);
 }
 
 void sm_fuse_test_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod4 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod4 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_test_thermo(IS_THERMO_LO, ev);
 }
 
 void sm_fuse_test_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod5 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod5 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_set(IS_HG, ev);
 }
 
@@ -713,19 +712,19 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 // 2: 等待晃动
 void sm_fuse_test_submod6(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod6 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod6 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_test_hg_mpu(IS_HG, ev);
 }
 
 void sm_fuse_test_submod7(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod7 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod7 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_set(IS_MPU, ev);
 }
 
 
 void sm_fuse_test_submod8(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_fuse_test_submod8 %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_fuse_test_submod8 %bu %bu %bu\n", from, to, ev);
 	sm_fuse_test_hg_mpu(IS_MPU, ev);
 }

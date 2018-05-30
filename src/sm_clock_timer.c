@@ -45,14 +45,14 @@ static void display_slot(unsigned char slot)
 
 void sm_clock_timer_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_timer_init %bd %bd %bd\n", from, to, ev);
+	CDBG("sm_clock_timer_init %bu %bu %bu\n", from, to, ev);
 	clock_display(0);
 	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 3);
 }
 
 void sm_clock_timer_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_timer_submod0 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_timer_submod0 %bu %bu %bu\n", from, to, ev);
   // 切换到跑表大模式
   if(get_sm_ss_state(from) == SM_CLOCK_TIMER_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_TIMER_CLEAR
@@ -73,7 +73,7 @@ void sm_clock_timer_submod0(unsigned char from, unsigned char to, enum task_even
 
 void sm_clock_timer_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_timer_submod1 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_timer_submod1 %bu %bu %bu\n", from, to, ev);
   // mod0跑表开始跑
   if(ev == EV_KEY_MOD_DOWN) {
     timer_set_led_autorefresh(1, TIMER_DISP_MODE_MMSSMM);
@@ -103,7 +103,7 @@ void sm_clock_timer_submod1(unsigned char from, unsigned char to, enum task_even
 
 void sm_clock_timer_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_timer_submod2 %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_timer_submod2 %bu %bu %bu\n", from, to, ev);
   // mod0跑表停止
   if(ev == EV_KEY_MOD_DOWN) {
     timer_stop();
@@ -129,7 +129,7 @@ void sm_clock_timer_submod2(unsigned char from, unsigned char to, enum task_even
 /*
 void sm_clock_timer(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_timer %bd %bd %bd\n", from, to, ev);
+  CDBG("sm_clock_timer %bu %bu %bu\n", from, to, ev);
   
   // 按set1跑表大模式
   if(get_sm_ss_state(to) == SM_CLOCK_TIMER_INIT && ev == EV_KEY_SET_LPRESS) {
