@@ -14,6 +14,7 @@ const char * code sm_global_flag_mod_ss_name[] =
   "SM_GLOBAL_FLAG_MODIFY_INIT",
   "SM_GLOBAL_FLAG_MODIFY_PS",
   "SM_GLOBAL_FLAG_MODIFY_BEEP",
+	"SM_GLOBAL_FLAG_MODIFY_MUSIC_TO",
   "SM_GLOBAL_FLAG_MODIFY_1224",
   NULL
 };
@@ -52,6 +53,14 @@ static void display_global_flag(unsigned char what)
         led_set_code(0, 'F');
       }
       break;
+		case IS_MUSIC_TO:
+      led_set_code(5, 'B');
+      led_set_code(4, 'T');
+      led_set_code(3, 'O');
+			led_set_code(2, LED_CODE_BLACK);
+      led_set_code(1, (beeper_get_music_to() / 10) + 0x30);
+      led_set_code(0, (beeper_get_music_to() % 10) + 0x30);
+			break;
     case IS_1224:
       led_set_code(5, 'D');
       led_set_code(4, 'S');
@@ -79,6 +88,10 @@ static void inc_write(unsigned char what)
       beeper_set_beep_enable(!beeper_get_beep_enable());
 			rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
       break;
+		case IS_MUSIC_TO:
+			beeper_inc_music_to();
+			rom_write(ROM_BEEPER_MUSIC_TO, beeper_get_music_to());
+			break;
     case IS_1224:
 			is12 = rom_read(ROM_TIME_IS12);
       clock_set_hour_12(!is12);
@@ -126,6 +139,12 @@ void sm_global_flag_mod_submod1(unsigned char from, unsigned char to, enum task_
 void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_global_flag_mod_submod2 %bu %bu %bu\n", from, to, ev);
+	sm_global_flag_mod(IS_MUSIC_TO, ev);
+}
+
+void sm_global_flag_mod_submod3(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_global_flag_mod_submod3 %bu %bu %bu\n", from, to, ev);
 	sm_global_flag_mod(IS_1224, ev);
 }
 

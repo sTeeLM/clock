@@ -23,11 +23,12 @@
 #define IS_BS    17
 #define IS_MUSIC 18
 #define IS_BEEP  19
-#define IS_1224  20
+#define IS_MUSIC_TO 20
+#define IS_1224  21
 
-#define IS_ALARM0 21
-#define IS_ALARM1 22
-#define IS_COUNTER 23
+#define IS_ALARM0 22
+#define IS_ALARM1 23
+#define IS_COUNTER 24
 
 #define LPRESS_INC_DELAY 2
 #define LPRESS_INC_OVERFLOW 50

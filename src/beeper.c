@@ -6,8 +6,9 @@
 #include "misc.h"
 #include "rom.h"
 
-#define MAX_BEEPER_MUSIC_TO   60 // 秒
-#define BEEPER_MUSIC_TO_STEP  30
+#define MAX_BEEPER_MUSIC_TO   70 // 秒
+#define BEEPER_MUSIC_TO_STEP  10 // 秒
+#define MIN_BEEPER_MUSIC_TO   10 // 秒
 
 // 格式为：频率常数，节拍常数，频率常数，节拍常数
 // 频率常数：n为多少个20us延迟
@@ -184,10 +185,11 @@ unsigned char beeper_get_music_to(void)
   return beeper_music_to;
 }
 
-
 void beeper_inc_music_to(void)
 {
   beeper_music_to = (beeper_music_to + BEEPER_MUSIC_TO_STEP) % MAX_BEEPER_MUSIC_TO;
+	if(beeper_music_to == 0)
+		beeper_music_to = MIN_BEEPER_MUSIC_TO;
 }
 
 void beeper_inc_music_index(void)
@@ -221,7 +223,9 @@ static bit _beepler_play(unsigned char * music, bit once)
   tune = 0;
   beeper_stop = 0;
   start_s = clock_get_sec_256();
-  
+	
+	CDBG("_beepler_play: beeper_music_to = %bu s\n", beeper_music_to);
+	
   while (!beeper_stop)     
   {
     switch (music[cm]) { 
@@ -244,7 +248,7 @@ static bit _beepler_play(unsigned char * music, bit once)
           _beeper_stop_play();
           return 0;
         } 
-        cm+=2;
+        cm += 2;
         delay_ms(250);
         break;          
       default:   
@@ -259,6 +263,13 @@ static bit _beepler_play(unsigned char * music, bit once)
         }
         beeper_out = 1; 
     }
+		if((cm % 10) == 0) {
+			CDBG("MUSIC TO CHECK: %bu\n", time_diff_now(start_s));
+			if(time_diff_now(start_s) >= beeper_music_to) {
+				_beeper_stop_play();
+				return 0;
+			} 
+		}
   }
   _beeper_stop_play();
   return 1;

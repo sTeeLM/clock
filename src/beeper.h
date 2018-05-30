@@ -23,7 +23,6 @@ void beeper_inc_music_index(void);
 enum beeper_music beeper_get_music_index();
 bit beeper_play_music(void);
 void beeper_stop_music(void);
-
 unsigned char beeper_get_music_to(void);
 void beeper_inc_music_to(void);
 
