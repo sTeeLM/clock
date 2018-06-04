@@ -64,3 +64,10 @@
 [0419/195525:ERROR:backend_impl.cc(2020)] Corrupt Index file
 [0423/101054:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0423/101055:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0531/095032:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0531/104332:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0531/115403:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0601/225209:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0602/204228:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0604/072314:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0604/095508:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.

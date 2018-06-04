@@ -48,7 +48,7 @@
      <ITEM name="VSplitter1Pos">238</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="759" x="59" flags="00000022" y="610" h="460" pid="0" iid="18">
+   <POPUP w="759" x="192" flags="00008023" y="470" h="460" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -104,6 +104,31 @@
      <ITEM name="ShowChanges">Yes</ITEM>
      <ITEM name="ShowToolTips">Yes</ITEM>
      <ITEM name="TopLineAddress">00000000</ITEM>
+    </PROPERTIES>
+   </POPUP>
+   <POPUP w="600" x="37" flags="0000002b" y="128" h="400" pid="1000" iid="3">
+    <PROPERTIES>
+     <ITEM name="CaseSensitive">No</ITEM>
+     <ITEM name="DISPADDRS">Yes</ITEM>
+     <ITEM name="DISPLNUMS">No</ITEM>
+     <ITEM name="DISPOPCODES">No</ITEM>
+     <ITEM name="FIXUPBPTS">Yes</ITEM>
+     <ITEM name="WordsOnly">No</ITEM>
+     <ITEM name="nBreakpoints">0</ITEM>
+    </PROPERTIES>
+   </POPUP>
+   <POPUP w="300" x="57" flags="0000000b" y="148" h="300" pid="1001" iid="3">
+    <PROPERTIES>
+     <ITEM name="AutoResize">No</ITEM>
+     <ITEM name="Gridlines">Yes</ITEM>
+     <ITEM name="ShowAddresses">Yes</ITEM>
+     <ITEM name="ShowGlobals">Yes</ITEM>
+     <ITEM name="ShowPreviousValues">No</ITEM>
+     <ITEM name="ShowTypes">No</ITEM>
+     <ITEM name="ShowWatchPoint">No</ITEM>
+     <ITEM name="TriggerMode">0</ITEM>
+     <ITEM name="Version">100</ITEM>
+     <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
    </POPUP>
   </PWI>

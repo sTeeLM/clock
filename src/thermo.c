@@ -86,6 +86,7 @@ static void thermo_power_off(void)
   // THIGH Register
   thermo_hi_threshold_reset();
 	
+	// Shutdown Mode 
   val = 0x01;
   I2C_Put(THERMO_I2C_ADDRESS, 0x1, val);
 #endif	
@@ -183,6 +184,7 @@ void scan_thermo(void)
   }
 #else
   // 读取一次端口寄存器消除中断
+	UNUSED_PARAM(val);
   hi = thermo_hi_threshold_get();
   lo = thermo_lo_threshold_get();
   current = thermo_get_current();
@@ -209,7 +211,7 @@ static unsigned int thermo_temp_to_hex(char temp)
   unsigned int ret = temp;
   ret &= 0xFF;
   ret <<= 8;
-  CDBG("thermo_temp_to_hex %d -> 0x%04x\n", temp, ret);
+  CDBG("thermo_temp_to_hex %d -> 0x%x\n", temp, ret);
   return ret;
 }
 
@@ -217,7 +219,7 @@ static char thermo_hex_to_temp(unsigned int val)
 {
   char temp;
   temp = (val >> 8) & 0xFF;
-  CDBG("thermo_hex_to_temp x%02bx -> %d\n", val, temp);
+  CDBG("thermo_hex_to_temp 0x%x -> %d\n", val, temp);
   return temp;
 }
 

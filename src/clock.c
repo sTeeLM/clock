@@ -381,6 +381,9 @@ void clock_sync_to_rtc(enum clock_sync_type type)
 
 static void clock0_ISR (void) interrupt 1 using 1
 {  
+
+  refresh_led();	
+	
   if(in_shell) {
     TF0 = 0;
     return;
@@ -388,8 +391,6 @@ static void clock0_ISR (void) interrupt 1 using 1
   
   clock_inc_ms39();
   timer_inc_ms39();
- 
-  refresh_led();
 	
 	TF0 = 0;
 }

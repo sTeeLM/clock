@@ -96,23 +96,31 @@ static void mpu_power_on(void)
 	val = 0xE0;
 	I2C_Put(MPU_I2C_ADDRESS, 0x37, val);
 	
-	/* MOT_EN = 1 */
-	val = 0x40;
-	I2C_Put(MPU_I2C_ADDRESS, 0x38, val);
-	
 	/* Enter Accelerometer Only Low Power Mode */
 	// 00101000 = 0x28
-	// (i) Set CYCLE bit to 1
+	// (i) Set CYCLE bit to 0
   // (ii) Set SLEEP bit to 0
   // (iii) Set TEMP_DIS bit to 1
 	// 01000111 = 0x47
 	// LP_WAKE_CTRL = 01 (5HZ)
 	// STBY_XA = STBY_YA = STBY_ZA = 0
 	// STBY_XG = STBY_YG = STBY_ZG = 1
-	val = 0x28; 
+	val = 0x08; 
 	I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
 	val = 0x47;
 	I2C_Put(MPU_I2C_ADDRESS, 0x6C, val);
+	
+	// read int status to clr int
+	I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
+	
+	delay_ms(100);
+	
+	/* MOT_EN = 1 */
+	val = 0x40;
+	I2C_Put(MPU_I2C_ADDRESS, 0x38, val);	
+	
+	// read int status to clr int
+	I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
 #endif
 }
 
@@ -140,9 +148,9 @@ static void mpu_power_off(void)
 	// STBY_XA = STBY_YA = STBY_ZA = 1
 	// STBY_XG = STBY_YG = STBY_ZG = 1
 	val = 0x48;
-	I2C_Puts(MPU_I2C_ADDRESS, 0x6B, val);
+	I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
 	val = 0x7F;
-	I2C_Puts(MPU_I2C_ADDRESS, 0x6C, val);
+	I2C_Put(MPU_I2C_ADDRESS, 0x6C, val);
 	
 	// disable interrupt
 	val = 0x00;
@@ -150,16 +158,14 @@ static void mpu_power_off(void)
 	delay_ms(100);
 	
 	// read int status to clr int
-	I2C_Get(MPU_I2C_ADDRESS, 0x3A, val);
+	I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
 #endif
 }
 
 void mpu_initialize (void)
 {
   CDBG("mpu_initialize\n");
-	
-	mpu_load_config();
-	
+	mpu_power_on();
 	mpu_power_off();
 }
 
@@ -184,7 +190,7 @@ void scan_mpu(void)
   // 读取一次端口寄存器消除中断
   if ((val & 0x1) == 0) {
 #else
-  if ((val & 0x40) == 0) {	
+  if ((val & 0x40) != 0) {	
 #endif		
     CDBG("EV_MOT_MPU\n");
     set_task(EV_MOT_MPU);
@@ -212,7 +218,7 @@ void mpu_threshold_reset(void)
 	mpu_threshold_set(mpu_threshold);
 }
 
-// MPU_THRESHOLD_MIN -> MPU_THRESHOLD_MAX -> MPU_THRESHOLED_INVALID -> MPU_THRESHOLD_MIN
+// MPU_THRESHOLD_MIN -> MPU_THRESHOLD_MAX -> MPU_THRESHOLD_INVALID -> MPU_THRESHOLD_MIN
 unsigned char mpu_threshold_inc(unsigned char thres)
 {
   if(thres != MPU_THRESHOLD_INVALID) {
@@ -244,7 +250,7 @@ void mpu_threshold_set(unsigned char val)
 #ifdef __CLOCK_EMULATE__
 	return;
 #else
-	if(val != MPU_THRESHOLED_INVALID) {
+	if(val != MPU_THRESHOLD_INVALID) {
 		if(val > MPU_THRESHOLD_MAX) {
 			val = MPU_THRESHOLD_MAX;
 		}
