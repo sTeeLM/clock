@@ -87,7 +87,12 @@ static unsigned char check_and_set(unsigned char step)
 						break;
 					}
 				}
-				thermo_enable(1);
+				if(val != THERMO_THRESHOLD_INVALID) {
+					thermo_hi_enable(1);
+				}
+				if(val1 != THERMO_THRESHOLD_INVALID) {
+					thermo_lo_enable(1);
+				}		
 			}
 			break;
 		case TIMER_ARM_LT_TIMER:
@@ -115,7 +120,9 @@ static unsigned char check_and_set(unsigned char step)
 static void roll_back(bit include_fuse)
 {
 	CDBG("roll_back include_fuse = %bu\n", include_fuse ? 1 : 0);
-  thermo_enable(0);
+
+  thermo_hi_enable(0);
+	thermo_lo_enable(0);
   mpu_enable(0);
   hg_enable(0);
   lt_timer_reset();

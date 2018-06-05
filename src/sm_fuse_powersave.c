@@ -17,7 +17,8 @@ const char * code sm_fuse_powersave_ss_name[] =
 
 static void roll_back(void)
 {
-  thermo_enable(0);
+  thermo_hi_enable(0);
+  thermo_lo_enable(0);
   mpu_enable(0);
   hg_enable(0);
   lt_timer_reset();

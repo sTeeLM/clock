@@ -332,6 +332,16 @@ static void inc_write(unsigned char what)
 	write_only(what);
 }
 
+static void reset_all(void)
+{
+	CDBG("reset_all\n");
+  thermo_hi_enable(0);
+	thermo_lo_enable(0);
+  mpu_enable(0);
+  hg_enable(0);
+	fuse_enable(0);
+}
+
 static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 {
 	unsigned char val;
@@ -339,7 +349,7 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 		// 初始化
 		test_stage = 0;
 		test_to    = 0;
-		thermo_enable(0);
+		reset_all();
 		display_test(what, test_stage, 
 			what == IS_THERMO_HI ? thermo_hi_threshold_get() : thermo_lo_threshold_get(), 
 			FUSE_ERR_WAIT);
@@ -357,7 +367,7 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 			// 开始测试
 			test_stage = 1;
 			test_to = clock_get_sec_256();
-			thermo_enable(1);
+			what == IS_THERMO_HI ? thermo_hi_enable(1) : thermo_lo_enable(1);
 			display_test(what, test_stage, 
 				what == IS_THERMO_HI ? thermo_hi_threshold_get() : thermo_lo_threshold_get(), 
 				FUSE_ERR_WAIT);
@@ -376,14 +386,14 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 			display_test(what, test_stage, 
 				what == IS_THERMO_HI ? thermo_hi_threshold_get() : thermo_lo_threshold_get(), 
 				FUSE_ERR_OK);
-			thermo_enable(0);
+			what == IS_THERMO_HI ? thermo_hi_enable(0) : thermo_lo_enable(0);
 			test_stage = 0;
 		} else if(test_stage == 1) {
 			// 错误：一加电就产生事件
 			display_test(what, test_stage, 
 				what == IS_THERMO_HI ? thermo_hi_threshold_get() : thermo_lo_threshold_get(), 
 				FUSE_ERR_BROKE);
-			thermo_enable(0);
+			what == IS_THERMO_HI ? thermo_hi_enable(0) : thermo_lo_enable(0);
 			test_stage = 0;
 		}
 		return;
@@ -405,7 +415,7 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 					display_test(IS_THERMO_HI, test_stage, thermo_hi_threshold_get(), FUSE_ERR_WAIT);
 				} else {
 					display_test(IS_THERMO_HI, test_stage, thermo_hi_threshold_get(), FUSE_ERR_NOT_RESPONSE);
-					thermo_enable(0);
+					thermo_hi_enable(0);
 					test_stage = 0;
 				}
 			} else if(what == IS_THERMO_LO) {
@@ -414,7 +424,7 @@ static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
 					display_test(IS_THERMO_LO, test_stage, thermo_lo_threshold_get(), FUSE_ERR_WAIT);
 				} else {
 					display_test(IS_THERMO_LO, test_stage, thermo_lo_threshold_get(), FUSE_ERR_NOT_RESPONSE);
-					thermo_enable(0);
+					thermo_lo_enable(0);
 					test_stage = 0;
 				}
 			}
@@ -466,7 +476,7 @@ void sm_fuse_test_submod0(unsigned char from, unsigned char to, enum task_events
 		// 初始化
 		test_stage = 0;
 		test_to    = 0;
-		fuse_enable(0);
+		reset_all();
 		display_test(IS_FUSE0, test_stage, 0, FUSE_ERR_WAIT);
 		return;
 	} 
@@ -612,11 +622,7 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
 		test_to    = 0;
 		test_stage = 0;
 		hg_mask = 0;
-		if(what == IS_HG) {
-			hg_enable(0);
-		} else {
-			mpu_enable(0);
-		}
+		reset_all();
 		display_test(what, test_stage, hg_mask, FUSE_ERR_WAIT);
 		return;
 	}

@@ -18,7 +18,6 @@
 
 sbit RTC_INT        = P1 ^ 1;
 sbit MPU_INT        = P1 ^ 2;
-sbit THERMO_INT     = P1 ^ 3;
 sbit EXT_INT        = P1 ^ 4;
 sbit INT_BIT        = P3 ^ 3;
 
@@ -57,7 +56,6 @@ void int_hub_initialize (void)
   
   RTC_INT = 1;
   MPU_INT   = 1;
-  THERMO_INT = 1;
   EXT_INT    = 1;
   INT_BIT    = 1;
   
@@ -80,7 +78,6 @@ void int_hub_dump(void)
   CDBG("++++++int_hub_dump begin++++++\n");
   CDBG("[RTC_INT] %c\n", RTC_INT ? '1' : '0');
   CDBG("[EXT_INT] %c\n", EXT_INT ? '1' : '0');  
-  CDBG("[THERMO_INT] %c\n", THERMO_INT ? '1' : '0');
   CDBG("[MPU_INT] %c\n", MPU_INT ? '1' : '0');  
   CDBG("++++++int_hub_dump end++++++\n");
 }
@@ -112,6 +109,8 @@ void int_hub_dump_ext_status(unsigned int status)
   CDBG("[%02bu] %c %s\n", INT_HUB_HG2_HIT, int_hub_test_bit(INT_HUB_HG2_HIT, status) ? '1' : '0', "INT_HUB_HG2_HIT");
   CDBG("[%02bu] %c %s\n", INT_HUB_HG3_HIT, int_hub_test_bit(INT_HUB_HG3_HIT, status) ? '1' : '0', "INT_HUB_HG3_HIT"); 
   CDBG("[%02bu] %c %s\n", INT_HUB_TRIPWIRE_HIT, int_hub_test_bit(INT_HUB_TRIPWIRE_HIT, status) ? '1' : '0', "INT_HUB_TRIPWIRE_HIT");
+  CDBG("[%02bu] %c %s\n", INT_HUB_THERMO_HI_HIT, int_hub_test_bit(INT_HUB_THERMO_HI_HIT, status) ? '1' : '0', "INT_HUB_THERMO_HI_HIT");
+  CDBG("[%02bu] %c %s\n", INT_HUB_THERMO_LO_HIT, int_hub_test_bit(INT_HUB_THERMO_LO_HIT, status) ? '1' : '0', "INT_HUB_THERMO_LO_HIT");
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED0, int_hub_test_bit(INT_HUB_UNSUSED0, status) ? '1' : '0', "INT_HUB_UNSUSED0");
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED1, int_hub_test_bit(INT_HUB_UNSUSED1, status) ? '1' : '0', "INT_HUB_UNSUSED1");
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED2, int_hub_test_bit(INT_HUB_UNSUSED2, status) ? '1' : '0', "INT_HUB_UNSUSED2");
@@ -119,8 +118,6 @@ void int_hub_dump_ext_status(unsigned int status)
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED4, int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED5, int_hub_test_bit(INT_HUB_UNSUSED5, status) ? '1' : '0', "INT_HUB_UNSUSED5");
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED6, int_hub_test_bit(INT_HUB_UNSUSED6, status) ? '1' : '0', "INT_HUB_UNSUSED6");
-  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED7, int_hub_test_bit(INT_HUB_UNSUSED7, status) ? '1' : '0', "INT_HUB_UNSUSED7");
-  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED8, int_hub_test_bit(INT_HUB_UNSUSED8, status) ? '1' : '0', "INT_HUB_UNSUSED8");
   CDBG("++++++int_hub_dump_ext_status ends++++++\n");
 }
 
@@ -150,18 +147,14 @@ void scan_int_hub_proc (enum task_events ev)
     int_hub_dump_ext_status(status);
     scan_hg(status);
     scan_fuse(status);
-  }
-
-  
-  if(!THERMO_INT) {
-    scan_thermo();
+    scan_thermo(status);		
   }
   
   if(!MPU_INT) {
     scan_mpu();  
   }
   
-  if(!RTC_INT || !EXT_INT || !THERMO_INT || !MPU_INT ) {
+  if(!RTC_INT || !EXT_INT || !MPU_INT ) {
     set_task(EV_SCAN_INT_HUB);
   }
 }

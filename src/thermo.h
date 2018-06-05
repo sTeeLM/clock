@@ -8,10 +8,11 @@
 #define THERMO_THRESHOLD_MIN (-55)
 
 void thermo_initialize (void);
-void scan_thermo(void);
+void scan_thermo(unsigned int status);
 void thermo_proc(enum task_events ev);
 
-void thermo_enable(bit enable); 
+void thermo_hi_enable(bit enable); 
+void thermo_lo_enable(bit enable); 
 
 bit thermo_hi_threshold_reach_bottom(void);
 bit thermo_hi_threshold_reach_top(void);

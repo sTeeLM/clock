@@ -14,6 +14,8 @@ enum int_hub_state {
   INT_HUB_HG2_HIT, 
   INT_HUB_HG3_HIT,
   INT_HUB_TRIPWIRE_HIT,
+	INT_HUB_THERMO_HI_HIT,
+	INT_HUB_THERMO_LO_HIT,
   INT_HUB_UNSUSED0, 
   INT_HUB_UNSUSED1,    
   INT_HUB_UNSUSED2, 
@@ -21,8 +23,6 @@ enum int_hub_state {
   INT_HUB_UNSUSED4, 
   INT_HUB_UNSUSED5,
   INT_HUB_UNSUSED6,
-  INT_HUB_UNSUSED7,
-  INT_HUB_UNSUSED8,
 };
 
 bit int_hub_test_bit(unsigned char index, unsigned int status);
