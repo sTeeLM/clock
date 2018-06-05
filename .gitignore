@@ -4,6 +4,8 @@
 *.obj
 *.elf
 *.htm
+*.MAP
+*.SBR
 
 # Precompiled Headers
 *.gch
@@ -23,6 +25,7 @@
 
 # Logs
 *.LOG
+*.log
 
 # Executables
 *.exe
