@@ -30,10 +30,10 @@ char cmd_thermo(char arg1, char arg2)
       } else if(!strcmp(shell_buf + arg2, "rst")) {
         thermo_hi_threshold_reset();
       } else if(!strcmp(shell_buf + arg2, "on")) {
-				thermo_hi_enable(1);
-			} else if(!strcmp(shell_buf + arg2, "off")) {
-				thermo_hi_enable(0);
-			} else {
+        thermo_hi_enable(1);
+      } else if(!strcmp(shell_buf + arg2, "off")) {
+        thermo_hi_enable(0);
+      } else {
         val = atoi(shell_buf + arg2);
         thermo_hi_threshold_set(val);
       }
@@ -45,9 +45,9 @@ char cmd_thermo(char arg1, char arg2)
       } else if(!strcmp(shell_buf + arg2, "rst")) {
         thermo_lo_threshold_reset();
       } else if(!strcmp(shell_buf + arg2, "on")) {
-				thermo_lo_enable(1);
-			} else if(!strcmp(shell_buf + arg2, "off")) {
-				thermo_lo_enable(0);
+        thermo_lo_enable(1);
+      } else if(!strcmp(shell_buf + arg2, "off")) {
+        thermo_lo_enable(0);
       } else {
         val = atoi(shell_buf + arg2);
         thermo_lo_threshold_set(val);

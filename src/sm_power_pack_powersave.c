@@ -3,9 +3,9 @@
 #include "debug.h"
 
 const char * code sm_power_pack_powersave_ss_name[] = {
-	"SM_POWER_PACK_POWERSAVE_INIT",
-	"SM_POWER_PACK_POWERSAVE_SLEEP",
-	NULL
+  "SM_POWER_PACK_POWERSAVE_INIT",
+  "SM_POWER_PACK_POWERSAVE_SLEEP",
+  NULL
 };
 
 void sm_power_pack_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
@@ -16,7 +16,7 @@ void sm_power_pack_powersave_init(unsigned char from, unsigned char to, enum tas
 void sm_power_pack_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_power_pack_powersave_submod0 %bu %bu %bu\n", from, to, ev);
-  // ∏√ÀØ√ﬂ¡À
+  // ËØ•Áù°Áú†‰∫Ü
   if(ev == EV_250MS) {
     power_enter_powersave();
     power_leave_powersave();

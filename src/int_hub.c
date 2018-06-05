@@ -147,7 +147,7 @@ void scan_int_hub_proc (enum task_events ev)
     int_hub_dump_ext_status(status);
     scan_hg(status);
     scan_fuse(status);
-    scan_thermo(status);		
+    scan_thermo(status);    
   }
   
   if(!MPU_INT) {

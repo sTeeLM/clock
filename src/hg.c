@@ -59,17 +59,17 @@ void scan_hg(unsigned int status)
 
 static void hg_power_on(void)
 {
-	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
-	serial_ctl_out();
-	hg_state = 0xF;
-	delay_task_reg(DELAY_TASK_HG, hg_cb_set_enable, HG_INITIALIZE_DELAY_SEC);
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
+  serial_ctl_out();
+  hg_state = 0xF;
+  delay_task_reg(DELAY_TASK_HG, hg_cb_set_enable, HG_INITIALIZE_DELAY_SEC);
 }
 
 static void hg_power_off(void)
 {
-	serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);  
-	serial_ctl_out();
-	hg_enabled = 0;
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 1);  
+  serial_ctl_out();
+  hg_enabled = 0;
 }
 
 void hg_initialize (void)
@@ -82,10 +82,10 @@ void hg_enable(bit enable)
 {
   CDBG("hg_enable %bu\n", enable ? 1 : 0);
   if(enable && !hg_enabled) {
-		hg_power_on();
-		// hg_enabled = 1 set by hg_cb_set_enable
+    hg_power_on();
+    // hg_enabled = 1 set by hg_cb_set_enable
   } else if(!enable && hg_enabled){
-		hg_power_off();
+    hg_power_off();
   }
 }
 

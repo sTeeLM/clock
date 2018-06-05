@@ -41,9 +41,9 @@ extern unsigned char last_display_s;
 extern unsigned char common_state;
 enum display_logo_type {
   DISPLAY_LOGO_TYPE_CLOCK = 0,
-	DISPLAY_LOGO_TYPE_POWER_PACK = 1,
+  DISPLAY_LOGO_TYPE_POWER_PACK = 1,
   DISPLAY_LOGO_TYPE_FUSE  = 2, 
-	DISPLAY_LOGO_TYPE_GLOBAL_FLAG = 3
+  DISPLAY_LOGO_TYPE_GLOBAL_FLAG = 3
 };
 
 void display_logo(enum display_logo_type type, unsigned char num);

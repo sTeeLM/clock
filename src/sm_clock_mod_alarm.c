@@ -13,8 +13,8 @@ const char * code sm_clock_mod_alarm_ss_name[] =
   "SM_CLOCK_MODIFY_ALARM_HH",
   "SM_CLOCK_MODIFY_ALARM_MM",
   "SM_CLOCK_MODIFY_ALARM_DAY",
-	"SM_CLOCK_MODIFY_ALARM_BS",
-	"SM_CLOCK_MODIFY_ALARM_MUSIC",
+  "SM_CLOCK_MODIFY_ALARM_BS",
+  "SM_CLOCK_MODIFY_ALARM_MUSIC",
   NULL
 };
 
@@ -24,8 +24,8 @@ static void update_alarm(unsigned char what, unsigned char day)
 {
   unsigned char hour, min; 
   if(what == IS_HOUR || what == IS_MIN) {
-		led_set_code(5, 'A');
-		led_set_code(4, 'L'); 
+    led_set_code(5, 'A');
+    led_set_code(4, 'L'); 
     hour = alarm0_get_hour();
     min  = alarm0_get_min();
     led_set_dp(1);
@@ -36,8 +36,8 @@ static void update_alarm(unsigned char what, unsigned char day)
       led_set_dp(3);
       hour -= 12;
     } else if(alarm0_get_hour_12() && hour == 12){
-			led_set_dp(3);
-		} else {
+      led_set_dp(3);
+    } else {
       led_clr_dp(3);
     }
  
@@ -53,9 +53,9 @@ static void update_alarm(unsigned char what, unsigned char day)
     led_set_code(0, (min % 10) + 0x30); 
     
   } else if (what == IS_ONOFF){
-		CDBG("update_alarm %s\n", alarm0_test_enable(day)? "ON":"OFF");
-		led_set_code(5, 'A');
-		led_set_code(4, 'L'); 
+    CDBG("update_alarm %s\n", alarm0_test_enable(day)? "ON":"OFF");
+    led_set_code(5, 'A');
+    led_set_code(4, 'L'); 
     led_set_code(3, day + 0x30);
     if(alarm0_test_enable(day)) {
       led_set_code(2, LED_CODE_BLACK);
@@ -69,16 +69,16 @@ static void update_alarm(unsigned char what, unsigned char day)
   } else if(what == IS_BS) {
       led_set_code(5, 'B');
       led_set_code(4, 'S');
-		if(alarm1_test_enable()) {
+    if(alarm1_test_enable()) {
       led_set_code(2, LED_CODE_BLACK);
       led_set_code(1, 'O');
       led_set_code(0, 'N');
-		} else {
+    } else {
       led_set_code(2, 'O');
       led_set_code(1, 'F');
       led_set_code(0, 'F');
-		}
-	} else { // IS_MUSIC
+    }
+  } else { // IS_MUSIC
       led_set_code(5, 'S');
       led_set_code(4, 'O');
       led_set_code(3, 'U');
@@ -86,7 +86,7 @@ static void update_alarm(unsigned char what, unsigned char day)
       led_set_code(1, 'D');  
       CDBG("beeper_get_music_index return %bu\n", beeper_get_music_index());
       led_set_code(0, beeper_get_music_index() + 1 + 0x30);
-	}
+  }
 }
 
 
@@ -177,23 +177,23 @@ static void inc_write(unsigned char what)
 
 static void toggle_alarm_bs(void)
 {
-	alarm1_set_enable(!alarm1_test_enable());
-	alarm1_sync_to_rtc();
-	rom_write(ROM_ALARM1_ENABLE, alarm1_test_enable() ? 1 : 0);
-	update_alarm(IS_BS, 0);
+  alarm1_set_enable(!alarm1_test_enable());
+  alarm1_sync_to_rtc();
+  rom_write(ROM_ALARM1_ENABLE, alarm1_test_enable() ? 1 : 0);
+  update_alarm(IS_BS, 0);
 }
 
 static void toggle_alarm_music(void)
 {
-	beeper_inc_music_index();
-	rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
-	update_alarm(IS_MUSIC, 0);
+  beeper_inc_music_index();
+  rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
+  update_alarm(IS_MUSIC, 0);
 }
 
 void sm_clock_mod_alarm_init(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm_init %bu %bu %bu\n", from, to, ev);
-	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
+  display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
 }
 
 void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_events ev)
@@ -267,49 +267,49 @@ void sm_clock_mod_alarm_submod1(unsigned char from, unsigned char to, enum task_
 void sm_clock_mod_alarm_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm_submod2 %bu %bu %bu\n", from, to, ev);
-	
-	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_MM) {
-		alarm_index = 1;
-		enter_alarm(IS_ONOFF, alarm_index);
-		return;
-	}
-	
-	if(ev == EV_KEY_SET_PRESS) {
-		toggle_alarm(alarm_index);
-	}
-	
-	if(ev == EV_KEY_MOD_PRESS) {
-		alarm_index ++;
-		if(alarm_index <= 7) {
-			enter_alarm(IS_ONOFF, alarm_index);
-		} else {
-			set_task(EV_KEY_V0);
-		}
-	}
+  
+  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_MM) {
+    alarm_index = 1;
+    enter_alarm(IS_ONOFF, alarm_index);
+    return;
+  }
+  
+  if(ev == EV_KEY_SET_PRESS) {
+    toggle_alarm(alarm_index);
+  }
+  
+  if(ev == EV_KEY_MOD_PRESS) {
+    alarm_index ++;
+    if(alarm_index <= 7) {
+      enter_alarm(IS_ONOFF, alarm_index);
+    } else {
+      set_task(EV_KEY_V0);
+    }
+  }
 }
 
 void sm_clock_mod_alarm_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm_submod3 %bu %bu %bu\n", from, to, ev);
-	
-	if(ev == EV_KEY_V0) {
-		enter_alarm(IS_BS, 0);
-	}
-	
-	if(ev == EV_KEY_SET_PRESS) {
-		toggle_alarm_bs();
-	}
+  
+  if(ev == EV_KEY_V0) {
+    enter_alarm(IS_BS, 0);
+  }
+  
+  if(ev == EV_KEY_SET_PRESS) {
+    toggle_alarm_bs();
+  }
 }
 
 void sm_clock_mod_alarm_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm_submod4 %bu %bu %bu\n", from, to, ev);
-	
-	if(ev == EV_KEY_MOD_PRESS) {
-		enter_alarm(IS_MUSIC, 0);
-	}
-	
-	if(ev == EV_KEY_SET_PRESS) {
-		toggle_alarm_music();
-	}
+  
+  if(ev == EV_KEY_MOD_PRESS) {
+    enter_alarm(IS_MUSIC, 0);
+  }
+  
+  if(ev == EV_KEY_SET_PRESS) {
+    toggle_alarm_music();
+  }
 }

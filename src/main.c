@@ -63,7 +63,7 @@ void main(void)
   int_hub_initialize();                         // initialize interrupt hub 
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
-	delay_task_initialize();											// initialize delay task
+  delay_task_initialize();                      // initialize delay task
   while(1) {                                    //loop forever
     run_task();                                 // run task procs
     run_shell();                                // run shell

@@ -39,7 +39,7 @@ void power_initialize(void)
     case POWERSAVE_30S: powersave_to_s = 30; break;
   }
   powersave_flag = 0;
-	POWER_5V_EN = 1;
+  POWER_5V_EN = 1;
 }
 
 void power_proc(enum task_events ev)
@@ -159,23 +159,23 @@ void power_reset_powersave_to(void)
 
 void power_5v_enable(bit enable)
 {
-	CDBG("power_5v_enable %bu\n", enable ? 1 : 0);
-	
-	POWER_5V_EN = !enable;
+  CDBG("power_5v_enable %bu\n", enable ? 1 : 0);
+  
+  POWER_5V_EN = !enable;
 }
 
 bit power_5v_get_enable(void)
 {
-	return !POWER_5V_EN;
+  return !POWER_5V_EN;
 }
 
 // return 0~100
 unsigned char power_get_volume(void)
 {
 #ifdef __CLOCK_EMULATE__
-	return 97;
+  return 97;
 #else
-	// 读取ADC读数，并转换为电量百分比
-	return 0;
+  // 读取ADC读数，并转换为电量百分比
+  return 0;
 #endif
 }

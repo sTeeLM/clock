@@ -28,10 +28,10 @@ enum rtc_alarm_mode
 
 enum rtc_square_rate
 {
-	RTC_SQUARE_RATE_1HZ    = 0,
-	RTC_SQUARE_RATE_1024HZ = 1,
-	RTC_SQUARE_RATE_4096HZ = 2,
-	RTC_SQUARE_RATE_8192HZ = 3,		
+  RTC_SQUARE_RATE_1HZ    = 0,
+  RTC_SQUARE_RATE_1024HZ = 1,
+  RTC_SQUARE_RATE_4096HZ = 2,
+  RTC_SQUARE_RATE_8192HZ = 3,    
 };
 
 void rtc_initialize (void);

@@ -6,7 +6,7 @@
 #define ROM_ALARM0_MIN      2
 #define ROM_ALARM1_ENABLE   3
 
-#define ROM_TIME_IS12     	4
+#define ROM_TIME_IS12       4
 #define ROM_BEEPER_MUSIC_INDEX 5
 #define ROM_BEEPER_ENABLE      6
 #define ROM_BEEPER_MUSIC_TO  7

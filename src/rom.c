@@ -36,7 +36,7 @@ static void rom_dump(void)
   rom_read(ROM_BEEPER_ENABLE);
   rom_read(ROM_BEEPER_MUSIC_TO);
   rom_read(ROM_POWERSAVE_TO);
-	
+  
   rom_read(ROM_FUSE_HG_ONOFF);
   rom_read(ROM_FUSE_MPU);
   rom_read(ROM_FUSE_THERMO_HI);

@@ -21,7 +21,7 @@ const char * code sm_clock_mod_time_name[] =
 static void update_hhmmss(void)
 {
   unsigned char hour, min, sec;
-	
+  
   hour = clock_get_hour();
   min  = clock_get_min();
   sec  = clock_get_sec();
@@ -37,8 +37,8 @@ static void update_hhmmss(void)
     led_set_dp(5);
     hour -= 12;
   } else if(clock_get_hour_12() && hour == 12) {
-		led_set_dp(5);
-	} else {
+    led_set_dp(5);
+  } else {
     led_clr_dp(5);
   }
   
@@ -127,16 +127,16 @@ static void inc_only(unsigned char what)
       }
       break;
   }
-	
-	if(what == IS_HOUR 
-		|| what == IS_MIN 
-		|| what == IS_SEC) {
-		update_hhmmss();
-	} else if(what == IS_YEAR 
-		|| what == IS_MON 
-		|| what == IS_DAY) {
-		update_yymmdd();
-	}
+  
+  if(what == IS_HOUR 
+    || what == IS_MIN 
+    || what == IS_SEC) {
+    update_hhmmss();
+  } else if(what == IS_YEAR 
+    || what == IS_MON 
+    || what == IS_DAY) {
+    update_yymmdd();
+  }
 }
 
 static void write_only(unsigned char what)
@@ -253,15 +253,15 @@ static void sm_clock_mod_time(unsigned char what, enum task_events ev)
 {
   // 按mod0进入新模式
   if(ev == EV_KEY_MOD_PRESS) {
-		if(what == IS_HOUR 
-			|| what == IS_MIN 
-			|| what == IS_SEC) {
-			enter_hhmmss(what);
-		} else if(what == IS_YEAR 
-			|| what == IS_MON 
-			|| what == IS_DAY) {
-			enter_yymmdd(what);
-		}
+    if(what == IS_HOUR 
+      || what == IS_MIN 
+      || what == IS_SEC) {
+      enter_hhmmss(what);
+    } else if(what == IS_YEAR 
+      || what == IS_MON 
+      || what == IS_DAY) {
+      enter_yymmdd(what);
+    }
     return;
   }
   // set0 分钟++并写入rtc
@@ -289,20 +289,20 @@ static void sm_clock_mod_time(unsigned char what, enum task_events ev)
   
   // 每250ms读一下rtc，更新数据
   if(ev == EV_250MS) {
-		if(lpress_lock_year_hour 
-			|| lpress_lock_month_min
-		  || lpress_lock_day_sec) {
-			return;
-		}
-		if(what == IS_HOUR 
-			|| what == IS_MIN 
-			|| what == IS_SEC) {
-			update_hhmmss();
-		} else if(what == IS_YEAR 
-			|| what == IS_MON 
-			|| what == IS_DAY) {
-			update_yymmdd();
-		}
+    if(lpress_lock_year_hour 
+      || lpress_lock_month_min
+      || lpress_lock_day_sec) {
+      return;
+    }
+    if(what == IS_HOUR 
+      || what == IS_MIN 
+      || what == IS_SEC) {
+      update_hhmmss();
+    } else if(what == IS_YEAR 
+      || what == IS_MON 
+      || what == IS_DAY) {
+      update_yymmdd();
+    }
     return;
   }
 }
@@ -311,45 +311,45 @@ void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_e
 {
   CDBG("sm_clock_mod_time_submod0 %bu %bu %bu\n", from, to, ev);
   
-	if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
-		&& ev == EV_KEY_MOD_UP) {
-			ev = EV_KEY_MOD_PRESS;
-	}
-	
-	sm_clock_mod_time(IS_HOUR, ev);
+  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
+    && ev == EV_KEY_MOD_UP) {
+      ev = EV_KEY_MOD_PRESS;
+  }
+  
+  sm_clock_mod_time(IS_HOUR, ev);
 }
 
 void sm_clock_mod_time_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod1 %bu %bu %bu\n", from, to, ev);
-	
-	sm_clock_mod_time(IS_MIN, ev);
+  
+  sm_clock_mod_time(IS_MIN, ev);
 }
 
 void sm_clock_mod_time_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod2 %bu %bu %bu\n", from, to, ev);
   
-	sm_clock_mod_time(IS_SEC, ev);
+  sm_clock_mod_time(IS_SEC, ev);
 }
 
 void sm_clock_mod_time_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod3 %bu %bu %bu\n", from, to, ev);
   
-	sm_clock_mod_time(IS_YEAR, ev);
+  sm_clock_mod_time(IS_YEAR, ev);
 }
 
 void sm_clock_mod_time_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod4 %bu %bu %bu\n", from, to, ev);
 
-	sm_clock_mod_time(IS_MON, ev);
+  sm_clock_mod_time(IS_MON, ev);
 }
 
 void sm_clock_mod_time_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_time_submod5 %bu %bu %bu\n", from, to, ev);
 
-	sm_clock_mod_time(IS_DAY, ev);
+  sm_clock_mod_time(IS_DAY, ev);
 }

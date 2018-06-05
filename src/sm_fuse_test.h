@@ -5,14 +5,14 @@
 
 enum sm_fuse_test_ss {
   SM_FUSE_TEST_INIT          = 0, // 初始状态0
-	SM_FUSE_TEST_BROKE         = 1, // fuse0, fuse1, tripwire 断线测试
-	SM_FUSE_TEST_THERMO_HI_SET = 2, // 设置thermo hi参数
+  SM_FUSE_TEST_BROKE         = 1, // fuse0, fuse1, tripwire 断线测试
+  SM_FUSE_TEST_THERMO_HI_SET = 2, // 设置thermo hi参数
   SM_FUSE_TEST_THERMO_HI     = 3, // thermo hi测试
-	SM_FUSE_TEST_THERMO_LO_SET = 4, // 设置thermo lo参数
+  SM_FUSE_TEST_THERMO_LO_SET = 4, // 设置thermo lo参数
   SM_FUSE_TEST_THERMO_LO     = 5, // thermo lo测试
-	SM_FUSE_TEST_HG_SET        = 6, // 设置hg on/off
+  SM_FUSE_TEST_HG_SET        = 6, // 设置hg on/off
   SM_FUSE_TEST_HG            = 7, // hg测试
-	SM_FUSE_TEST_MPU_SET       = 8, // 设置MPU参数
+  SM_FUSE_TEST_MPU_SET       = 8, // 设置MPU参数
   SM_FUSE_TEST_MPU           = 9  // mpu测试
 };
 

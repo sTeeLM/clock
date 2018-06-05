@@ -45,9 +45,9 @@ static void display_slot(unsigned char slot)
 
 void sm_clock_timer_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-	CDBG("sm_clock_timer_init %bu %bu %bu\n", from, to, ev);
-	clock_display(0);
-	display_logo(DISPLAY_LOGO_TYPE_CLOCK, 3);
+  CDBG("sm_clock_timer_init %bu %bu %bu\n", from, to, ev);
+  clock_display(0);
+  display_logo(DISPLAY_LOGO_TYPE_CLOCK, 3);
 }
 
 void sm_clock_timer_submod0(unsigned char from, unsigned char to, enum task_events ev)
@@ -62,7 +62,7 @@ void sm_clock_timer_submod0(unsigned char from, unsigned char to, enum task_even
     lpress_start = 1; // 复用lpress_start作为slot index
     return;
   }
-		
+    
   // mod0跑表清0
   if(ev == EV_KEY_MOD_DOWN) {
     timer_clr();

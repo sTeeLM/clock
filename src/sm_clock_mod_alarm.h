@@ -8,8 +8,8 @@ enum sm_clock_mod_alarm_ss {
   SM_CLOCK_MODIFY_ALARM_HH   = 1, // 修改Alarm时
   SM_CLOCK_MODIFY_ALARM_MM   = 2, // 修改Alarm分
   SM_CLOCK_MODIFY_ALARM_DAY  = 3,  // 修改Alarm星期几ON/OFF状态
-	SM_CLOCK_MODIFY_ALARM_BS   = 4,  // 整点报时ON/OFF
-	SM_CLOCK_MODIFY_ALARM_MUSIC = 5  // 铃声选择
+  SM_CLOCK_MODIFY_ALARM_BS   = 4,  // 整点报时ON/OFF
+  SM_CLOCK_MODIFY_ALARM_MUSIC = 5  // 铃声选择
 };
 
 extern const char * code sm_clock_mod_alarm_ss_name[];

@@ -46,8 +46,8 @@ static void display_alarm(unsigned char what)
         led_set_dp(3);
         hour -= 12;
       } else if(is12 && hour == 12){
-				led_set_dp(3);
-			} else {
+        led_set_dp(3);
+      } else {
         led_clr_dp(3);
       }
       if((hour / 10) != 0) {

@@ -188,8 +188,8 @@ unsigned char beeper_get_music_to(void)
 void beeper_inc_music_to(void)
 {
   beeper_music_to = (beeper_music_to + BEEPER_MUSIC_TO_STEP) % MAX_BEEPER_MUSIC_TO;
-	if(beeper_music_to == 0)
-		beeper_music_to = MIN_BEEPER_MUSIC_TO;
+  if(beeper_music_to == 0)
+    beeper_music_to = MIN_BEEPER_MUSIC_TO;
 }
 
 void beeper_inc_music_index(void)
@@ -223,9 +223,9 @@ static bit _beepler_play(unsigned char * music, bit once)
   tune = 0;
   beeper_stop = 0;
   start_s = clock_get_sec_256();
-	
-	CDBG("_beepler_play: beeper_music_to = %bu s\n", beeper_music_to);
-	
+  
+  CDBG("_beepler_play: beeper_music_to = %bu s\n", beeper_music_to);
+  
   while (!beeper_stop)     
   {
     switch (music[cm]) { 
@@ -263,13 +263,13 @@ static bit _beepler_play(unsigned char * music, bit once)
         }
         beeper_out = 1; 
     }
-		if((cm % 10) == 0) {
-			CDBG("MUSIC TO CHECK: %bu\n", time_diff_now(start_s));
-			if(time_diff_now(start_s) >= beeper_music_to) {
-				_beeper_stop_play();
-				return 0;
-			} 
-		}
+    if((cm % 10) == 0) {
+      CDBG("MUSIC TO CHECK: %bu\n", time_diff_now(start_s));
+      if(time_diff_now(start_s) >= beeper_music_to) {
+        _beeper_stop_play();
+        return 0;
+      } 
+    }
   }
   _beeper_stop_play();
   return 1;

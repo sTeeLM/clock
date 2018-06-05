@@ -16,41 +16,41 @@ static bit fuse_enabled;
 
 static void fuse_power_on(void)
 {
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, 1);
-	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, 1);
-	serial_ctl_out();
-	fuse_enabled = 1;
+  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 0);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, 1);
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, 1);
+  serial_ctl_out();
+  fuse_enabled = 1;
 }
 
 static void fuse_power_off(void)
 {
-	serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, 1);
-	serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, 1);
-	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, 1);
-	serial_ctl_out();
-	fuse_enabled = 0;
+  serial_set_ctl_bit(SERIAL_BIT_FUSE_EN, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST, 1);
+  serial_set_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST, 1);
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, 1);
+  serial_ctl_out();
+  fuse_enabled = 0;
 }
 
 void fuse_initialize (void)
 {
   CDBG("fuse_initialize\n");
-	fuse_power_off();
+  fuse_power_off();
 }
 
 
 void fuse_trigger(bit enable)
 {
   CDBG("fuse_trigger %bu\n", enable ? 1 : 0);
-	
-	if(!fuse_enabled) return;
-	
+  
+  if(!fuse_enabled) return;
+  
   // 升压
   power_5v_enable(enable);
   
@@ -125,10 +125,10 @@ void fuse_set_fuse_broke(unsigned char index, bit enable)
 void fuse_set_tripwire_broke(bit broke)
 {
   CDBG("fuse_set_tripwire_broke %bu\n", broke ? 1: 0);
-	
+  
   if(!fuse_enabled) return;
   
-	serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, !broke);
+  serial_set_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST, !broke);
   serial_ctl_out();
 }
 
@@ -137,8 +137,8 @@ void fuse_enable(bit enable)
   CDBG("fuse_enable %bu\n", enable ? 1 : 0);
   
   if(enable && !fuse_enabled) {
-		fuse_power_on();
+    fuse_power_on();
   } else if(!enable && fuse_enabled) {
-		fuse_power_off();
-	}
+    fuse_power_off();
+  }
 }

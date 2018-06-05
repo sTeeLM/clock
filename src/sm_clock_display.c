@@ -65,14 +65,14 @@ void sm_clock_display_init(unsigned char from, unsigned char to, enum task_event
   lt_timer_switch_off();
   alarm_switch_on();
   rtc_set_lt_timer(0);
-	power_5v_enable(0);
+  power_5v_enable(0);
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 0);
 }
 
 void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_display_submod0 %bu %bu %bu\n", from, to, ev);
-	
+  
   // 切换到时间显示大模式
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
     && ev == EV_KEY_MOD_UP) {

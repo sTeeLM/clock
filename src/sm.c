@@ -176,7 +176,7 @@ static const struct sm_trans code sm_trans_clock_mod_alarm[] = {
   // mod0进入修改分钟模式
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MM, sm_clock_mod_alarm_submod1},
 
-	// mod1进入修改时钟显示
+  // mod1进入修改时钟显示
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_HH, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},
  
   
@@ -194,14 +194,14 @@ static const struct sm_trans code sm_trans_clock_mod_alarm[] = {
   // mod0进入修改下一天状态
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, sm_clock_mod_alarm_submod2},
   // EV_KEY_V0进入修改整点报时
-  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_V0, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_BS, sm_clock_mod_alarm_submod3},	
-	
-	// set0 调整打开关闭
+  {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_DAY, EV_KEY_V0, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_BS, sm_clock_mod_alarm_submod3},  
+  
+  // set0 调整打开关闭
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_BS, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_BS, sm_clock_mod_alarm_submod3},
   // mod0进入修改MUSIC状态
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_BS, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MUSIC, sm_clock_mod_alarm_submod4},
   
-	// set0 调整music index并写入rtc
+  // set0 调整music index并写入rtc
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MUSIC, EV_KEY_SET_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MUSIC, sm_clock_mod_alarm_submod4},
   // mod0进入修改HH状态
   {SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_MUSIC, EV_KEY_MOD_PRESS, SM_CLOCK, SM_CLOCK_MODIFY_ALARM<<4|SM_CLOCK_MODIFY_ALARM_INIT, sm_clock_mod_alarm_init},
@@ -315,9 +315,9 @@ static const struct sm_trans code sm_trans_power_pack_display[] = {
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_INIT, EV_KEY_MOD_UP, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_INIT, EV_KEY_SET_UP, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_SET_PRESS, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},
-  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},	
-  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_MOD_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test_init},	
-  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_1S, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},	
+  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_MOD_LPRESS, SM_CLOCK, SM_CLOCK_DISPLAY<<4|SM_CLOCK_DISPLAY_INIT, sm_clock_display_init},  
+  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_KEY_MOD_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, sm_fuse_test_init},  
+  {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_1S, SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, sm_power_pack_display_submod0},  
   {SM_POWER_PACK, SM_POWER_PACK_DISPLAY<<4|SM_POWER_PACK_DISPLAY_POWER, EV_POWER_SAVE, SM_POWER_PACK, SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_INIT, sm_power_pack_powersave_init},
 };
 
@@ -332,11 +332,11 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_INIT, EV_KEY_MOD_UP, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
   // set0启动测试
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
-	// 测试fuse0 broke 收到EV_FUSE0_BROKE, 更新测试结果
+  // 测试fuse0 broke 收到EV_FUSE0_BROKE, 更新测试结果
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_FUSE0_BROKE, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
-	// 测试fuse1 broke 收到EV_FUSE1_BROKE, 更新测试结果
+  // 测试fuse1 broke 收到EV_FUSE1_BROKE, 更新测试结果
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_FUSE1_BROKE, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
-	// 测试 tripwire broke EV_FUSE_TRIPWIRE, 更新测试结果
+  // 测试 tripwire broke EV_FUSE_TRIPWIRE, 更新测试结果
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_FUSE_TRIPWIRE, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
   // 收到EV_1S，更新测试结果
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_1S, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, sm_fuse_test_submod0},
@@ -350,16 +350,16 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   // modset1 切换到全局参数设置
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_BROKE, EV_KEY_MOD_SET_LPRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_INIT, sm_global_flag_mod_init},
   
-	
-	// set0设置thermo hi参数
+  
+  // set0设置thermo hi参数
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, sm_fuse_test_submod1},
-	// set0设置thermo hi参数++
+  // set0设置thermo hi参数++
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, sm_fuse_test_submod1},
-	// set0设置thermo hi参数++停止
+  // set0设置thermo hi参数++停止
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, sm_fuse_test_submod1},
-	// mod0切换到测试模式
+  // mod0切换到测试模式
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI_SET, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test_submod2},
-	// set0启动测试
+  // set0启动测试
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test_submod2},
   // 收到EV_THERMO_HI，更新显示
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, EV_THERMO_HI, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_HI, sm_fuse_test_submod2},
@@ -370,13 +370,13 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   
   // set0设置thermo lo参数
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, sm_fuse_test_submod3},
-	// set0设置thermo lo参数++
+  // set0设置thermo lo参数++
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, sm_fuse_test_submod1},
-	// set0设置thermo lo参数++停止
+  // set0设置thermo lo参数++停止
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, sm_fuse_test_submod1},
-	// mod0切换到测试模式
+  // mod0切换到测试模式
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO_SET, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
-	// set0启动测试
+  // set0启动测试
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
   // 收到EV_THERMO_LO，更新显示
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, EV_THERMO_LO, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_THERMO_LO, sm_fuse_test_submod4},
@@ -400,9 +400,9 @@ static const struct sm_trans code sm_trans_fuse_test[] = {
   
   // set0敏感度+
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_SET_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, sm_fuse_test_submod7},
-	// set0设置敏感度++
+  // set0设置敏感度++
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_SET_LPRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, sm_fuse_test_submod7},
-	// set0设置敏感度++停止
+  // set0设置敏感度++停止
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_SET_UP, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, sm_fuse_test_submod7},
   // mod0切换到测试模式
   {SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU_SET, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_TEST<<4|SM_FUSE_TEST_MPU, sm_fuse_test_submod8},
@@ -427,7 +427,7 @@ static const struct sm_trans code sm_trans_fuse_param[] = {
   // mod0 切换调整时
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_MOD_PRESS, SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_MO, sm_fuse_param_submod1},
 
-	// mod1 进入ARM
+  // mod1 进入ARM
   {SM_FUSE, SM_FUSE_PARAM<<4|SM_FUSE_PARAM_YY, EV_KEY_MOD_LPRESS, SM_FUSE, SM_FUSE_TIMER<<4|SM_FUSE_TIMER_INIT, sm_fuse_timer_init},
 
   // set0/1 调整月
@@ -624,7 +624,7 @@ static const struct sm_trans code sm_trans_global_flag_mod[] = {
  // mod0 进入1224小时设置状态
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_MUSIC_TO, EV_KEY_MOD_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, sm_global_flag_mod_submod3}, 
 
-	
+  
   // set0 1224模式切换
   {SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, EV_KEY_SET_PRESS, SM_GLOBAL_FLAG, SM_GLOBAL_FLAG_MODIFY<<4|SM_GLOBAL_FLAG_MODIFY_1224, sm_global_flag_mod_submod3},
   // mod0 进入设置省电模式状态
@@ -649,8 +649,8 @@ static const struct sm_trans_group code sm_group_clock[] = {
 };
 
 static const struct sm_trans_group code sm_group_power_pack[] = {
-	{sm_trans_power_pack_display, sizeof(sm_trans_power_pack_display)/ sizeof(struct sm_trans)},
-	{sm_trans_power_pack_powersave, sizeof(sm_trans_power_pack_powersave)/ sizeof(struct sm_trans)},
+  {sm_trans_power_pack_display, sizeof(sm_trans_power_pack_display)/ sizeof(struct sm_trans)},
+  {sm_trans_power_pack_powersave, sizeof(sm_trans_power_pack_powersave)/ sizeof(struct sm_trans)},
 };
 
 static const struct sm_trans_group code sm_group_fuse[] = {
@@ -662,14 +662,14 @@ static const struct sm_trans_group code sm_group_fuse[] = {
 };
 
 static const struct sm_trans_group code sm_group_global_flag[] = {
-	{sm_trans_global_flag_mod, sizeof(sm_trans_global_flag_mod)/ sizeof(struct sm_trans)},
+  {sm_trans_global_flag_mod, sizeof(sm_trans_global_flag_mod)/ sizeof(struct sm_trans)},
 };
 
 static const struct sm_trans_group * code sm_trans_table[] = {
   sm_group_clock,
-	sm_group_power_pack,
+  sm_group_power_pack,
   sm_group_fuse,
-	sm_group_global_flag
+  sm_group_global_flag
 };
 
 
@@ -715,7 +715,7 @@ static const struct sm_state_names code sm_global_flag_names[] = {
 
 static const struct sm_state_names code sm_power_pack_names[] = {
   {"SM_POWER_PACK_DISPLAY", sm_power_pack_display_ss_name}, 
-  {"SM_POWER_PACK_POWERSAVE", sm_power_pack_powersave_ss_name}, 	
+  {"SM_POWER_PACK_POWERSAVE", sm_power_pack_powersave_ss_name},   
   {NULL, NULL}
 };
 
@@ -724,7 +724,7 @@ static const struct sm_table_names code sm_names[] =
   {"SM_CLOCK", sm_clock_names},
   {"SM_POWER_PACK", sm_power_pack_names},
   {"SM_FUSE", sm_fuse_names},
-  {"SM_GLOBAL_FLAG", sm_global_flag_names},	
+  {"SM_GLOBAL_FLAG", sm_global_flag_names},  
   {NULL, NULL}
 };
 

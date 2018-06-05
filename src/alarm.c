@@ -88,11 +88,11 @@ void alarm_initialize (void)
 void alarm_switch_on(void)
 {
   CDBG("alarm_switch_on\n");
-	alarm_load_rom();
-	alarm_dump();
+  alarm_load_rom();
+  alarm_dump();
   alarm0_sync_to_rtc();
   alarm1_sync_to_rtc();
-	rtc_dump();
+  rtc_dump();
 }
 
 void alarm_switch_off(void)
@@ -102,7 +102,7 @@ void alarm_switch_off(void)
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
   rtc_write_data(RTC_TYPE_CTL);
-	rtc_dump();
+  rtc_dump();
 }
 
 void alarm_dump(void)
@@ -213,7 +213,7 @@ void alarm1_sync_to_rtc(void)
   CDBG("alarm1_sync_to_rtc!\n");
   rtc_read_data(RTC_TYPE_ALARM1);
   rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_MIN);
-	rtc_alarm_set_hour_12(alarm0_is12);
+  rtc_alarm_set_hour_12(alarm0_is12);
   rtc_alarm_set_hour(0);
   rtc_alarm_set_min(0);
   rtc_write_data(RTC_TYPE_ALARM1);

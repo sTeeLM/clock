@@ -182,8 +182,8 @@ static void clock_inc_ms39(void)
         hour -= 12;
         is_pm = 1;
       } else if(clk_is12 && clk.hour == 12) { // 中午12点是PM。。
-				is_pm = 1;
-			}
+        is_pm = 1;
+      }
       
       if(hour / 10 != 0) {
         led_data[5] = led_code[hour / 10 + 4] | (is_pm ? 0 : 0x80);
@@ -382,8 +382,8 @@ void clock_sync_to_rtc(enum clock_sync_type type)
 static void clock0_ISR (void) interrupt 1 using 1
 {  
 
-  refresh_led();	
-	
+  refresh_led();  
+  
   if(in_shell) {
     TF0 = 0;
     return;
@@ -391,8 +391,8 @@ static void clock0_ISR (void) interrupt 1 using 1
   
   clock_inc_ms39();
   timer_inc_ms39();
-	
-	TF0 = 0;
+  
+  TF0 = 0;
 }
 
 

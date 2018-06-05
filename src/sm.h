@@ -20,8 +20,8 @@ enum sm_states_clock
 // SM_POWER_PACK
 enum sm_states_power_pack
 {
-	SM_POWER_PACK_DISPLAY = 0,  // 电量展示
-	SM_POWER_PACK_POWERSAVE = 1,// 节电模式
+  SM_POWER_PACK_DISPLAY = 0,  // 电量展示
+  SM_POWER_PACK_POWERSAVE = 1,// 节电模式
 };
 
 // max 16
@@ -39,16 +39,16 @@ enum sm_stats_fuse
 // SM_GLOBAL_FLA
 enum sm_states_global_flag
 {
-	SM_GLOBAL_FLAG_MODIFY = 0, // 修改全局参数
+  SM_GLOBAL_FLAG_MODIFY = 0, // 修改全局参数
 };
 
 // max 256
 enum sm_tables
 {
   SM_CLOCK  = 0,
-	SM_POWER_PACK = 1,
+  SM_POWER_PACK = 1,
   SM_FUSE   = 2,
-	SM_GLOBAL_FLAG = 3,
+  SM_GLOBAL_FLAG = 3,
   SM_TABLE_CNT
 };
 

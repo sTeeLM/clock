@@ -147,62 +147,62 @@ static void update_time(unsigned char what)
 {
   unsigned char year, mon, date,hour, min, sec;
   
-	if(what == IS_YEAR || what == IS_MON || what == IS_DAY) {
-	
-		year = lt_timer_get_year();
-		mon  = lt_timer_get_month();
-		date = lt_timer_get_date();
-		
-		led_set_dp(2);
-		led_set_dp(4);
+  if(what == IS_YEAR || what == IS_MON || what == IS_DAY) {
+  
+    year = lt_timer_get_year();
+    mon  = lt_timer_get_month();
+    date = lt_timer_get_date();
+    
+    led_set_dp(2);
+    led_set_dp(4);
 
-		CDBG("update_yymmdd %bu-%bu-%bu\n", year, mon, date);
-		
-		if((year / 10) != 0) {
-			led_set_code(5, (year / 10) + 0x30);
-		} else {
-			led_set_code(5, LED_CODE_BLACK);
-		}
-		led_set_code(4, (year % 10) + 0x30);
-		led_set_code(3, (mon / 10)+ 0x30);
-		led_set_code(2, (mon % 10) + 0x30);
-		led_set_code(1, (date / 10) + 0x30);
-		led_set_code(0, (date % 10) + 0x30);
-	} else {
-		hour = lt_timer_get_hour();
-		min  = lt_timer_get_min();
-		sec  = lt_timer_get_sec();
-		
-		// 两个“:”号
-		led_set_dp(1);
-		led_set_dp(2);
-		led_set_dp(3);
-		led_set_dp(4); 
-		
-		// 如果是12小时显示，以第一位数字的点表示“PM”
-		if(lt_timer_get_hour_12() && hour > 12) {
-			led_set_dp(5);
-			hour -= 12;
-		} else if(lt_timer_get_hour_12() && hour == 12){
-			led_set_dp(5);
-		} else {
-			led_clr_dp(5);
-		}
-		
-		
-		CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
-		
-		if((hour / 10) != 0) {
-			led_set_code(5, (hour / 10) + 0x30);
-		} else {
-			led_set_code(5, LED_CODE_BLACK);
-		}
-		led_set_code(4, (hour % 10) + 0x30);
-		led_set_code(3, (min / 10)  + 0x30);
-		led_set_code(2, (min % 10) + 0x30);
-		led_set_code(1, (sec / 10) + 0x30);
-		led_set_code(0, (sec % 10) + 0x30);
-	}
+    CDBG("update_yymmdd %bu-%bu-%bu\n", year, mon, date);
+    
+    if((year / 10) != 0) {
+      led_set_code(5, (year / 10) + 0x30);
+    } else {
+      led_set_code(5, LED_CODE_BLACK);
+    }
+    led_set_code(4, (year % 10) + 0x30);
+    led_set_code(3, (mon / 10)+ 0x30);
+    led_set_code(2, (mon % 10) + 0x30);
+    led_set_code(1, (date / 10) + 0x30);
+    led_set_code(0, (date % 10) + 0x30);
+  } else {
+    hour = lt_timer_get_hour();
+    min  = lt_timer_get_min();
+    sec  = lt_timer_get_sec();
+    
+    // 两个“:”号
+    led_set_dp(1);
+    led_set_dp(2);
+    led_set_dp(3);
+    led_set_dp(4); 
+    
+    // 如果是12小时显示，以第一位数字的点表示“PM”
+    if(lt_timer_get_hour_12() && hour > 12) {
+      led_set_dp(5);
+      hour -= 12;
+    } else if(lt_timer_get_hour_12() && hour == 12){
+      led_set_dp(5);
+    } else {
+      led_clr_dp(5);
+    }
+    
+    
+    CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
+    
+    if((hour / 10) != 0) {
+      led_set_code(5, (hour / 10) + 0x30);
+    } else {
+      led_set_code(5, LED_CODE_BLACK);
+    }
+    led_set_code(4, (hour % 10) + 0x30);
+    led_set_code(3, (min / 10)  + 0x30);
+    led_set_code(2, (min % 10) + 0x30);
+    led_set_code(1, (sec / 10) + 0x30);
+    led_set_code(0, (sec % 10) + 0x30);
+  }
 }
 
 static void enter_time(unsigned char what) // blink year:0, month:1, day:2
@@ -210,17 +210,17 @@ static void enter_time(unsigned char what) // blink year:0, month:1, day:2
   led_clear();
   switch(what) {
     case IS_YEAR:
-		case IS_HOUR:
+    case IS_HOUR:
       led_set_blink(5);
       led_set_blink(4);    
       break;
     case IS_MON:
-		case IS_MIN:
+    case IS_MIN:
       led_set_blink(3);
       led_set_blink(2);    
       break;      
     case IS_DAY:
-		case IS_SEC:
+    case IS_SEC:
       led_set_blink(1);
       led_set_blink(0);    
       break;      
@@ -253,90 +253,90 @@ static void enter_password(unsigned char index)
 void sm_fuse_param_init(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_init %bu %bu %bu\n", from, to, ev);
-	display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
+  display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
 
-	if(ev == EV_KEY_V0) {
-		set_task(EV_KEY_SET_UP);
-	}
+  if(ev == EV_KEY_V0) {
+    set_task(EV_KEY_SET_UP);
+  }
 }
 
 static void sm_fuse_param_set_time(unsigned char what, unsigned char ev)
 {
-	if(ev == EV_KEY_MOD_PRESS) {
-		enter_time(what);
-		return;
-	}
-	
-	if(ev == EV_KEY_SET_PRESS) {
+  if(ev == EV_KEY_MOD_PRESS) {
+    enter_time(what);
+    return;
+  }
+  
+  if(ev == EV_KEY_SET_PRESS) {
     inc_and_write(what);
-		update_time(what);
-		return;
-	}
-	
-	if(ev == EV_KEY_SET_LPRESS) {
+    update_time(what);
+    return;
+  }
+  
+  if(ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(what);
-			update_time(what);
+      update_time(what);
     }
     lpress_start++;
     if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-		return;
-	}
-	
-	if(ev == EV_KEY_SET_UP) {
+    return;
+  }
+  
+  if(ev == EV_KEY_SET_UP) {
     write_only(what);
     lpress_start = 0;
-		return;
-	}
+    return;
+  }
 }
 
 
 void sm_fuse_param_submod0(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod0 %bu %bu %bu\n", from, to, ev);	
-	if((ev == EV_KEY_SET_UP && get_sm_ss_state(from) == SM_FUSE_PARAM_INIT)
-		|| (ev == EV_KEY_V0 && get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)) {
-		ev = EV_KEY_MOD_PRESS;
-	}
-	password_index = 5;
-	lt_timer_load_from_rom();
-	sm_fuse_param_set_time(IS_YEAR, ev);
+  CDBG("sm_fuse_param_submod0 %bu %bu %bu\n", from, to, ev);  
+  if((ev == EV_KEY_SET_UP && get_sm_ss_state(from) == SM_FUSE_PARAM_INIT)
+    || (ev == EV_KEY_V0 && get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)) {
+    ev = EV_KEY_MOD_PRESS;
+  }
+  password_index = 5;
+  lt_timer_load_from_rom();
+  sm_fuse_param_set_time(IS_YEAR, ev);
 }
 
 void sm_fuse_param_submod1(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_submod1 %bu %bu %bu\n", from, to, ev);
-	sm_fuse_param_set_time(IS_MON, ev);
+  sm_fuse_param_set_time(IS_MON, ev);
 }
 
 void sm_fuse_param_submod2(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_submod2 %bu %bu %bu\n", from, to, ev);
-	sm_fuse_param_set_time(IS_DAY, ev);
+  sm_fuse_param_set_time(IS_DAY, ev);
 }
 
 void sm_fuse_param_submod3(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod3 %bu %bu %bu\n", from, to, ev);	
-	sm_fuse_param_set_time(IS_HOUR, ev);
+  CDBG("sm_fuse_param_submod3 %bu %bu %bu\n", from, to, ev);  
+  sm_fuse_param_set_time(IS_HOUR, ev);
 }
 
 void sm_fuse_param_submod4(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_submod4 %bu %bu %bu\n", from, to, ev);
-	sm_fuse_param_set_time(IS_MIN, ev);
+  sm_fuse_param_set_time(IS_MIN, ev);
 }
 
 void sm_fuse_param_submod5(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_submod5 %bu %bu %bu\n", from, to, ev);
-	sm_fuse_param_set_time(IS_SEC, ev);
+  sm_fuse_param_set_time(IS_SEC, ev);
 }
 
 void sm_fuse_param_submod6(unsigned char from, unsigned char to, enum task_events ev) 
 {
   CDBG("sm_fuse_param_submod6 %bu %bu %bu\n", from, to, ev);
-	
+  
   // 设置password
   if(ev == EV_KEY_MOD_PRESS) {
     if(get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD) {
@@ -356,7 +356,7 @@ void sm_fuse_param_submod6(unsigned char from, unsigned char to, enum task_event
     update_password(IS_PASSWORD + password_index);
     return;
   }
-	
+  
   if(ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {
       inc_only(IS_PASSWORD + password_index);

@@ -34,23 +34,23 @@ void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_event
 void sm_fuse_detonate_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_detonate_submod0 %bu %bu %bu\n", from, to, ev);
-	
-	if(ev == EV_250MS) {
-		fuse_trigger(1);
-		common_state = 0;
-		return;
-	}
-	
-	if(ev == EV_1S || ev == EV_KEY_MOD_PRESS || ev == EV_KEY_SET_PRESS) {
-		if(ev == EV_1S)
-			common_state ++;
-		else
-			common_state = MAX_FUSE_CHARGE_TIME + 1;
-		if(common_state > MAX_FUSE_CHARGE_TIME) {
+  
+  if(ev == EV_250MS) {
+    fuse_trigger(1);
+    common_state = 0;
+    return;
+  }
+  
+  if(ev == EV_1S || ev == EV_KEY_MOD_PRESS || ev == EV_KEY_SET_PRESS) {
+    if(ev == EV_1S)
+      common_state ++;
+    else
+      common_state = MAX_FUSE_CHARGE_TIME + 1;
+    if(common_state > MAX_FUSE_CHARGE_TIME) {
       fuse_trigger(0);
       fuse_enable(0);
-			set_task(EV_KEY_V0);
-		}
-		return;
-	}
+      set_task(EV_KEY_V0);
+    }
+    return;
+  }
 }

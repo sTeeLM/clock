@@ -27,17 +27,17 @@ void lt_timer_initialize (void)
   lt_tmr_stopped  = 1;
   lt_tmr_display  = 0;
   lt_tmr_disp_day = 0;
-	lt_timer_is_12  = 0;
+  lt_timer_is_12  = 0;
 }
 
 bit lt_timer_get_hour_12(void)
 {
-	return lt_timer_is_12;
+  return lt_timer_is_12;
 }
 
 void lt_timer_set_hour_12(bit val)
 {
-	lt_timer_is_12 = val;
+  lt_timer_is_12 = val;
 }
 
 void lt_timer_enter_powersave(void)
@@ -67,10 +67,10 @@ void lt_timer_leave_powersave(void)
 void lt_timer_switch_on(void)
 {
   CDBG("lt_timer_switch_on\n");
-	lt_timer_load_from_rom();
+  lt_timer_load_from_rom();
   lt_timer_sync_to_rtc();
-	lt_timer_stop_rtc();
-	rtc_dump();
+  lt_timer_stop_rtc();
+  rtc_dump();
 }
 
 void lt_timer_switch_off(void)
@@ -80,7 +80,7 @@ void lt_timer_switch_off(void)
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
   rtc_write_data(RTC_TYPE_CTL);
-	rtc_dump();
+  rtc_dump();
 }
 
 void scan_lt_timer(void)
@@ -97,7 +97,7 @@ void scan_lt_timer(void)
   if(alarm0_hit) {
     rtc_read_data(RTC_TYPE_DATE);
     if(rtc_date_get_year() == lt_timer_get_year() 
-			&& rtc_date_get_month()== lt_timer_get_month()) {
+      && rtc_date_get_month()== lt_timer_get_month()) {
       if(power_test_flag()) {
         power_clr_flag();
       }
@@ -308,8 +308,8 @@ static void lt_timer_sub_date(bit borrow_date)
   } else if(day > 255){
     day = 255;
   }
-	
-	ltm.date = (unsigned char) day;
+  
+  ltm.date = (unsigned char) day;
 }
 
 
@@ -441,7 +441,7 @@ void lt_timer_load_from_rom(void)
   ltm.hour  = rom_read(ROM_LT_TIMER_HOUR);
   ltm.min   = rom_read(ROM_LT_TIMER_MIN);
   ltm.sec   = rom_read(ROM_LT_TIMER_SEC);
-	lt_timer_is_12 = rom_read(ROM_TIME_IS12);
+  lt_timer_is_12 = rom_read(ROM_TIME_IS12);
 }
 
 // 将绝对时间写入rom！
@@ -502,11 +502,11 @@ unsigned char lt_timer_get_relative(bit too_close_check)
       return 1;
     } 
   }
-	
-	if(ltm.date > LT_TIMER_MAX_DAY) {
-		CDBG("lt_timer_get_relative : ltm.date > %bu\n", LT_TIMER_MAX_DAY);
-		return 2;
-	}
+  
+  if(ltm.date > LT_TIMER_MAX_DAY) {
+    CDBG("lt_timer_get_relative : ltm.date > %bu\n", LT_TIMER_MAX_DAY);
+    return 2;
+  }
   
   return 0;
 }
@@ -519,7 +519,7 @@ void lt_timer_sync_to_rtc(void)
   // 绝对时间写入rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
-	rtc_alarm_set_hour_12(lt_timer_is_12);
+  rtc_alarm_set_hour_12(lt_timer_is_12);
   rtc_alarm_set_date(ltm.date + 1);
   rtc_alarm_set_hour(ltm.hour);
   rtc_alarm_set_min(ltm.min);

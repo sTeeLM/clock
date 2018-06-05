@@ -32,12 +32,12 @@ void sm_fuse_powersave_init(unsigned char from, unsigned char to, enum task_even
 void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_powersave_submod0 %bu %bu %bu\n", from, to, ev);
-	if(ev == EV_250MS) {
+  if(ev == EV_250MS) {
     // 进入睡眠
     power_enter_powersave();
     power_leave_powersave();
-		return;
-	}
+    return;
+  }
 }
 
 void sm_fuse_powersave_submod1(unsigned char from, unsigned char to, enum task_events ev)

@@ -7,7 +7,7 @@ enum sm_global_flag_mod_ss {
   SM_GLOBAL_FLAG_MODIFY_INIT   = 0, // 初始状态
   SM_GLOBAL_FLAG_MODIFY_PS     = 1, // 节电模式超时时间切换：0，15，30
   SM_GLOBAL_FLAG_MODIFY_BEEP   = 2, // 按键音
-	SM_GLOBAL_FLAG_MODIFY_MUSIC_TO = 3, // 最长闹铃时间
+  SM_GLOBAL_FLAG_MODIFY_MUSIC_TO = 3, // 最长闹铃时间
   SM_GLOBAL_FLAG_MODIFY_1224   = 4, // 12/24小时显示切换
 };
 
