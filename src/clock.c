@@ -10,6 +10,8 @@
 #include "rtc.h"
 #include "timer.h"
 #include "lt_timer.h"
+#include "sm.h"
+#include "delay_task.h"
 
 // ISR里不能调带参数函数。。。
 // 2000~2099年
@@ -120,6 +122,7 @@ static unsigned char code date_table[100][12] =
 static struct clock_struct idata clk;
 static bit clk_is12;
 static unsigned char idata sec_256; // 用于 time_diff
+static unsigned char idata giff;
 
 static bit display_enable;
 static unsigned char display_mode;
@@ -383,15 +386,16 @@ static void clock0_ISR (void) interrupt 1 using 1
 {  
 
   refresh_led();  
+  giff ++;
   
   if(in_shell) {
     TF0 = 0;
     return;
   }
-  
-  clock_inc_ms39();
-  timer_inc_ms39();
-  
+  if(giff % 2) {
+    clock_inc_ms39();
+    timer_inc_ms39();
+  }
   TF0 = 0;
 }
 
@@ -421,17 +425,17 @@ void clock_initialize(void)
   CDBG("clock_initialize\n");
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
   clock_sync_from_rtc(CLOCK_SYNC_DATE); 
+  giff = 0;
   // GATE = 0
   // CT = 1
   // M1 = 1
   // M2 = 0
   TMOD |= 0x06; // 工作在模式2
-  TL0 = (256 - 128); // 32768HZ方波输入，3.90625ms中断一次（256个中断是1s）
-  TH0 = (256 - 128);
+  TL0 = (256 - 128 + 64); // 32768HZ方波输入，0.001953125s中断一次（512个中断是1s）
+  TH0 = (256 - 128 + 64);
   PT0 = 1; // 最高优先级 
   display_mode = CLOCK_DISPLAY_MODE_HHMMSS;
   display_enable = 0;
-  
   clock_enable_interrupt(1);
 
   clock_dump();
@@ -464,4 +468,12 @@ void clock_leave_shell(void)
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
   clock_sync_from_rtc(CLOCK_SYNC_DATE);
   clock_enable_interrupt(1);
+}
+
+void clock_time_proc(enum task_events ev)
+{
+  if(ev == EV_1S)
+    delay_task_call();
+  
+  run_state_machine(ev);
 }

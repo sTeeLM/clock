@@ -34,7 +34,13 @@ static void show_version(void)
   
   CDBG("++++++++++++++++++++++++++++++++++++++++\n");
   CDBG("+        tiny OS  %s              +\n", __CLOCK__VERSION__);
-  CDBG("+                                      +\n");
+  CDBG("+        %s                       +\n", 
+#ifdef __CLOCK_EMULATE__
+  "emulate"
+#else
+  "       "
+#endif
+  );
   CDBG("++++++++++++++++++++++++++++++++++++++++\n");
   
 }
@@ -64,7 +70,7 @@ void main(void)
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
   delay_task_initialize();                      // initialize delay task
-  while(1) {                                    //loop forever
+  while(1) {                                    // loop forever
     run_task();                                 // run task procs
     run_shell();                                // run shell
   }

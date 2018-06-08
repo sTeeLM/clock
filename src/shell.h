@@ -12,8 +12,8 @@ struct shell_cmds
 };
 
 void run_shell(void);
-void shell_dump_cmd(void);
 char shell_search_cmd_by_name(char * cmd);
+void shell_dump_cmd(void);
 extern char shell_buf[];
 extern struct shell_cmds code cmds[];
 #endif

@@ -90,6 +90,14 @@ char shell_search_cmd_by_name(char * cmd)
   return -1;
 }
 
+void shell_dump_cmd(void)
+{
+  char i;
+  for (i = 0 ; i < sizeof(cmds)/sizeof(struct shell_cmds) ; i ++) {
+    printf("%s: %s\n", cmds[i].cmd, cmds[i].desc);
+  }
+}
+
 static void call_cmd(char * buf, char arg1, char arg2)
 {
   char i;
@@ -101,14 +109,6 @@ static void call_cmd(char * buf, char arg1, char arg2)
     }
   } else {
     printf("unknown cmd '%s'\n", buf);
-  }
-}
-
-void shell_dump_cmd(void)
-{
-  char i;
-  for (i = 0 ; i < sizeof(cmds)/sizeof(struct shell_cmds) ; i ++) {
-    printf("%s: %s\n", cmds[i].cmd, cmds[i].desc);
   }
 }
 

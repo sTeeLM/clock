@@ -91,9 +91,9 @@ const char * code task_name[] =
 static const TASK_PROC code task_procs[EV_COUNT] = 
 {
   /* EV_250MS            = 0, // 大约每250ms转一下 */
-  time_proc,
+  clock_time_proc,
   /* EV_1S               = 1, // 大约每1s转一下   */
-  time_proc,
+  clock_time_proc,
   /* EV_SCAN_KEY         = 2, // 扫描按键 */
   scan_key_proc,
   /* EV_KEY_SET_XX */

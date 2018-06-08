@@ -1,6 +1,8 @@
 #ifndef __CLOCK_CLOCK_H__
 #define __CLOCK_CKOCK_H__
 
+#include "task.h"
+
 void clock_initialize ();
 void clock_enter_powersave(void);
 void clock_leave_powersave(void);
@@ -64,5 +66,5 @@ enum clock_display_mode
 
 void clock_display(bit enable);
 void clock_switch_display_mode(enum clock_display_mode mode);
-
+void clock_time_proc(enum task_events ev);
 #endif

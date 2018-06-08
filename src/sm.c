@@ -732,14 +732,6 @@ static unsigned char sm_state;  // curent state hi 4 bits : state, lo 4 bits: su
 unsigned char sm_curr_table; // current table
 unsigned char sm_new_table; // new table
 
-void time_proc(enum task_events ev)
-{
-  if(ev == EV_1S)
-    delay_task_call();
-  
-  run_state_machine(ev);
-}
-
 /* 不做任何过滤 */
 void null_proc(enum task_events ev)
 {
