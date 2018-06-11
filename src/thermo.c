@@ -117,7 +117,7 @@ static void thermo_lo_power_off(void)
   // int active low = 1
   // Thermostat Mode/ Interrupt Mode  = 0(Thermostat Mode)
   // shutdown mode off = 1
-  I2C_Put(THERMO_HI_I2C_ADDRESS, 0x1, 0x5);
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x1, 0x5);
 #endif  
 }
 

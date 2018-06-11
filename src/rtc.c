@@ -148,7 +148,6 @@ void rtc_initialize (void)
   // 初始化
   is12 = rom_read(ROM_TIME_IS12);
   
-  I2C_Init();
   rtc_read_data(RTC_TYPE_TIME);
 
   // 12/24格式按照rom设置来，需要转换一次
@@ -169,6 +168,7 @@ void rtc_initialize (void)
   }
   rtc_write_data(RTC_TYPE_TIME);
   
+  delay_ms(10);
   
   rtc_read_data(RTC_TYPE_DATE);
  
@@ -190,6 +190,8 @@ void rtc_initialize (void)
     rtc_date_get_date() - 1) + 1);
   
   rtc_write_data(RTC_TYPE_DATE);
+  
+  delay_ms(10);
    
   // 清除所有闹钟：闹钟配置由alarm自行从rom中读取，写入rtc
   rtc_read_data(RTC_TYPE_CTL);
@@ -250,7 +252,6 @@ void rtc_write_data(enum rtc_data_type type)
     case RTC_TYPE_CTL:
       offset = RTC_CTL_OFFSET; break;       
   }
-  I2C_Init();
   I2C_Puts(RTC_I2C_ADDRESS, offset, sizeof(rtc_data), rtc_data);  
 }
 

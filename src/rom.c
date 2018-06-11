@@ -11,7 +11,6 @@ sbit ROM_RESET = P3 ^ 7;
 unsigned char rom_read(unsigned char addr)
 {
   unsigned char dat;
-  I2C_Init();
   I2C_Get(ROM_I2C_ADDR, addr, &dat);
   CDBG("rom_read [0x%02bx] return 0x%02bx\n", addr, dat);
   return dat;
@@ -19,7 +18,6 @@ unsigned char rom_read(unsigned char addr)
 
 void rom_write(unsigned char addr, unsigned char val)
 {
-  I2C_Init();
   I2C_Put(ROM_I2C_ADDR, addr, val);
   CDBG("rom_write [0x%02bx] with 0x%02bx\n", addr, val);
 }

@@ -21,7 +21,6 @@ static char i2c_read(char arg1, char arg2)
   if(addr > 255 || cmd > 255)
     return 1;
   
-  I2C_Init();
   ret = I2C_Get(addr, cmd, &val);
   
   printf("i2c read: [%02bx %02bx] -> %02bx %s\n", addr, cmd, val, ret ? "FAILED" : "SUCCESS");
@@ -56,7 +55,6 @@ static char i2c_write(char arg1, char arg2)
   if(cmd > 255 || val > 255)
     return 1;
   
-  I2C_Init();
   ret = I2C_Put(write_addr, cmd, val);
   printf("i2c write [%02bx %02bx] -> %02bx %s\n", write_addr, cmd, val, ret ? "FAILED" : "SUCCESS");
   
