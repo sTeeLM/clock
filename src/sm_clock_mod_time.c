@@ -18,72 +18,6 @@ const char * code sm_clock_mod_time_name[] =
   NULL
 };
 
-static void update_hhmmss(void)
-{
-  unsigned char hour, min, sec;
-  
-  hour = clock_get_hour();
-  min  = clock_get_min();
-  sec  = clock_get_sec();
-  
-  // 两个“:”号
-  led_set_dp(1);
-  led_set_dp(2);
-  led_set_dp(3);
-  led_set_dp(4); 
-  
-  // 如果是12小时显示，以第一位数字的点表示“PM”
-  if(clock_get_hour_12() && hour > 12) {
-    led_set_dp(5);
-    hour -= 12;
-  } else if(clock_get_hour_12() && hour == 12) {
-    led_set_dp(5);
-  } else {
-    led_clr_dp(5);
-  }
-  
-  
-  CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
-  
-  if((hour / 10) != 0) {
-    led_set_code(5, (hour / 10) + 0x30);
-  } else {
-    led_set_code(5, LED_CODE_BLACK);
-  }
-  led_set_code(4, (hour % 10) + 0x30);
-  led_set_code(3, (min / 10)  + 0x30);
-  led_set_code(2, (min % 10) + 0x30);
-  led_set_code(1, (sec / 10) + 0x30);
-  led_set_code(0, (sec % 10) + 0x30);
-}
-
-static void update_yymmdd(void)
-{
-  unsigned char year, mon, date;
-  
-  
-  year = clock_get_year();
-  mon  = clock_get_month();
-  date  = clock_get_date();
-  
-  led_set_dp(2);
-  led_set_dp(4);
-
-  CDBG("update_yymmdd %bu-%bu-%bu\n", year, mon, date);
-  
-  if((year / 10) != 0) {
-    led_set_code(5, (year / 10) + 0x30);
-  } else {
-    led_set_code(5, LED_CODE_BLACK);
-  }
-  led_set_code(4, (year % 10) + 0x30);
-  led_set_code(3, (mon / 10)+ 0x30);
-  led_set_code(2, (mon % 10) + 0x30);
-  led_set_code(1, (date / 10) + 0x30);
-  led_set_code(0, (date % 10) + 0x30);  
-}
-
-
 static void inc_only(unsigned char what)
 {
   switch (what) {
@@ -126,16 +60,6 @@ static void inc_only(unsigned char what)
         clock_inc_date();
       }
       break;
-  }
-  
-  if(what == IS_HOUR 
-    || what == IS_MIN 
-    || what == IS_SEC) {
-    update_hhmmss();
-  } else if(what == IS_YEAR 
-    || what == IS_MON 
-    || what == IS_DAY) {
-    update_yymmdd();
   }
 }
 
@@ -203,7 +127,8 @@ static void inc_and_write(unsigned char what)
 
 static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 {
-  led_clear();
+  clock_display(1);
+  led_clr_all_blink();
   switch(what) {
     case IS_HOUR:
       led_set_blink(5);
@@ -218,13 +143,14 @@ static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
       led_set_blink(0);    
       break;      
   }
-  update_hhmmss();
+  clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
 }
 
 
 static void enter_yymmdd(unsigned char what) // blink year:0, month:1, day:2
 {
-  led_clear();
+  clock_display(1);
+  led_clr_all_blink();
   switch(what) {
     case IS_YEAR:
       led_set_blink(5);
@@ -239,7 +165,7 @@ static void enter_yymmdd(unsigned char what) // blink year:0, month:1, day:2
       led_set_blink(0);    
       break;      
   }
-  update_yymmdd();  
+  clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
 }
 
 void sm_clock_mod_time_init(unsigned char from, unsigned char to, enum task_events ev)
@@ -284,25 +210,6 @@ static void sm_clock_mod_time(unsigned char what, enum task_events ev)
   if(ev == EV_KEY_SET_UP) {
     write_only(what);
     lpress_start = 0;
-    return;
-  }
-  
-  // 每250ms读一下rtc，更新数据
-  if(ev == EV_250MS) {
-    if(lpress_lock_year_hour 
-      || lpress_lock_month_min
-      || lpress_lock_day_sec) {
-      return;
-    }
-    if(what == IS_HOUR 
-      || what == IS_MIN 
-      || what == IS_SEC) {
-      update_hhmmss();
-    } else if(what == IS_YEAR 
-      || what == IS_MON 
-      || what == IS_DAY) {
-      update_yymmdd();
-    }
     return;
   }
 }

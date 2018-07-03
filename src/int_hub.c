@@ -12,14 +12,17 @@
 #include "mpu.h"
 #include "thermo.h"
 #include "fuse.h"
+#include "power.h"
 #include "cext.h"
 
 
 
 sbit RTC_INT        = P1 ^ 1;
 sbit MPU_INT        = P1 ^ 2;
+sbit POWER_INT      = P1 ^ 3;
 sbit EXT_INT        = P1 ^ 4;
 sbit INT_BIT        = P3 ^ 3;
+
 
 // PCA9535 logic, 实际上可能会用TCA9535
 #define INT_HUB_I2C_ADDR 0x42 //0100 0010
@@ -76,9 +79,11 @@ void int_hub_dump(void)
 {
   //RTC_INT || !EXT_INT || !THERMO_INT || !MPU_INT
   CDBG("++++++int_hub_dump begin++++++\n");
+  CDBG("[INT] %c\n", INT_BIT ? '1' : '0');
   CDBG("[RTC_INT] %c\n", RTC_INT ? '1' : '0');
-  CDBG("[EXT_INT] %c\n", EXT_INT ? '1' : '0');  
-  CDBG("[MPU_INT] %c\n", MPU_INT ? '1' : '0');  
+  CDBG("[MPU_INT] %c\n", MPU_INT ? '1' : '0'); 
+  CDBG("[POWER_INT] %c\n", POWER_INT ? '1' : '0'); 
+  CDBG("[EXT_INT] %c\n", EXT_INT ? '1' : '0'); 
   CDBG("++++++int_hub_dump end++++++\n");
 }
 
@@ -154,7 +159,12 @@ void scan_int_hub_proc (enum task_events ev)
     scan_mpu();  
   }
   
+  if(!POWER_INT) {
+    scan_power();
+  }
+/*  
   if(!RTC_INT || !EXT_INT || !MPU_INT ) {
     set_task(EV_SCAN_INT_HUB);
   }
+*/
 }

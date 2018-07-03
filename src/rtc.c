@@ -156,9 +156,9 @@ void rtc_initialize (void)
   rtc_time_set_hour(count);
   
   ///// 调试用，2014-08-19, 12:10:30 PM
-  rtc_time_set_hour(12);
-  rtc_time_set_min(10);
-  rtc_time_set_sec(30); 
+  // rtc_time_set_hour(12);
+  // rtc_time_set_min(10);
+  // rtc_time_set_sec(30); 
   /////
   
   if(rom_is_factory_reset()) { //2014-08-19, 12:10:30 PM
@@ -173,9 +173,9 @@ void rtc_initialize (void)
   rtc_read_data(RTC_TYPE_DATE);
  
   ///// 调试用，初始时钟设置为 12小时格式，2014-08-19, 12:10：30 AM
-  rtc_date_set_year(14);
-  rtc_date_set_month(8);
-  rtc_date_set_date(19);
+  // rtc_date_set_year(14);
+  // rtc_date_set_month(8);
+  // rtc_date_set_date(19);
   /////
   
   if(rom_is_factory_reset()) { // 2000-1-1
@@ -203,6 +203,10 @@ void rtc_initialize (void)
   rtc_set_intcn(1);
   // 启动32KHZ输出  
   rtc_set_en32khz(1);
+  // 清除eosc
+  rtc_set_eosc(0);
+  // BBSQW = 0，电池供电时候没有方波或者中断
+  rtc_set_bbsqw(0);
   rtc_write_data(RTC_TYPE_CTL); 
   
   CDBG("RTC after initialize:\n");

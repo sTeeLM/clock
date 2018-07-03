@@ -22,6 +22,9 @@
 static char thermo_threshold_hi;
 static char thermo_threshold_lo;
 
+static bit thermo_threshold_hi_enabled;
+static bit thermo_threshold_lo_enabled;
+
 #ifdef __CLOCK_EMULATE__
 // emulate mode
 #define THERMO_HI_I2C_ADDRESS 0x90 //1001 0000
@@ -56,6 +59,38 @@ static void thermo_lo_load_config(void)
   CDBG("thermo_threshold_lo = %bd\n", thermo_threshold_lo);  
 }
 
+static void thermo_hi_power_on(void)
+{
+  thermo_hi_load_config();
+  
+#ifdef __CLOCK_EMULATE__
+  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
+  // 0|0|0|0|0|0|0|0
+  // set thermo0 config
+  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xAC, 0x00);
+  
+  // set alert threshold
+  thermo_hi_threshold_reset();
+  
+  // 开启测温
+  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xEE, 0);
+  
+#else
+  
+  // TLOW/THIGH Register
+  thermo_hi_threshold_reset();
+  
+  //OS/ALERT R1 R0 F1 F0 POL TM SD
+  // R1 R0 = 0 0 : 9 bits精确度 (0.5 degree), 40ms响应时间
+  // F1 F0 = 0 0 : , Fault Queue = 0
+  // int active low = 0
+  // Thermostat Mode/ Interrupt Mode  = 0(Thermostat Mode)
+  // shutdown mode off = 0
+  I2C_Put(THERMO_HI_I2C_ADDRESS, 0x1, 0);
+#endif
+  thermo_threshold_hi_enabled = 1;
+}
+
 static void thermo_hi_power_off(void)
 {
   thermo_hi_load_config();
@@ -87,6 +122,38 @@ static void thermo_hi_power_off(void)
   // shutdown mode off = 1
   I2C_Put(THERMO_HI_I2C_ADDRESS, 0x1, 0x01);
 #endif  
+  thermo_threshold_hi_enabled = 0;
+}
+
+static void thermo_lo_power_on(void)
+{
+  thermo_lo_load_config();
+  
+#ifdef __CLOCK_EMULATE__
+  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
+  // 0|0|0|0|0|0|1|0
+  // set thermo1 config
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);
+  
+  // set alert threshold
+  thermo_lo_threshold_reset();
+  
+  // 开启测温
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xEE, 0);
+#else
+
+  // THIGH/TLOW Register
+  thermo_lo_threshold_reset();
+  
+  //OS/ALERT R1 R0 F1 F0 POL TM SD
+  // R1 R0 = 0 0 : 9 bits精确度 (0.5 degree), 40ms响应时间
+  // F1 F0 = 0 0 : , Fault Queue = 0
+  // int active low = 1
+  // Thermostat Mode/ Interrupt Mode  = 0(Thermostat Mode)
+  // shutdown mode off = 0
+  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x1, 0x4);
+#endif
+  thermo_threshold_lo_enabled = 1;
 }
 
 static void thermo_lo_power_off(void)
@@ -119,77 +186,18 @@ static void thermo_lo_power_off(void)
   // shutdown mode off = 1
   I2C_Put(THERMO_LO_I2C_ADDRESS, 0x1, 0x5);
 #endif  
+  thermo_threshold_lo_enabled = 0;
 }
-
 
 // 读取rom配置，thermo处于节电状态，中断禁止
 void thermo_initialize (void)
 {  
   CDBG("thermo_initialize\n");
   thermo_reset();
+  thermo_threshold_hi_enabled = 0;
+  thermo_threshold_lo_enabled = 0;
   thermo_hi_power_off();
   thermo_lo_power_off();
-}
-
-static void thermo_hi_power_on(void)
-{
-  thermo_hi_load_config();
-  
-#ifdef __CLOCK_EMULATE__
-  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
-  // 0|0|0|0|0|0|0|0
-  // set thermo0 config
-  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xAC, 0x00);
-  
-  // set alert threshold
-  thermo_hi_threshold_reset();
-  
-  // 开启测温
-  I2C_Put(THERMO_HI_I2C_ADDRESS, 0xEE, 0);
-  
-#else
-  
-  // TLOW/THIGH Register
-  thermo_hi_threshold_reset();
-  
-  //OS/ALERT R1 R0 F1 F0 POL TM SD
-  // R1 R0 = 0 0 : 9 bits精确度 (0.5 degree), 40ms响应时间
-  // F1 F0 = 0 0 : , Fault Queue = 0
-  // int active low = 0
-  // Thermostat Mode/ Interrupt Mode  = 0(Thermostat Mode)
-  // shutdown mode off = 0
-  I2C_Put(THERMO_HI_I2C_ADDRESS, 0x1, 0);
-#endif
-}
-
-static void thermo_lo_power_on(void)
-{
-  thermo_lo_load_config();
-  
-#ifdef __CLOCK_EMULATE__
-  // DONE|THF|TLF|NVB|1|0|POL|1SHOT
-  // 0|0|0|0|0|0|1|0
-  // set thermo1 config
-  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);
-  
-  // set alert threshold
-  thermo_lo_threshold_reset();
-  
-  // 开启测温
-  I2C_Put(THERMO_LO_I2C_ADDRESS, 0xEE, 0);
-#else
-
-  // THIGH/TLOW Register
-  thermo_lo_threshold_reset();
-  
-  //OS/ALERT R1 R0 F1 F0 POL TM SD
-  // R1 R0 = 0 0 : 9 bits精确度 (0.5 degree), 40ms响应时间
-  // F1 F0 = 0 0 : , Fault Queue = 0
-  // int active low = 1
-  // Thermostat Mode/ Interrupt Mode  = 0(Thermostat Mode)
-  // shutdown mode off = 0
-  I2C_Put(THERMO_LO_I2C_ADDRESS, 0x1, 0x4);
-#endif
 }
 
 void scan_thermo(unsigned int status)
@@ -440,9 +448,9 @@ bit thermo_lo_threshold_reach_top()
 void thermo_hi_enable(bit enable)
 {
   CDBG("thermo_hi_enable %bu\n", enable ? 1 : 0);
-  if(enable) {
+  if(enable && !thermo_threshold_hi_enabled) {
     thermo_hi_power_on();
-  } else {
+  } else if(!enable && thermo_threshold_hi_enabled){
     thermo_hi_power_off();
   }
 }
@@ -450,9 +458,9 @@ void thermo_hi_enable(bit enable)
 void thermo_lo_enable(bit enable)
 {
   CDBG("thermo_lo_enable %bu\n", enable ? 1 : 0);
-  if(enable) {
+  if(enable && !thermo_threshold_lo_enabled) {
     thermo_lo_power_on();
-  } else {
+  } else if(enable && thermo_threshold_lo_enabled){
     thermo_lo_power_off();
   }
 }

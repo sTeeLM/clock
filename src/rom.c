@@ -6,7 +6,9 @@
 
 #define ROM_I2C_ADDR 0xA0
 
-sbit ROM_RESET = P3 ^ 7;
+//sbit ROM_RESET = P3 ^ 7;
+
+sbit ROM_RESET = P2 ^ 6; // 和Mod公用一个，开机时长按Mod相当于工厂reset
 
 unsigned char rom_read(unsigned char addr)
 {
@@ -53,6 +55,11 @@ static void rom_dump(void)
   rom_read(ROM_LT_TIMER_HOUR);
   rom_read(ROM_LT_TIMER_MIN);
   rom_read(ROM_LT_TIMER_SEC); 
+  
+  rom_read(ROM_POWER_FULL_INT);
+  rom_read(ROM_POWER_FULL_EXP);
+  rom_read(ROM_POWER_EMPTY_INT);
+  rom_read(ROM_POWER_EMPTY_EXP);
 }
 
 static void rom_reset(void)
@@ -88,6 +95,11 @@ static void rom_reset(void)
   rom_write(ROM_LT_TIMER_HOUR, 12);
   rom_write(ROM_LT_TIMER_MIN, 15);
   rom_write(ROM_LT_TIMER_SEC, 10); 
+  
+  rom_write(ROM_POWER_FULL_INT, 4);
+  rom_write(ROM_POWER_FULL_EXP, 20);
+  rom_write(ROM_POWER_EMPTY_INT, 3);
+  rom_write(ROM_POWER_EMPTY_EXP, 30);
 }
 
 bit rom_is_factory_reset(void)

@@ -5,7 +5,8 @@ typedef void (code *DELAY_TASK_PROC)(void);
 
 enum delay_task_type {
   DELAY_TASK_HG = 0,
-  DELAU_TASK_CNT
+  DELAY_TASK_POWER,
+  DELAY_TASK_CNT
 };
 
 struct delay_task {

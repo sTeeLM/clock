@@ -26,6 +26,11 @@
 #define ROM_LT_TIMER_MIN   24
 #define ROM_LT_TIMER_SEC   25
 
+#define ROM_POWER_FULL_INT   30
+#define ROM_POWER_FULL_EXP   31
+#define ROM_POWER_EMPTY_INT  32
+#define ROM_POWER_EMPTY_EXP  33
+
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);
 void rom_initialize(void);

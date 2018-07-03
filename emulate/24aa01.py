@@ -67,5 +67,15 @@ a[23] = 12
 a[24] = 13
 a[25] = 10
 
+#define ROM_POWER_FULL_INT   30
+#define ROM_POWER_FULL_EXP   31
+#define ROM_POWER_EMPTY_INT  32
+#define ROM_POWER_EMPTY_EXP  33
+
+a[30] = 4
+a[31] = 20
+a[32] = 3
+a[33] = 30
+
 with open('24aa01.bin', 'wb') as f:
 	f.write(a);

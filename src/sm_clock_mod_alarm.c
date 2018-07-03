@@ -193,6 +193,7 @@ static void toggle_alarm_music(void)
 void sm_clock_mod_alarm_init(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_clock_mod_alarm_init %bu %bu %bu\n", from, to, ev);
+  clock_display(0);
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
 }
 

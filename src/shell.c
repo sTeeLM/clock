@@ -18,6 +18,7 @@
 #include "cmd_thermo.h"
 #include "cmd_mpu.h"
 #include "cmd_rtc.h"
+#include "cmd_power.h"
 #include "cext.h"
 
 #define SHELL_BUFFER_SIZE 41
@@ -45,6 +46,7 @@ struct shell_cmds code cmds[] =
   {"iw", "write data to i2c", "iw <addr>: set addr\n"
                               "iw <cmd> <data>: write one byte", cmd_i2c}, 
   {"rb", "reboot", "rb: reboot to user code (ap)\n"
+                   "rb off: power off\n"
                    "rb isp: reboot to isp", cmd_reboot},
   {"tsk", "task managment", "tsk: list all task state\n"
                             "tsk <task index> <1|0>: trigger task or clear task", cmd_task},
@@ -77,6 +79,13 @@ struct shell_cmds code cmds[] =
   {"mp", "mpu test",    "mp <on|off>: enable/disable\n"
                         "mp int: read interrupt status\n", cmd_mpu},
   {"rt", "rtc read or write",    "rt : dump status\n", cmd_rtc},  
+  {"pw", "power pack test",    "pw : get current battery volume\n"
+                               "pw 5v <on | off>: 5v power on off\n"
+                               "pw hi <num>: hi alert voltage\n"
+                               "pw lo <num>: lo alert voltage\n"
+                               "pw hyst <num>: hysteresis voltage\n"
+                               "pw int <clr>: alert status or clear alert\n"    
+                              ,cmd_power},  
   {"ex", "quit the shell", "ex", cmd_null},
 }; 
 

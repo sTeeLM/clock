@@ -166,6 +166,11 @@ void led_set_blink(unsigned char i)
   }    
 }
 
+void led_clr_all_blink(void)
+{
+  led_blink = 0;
+}
+
 void led_clr_blink(unsigned char i)
 {
   if( i < 6 ) {

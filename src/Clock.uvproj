@@ -663,6 +663,11 @@
               <FileType>1</FileType>
               <FilePath>.\cmd_rtc.c</FilePath>
             </File>
+            <File>
+              <FileName>cmd_power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_power.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

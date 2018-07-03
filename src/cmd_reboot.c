@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "cmd_reboot.h"
 #include "shell.h"
+#include "power.h"
 #include "cext.h"
 
 char cmd_reboot(char arg1, char arg2)
@@ -20,6 +21,9 @@ char cmd_reboot(char arg1, char arg2)
     UNUSED_PARAM(fuck);
     ISP_CONTR |= 0x20;
 #endif
+    return 0;
+  } else if(strcmp(shell_buf + arg1, "off") == 0) {
+    power_3_3v_enable(0);
     return 0;
   } else if(strcmp(shell_buf + arg1, "isp") == 0) {
 #ifdef __CLOCK_EMULATE__ 

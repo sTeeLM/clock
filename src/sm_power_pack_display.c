@@ -13,10 +13,11 @@ const char * code sm_power_pack_display_ss_name[] = {
   NULL
 };
 
-static void display_power_volume(void)
+static void display_power_percent(void)
 {
   unsigned char val;
-  val = power_get_volume();
+  val = power_get_percent();
+  CDBG("display_power_percent bat is %bu%%\n", val);
   led_clear();
   led_set_code(5, 'P');
   led_set_code(4, 'O');
@@ -24,6 +25,8 @@ static void display_power_volume(void)
   led_set_code(2, val / 100 + 0x30);
   led_set_code(1, (val % 100) / 10 + 0x30);
   led_set_code(0, (val % 100) % 10 + 0x30);
+  if(power_5v_get_enable())
+    led_set_dp(5);
 }
 
 void sm_power_pack_display_init(unsigned char from, unsigned char to, enum task_events ev)
@@ -38,7 +41,6 @@ void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum ta
 {
   CDBG("sm_power_pack_display_submod0 %bu %bu %bu\n", from, to, ev);
   if(ev == EV_KEY_MOD_UP || ev == EV_KEY_SET_UP) {
-    power_5v_enable(1); // 打开5v电源
     power_reset_powersave_to();
     return;
   }
@@ -48,10 +50,16 @@ void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum ta
     if(ev == EV_KEY_SET_PRESS) { // 开关5v输出
       power_5v_enable(!power_5v_get_enable());
     }
+    return;
+  }
+  
+  if(ev == EV_KEY_SET_LPRESS) { // 关机！
+    power_3_3v_enable(0);
+    return;
   }
   
   if(ev == EV_1S) {
-    display_power_volume(); // 显示电量
+    display_power_percent(); // 显示电量
     power_test_powersave_to();
     return;
   }

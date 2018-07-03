@@ -53,8 +53,10 @@ void main(void)
   debug_initialize();                           // initialize debug system
   com_initialize();                             // initialize interrupt driven serial I/O
   show_version();
+  task_initialize();                            // initialize task manager
+  sm_initialize();                              // initialize state machine
+  delay_task_initialize();                      // initialize delay task
   rom_initialize();                             // initialize rom
-  mpu_initialize();                             // initialize mpu
   serial_hub_initialize();                      // initialize serial hub
   key_initialize();                             // initialize keys
   led_initialize();                             // initialize led display
@@ -66,10 +68,7 @@ void main(void)
   fuse_initialize();                            // initialize fuse
   hg_initialize();                              // initialize hg
   int_hub_initialize();                         // initialize interrupt hub 
-  task_initialize();                            // initialize task manager
-  sm_initialize();                              // initialize state machine
-  delay_task_initialize();                      // initialize delay task
-  delay_ms(100);
+  mpu_initialize();                             // initialize mpu
   rtc_initialize();                             // initialize rtc
   clock_initialize();                           // initialize clock
   alarm_initialize();                           // initialize power alarm manager
