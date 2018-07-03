@@ -18,6 +18,7 @@
 #include "hg.h"
 #include "thermo.h"
 #include "mpu.h"
+#include "remote.h"
 
 #include "shell.h"
 #include "debug.h"
@@ -53,6 +54,9 @@
   EV_ALARM1           = 25, // 闹钟1应该响起
   EV_COUNTER          = 26, // 计时器到时间
   EV_POWER_SAVE       = 27, // 应该进入PS状态 
+  EV_REMOTE_ARM       = 28, // 遥控器按下 arm
+  EV_REMOTE_DISARM    = 29, // 遥控器按下 dis-arm
+  EV_REMOTE_DETONATE  = 30, // 遥控器按下 detonate
   EV_COUNT  
 */
 
@@ -86,6 +90,9 @@ const char * code task_name[] =
   "EV_ALARM1",
   "EV_COUNTER",
   "EV_POWER_SAVE",
+  "EV_REMOTE_ARM",
+  "EV_REMOTE_DISARM",
+  "EV_REMOTE_DETONATE"
 };
 
 static const TASK_PROC code task_procs[EV_COUNT] = 
@@ -133,7 +140,11 @@ static const TASK_PROC code task_procs[EV_COUNT] =
   /* EV_COUNTER          = 26, // 计时器到时间 */
   null_proc,
   /* EV_POWER_SAVE       = 27, // 应该进入PS状态 */
-  power_proc  
+  power_proc,
+  /* EV_REMOTE_XXX */
+  remote_proc,
+  remote_proc,
+  remote_proc,
 };
 
 

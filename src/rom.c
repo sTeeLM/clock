@@ -41,6 +41,7 @@ static void rom_dump(void)
   rom_read(ROM_FUSE_MPU);
   rom_read(ROM_FUSE_THERMO_HI);
   rom_read(ROM_FUSE_THERMO_LO);
+  rom_read(ROM_FUSE_REMOTE_ONOFF);
   
   rom_read(ROM_FUSE_PASSWORD);
   rom_read(ROM_FUSE_PASSWORD + 1);
@@ -81,6 +82,7 @@ static void rom_reset(void)
   rom_write(ROM_FUSE_MPU, 1);
   rom_write(ROM_FUSE_THERMO_HI, 40);
   rom_write(ROM_FUSE_THERMO_LO, 216);
+  rom_write(ROM_FUSE_REMOTE_ONOFF, 1);
   
   rom_write(ROM_FUSE_PASSWORD,     1);
   rom_write(ROM_FUSE_PASSWORD + 1, 2);

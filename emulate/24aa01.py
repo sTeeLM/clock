@@ -38,20 +38,22 @@ a[8] = 1
 #define ROM_FUSE_MPU        10
 #define ROM_FUSE_THERMO_HI  11
 #define ROM_FUSE_THERMO_LO  12
-#define ROM_FUSE_PASSWORD   13
+#define ROM_FUSE_REMOTE_ONOFF 13
+#define ROM_FUSE_PASSWORD   14
 # 13 - 18 is password, 6 bytes
 
 a[9] = 1
 a[10] = 1
 a[11] = 40
 a[12] = 216
-
 a[13] = 1
-a[14] = 2
-a[15] = 3
-a[16] = 4
-a[17] = 5
-a[18] = 6
+
+a[14] = 1
+a[15] = 2
+a[16] = 3
+a[17] = 4
+a[18] = 5
+a[19] = 6
 
 #define ROM_LT_TIMER_YEAR 20
 #define ROM_LT_TIMER_MONTH  21

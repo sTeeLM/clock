@@ -16,19 +16,20 @@
 #define IS_THERMO_HI 12
 #define IS_THERMO_LO 13
 #define IS_TRIPWIRE 14
-#define IS_PASSWORD 15
+#define IS_REMOTE   15
+#define IS_PASSWORD 16
 #define IS_PASSWORD5 (IS_PASSWORD + 5)
 
-#define IS_PS    16
-#define IS_BS    17
-#define IS_MUSIC 18
-#define IS_BEEP  19
-#define IS_MUSIC_TO 20
-#define IS_1224  21
+#define IS_PS    17
+#define IS_BS    18
+#define IS_MUSIC 19
+#define IS_BEEP  20
+#define IS_MUSIC_TO 21
+#define IS_1224  22
 
-#define IS_ALARM0 22
-#define IS_ALARM1 23
-#define IS_COUNTER 24
+#define IS_ALARM0 23
+#define IS_ALARM1 24
+#define IS_COUNTER 25
 
 #define LPRESS_INC_DELAY 2
 #define LPRESS_INC_OVERFLOW 50

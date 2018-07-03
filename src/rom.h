@@ -16,7 +16,8 @@
 #define ROM_FUSE_MPU        10
 #define ROM_FUSE_THERMO_HI  11
 #define ROM_FUSE_THERMO_LO  12
-#define ROM_FUSE_PASSWORD   13
+#define ROM_FUSE_REMOTE_ONOFF 13
+#define ROM_FUSE_PASSWORD   14
 // 6字节是password
 
 #define ROM_LT_TIMER_YEAR  20

@@ -6,6 +6,7 @@
 #include "lt_timer.h"
 #include "clock.h"
 #include "thermo.h"
+#include "remote.h"
 
 const char * code sm_fuse_param_ss_name[] = 
 {
@@ -258,6 +259,10 @@ void sm_fuse_param_init(unsigned char from, unsigned char to, enum task_events e
   if(ev == EV_KEY_V0) {
     set_task(EV_KEY_SET_UP);
   }
+  
+  if(rom_read(ROM_FUSE_REMOTE_ONOFF) !=0 ) {
+    remote_enable(1);
+  }    
 }
 
 static void sm_fuse_param_set_time(unsigned char what, unsigned char ev)

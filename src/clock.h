@@ -1,5 +1,5 @@
 #ifndef __CLOCK_CLOCK_H__
-#define __CLOCK_CKOCK_H__
+#define __CLOCK_CLOCK_H__
 
 #include "task.h"
 

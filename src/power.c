@@ -18,6 +18,7 @@
 #include "rom.h"
 #include "fuse.h"
 #include "hg.h"
+#include "remote.h"
 #include "mpu.h"
 #include "lt_timer.h"
 #include "thermo.h"
@@ -48,8 +49,8 @@ static unsigned char cur_index;
 
 static unsigned char powersave_to_s;
 static unsigned char last_ps_s;
-bit powersave_flag;
-bit is_calibration;
+static bit powersave_flag;
+static bit is_calibration;
 // v[0] = D15~D8, we need D11~D8 as hi 4 bits
 // v[1] = D7~D0, we need D7~D0 as low 8 bits
 static unsigned int power_pack2hex(unsigned char v[2])
@@ -332,6 +333,7 @@ void power_enter_powersave(void)
   hg_enter_powersave();
   mpu_enter_powersave();
   thermo_enter_powersave();
+  remote_enter_powersave();
   com_enter_powersave();
   while(power_test_flag()) {
 #ifdef __CLOCK_EMULATE__    
@@ -352,6 +354,7 @@ void power_leave_powersave(void)
 {
 
   com_leave_powersave(); 
+  remote_leave_powersave();
   thermo_leave_powersave();
   mpu_leave_powersave();
   hg_leave_powersave();

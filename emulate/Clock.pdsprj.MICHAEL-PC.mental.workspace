@@ -48,7 +48,7 @@
      <ITEM name="VSplitter1Pos">238</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="655" x="887" flags="00008023" y="90" h="376" pid="0" iid="18">
+   <POPUP w="655" x="23" flags="00000022" y="82" h="212" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>

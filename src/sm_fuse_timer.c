@@ -9,12 +9,17 @@
 #include "hg.h"
 #include "fuse.h"
 #include "power.h"
+#include "remote.h"
+#include "cext.h"
 
 #define next_arm_step       last_display_s
 #define in_rollback         lpress_lock_year_hour
 #define password_index      lpress_start   // current password index
 #define password_content    common_state   // current displayed password
 #define verify_state        last_display_s // verify state， last 6 bits is 0x3F is success， 2 bits retry count
+
+static unsigned char last_key_s;
+#define SM_FUSE_MAX_VERIFY_WAIT_S 10 // 验证密码时，两次按键之间最多等10s
 
 const char * code sm_fuse_timer_ss_name[] = 
 {
@@ -32,6 +37,7 @@ enum timer_arm_step {
   TIMER_ARM_MPU,
   TIMER_ARM_HG,
   TIMER_ARM_THERMO,
+  TIMER_ARM_REMOTE,
   TIMER_ARM_LT_TIMER,
   TIMER_ARM_DELAY0,
   TIMER_ARM_DELAY1,
@@ -51,7 +57,8 @@ enum timer_arm_err {
   TIMER_ERR_MPU_HIT,
   TIMER_ERR_LT_TIMER_HIT,
   TIMER_ERR_LT_TIMER_TOO_CLOSE,
-  TIMER_ERR_LT_TIMER_TOO_LONG
+  TIMER_ERR_LT_TIMER_TOO_LONG,
+  TIMER_ERR_REMOTE,
 };
 
 enum timer_display_state
@@ -95,6 +102,10 @@ static unsigned char check_and_set(unsigned char step)
         }    
       }
       break;
+    case TIMER_ARM_REMOTE:
+      val = rom_read(ROM_FUSE_REMOTE_ONOFF);
+      remote_enable(val == 1);
+      break;
     case TIMER_ARM_LT_TIMER:
       lt_timer_load_from_rom();
       lt_timer_sync_to_rtc();
@@ -125,6 +136,7 @@ static void roll_back(bit include_fuse)
   thermo_lo_enable(0);
   mpu_enable(0);
   hg_enable(0);
+  remote_enable(0);
   lt_timer_reset();
   if(include_fuse) {
     fuse_enable(0);
@@ -241,6 +253,9 @@ void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events e
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 3);
   next_arm_step = 0;
   in_rollback   = 1;
+  if(ev == EV_REMOTE_ARM) {
+    set_task(EV_KEY_MOD_UP);
+  }
 }
 
 // pre-arm
@@ -276,7 +291,8 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
   
   if((ev == EV_COUNTER || ev == EV_FUSE0_BROKE || ev == EV_FUSE1_BROKE
       || ev == EV_MOT_MPU || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
-      || ev == EV_THERMO_HI || ev == EV_THERMO_LO ) && in_rollback == 0) {
+      || ev == EV_THERMO_HI || ev == EV_THERMO_LO 
+      || ev == EV_REMOTE_ARM || ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) && in_rollback == 0) {
       switch(ev)
       {
         case EV_COUNTER:     err = TIMER_ERR_LT_TIMER_HIT; break;
@@ -287,6 +303,10 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
         case EV_FUSE_TRIPWIRE: err = TIMER_ERR_TRIPWIRE_BROKE; break;
         case EV_THERMO_HI:   err = TIMER_ERR_THERMO_HI_HIT; break;
         case EV_THERMO_LO:   err = TIMER_ERR_THERMO_LO_HIT; break;
+        case EV_REMOTE_ARM: 
+        case EV_REMOTE_DISARM:
+        case EV_REMOTE_DETONATE:           
+          err = TIMER_ERR_REMOTE; break;
       }
       display_prearm(next_arm_step, err);
       in_rollback = 1;
@@ -333,6 +353,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
 {
   CDBG("sm_fuse_timer_submod2 %bu %bu %bu\n", from, to, ev);
   if(ev == EV_KEY_MOD_PRESS) {
+    last_key_s = clock_get_sec_256();
     // 进入密码验证状态
     if(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED) {
       password_index   = 5;
@@ -368,14 +389,25 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
     return;
   }
   
+  if(ev == EV_REMOTE_DISARM) {
+    CDBG("dis-armed by remote!\n");
+    set_task(EV_KEY_V0);
+    return;
+  }
+  
   if(ev == EV_KEY_SET_PRESS) {
+    last_key_s = clock_get_sec_256();
     inc_password();
     display_password();
     return;
   }
   
   if(ev == EV_1S) {
-    
+    // 反超时耗电攻击
+    if(time_diff_now(last_display_s) >= SM_FUSE_MAX_VERIFY_WAIT_S) {
+      CDBG("wait time out in password verify!\n");
+      set_task(EV_KEY_V1);
+    }
     return;
   }
 }
@@ -385,7 +417,7 @@ void sm_fuse_timer_submod3(unsigned char from, unsigned char to, enum task_event
 {
   CDBG("sm_fuse_timer_submod3 %bu %bu %bu\n", from, to, ev);
 
-  if(ev == EV_KEY_V0) {
+  if(ev == EV_KEY_V0 || ev == EV_REMOTE_DISARM) {
     roll_back(1); // 关闭所有传感器
     set_task(EV_KEY_V0);
     display_timer(DISPLAY_TIMER_DISARMED);

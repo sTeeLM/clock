@@ -32,6 +32,9 @@ enum task_events
   EV_ALARM1           = 25, // 闹钟1应该响起
   EV_COUNTER          = 26, // 计时器到时间
   EV_POWER_SAVE       = 27, // 应该进入PS状态 
+  EV_REMOTE_ARM       = 28, // 遥控器按下 arm
+  EV_REMOTE_DISARM    = 29, // 遥控器按下 dis-arm
+  EV_REMOTE_DETONATE  = 30, // 遥控器按下 detonate
   EV_COUNT  
 };
 

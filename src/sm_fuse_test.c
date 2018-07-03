@@ -13,6 +13,7 @@
 #include "rom.h"
 #include "rtc.h"
 #include "power.h"
+#include "remote.h"
 
 #define FUSE_TEST_TIMEO 5
 #define FUSE_MANUAL_TIMEO   30
@@ -29,6 +30,8 @@ const char * code sm_fuse_test_ss_name[] =
   "SM_FUSE_TEST_HG",
   "SM_FUSE_TEST_MPU_SET",
   "SM_FUSE_TEST_MPU",
+  "SM_FUSE_TEST_REMOTE_SET",
+  "SM_FUSE_TEST_REMOTE",
   NULL
 };
 
@@ -153,12 +156,16 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
       break;
     case IS_HG:
     case IS_MPU:
+    case IS_REMOTE:
       if(what == IS_HG) {
         led_set_code(5, 'H');
         led_set_code(4, 'G');
-      } else {
+      } else if(what == IS_MPU){
         led_set_code(5, 'P');
         led_set_code(4, 'U');
+      } else {
+        led_set_code(5, 'R');
+        led_set_code(4, 'A');
       }
       if(errcode == FUSE_ERR_WAIT) { 
         led_set_code(3, stage + 0x30);
@@ -171,7 +178,7 @@ static void display_test(unsigned char what, unsigned char stage, unsigned char 
       } else if(errcode == FUSE_ERR_MANUAL) {
         led_set_code(3, 'S'); // shake me !
         led_set_code(2, '-');
-        // IS_HG显示hg_mask变化, IS_MPU时为敏感度
+        // IS_REMOTE/IS_HG显示hg_mask变化, IS_MPU时为敏感度
         if((val / 16) < 10) {
           led_set_code(1, (val / 16) + 0x30);
         } else {
@@ -232,6 +239,17 @@ static void update_set(unsigned char what)
         led_set_code(0, set_value % 10 + 0x30); 
       }
       break;
+    case IS_REMOTE:
+      if(set_value) {
+        led_set_code(2, LED_CODE_BLACK);
+        led_set_code(1, 'O');
+        led_set_code(0, 'N');
+      } else {
+        led_set_code(2, 'O');    
+        led_set_code(1, 'F');
+        led_set_code(0, 'F');
+      }
+      break;
   }
 }
 
@@ -267,6 +285,11 @@ static void enter_set(unsigned char what)
       led_set_code(4, 'U');
       set_value = rom_read(ROM_FUSE_MPU);
       break;
+    case IS_REMOTE: // RA
+      led_set_code(5, 'R');
+      led_set_code(4, 'A');
+      set_value = rom_read(ROM_FUSE_REMOTE_ONOFF);
+      break;
   }
   update_set(what);
 }
@@ -293,6 +316,9 @@ static void inc_only(unsigned char what)
       break;
     case IS_MPU:
       set_value = mpu_threshold_inc(set_value);
+      break;
+    case IS_REMOTE:
+      set_value = !set_value;
       break;
   }
   update_set(what);
@@ -322,6 +348,9 @@ static void write_only(unsigned char what)
     case IS_MPU:
       rom_write(ROM_FUSE_MPU, set_value);
       break;
+    case IS_REMOTE:
+      rom_write(ROM_FUSE_REMOTE_ONOFF, set_value);
+      break;
   }
 }
 
@@ -340,6 +369,7 @@ static void reset_all(void)
   mpu_enable(0);
   hg_enable(0);
   fuse_enable(0);
+  remote_enable(0);
 }
 
 static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
@@ -613,7 +643,11 @@ void sm_fuse_test_submod5(unsigned char from, unsigned char to, enum task_events
   sm_fuse_set(IS_HG, ev);
 }
 
-static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
+// test_stage: 
+// 0: 未开始
+// 1: hg/mpu/remote 加电
+// 2: 等待晃动
+static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
 {
   unsigned char val;
     
@@ -628,7 +662,17 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
   }
   
   if(ev == EV_KEY_SET_PRESS && test_stage == 0) {
-    val = (what == IS_HG ? rom_read(ROM_FUSE_HG_ONOFF) : rom_read(ROM_FUSE_MPU));
+    switch(what) {
+      case IS_HG:
+        val = rom_read(ROM_FUSE_HG_ONOFF);
+      break;
+      case IS_MPU:
+        val = rom_read(ROM_FUSE_MPU);
+      break;
+      case IS_REMOTE:
+        val = rom_read(ROM_FUSE_REMOTE_ONOFF);
+      break; 
+    }
     if(what == IS_HG && val == 1) {
       // 开始hg 测试
       test_stage = 1;
@@ -642,6 +686,12 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
       mpu_enable(1);
       hg_mask = mpu_threshold_get();
       display_test(IS_MPU, test_stage, hg_mask, FUSE_ERR_WAIT);
+    } else if(what == IS_REMOTE && val == 1){
+      test_stage = 1;
+      test_to = clock_get_sec_256();
+      remote_enable(1);
+      hg_mask = 0;
+      display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_WAIT);
     } else {
       // 不用测试了
       display_test(what, test_stage, hg_mask, FUSE_ERR_OK);
@@ -683,6 +733,32 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
     return;
   }
   
+  if(ev == EV_REMOTE_ARM || ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) {
+    if(test_stage == 2) {
+      switch(ev) {
+        case EV_REMOTE_ARM:
+          hg_mask |= 1; break;
+        case EV_REMOTE_DISARM:
+          hg_mask |= 2; break;
+        case EV_REMOTE_DETONATE:
+          hg_mask |= 4; break;
+      }
+      display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_MANUAL);
+      if((hg_mask & 0x7) == 0x7) {
+        // 测试成功
+        display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_OK);
+        test_stage = 0;
+        hg_enable(0);
+      }
+    } else if(test_stage == 1) {
+      // 错误，加电未按钮就有EV_XXX产生
+      display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_BROKE);
+      test_stage = 0;
+      remote_enable(0);
+    }
+    return;
+  }
+  
   if(ev == EV_1S) {
     if(test_stage == 1) {
       if(time_diff_now(test_to) > FUSE_TEST_TIMEO) {
@@ -691,8 +767,10 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
         test_to = clock_get_sec_256();
         if(what == IS_HG) {
           hg_mask = hg_get_state() & 0xF; // 最后更新一下hg的状态
-        } else {
+        } else if(what == IS_MPU){
           hg_mask = mpu_threshold_get();
+        } else {
+          hg_mask = 0;
         }
         display_test(what, test_stage, hg_mask, FUSE_ERR_MANUAL);
       }
@@ -703,8 +781,10 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
         test_stage = 0;
         if(what == IS_HG) {
           hg_enable(0);
-        } else {
+        } else if(what == IS_MPU){
           mpu_enable(0);
+        } else {
+          remote_enable(0);
         }
       }
     }
@@ -712,14 +792,10 @@ static void sm_fuse_test_hg_mpu(unsigned char what, enum task_events ev)
   }
 }
 
-// test_stage: 
-// 0: 未开始
-// 1: hg/MPU 加电
-// 2: 等待晃动
 void sm_fuse_test_submod6(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_test_submod6 %bu %bu %bu\n", from, to, ev);
-  sm_fuse_test_hg_mpu(IS_HG, ev);
+  sm_fuse_test_hg_mpu_remote(IS_HG, ev);
 }
 
 void sm_fuse_test_submod7(unsigned char from, unsigned char to, enum task_events ev)
@@ -732,5 +808,17 @@ void sm_fuse_test_submod7(unsigned char from, unsigned char to, enum task_events
 void sm_fuse_test_submod8(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_test_submod8 %bu %bu %bu\n", from, to, ev);
-  sm_fuse_test_hg_mpu(IS_MPU, ev);
+  sm_fuse_test_hg_mpu_remote(IS_MPU, ev);
+}
+
+void sm_fuse_test_submod9(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_test_submod9 %bu %bu %bu\n", from, to, ev);
+  sm_fuse_set(IS_REMOTE, ev);
+}
+
+void sm_fuse_test_submod10(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_fuse_test_submod10 %bu %bu %bu\n", from, to, ev);
+  sm_fuse_test_hg_mpu_remote(IS_REMOTE, ev);
 }

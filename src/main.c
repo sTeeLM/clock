@@ -24,6 +24,7 @@
 #include "rom.h"
 #include "shell.h"
 #include "delay_task.h"
+#include "remote.h"
 #include "misc.h"
 
 
@@ -67,6 +68,7 @@ void main(void)
   thermo_initialize();                          // initialize thermo
   fuse_initialize();                            // initialize fuse
   hg_initialize();                              // initialize hg
+  remote_initialize();                          // initialize remote control
   int_hub_initialize();                         // initialize interrupt hub 
   mpu_initialize();                             // initialize mpu
   rtc_initialize();                             // initialize rtc

@@ -2,6 +2,8 @@
 #define __CLOCK_C_EXT_H__
 /* Commons definitions */
 
+#include "clock.h"
+
 #define  true           1
 #define  false          0
 

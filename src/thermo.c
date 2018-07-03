@@ -204,7 +204,7 @@ void scan_thermo(unsigned int status)
 { 
   bit has_event = 0;
   
-  CDBG("thermo int reg is %0xbx\n", status);
+  CDBG("scan_thermo 0x%04x\n", status);
  
   if((status & 0x80) == 0) {
     CDBG("EV_THERMO_HI!\n");

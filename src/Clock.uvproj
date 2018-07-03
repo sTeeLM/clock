@@ -503,6 +503,11 @@
               <FileType>1</FileType>
               <FilePath>.\mpu.c</FilePath>
             </File>
+            <File>
+              <FileName>remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\remote.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
