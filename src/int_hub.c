@@ -14,6 +14,7 @@
 #include "fuse.h"
 #include "remote.h"
 #include "power.h"
+#include "indicator.h"
 #include "cext.h"
 
 
@@ -126,11 +127,13 @@ void int_hub_dump_ext_status(unsigned int status)
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED4, int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
   CDBG("++++++int_hub_dump_ext_status ends++++++\n");
 }
-
+// 中断全部是下降边缘触发，在每一个scan函数里保证能清中断
 void scan_int_hub_proc (enum task_events ev)
 {
   unsigned int status = 0;
   CDBG("scan_int_hub_proc\n");
+  
+  indicator_set(INDICATOR_COLOR_BLUE, INDICATOR_MODE_ON);
   
   UNUSED_PARAM(ev);
   
@@ -164,6 +167,8 @@ void scan_int_hub_proc (enum task_events ev)
   if(!POWER_INT) {
     scan_power();
   }
+  
+  indicator_set(INDICATOR_COLOR_BLUE, INDICATOR_MODE_OFF);
 /*  
   if(!RTC_INT || !EXT_INT || !MPU_INT ) {
     set_task(EV_SCAN_INT_HUB);

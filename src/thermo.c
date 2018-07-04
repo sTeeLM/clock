@@ -193,7 +193,7 @@ static void thermo_lo_power_off(void)
 void thermo_initialize (void)
 {  
   CDBG("thermo_initialize\n");
-  thermo_reset();
+//  thermo_reset();
   thermo_threshold_hi_enabled = 0;
   thermo_threshold_lo_enabled = 0;
   thermo_hi_power_off();

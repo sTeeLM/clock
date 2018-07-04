@@ -10,6 +10,7 @@
 #include "fuse.h"
 #include "power.h"
 #include "remote.h"
+#include "indicator.h"
 #include "cext.h"
 
 #define next_arm_step       last_display_s
@@ -250,6 +251,8 @@ static void inc_password(void)
 void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_timer_init %bu %bu %bu\n", from, to, ev);
+  indicator_clr();
+  indicator_set(INDICATOR_COLOR_RED, INDICATOR_MODE_BLINK);
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 3);
   next_arm_step = 0;
   in_rollback   = 1;

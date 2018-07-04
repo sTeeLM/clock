@@ -4,6 +4,7 @@
 #include "mod_common.h"
 #include "led.h"
 #include "fuse.h"
+#include "indicator.h"
 
 #define MAX_FUSE_CHARGE_TIME 30 //s
 
@@ -27,6 +28,7 @@ static void display_detonate(void)
 void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_events ev)
 {
   CDBG("sm_fuse_detonate_init %bu %bu %bu\n", from, to, ev);
+  indicator_clr();
   display_detonate();
 }
 

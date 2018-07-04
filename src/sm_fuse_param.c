@@ -7,6 +7,7 @@
 #include "clock.h"
 #include "thermo.h"
 #include "remote.h"
+#include "indicator.h"
 
 const char * code sm_fuse_param_ss_name[] = 
 {
@@ -256,6 +257,10 @@ void sm_fuse_param_init(unsigned char from, unsigned char to, enum task_events e
   CDBG("sm_fuse_param_init %bu %bu %bu\n", from, to, ev);
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
 
+  indicator_clr();
+  indicator_set(INDICATOR_COLOR_RED, INDICATOR_MODE_BLINK);
+  indicator_set(INDICATOR_COLOR_GREEN, INDICATOR_MODE_BLINK);
+  
   if(ev == EV_KEY_V0) {
     set_task(EV_KEY_SET_UP);
   } 

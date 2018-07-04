@@ -25,6 +25,7 @@
 #include "shell.h"
 #include "delay_task.h"
 #include "remote.h"
+#include "indicator.h"
 #include "misc.h"
 
 
@@ -54,6 +55,7 @@ void main(void)
   debug_initialize();                           // initialize debug system
   com_initialize();                             // initialize interrupt driven serial I/O
   show_version();
+  indicator_initialize();                       // initialize indicator
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
   delay_task_initialize();                      // initialize delay task

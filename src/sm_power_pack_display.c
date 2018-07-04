@@ -6,6 +6,7 @@
 #include "mod_common.h"
 #include "power.h"
 #include "alarm.h"
+#include "indicator.h"
 
 const char * code sm_power_pack_display_ss_name[] = {
   "SM_POWER_PACK_DISPLAY_INIT",
@@ -34,6 +35,7 @@ void sm_power_pack_display_init(unsigned char from, unsigned char to, enum task_
   CDBG("sm_power_pack_display_init %bu %bu %bu\n", from, to, ev);
   clock_display(0);
   alarm_switch_off();
+  indicator_clr();
   display_logo(DISPLAY_LOGO_TYPE_POWER_PACK, 0);
 }
 
@@ -49,6 +51,11 @@ void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum ta
     power_reset_powersave_to();
     if(ev == EV_KEY_SET_PRESS) { // 开关5v输出
       power_5v_enable(!power_5v_get_enable());
+      if(power_5v_get_enable()) {
+        indicator_set(INDICATOR_COLOR_GREEN, INDICATOR_MODE_BLINK);
+      } else {
+        indicator_set(INDICATOR_COLOR_GREEN, INDICATOR_MODE_OFF);
+      }
     }
     return;
   }

@@ -14,6 +14,7 @@
 #include "rtc.h"
 #include "power.h"
 #include "remote.h"
+#include "indicator.h"
 
 #define FUSE_TEST_TIMEO 5
 #define FUSE_MANUAL_TIMEO   30
@@ -59,6 +60,7 @@ void sm_fuse_test_init(unsigned char from, unsigned char to, enum task_events ev
   lt_timer_switch_on();
   rtc_set_lt_timer(1);
   power_5v_enable(0);
+  indicator_clr();
   test_stage = 0;
   test_to    = 0;
   if(ev == EV_KEY_V0) { // 从SM_FUSE_TIMER_DISARMED/SM_FUSE_TIMER_PREARMED/SM_FUSE_DETONATE_CHARGE切换过来
