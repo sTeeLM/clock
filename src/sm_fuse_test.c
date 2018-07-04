@@ -369,7 +369,7 @@ static void reset_all(void)
   mpu_enable(0);
   hg_enable(0);
   fuse_enable(0);
-  remote_enable(0);
+  remote_fuse_enable(0);
 }
 
 static void sm_fuse_test_thermo(unsigned char what, enum task_events ev)
@@ -686,10 +686,10 @@ static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
       mpu_enable(1);
       hg_mask = mpu_threshold_get();
       display_test(IS_MPU, test_stage, hg_mask, FUSE_ERR_WAIT);
-    } else if(what == IS_REMOTE && val == 1){
+    } else if(what == IS_REMOTE && val == 1 && remote_get_enable()){
       test_stage = 1;
       test_to = clock_get_sec_256();
-      remote_enable(1);
+      remote_fuse_enable(1);
       hg_mask = 0;
       display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_WAIT);
     } else {
@@ -733,15 +733,13 @@ static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
     return;
   }
   
-  if(ev == EV_REMOTE_ARM || ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) {
+  if(ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) {
     if(test_stage == 2) {
       switch(ev) {
-        case EV_REMOTE_ARM:
-          hg_mask |= 1; break;
         case EV_REMOTE_DISARM:
-          hg_mask |= 2; break;
+          hg_mask |= 1; break;
         case EV_REMOTE_DETONATE:
-          hg_mask |= 4; break;
+          hg_mask |= 2; break;
       }
       display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_MANUAL);
       if((hg_mask & 0x7) == 0x7) {
@@ -754,7 +752,7 @@ static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
       // 错误，加电未按钮就有EV_XXX产生
       display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_BROKE);
       test_stage = 0;
-      remote_enable(0);
+      remote_fuse_enable(0);
     }
     return;
   }
@@ -784,7 +782,7 @@ static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
         } else if(what == IS_MPU){
           mpu_enable(0);
         } else {
-          remote_enable(0);
+          remote_fuse_enable(0);
         }
       }
     }

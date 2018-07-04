@@ -117,13 +117,13 @@ void int_hub_dump_ext_status(unsigned int status)
   CDBG("[%02bu] %c %s\n", INT_HUB_TRIPWIRE_HIT, int_hub_test_bit(INT_HUB_TRIPWIRE_HIT, status) ? '1' : '0', "INT_HUB_TRIPWIRE_HIT");
   CDBG("[%02bu] %c %s\n", INT_HUB_THERMO_HI_HIT, int_hub_test_bit(INT_HUB_THERMO_HI_HIT, status) ? '1' : '0', "INT_HUB_THERMO_HI_HIT");
   CDBG("[%02bu] %c %s\n", INT_HUB_THERMO_LO_HIT, int_hub_test_bit(INT_HUB_THERMO_LO_HIT, status) ? '1' : '0', "INT_HUB_THERMO_LO_HIT");
-  CDBG("[%02bu] %c %s\n", INT_HUB_REMOTE_ARM, int_hub_test_bit(INT_HUB_REMOTE_ARM, status) ? '1' : '0', "INT_HUB_REMOTE_ARM");
   CDBG("[%02bu] %c %s\n", INT_HUB_REMOTE_DISARM, int_hub_test_bit(INT_HUB_REMOTE_DISARM, status) ? '1' : '0', "INT_HUB_REMOTE_DISARM");
   CDBG("[%02bu] %c %s\n", INT_HUB_REMOTE_DETONATE, int_hub_test_bit(INT_HUB_REMOTE_DETONATE, status) ? '1' : '0', "INT_HUB_REMOTE_DETONATE");
-  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED0, int_hub_test_bit(INT_HUB_UNSUSED0, status) ? '1' : '0', "INT_HUB_UNSUSED0");  
-  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED1, int_hub_test_bit(INT_HUB_UNSUSED1, status) ? '1' : '0', "INT_HUB_UNSUSED1");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED0, int_hub_test_bit(INT_HUB_UNSUSED0, status) ? '1' : '0', "INT_HUB_UNSUSED0");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED1, int_hub_test_bit(INT_HUB_UNSUSED1, status) ? '1' : '0', "INT_HUB_UNSUSED1");  
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED2, int_hub_test_bit(INT_HUB_UNSUSED2, status) ? '1' : '0', "INT_HUB_UNSUSED2");
   CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED3, int_hub_test_bit(INT_HUB_UNSUSED3, status) ? '1' : '0', "INT_HUB_UNSUSED3");
+  CDBG("[%02bu] %c %s\n", INT_HUB_UNSUSED4, int_hub_test_bit(INT_HUB_UNSUSED4, status) ? '1' : '0', "INT_HUB_UNSUSED4");
   CDBG("++++++int_hub_dump_ext_status ends++++++\n");
 }
 

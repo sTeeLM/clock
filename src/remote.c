@@ -4,11 +4,11 @@
 #include "serial_hub.h"
 #include "power.h"
 
-#define REMOTE_ARM_MASK 0x200
-#define REMOTE_DISARM_MASK 0x400
-#define REMOTE_DETONATE_MASK 0x800
+#define REMOTE_DISARM_MASK 0x200
+#define REMOTE_DETONATE_MASK 0x400
 
 static bit remote_enabled;
+static bit remote_fuse_ctl_enable;
 
 static void remote_power_off(void)
 {
@@ -16,6 +16,7 @@ static void remote_power_off(void)
   serial_set_ctl_bit(SERIAL_BIT_REMOTE_EN, 1);
   serial_ctl_out();
   remote_enabled = 0;
+  remote_fuse_ctl_enable = 0;
 }
 
 static void remote_power_on(void)
@@ -24,6 +25,7 @@ static void remote_power_on(void)
   serial_set_ctl_bit(SERIAL_BIT_REMOTE_EN, 0);
   serial_ctl_out();
   remote_enabled = 1;
+  remote_fuse_ctl_enable = 0;
 }
 
 void remote_initialize (void)
@@ -46,16 +48,9 @@ void scan_remote(unsigned int status)
 {
   bit has_event = 0;
   CDBG("scan_remote  0x%04x\n", status);
-  if((status & REMOTE_ARM_MASK) == 0) {
-    if(remote_enabled) {
-      CDBG("EV_REMOTE_ARM\n");
-      set_task(EV_REMOTE_ARM);
-    }
-    has_event = 1;
-  }
   
   if((status & REMOTE_DISARM_MASK) == 0) {
-    if(remote_enabled) {
+    if(remote_enabled && remote_fuse_ctl_enable) {
       CDBG("EV_REMOTE_DISARM\n");
       set_task(EV_REMOTE_DISARM);
     }
@@ -63,7 +58,7 @@ void scan_remote(unsigned int status)
   }
   
   if((status & REMOTE_DETONATE_MASK) == 0) {
-    if(remote_enabled) {
+    if(remote_enabled&& remote_fuse_ctl_enable) {
       CDBG("EV_REMOTE_DETONATE\n");
       set_task(EV_REMOTE_DETONATE);
     }
@@ -89,4 +84,14 @@ void remote_enable(bit enable)
   } else if(!enable && remote_enabled) {
     remote_power_off();
   }
+}
+bit remote_get_enable(void)
+{
+  return remote_enabled;
+}
+
+void remote_fuse_enable(bit enable)
+{
+  CDBG("remote_fuse_enable is %bu\n", enable ? 1:0);
+  remote_fuse_ctl_enable = enable;
 }

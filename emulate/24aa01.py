@@ -19,65 +19,64 @@ a[1] = 12
 a[2] = 12
 a[3] = 1
 
-#define ROM_TIME_IS12       4
-#define ROM_BEEPER_MUSIC_INDEX 5
-#define ROM_BEEPER_ENABLE      6
-#define ROM_BEEPER_MUSIC_TO    7
-
-a[4] = 1
-a[5] = 0
-a[6] = 1
-a[7] = 30
-
-#define ROM_POWERSAVE_TO    8
+#define ROM_TIME_IS12       10
+#define ROM_BEEPER_MUSIC_INDEX 11
+#define ROM_BEEPER_ENABLE      12
+#define ROM_BEEPER_MUSIC_TO    13
+#define ROM_POWERSAVE_TO    14
 # 0=off 1=15s 2=30s
+#define ROM_REMOTE_ONOFF    15
+a[10] = 1
+a[11] = 0
+a[12] = 1
+a[13] = 30
+a[14] = 1
+a[15] = 1
 
-a[8] = 1
-
-#define ROM_FUSE_HG_ONOFF   9
-#define ROM_FUSE_MPU        10
-#define ROM_FUSE_THERMO_HI  11
-#define ROM_FUSE_THERMO_LO  12
-#define ROM_FUSE_REMOTE_ONOFF 13
-#define ROM_FUSE_PASSWORD   14
+#define ROM_FUSE_HG_ONOFF   20
+#define ROM_FUSE_MPU        21
+#define ROM_FUSE_THERMO_HI  22
+#define ROM_FUSE_THERMO_LO  23
+#define ROM_FUSE_REMOTE_ONOFF 24
+#define ROM_FUSE_PASSWORD   25
 # 13 - 18 is password, 6 bytes
 
-a[9] = 1
-a[10] = 1
-a[11] = 40
-a[12] = 216
-a[13] = 1
+a[20] = 1
+a[21] = 1
+a[22] = 40
+a[23] = 216
+a[24] = 1
 
-a[14] = 1
-a[15] = 2
-a[16] = 3
-a[17] = 4
-a[18] = 5
-a[19] = 6
+a[25] = 1
+a[26] = 2
+a[27] = 3
+a[28] = 4
+a[29] = 5
+a[30] = 6
 
-#define ROM_LT_TIMER_YEAR 20
-#define ROM_LT_TIMER_MONTH  21
-#define ROM_LT_TIMER_DATE  22
-#define ROM_LT_TIMER_HOUR 23
-#define ROM_LT_TIMER_MIN  24
-#define ROM_LT_TIMER_SEC  25
+#define ROM_LT_TIMER_YEAR 40
+#define ROM_LT_TIMER_MONTH  41
+#define ROM_LT_TIMER_DATE  42
+#define ROM_LT_TIMER_HOUR 43
+#define ROM_LT_TIMER_MIN  44
+#define ROM_LT_TIMER_SEC  45
 
-a[20] = 14
-a[21] = 7  # 0-11
-a[22] = 18 # 0-30
-a[23] = 12
-a[24] = 13
-a[25] = 10
+a[40] = 14
+a[41] = 7  # 0-11
+a[42] = 18 # 0-30
+a[43] = 12
+a[44] = 13
+a[45] = 10
 
-#define ROM_POWER_FULL_INT   30
-#define ROM_POWER_FULL_EXP   31
-#define ROM_POWER_EMPTY_INT  32
-#define ROM_POWER_EMPTY_EXP  33
+#define ROM_POWER_FULL_INT   50
+#define ROM_POWER_FULL_EXP   51
+#define ROM_POWER_EMPTY_INT  52
+#define ROM_POWER_EMPTY_EXP  53
 
-a[30] = 4
-a[31] = 20
-a[32] = 3
-a[33] = 30
+a[50] = 4
+a[51] = 20
+a[52] = 3
+a[53] = 30
 
 with open('24aa01.bin', 'wb') as f:
 	f.write(a);

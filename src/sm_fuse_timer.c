@@ -104,7 +104,7 @@ static unsigned char check_and_set(unsigned char step)
       break;
     case TIMER_ARM_REMOTE:
       val = rom_read(ROM_FUSE_REMOTE_ONOFF);
-      remote_enable(val == 1);
+      remote_fuse_enable(val == 1);
       break;
     case TIMER_ARM_LT_TIMER:
       lt_timer_load_from_rom();
@@ -136,7 +136,7 @@ static void roll_back(bit include_fuse)
   thermo_lo_enable(0);
   mpu_enable(0);
   hg_enable(0);
-  remote_enable(0);
+  remote_fuse_enable(0);
   lt_timer_reset();
   if(include_fuse) {
     fuse_enable(0);
@@ -253,9 +253,6 @@ void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events e
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 3);
   next_arm_step = 0;
   in_rollback   = 1;
-  if(ev == EV_REMOTE_ARM) {
-    set_task(EV_KEY_MOD_UP);
-  }
 }
 
 // pre-arm
@@ -292,7 +289,7 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
   if((ev == EV_COUNTER || ev == EV_FUSE0_BROKE || ev == EV_FUSE1_BROKE
       || ev == EV_MOT_MPU || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
       || ev == EV_THERMO_HI || ev == EV_THERMO_LO 
-      || ev == EV_REMOTE_ARM || ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) && in_rollback == 0) {
+      || ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) && in_rollback == 0) {
       switch(ev)
       {
         case EV_COUNTER:     err = TIMER_ERR_LT_TIMER_HIT; break;
@@ -303,7 +300,6 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
         case EV_FUSE_TRIPWIRE: err = TIMER_ERR_TRIPWIRE_BROKE; break;
         case EV_THERMO_HI:   err = TIMER_ERR_THERMO_HI_HIT; break;
         case EV_THERMO_LO:   err = TIMER_ERR_THERMO_LO_HIT; break;
-        case EV_REMOTE_ARM: 
         case EV_REMOTE_DISARM:
         case EV_REMOTE_DETONATE:           
           err = TIMER_ERR_REMOTE; break;

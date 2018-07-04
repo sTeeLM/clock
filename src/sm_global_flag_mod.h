@@ -9,6 +9,7 @@ enum sm_global_flag_mod_ss {
   SM_GLOBAL_FLAG_MODIFY_BEEP   = 2, // 按键音
   SM_GLOBAL_FLAG_MODIFY_MUSIC_TO = 3, // 最长闹铃时间
   SM_GLOBAL_FLAG_MODIFY_1224   = 4, // 12/24小时显示切换
+  SM_GLOBAL_FLAG_MODIFY_REMOTE = 5  // 遥控器
 };
 
 extern const char * code sm_global_flag_mod_ss_name[];
@@ -18,5 +19,6 @@ void sm_global_flag_mod_submod0(unsigned char from, unsigned char to, enum task_
 void sm_global_flag_mod_submod1(unsigned char from, unsigned char to, enum task_events);
 void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_events);
 void sm_global_flag_mod_submod3(unsigned char from, unsigned char to, enum task_events);
+void sm_global_flag_mod_submod4(unsigned char from, unsigned char to, enum task_events);
 
 #endif

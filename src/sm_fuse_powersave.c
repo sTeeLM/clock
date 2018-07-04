@@ -23,7 +23,7 @@ static void roll_back(void)
   thermo_lo_enable(0);
   mpu_enable(0);
   hg_enable(0);
-  remote_enable(0);
+  remote_fuse_enable(0);
   lt_timer_reset();
 }
 

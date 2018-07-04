@@ -8,6 +8,7 @@
 #include "debug.h"
 #include "rom.h"
 #include "lt_timer.h"
+#include "remote.h"
 
 const char * code sm_global_flag_mod_ss_name[] = 
 {
@@ -16,6 +17,7 @@ const char * code sm_global_flag_mod_ss_name[] =
   "SM_GLOBAL_FLAG_MODIFY_BEEP",
   "SM_GLOBAL_FLAG_MODIFY_MUSIC_TO",
   "SM_GLOBAL_FLAG_MODIFY_1224",
+  "SM_GLOBAL_FLAG_MODIFY_REMOTE",
   NULL
 };
 
@@ -73,6 +75,20 @@ static void display_global_flag(unsigned char what)
         led_set_code(0, '2');
       }
       break;
+    case IS_REMOTE:
+      led_set_code(5, 'R');
+      led_set_code(4, 'A');
+      led_set_code(3, LED_CODE_BLACK);
+      if(beeper_get_beep_enable()) {
+        led_set_code(2, LED_CODE_BLACK);
+        led_set_code(1, 'O');
+        led_set_code(0, 'N');        
+      } else {
+        led_set_code(2, 'O');
+        led_set_code(1, 'F');
+        led_set_code(0, 'F');
+      }
+      break;
   }
 }
 
@@ -99,6 +115,10 @@ static void inc_write(unsigned char what)
       alarm0_set_hour_12(!is12);
       lt_timer_set_hour_12(!is12);
       rom_write(ROM_TIME_IS12, !is12);
+      break;
+    case IS_REMOTE:
+      remote_enable(!remote_get_enable());
+      rom_write(ROM_REMOTE_ONOFF, remote_get_enable());
       break;
   }
 }
@@ -148,3 +168,8 @@ void sm_global_flag_mod_submod3(unsigned char from, unsigned char to, enum task_
   sm_global_flag_mod(IS_1224, ev);
 }
 
+void sm_global_flag_mod_submod4(unsigned char from, unsigned char to, enum task_events ev)
+{
+  CDBG("sm_global_flag_mod_submod4 %bu %bu %bu\n", from, to, ev);
+  sm_global_flag_mod(IS_REMOTE, ev);
+}
