@@ -133,8 +133,6 @@ void scan_int_hub_proc (enum task_events ev)
   unsigned int status = 0;
   CDBG("scan_int_hub_proc\n");
   
-  indicator_set(INDICATOR_COLOR_BLUE, INDICATOR_MODE_ON);
-  
   UNUSED_PARAM(ev);
   
   int_hub_dump();
@@ -167,8 +165,6 @@ void scan_int_hub_proc (enum task_events ev)
   if(!POWER_INT) {
     scan_power();
   }
-  
-  indicator_set(INDICATOR_COLOR_BLUE, INDICATOR_MODE_OFF);
 /*  
   if(!RTC_INT || !EXT_INT || !MPU_INT ) {
     set_task(EV_SCAN_INT_HUB);

@@ -19,7 +19,6 @@ enum indicator_color
 {
   INDICATOR_COLOR_RED,
   INDICATOR_COLOR_GREEN,
-  INDICATOR_COLOR_BLUE
 };
 
 enum indicator_mode
