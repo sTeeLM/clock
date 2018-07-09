@@ -30,6 +30,7 @@ sbit POWER_5V_EN   = P3 ^ 6;
 
 // ADC 测量范围：0~6V
 
+//10101000
 #define POWER_I2C_ADDR 0xA8
 
 // 最大测量范围：0~5.6V
@@ -55,7 +56,7 @@ static bit is_calibration;
 // v[1] = D7~D0, we need D7~D0 as low 8 bits
 static unsigned int power_pack2hex(unsigned char v[2])
 {
-  unsigned char val;
+  unsigned int val;
   val = (v[0] & 0xF);
   val = val << 8;
   val |= v[1];
@@ -94,6 +95,7 @@ unsigned char power_hex2float(unsigned int hex, unsigned char * intv)
 
 static void power_delay_task(void)
 {
+  CDBG("power_delay_task\n");
   if(!is_calibration) {
     power_enable_alert(1);
   } else {
@@ -141,8 +143,8 @@ void power_initialize(void)
   power_set_alert_vhigh(power_float2hex(5, 0));
   
   // VLOW -- Alert Limit Register - Under Range
-  // 小于3V, 关机！
-  power_set_alert_vlow(power_float2hex(3, 0));
+  // 小于3.2V, 关机！
+  power_set_alert_vlow(power_float2hex(3, 20));
   
   // VHYST -- Alert Hysteresis Register
   power_set_hyst(0);
@@ -456,7 +458,7 @@ unsigned char power_hex2percent(void)
 {
   unsigned int full;
   unsigned int empty;
-  unsigned int hex;
+  unsigned long hex;
   unsigned char i;
   
   full = power_float2hex(full_int, full_exp);
@@ -468,19 +470,21 @@ unsigned char power_hex2percent(void)
   }
   hex = hex / POWER_VALUE_SLOT;
   
-  CDBG("power_hex2percent hex = %u empty = %u full = %u\n", hex, empty, full);
+  CDBG("power_hex2percent hex = %lu empty = %u full = %u\n", hex, empty, full);
   
   if (hex <= empty) return 0;
   if (hex >= full) return 100;
   
-  return (unsigned char)(((hex - empty) * 100 / (full - empty)) );
+  hex = (hex - empty) * 100;
+  
+  return (unsigned char)(hex / (full - empty));
 }
 
 // return 0~100
 unsigned char power_get_percent(void)
 {
   unsigned char v[2];
-  unsigned char val;
+  unsigned int val;
 
 #ifdef __CLOCK_EMULATE__
   return 97;
@@ -497,7 +501,6 @@ unsigned char power_get_percent(void)
   v[1] = power_hex2float(val, &v[0]);
   CDBG("power_hex2float return %bu.%02bu\n", v[0], v[1]);  
   
-  val = power_hex2percent();
-  return val;
+  return power_hex2percent();
 #endif
 }

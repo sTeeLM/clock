@@ -59,11 +59,11 @@ void main(void)
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
   delay_task_initialize();                      // initialize delay task
+  power_initialize();                           // initialize power manager
   rom_initialize();                             // initialize rom
   serial_hub_initialize();                      // initialize serial hub
   key_initialize();                             // initialize keys
   led_initialize();                             // initialize led display
-  power_initialize();                           // initialize power manager
   lt_timer_initialize();                        // initialize lt_timer
   timer_initialize();                           // initialize timer
   beeper_initialize();                          // initialize beeper

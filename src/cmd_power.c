@@ -76,10 +76,10 @@ char cmd_power(char arg1, char arg2)
       return 0;
     } else if(strcmp(shell_buf + arg1, "cal") == 0) {
       if(arg2 == 0) {
-        CDBG("alert: calibration is %s\n", power_get_calibration() ? "ON" : "OFF");
-      } else if(strcmp(shell_buf + arg2, "ON") == 0) {
+        CDBG("power: calibration is %s\n", power_get_calibration() ? "ON" : "OFF");
+      } else if(strcmp(shell_buf + arg2, "on") == 0) {
         power_set_calibration(1);
-      } else if(strcmp(shell_buf + arg2, "OFF") == 0) {
+      } else if(strcmp(shell_buf + arg2, "off") == 0) {
         power_set_calibration(0);
       } else {
         return 1;

@@ -84,7 +84,8 @@ struct shell_cmds code cmds[] =
                                "pw hi <num>: hi alert voltage\n"
                                "pw lo <num>: lo alert voltage\n"
                                "pw hyst <num>: hysteresis voltage\n"
-                               "pw int <clr>: alert status or clear alert\n"    
+                               "pw int <clr>: alert status or clear alert\n" 
+                               "pw cal <on | off>: alert status or clear alert\n"    
                               ,cmd_power},  
   {"ex", "quit the shell", "ex", cmd_null},
 }; 

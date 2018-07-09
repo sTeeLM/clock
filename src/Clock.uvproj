@@ -513,11 +513,6 @@
               <FileType>1</FileType>
               <FilePath>.\indicator.c</FilePath>
             </File>
-            <File>
-              <FileName>indicator.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\indicator.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
