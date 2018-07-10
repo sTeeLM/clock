@@ -59,10 +59,10 @@ void int_hub_initialize (void)
   I2C_Get(INT_HUB_I2C_ADDR, 0x1, &val);
   CDBG("int hub 1 port reg is %02bx\n", val);
   
-  RTC_INT = 1;
+  RTC_INT   = 1;
   MPU_INT   = 1;
-  EXT_INT    = 1;
-  INT_BIT    = 1;
+  EXT_INT   = 1;
+  INT_BIT   = 1;
   
   IT1 = 1; // 设置为边沿触发
   EX1 = 1; // 开中断

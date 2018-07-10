@@ -55,27 +55,30 @@ void main(void)
   debug_initialize();                           // initialize debug system
   com_initialize();                             // initialize interrupt driven serial I/O
   show_version();
-  indicator_initialize();                       // initialize indicator
+  rom_initialize();                             // initialize rom
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
   delay_task_initialize();                      // initialize delay task
-  power_initialize();                           // initialize power manager
-  rom_initialize();                             // initialize rom
   serial_hub_initialize();                      // initialize serial hub
-  key_initialize();                             // initialize keys
+  int_hub_initialize();                         // initialize interrupt hub 
+  
   led_initialize();                             // initialize led display
-  lt_timer_initialize();                        // initialize lt_timer
+  power_initialize();                           // initialize power manager
+  indicator_initialize();                       // initialize indicator
+  key_initialize();                             // initialize keys
   timer_initialize();                           // initialize timer
   beeper_initialize();                          // initialize beeper
   thermo_initialize();                          // initialize thermo
   fuse_initialize();                            // initialize fuse
   hg_initialize();                              // initialize hg
   remote_initialize();                          // initialize remote control
-  int_hub_initialize();                         // initialize interrupt hub 
   mpu_initialize();                             // initialize mpu
   rtc_initialize();                             // initialize rtc
+  
   clock_initialize();                           // initialize clock
   alarm_initialize();                           // initialize power alarm manager
+  lt_timer_initialize();                        // initialize lt_timer
+
   while(1) {                                    // loop forever
     run_task();                                 // run task procs
     run_shell();                                // run shell

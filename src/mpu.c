@@ -11,7 +11,7 @@
 #ifdef __CLOCK_EMULATE__
 #define MPU_I2C_ADDRESS  0x44 //0100 0100
 #else
-#define MPU_I2C_ADDRESS  0xD2 //1101 0010
+#define MPU_I2C_ADDRESS  0x3A //0011 1010
 #endif
 
 static unsigned char mpu_threshold;
@@ -24,107 +24,94 @@ static void mpu_load_config(void)
   CDBG("mpu_threshold = %bu\n", mpu_threshold);
 }
 
+static void mpu_device_init(void)
+{
+  mpu_load_config();
+  
+#ifndef __CLOCK_EMULATE__
+  // Register 0x31—DATA_FORMAT (Read/Write)
+  // INT_INVERT = 1， interrupts to active low
+  // Range Bits = 00， +-2G
+  I2C_Put(MPU_I2C_ADDRESS, 0x31, 0x20);
+
+  // Register 0x2E—INT_ENABLE (Read/Write), all DISABLE
+  I2C_Put(MPU_I2C_ADDRESS, 0x2E, 0);
+  
+  // Register 0x2F—INT_MAP (R/W), all to INT1
+  I2C_Put(MPU_I2C_ADDRESS, 0x2F, 0);
+  
+  // THRESH_ACT (Read/Write)
+  mpu_threshold_set(mpu_threshold);
+  
+  //Register 0x27—ACT_INACT_CTL (Read/Write)
+  // ACT ac/dc = 1 (ac)
+  // ACT_X enable = 1
+  // ACT_X enable = 1
+  // ACT_Y enable = 1
+  // INACT ac/dc = 1 (ac)
+  // INACT_X enable = 1
+  // INACT_Y enable = 1
+  // INACT_Z enable = 1
+  I2C_Put(MPU_I2C_ADDRESS, 0x27, 0xFF);
+  
+  // Register 0x25—THRESH_INACT (Read/Write) -> 62.5 mg
+  I2C_Put(MPU_I2C_ADDRESS, 0x25, 1);
+  
+  // Register 0x26—TIME_INACT (Read/Write) -> 1s
+  I2C_Put(MPU_I2C_ADDRESS, 0x26, 1);
+
+  // Register 0x2D—POWER_CTL (Read/Write) into stand by
+  // 00
+  // Link = 0
+  // AUTO_SLEEP = 0
+  // Measure = 0
+  // Sleep = 1
+  // Wakeup = 00
+  I2C_Put(MPU_I2C_ADDRESS, 0x2D, 0x40);
+  
+  mpu_read_int_status();
+#endif
+}
+
 static void mpu_power_on(void)
 {
   unsigned char val;
-  bit ret;
   CDBG("mpu_power_on\n");
-  
-  mpu_load_config();
   
 #ifdef __CLOCK_EMULATE__
   // Configuration Register 设置为全1，用于input
-  I2C_Put(MPU_I2C_ADDRESS, 0x3, 0xFF);
+  val = 0xFF;
+  I2C_Put(MPU_I2C_ADDRESS, 0x3, val);
   
   // Polarity Inversion Register 设置为全0
-  I2C_Put(MPU_I2C_ADDRESS, 0x2, 0x0);
+  val = 0;
+  I2C_Put(MPU_I2C_ADDRESS, 0x2, val);
   
   // 读取一次端口寄存器消除中断
-  I2C_Get(MPU_I2C_ADDRESS, 0x0, &val);
+  val = mpu_read_int_status();
   
   CDBG("mpu port reg is 0x%02bx\n", val);
 #else
-again:
-  /* Device reset */
-  val = 0x80;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-  delay_ms(100);
-//  if(ret) {
-//    goto again;
-//  }
+  mpu_load_config();
   
-  /* Signal Path Reset */
-  val = 0x07;
-  I2C_Put(MPU_I2C_ADDRESS, 0x68, val);
-  delay_ms(100);
+  mpu_threshold_set(mpu_threshold);
   
-  /* Wake up chip. */
-  val = 0x00;
-  I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
+  // Register 0x2E—INT_ENABLE (Read/Write), enable Activity
+  val = 0x10;
+  I2C_Put(MPU_I2C_ADDRESS, 0x2E, val);
   
-  /* PWR_MGMT_1 , disable temp */
-  val = 0x08;
-  I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-
-  /* PWR_MGMT_2, close gyro,LP_WAKE_CTRL = 1.25HZ */
-  val = 0x07;
-  I2C_Put(MPU_I2C_ADDRESS, 0x6C, val);
+  // Register 0x2D—POWER_CTL (Read/Write), into autosleep
+  // 00
+  // Link = 1
+  // AUTO_SLEEP = 1
+  // Measure Bit = 1
+  // Sleep = 0
+  // Wakeup = 00
+  val = 0x38;
+  I2C_Put(MPU_I2C_ADDRESS, 0x2D, val);
   
-  /* Set sample rate */
-  val = 0x07;
-  I2C_Put(MPU_I2C_ADDRESS, 0x19, val);
+  val = mpu_read_int_status();
   
-  /* Set config, DLPF_CFG = 21 HZ */
-  val = 0x04;
-  I2C_Put(MPU_I2C_ADDRESS, 0x1A, val);
-  
-  /* Set the accel full-scale range to 2G, ACCEL_HPF to 0.63Hz */
-  val = 0x04;
-  I2C_Put(MPU_I2C_ADDRESS, 0x1C, val);
-  
-  mpu_threshold_reset();
-  
-  /* MOT_DUR to 1 */
-  val = 0x01;
-  I2C_Put(MPU_I2C_ADDRESS, 0x20, val);
-  
-  /* Set interrupts */
-  // 11100000 = 0xE0
-  // INT_LEVEL = 1 (active low)
-  // INT_OPEN  = 1 (open drain)
-  // LATCH_INT_EN = 1 (no latch)
-  // INT_RD_CLEAR = 0 (cleared only by reading INT_STATUS)
-  // FSYNC_INT_LEVEL = 0
-  // FSYNC_INT_EN = 0
-  // I2C_BYPASS_EN = 0
-  // resetved = 0
-  val = 0xE0;
-  I2C_Put(MPU_I2C_ADDRESS, 0x37, val);
- 
-  /* Enter Accelerometer Only Low Power Mode */
-  // 00101000 = 0x28
-  // (i) Set CYCLE bit to 0
-  // (ii) Set SLEEP bit to 0
-  // (iii) Set TEMP_DIS bit to 1
-  // 01000111 = 0x47
-  // LP_WAKE_CTRL = 01 (5HZ)
-  // STBY_XA = STBY_YA = STBY_ZA = 0
-  // STBY_XG = STBY_YG = STBY_ZG = 1
-  val = 0x08; 
-  I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-  val = 0x47;
-  I2C_Put(MPU_I2C_ADDRESS, 0x6C, val);
-
-  
-  // read int status to clr int
-  I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
-  
-  /* MOT_EN = 1 */
-  val = 0x40;
-  I2C_Put(MPU_I2C_ADDRESS, 0x38, val);  
-  
-  // read int status to clr int
-  I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
 #endif
   mpu_enabled = 1;
 }
@@ -132,7 +119,6 @@ again:
 static void mpu_power_off(void)
 {
   unsigned char val;
-  bit ret;
   CDBG("mpu_power_off\n");
 #ifdef __CLOCK_EMULATE__
   // Configuration Register 设置为全0，用于output
@@ -142,78 +128,25 @@ static void mpu_power_off(void)
   I2C_Put(MPU_I2C_ADDRESS, 0x2, 0x0);
   
   // 读取一次端口寄存器消除中断
-  I2C_Get(MPU_I2C_ADDRESS, 0x0, &val);
+  val = mpu_read_int_status();
   
   CDBG("mpu port reg is 0x%02bx\n", val);
 #else
- 
-again:  
-  /* Device reset */
-  val = 0x80;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-  CDBG("Device reset return %bu\n", ret ? 1 : 0);
-  delay_ms(100);
-//  if(ret) {
-//    goto again;
-//  }
+  // Register 0x2E—INT_ENABLE (Read/Write),disable all
+  val = 0;
+  I2C_Put(MPU_I2C_ADDRESS, 0x2E, val);
   
-  /* Signal Path Reset */
-  val = 0x07;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x68, val);
-  CDBG("Signal Path return %bu\n", ret ? 1 : 0);
-  delay_ms(100);
+  // Register 0x2D—POWER_CTL (Read/Write) into stand by
+  // 00
+  // Link = 0
+  // AUTO_SLEEP = 0
+  // Measure = 0
+  // Sleep = 1
+  // Wakeup = 00
+  val = 0x40;
+  I2C_Put(MPU_I2C_ADDRESS, 0x2D, val);
   
-  /* Wake up chip. */
-  val = 0x00;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-  CDBG("Wake up chip return %bu\n", ret ? 1 : 0);
-  
-  /* PWR_MGMT_1 , disable temp */
-  val = 0x08;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-  CDBG("PWR_MGMT_1 disable temp return %bu\n", ret ? 1 : 0);
-
-  /* PWR_MGMT_2, close gyro,LP_WAKE_CTRL = 1.25HZ */
-  val = 0x07;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x6C, val);
-  CDBG("PWR_MGMT_2 close gyro return %bu\n", ret ? 1 : 0);
-  
-  /* Set interrupts */
-  // 11100000 = 0xE0
-  // INT_LEVEL = 1 (active low)
-  // INT_OPEN  = 1 (open drain)
-  // LATCH_INT_EN = 1 (no latch)
-  // INT_RD_CLEAR = 0 (cleared only by reading INT_STATUS)
-  // FSYNC_INT_LEVEL = 0
-  // FSYNC_INT_EN = 0
-  // I2C_BYPASS_EN = 0
-  // resetved = 0
-  val = 0xE0;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x37, val);
-  CDBG("Set interrupts return %bu\n", ret ? 1 : 0);
-
-  // disable interrupt
-  val = 0x00;
-  ret = I2C_Put(MPU_I2C_ADDRESS, 0x38, val);
-  CDBG("disable interrupt return %bu\n", ret ? 1 : 0);
-  
-  // read int status to clr int
-  ret = I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
-  CDBG("read int status return %bu\n", ret ? 1 : 0);
-
-  ret = I2C_Get(MPU_I2C_ADDRESS, 0x37, &val);
- 
-  // into sleep
-  // 01001000 = 0x48
-  // Set SLEEP bit to 1
-  // 01111111 = 0x7F
-  // LP_WAKE_CTRL = 01 (5HZ)
-  // STBY_XA = STBY_YA = STBY_ZA = 1
-  // STBY_XG = STBY_YG = STBY_ZG = 1
-  val = 0x48;
-  I2C_Put(MPU_I2C_ADDRESS, 0x6B, val);
-  val = 0x7F;
-  I2C_Put(MPU_I2C_ADDRESS, 0x6C, val);
+  mpu_read_int_status();
   
 #endif
   mpu_enabled = 0;
@@ -222,7 +155,7 @@ again:
 void mpu_initialize (void)
 {
   CDBG("mpu_initialize\n");
-  mpu_enabled = 0;
+  mpu_device_init();
   mpu_power_off();
 }
 
@@ -245,9 +178,9 @@ void scan_mpu(void)
   val = mpu_read_int_status();
 #ifdef __CLOCK_EMULATE__
   // 读取一次端口寄存器消除中断
-  if ((val & 0x1) == 0) {
+  if ((val & 0x1) == 0 && mpu_enabled) {
 #else
-  if ((val & 0x40) != 0) {  
+  if ((val & 0x80) != 0 && mpu_enabled) {  
 #endif    
     CDBG("EV_MOT_MPU\n");
     set_task(EV_MOT_MPU);
@@ -296,7 +229,7 @@ unsigned char mpu_threshold_get(void)
   return mpu_threshold;
 #else
   unsigned char val;
-  I2C_Get(MPU_I2C_ADDRESS, 0x1F, &val);
+  I2C_Get(MPU_I2C_ADDRESS, 0x24, &val);
   return val;
 #endif
 }
@@ -315,7 +248,7 @@ void mpu_threshold_set(unsigned char val)
       val = MPU_THRESHOLD_MIN;
     }
   }
-  I2C_Put(MPU_I2C_ADDRESS, 0x1F, val);
+  I2C_Put(MPU_I2C_ADDRESS, 0x24, val);
 #endif
 }
 
@@ -327,7 +260,7 @@ unsigned char mpu_read_int_status(void)
 #ifdef __CLOCK_EMULATE__
   I2C_Get(MPU_I2C_ADDRESS, 0x0, &val);
 #else
-  I2C_Get(MPU_I2C_ADDRESS, 0x3A, &val);
+  I2C_Get(MPU_I2C_ADDRESS, 0x30, &val);
 #endif
   CDBG("mpu int reg is 0x%02bx\n", val);
   return val;

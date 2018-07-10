@@ -3,6 +3,7 @@
 #include "sm.h"
 #include "serial_hub.h"
 #include "power.h"
+#include "rom.h"
 
 #define REMOTE_DISARM_MASK 0x200
 #define REMOTE_DETONATE_MASK 0x400
@@ -30,8 +31,14 @@ static void remote_power_on(void)
 
 void remote_initialize (void)
 {
+  unsigned char val;
   CDBG("remote_initialize\n");
-  remote_power_off();
+  val = rom_read(ROM_REMOTE_ONOFF);
+  if(val) {
+    remote_power_on();
+  } else {
+    remote_power_off();
+  }
 }
 
 void remote_enter_powersave(void)
