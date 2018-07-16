@@ -397,6 +397,23 @@ GenerateClassCluster=0
 DocumentUniqueId=SXXCKLBX
 
 [Document22]
+DocumentPath=Radio.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=WXNDKGVO
+
+[Document23]
 DocumentPath=clock.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -413,7 +430,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document23]
+[Document24]
 DocumentPath=DSS0012A.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -430,7 +447,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=SIXSBCFN
 
-[Document24]
+[Document25]
 DocumentPath=DRC0010G.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -447,7 +464,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YYUXMGRR
 
-[Document25]
+[Document26]
 DocumentPath=DBV6.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -464,7 +481,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FWWNMUXG
 
-[Document26]
+[Document27]
 DocumentPath=sot23.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -481,7 +498,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=CKYFRHDT
 
-[Document27]
+[Document28]
 DocumentPath=QFN24.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
