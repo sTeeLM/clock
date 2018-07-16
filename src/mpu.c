@@ -11,7 +11,7 @@
 #ifdef __CLOCK_EMULATE__
 #define MPU_I2C_ADDRESS  0x44 //0100 0100
 #else
-#define MPU_I2C_ADDRESS  0x3A //0011 1010
+#define MPU_I2C_ADDRESS  0xA6 //1010 0110
 #endif
 
 static unsigned char mpu_threshold;

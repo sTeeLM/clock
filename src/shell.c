@@ -79,7 +79,7 @@ struct shell_cmds code cmds[] =
   {"mp", "mpu test",    "mp <on|off>: enable/disable\n"
                         "mp int: read interrupt status\n", cmd_mpu},
   {"rt", "rtc read or write",    "rt : dump status\n", cmd_rtc},  
-  {"pw", "power pack test",    "pw : get current battery volume\n"
+  {"pw", "power pack test",    "pw bat: get current battery volume\n"
                                "pw 5v <on | off>: 5v power on off\n"
                                "pw hi <num>: hi alert voltage\n"
                                "pw lo <num>: lo alert voltage\n"

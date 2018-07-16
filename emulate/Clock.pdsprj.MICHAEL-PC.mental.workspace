@@ -6,9 +6,9 @@
  </FRAME>
  <MODULE name="VSMDEBUG">
   <PWI>
-   <POPUP w="400" x="5" flags="00000002" y="104" h="100" pid="0" iid="-1">
+   <POPUP w="682" x="5" flags="00000002" y="104" h="456" pid="0" iid="-1">
     <PROPERTIES>
-     <ITEM name="Message Column Width">144</ITEM>
+     <ITEM name="Message Column Width">426</ITEM>
      <ITEM name="ShowGrid">No</ITEM>
      <ITEM name="Source Column Width">100</ITEM>
      <ITEM name="Time Column Width">120</ITEM>
@@ -32,7 +32,7 @@
      <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="450" x="77" flags="00000022" y="168" h="250" pid="0" iid="79">
+   <POPUP w="599" x="432" flags="00000022" y="103" h="648" pid="0" iid="79">
     <PROPERTIES>
      <ITEM name="ComboBox1000">S</ITEM>
      <ITEM name="ComboBox1001">Sr</ITEM>
@@ -48,7 +48,7 @@
      <ITEM name="VSplitter1Pos">238</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="655" x="23" flags="00000022" y="82" h="212" pid="0" iid="18">
+   <POPUP w="655" x="703" flags="00000023" y="331" h="212" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -77,7 +77,7 @@
      <ITEM name="TopLineAddress">00000080</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="20" x="177" flags="00000001" y="268" h="3" pid="1" iid="22">
+   <POPUP w="20" x="660" flags="00008001" y="151" h="3" pid="1" iid="22">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="8" x="197" flags="00000008" y="288" h="32" pid="2" iid="22">
@@ -105,6 +105,12 @@
      <ITEM name="ShowToolTips">Yes</ITEM>
      <ITEM name="TopLineAddress">00000000</ITEM>
     </PROPERTIES>
+   </POPUP>
+   <POPUP w="695" x="37" flags="00000000" y="128" h="453" pid="0" iid="82">
+    <PROPERTIES/>
+   </POPUP>
+   <POPUP w="610" x="113" flags="00000000" y="223" h="466" pid="0" iid="91">
+    <PROPERTIES/>
    </POPUP>
   </PWI>
  </MODULE>

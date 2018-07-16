@@ -28,13 +28,11 @@
 sbit POWER_3_3V_EN = P3 ^ 5;
 sbit POWER_5V_EN   = P3 ^ 6;
 
-// ADC 测量范围：0~6V
-
 //10101000
 #define POWER_I2C_ADDR 0xA8
 
-// 最大测量范围：0~5.6V
-#define POWER_MAX_VALUE 5.6
+// 最大测量范围：0~5.6V, LSB = 1.3675213675213675f mv
+#define POWER_MILL_VOLTAGE_PER_LSB  1.3675213675213675f
 
 #define POWER_VALUE_SLOT 5
 
@@ -74,10 +72,11 @@ static void power_hex2pack(unsigned int val, unsigned char v[2])
 // 浮点数电压表示为hex值
 unsigned int power_float2hex(unsigned char intv, unsigned char exp)
 {
-  unsigned int val;
   float tmp;
-  tmp = (intv * 100.0 + exp) / 100.0;
-  val = (unsigned int)(tmp / POWER_MAX_VALUE * 4095.0);
+  unsigned int val;
+  tmp = (float)intv + (float)exp / 100.0;
+  val = (tmp / POWER_MILL_VOLTAGE_PER_LSB) * 1000.0;
+  
   CDBG("power_float2hex %bu.%02bu -> 0x%04x\n", intv, exp, val);
   return val;
 }
@@ -85,10 +84,12 @@ unsigned int power_float2hex(unsigned char intv, unsigned char exp)
 // hex值表示为浮点数电压
 unsigned char power_hex2float(unsigned int hex, unsigned char * intv)
 {
-  unsigned long val;
-  val = hex;
-  val = (unsigned long)(val * POWER_MAX_VALUE / 4095.0 * 100.0);
+  float tmp;
+  unsigned int val;
+  tmp = hex * POWER_MILL_VOLTAGE_PER_LSB / 10.0;
+  val = (unsigned int) tmp;
   *intv = (unsigned char)(val / 100);
+  
   CDBG("power_hex2float 0x%04x -> %bu.%02bu\n", hex, *intv, (unsigned char)(val % 100));
   return (unsigned char)(val % 100);
 }
@@ -454,40 +455,30 @@ bit power_5v_get_enable(void)
   return POWER_5V_EN;
 }
 
-unsigned char power_hex2percent(void)
+unsigned char power_hex2percent(unsigned int hex)
 {
   unsigned int full;
   unsigned int empty;
-  unsigned long hex;
-  unsigned char i;
+  unsigned long val;
   
   full = power_float2hex(full_int, full_exp);
   empty = power_float2hex(empty_int, empty_exp);
   
-  hex = 0;
-  for(i = 0 ; i < POWER_VALUE_SLOT; i ++) {
-    hex += power_value[i];
-  }
-  hex = hex / POWER_VALUE_SLOT;
-  
-  CDBG("power_hex2percent hex = %lu empty = %u full = %u\n", hex, empty, full);
-  
   if (hex <= empty) return 0;
   if (hex >= full) return 100;
   
-  hex = (hex - empty) * 100;
+  val = (hex - empty) * 100;
   
-  return (unsigned char)(hex / (full - empty));
+  return (unsigned char)(val / (full - empty));
 }
 
-// return 0~100
-unsigned char power_get_percent(void)
+unsigned char power_get_hex(void)
 {
   unsigned char v[2];
   unsigned int val;
-
+  unsigned long hex;
 #ifdef __CLOCK_EMULATE__
-  return 97;
+  return 2705;
 #else
   I2C_Gets(POWER_I2C_ADDR, 0x0, 2, v);
   CDBG("adc return %02bx %02bx\n", v[0], v[1]);
@@ -497,10 +488,29 @@ unsigned char power_get_percent(void)
   
   power_value[cur_index] = val;
   cur_index = (++cur_index) % POWER_VALUE_SLOT;
-
-  v[1] = power_hex2float(val, &v[0]);
-  CDBG("power_hex2float return %bu.%02bu\n", v[0], v[1]);  
   
-  return power_hex2percent();
+  hex = 0;
+  for(val = 0 ; val < POWER_VALUE_SLOT; val ++)
+  {
+    hex += power_value[val];
+  }
+  hex = hex / POWER_VALUE_SLOT;
+  CDBG("power_get_hex return 0x%04x\n", (unsigned int)hex);
+  return (unsigned int)hex;
 #endif
+}
+
+unsigned char power_get_voltage(unsigned char * intv)
+{
+  unsigned int hex;
+  hex = power_get_hex();
+  return power_hex2float(hex, intv);
+}
+
+// return 0~100
+unsigned char power_get_percent(void)
+{ 
+  unsigned int hex;
+  hex = power_get_hex();
+  return power_hex2percent(hex);
 }
