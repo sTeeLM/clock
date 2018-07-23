@@ -5,6 +5,7 @@
 #include "led.h"
 #include "fuse.h"
 #include "indicator.h"
+#include "cext.h"
 
 #define MAX_FUSE_CHARGE_TIME 30 //s
 
@@ -27,7 +28,10 @@ static void display_detonate(void)
 
 void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_detonate_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
   indicator_clr();
   display_detonate();
 }
@@ -35,7 +39,8 @@ void sm_fuse_detonate_init(unsigned char from, unsigned char to, enum task_event
 
 void sm_fuse_detonate_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_detonate_submod0 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   if(ev == EV_250MS) {
     fuse_trigger(1);

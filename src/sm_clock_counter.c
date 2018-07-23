@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "led.h"
 #include "beeper.h"
+#include "cext.h"
 
 // 倒计时功能
 const char * code sm_clock_counter_ss_name[] = 
@@ -128,13 +129,15 @@ static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 
 void sm_clock_counter_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);  
+  
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 4);
 }
 
 void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_submod0 %bu %bu %bu\n", from, to, ev);
   // 切换到倒计时大模式
   if(get_sm_ss_state(from) == SM_CLOCK_COUNTER_INIT 
     && get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH
@@ -186,7 +189,9 @@ void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   // 刷新显示
   if(ev == EV_250MS) {
     update_hhmmss();
@@ -225,7 +230,9 @@ void sm_clock_counter_submod1(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);  
+  
   // 刷新显示
   if(ev == EV_250MS) {
     update_hhmmss();
@@ -264,7 +271,8 @@ void sm_clock_counter_submod2(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_submod3 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);  
   
   // mod0 开始倒计时
   if(ev == EV_KEY_MOD_PRESS) {
@@ -285,7 +293,8 @@ void sm_clock_counter_submod3(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_submod4 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   // set0 暂停倒计时
   if(ev == EV_KEY_SET_PRESS) {
@@ -297,7 +306,9 @@ void sm_clock_counter_submod4(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_counter_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_counter_submod5 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   // 倒计时结束
   if(ev == EV_COUNTER) {
     timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
@@ -306,167 +317,3 @@ void sm_clock_counter_submod5(unsigned char from, unsigned char to, enum task_ev
     return;
   }
 }
-
-/*
-void sm_clock_counter(unsigned char from, unsigned char to, enum task_events ev)
-{
-
-  CDBG("sm_clock_counter %bu %bu %bu\n", from, to, ev);
-
-  // 按set1进入倒计时大模式
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_INIT && ev == EV_KEY_SET_LPRESS) {
-    display_logo(DISPLAY_LOGO_TYPE_CLOCK, 5);
-    return;
-  }
-  
-  // 切换到倒计时大模式
-  if(get_sm_ss_state(from) == SM_CLOCK_COUNTER_INIT 
-    && get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH
-    && ev == EV_KEY_SET_UP) {
-    enter_hhmmss(IS_HOUR);
-    timer_clr();
-    timer_set_mode(TIMER_MODE_DEC);
-    timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
-    return;
-  }
-  
-  // 刷新显示
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  } 
-  
-  // set0小时++
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_HOUR);
-    return;
-  }
-  
-   // set1小时快速++
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_HOUR);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-  
-  // set抬起小时快速++停止
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_SET_UP) {
-    write_only(IS_HOUR);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 刷新显示
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }   
-  
-  // mod0进入修改分钟状态
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_MIN);
-    return;
-  }  
-  
-  // set0 分钟++
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_MIN);
-    return;
-  }
-  
-  // set1 分钟快速++
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_MIN);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-  
-  // set 抬起分钟快速++停止  
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_MM && ev == EV_KEY_SET_UP) {
-    write_only(IS_MIN);
-    lpress_start = 0;
-    return;
-  }
-  
-  // 刷新显示
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_250MS) {
-    update_hhmmss();
-    return;
-  }    
-  
-  // mod0进入修改秒状态
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_MOD_PRESS) {
-    enter_hhmmss(IS_SEC);
-    return;
-  }  
-  
-  // set0 秒++
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_SET_PRESS) {
-    inc_and_write(IS_SEC);
-    return;
-  }
-  
-  // set1 秒快速++
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_SET_LPRESS) {
-    if((lpress_start % LPRESS_INC_DELAY) == 0) {
-      inc_only(IS_SEC);
-    }
-    lpress_start++;
-    if(lpress_start == LPRESS_INC_OVERFLOW) lpress_start = 0;
-    return;
-  }
-  
-  // set抬起秒快速++停止
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_SS && ev == EV_KEY_SET_UP) {
-    write_only(IS_SEC);
-    lpress_start = 0;
-    return;
-  }
-  
-  // mod0 开始倒计时
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_RUNNING && ev == EV_KEY_MOD_PRESS) {
-    timer_set_led_autorefresh(1, TIMER_DISP_MODE_HHMMSS);
-    led_clr_blink(1);
-    led_clr_blink(0); 
-    timer_start();
-    return;
-  }
-  
-  // set0 暂停倒计时
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_PAUSE && ev == EV_KEY_SET_PRESS) {
-    timer_stop();
-    timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
-    return;
-  }
-  
-  // set0 继续倒计时
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_RUNNING && ev == EV_KEY_SET_PRESS) {
-    timer_set_led_autorefresh(1, TIMER_DISP_MODE_HHMMSS);
-    timer_start();
-    return;
-  }
-  
-  // 倒计时结束
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_STOP && ev == EV_COUNTER) {
-    timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
-    timer_clr();
-    beeper_beep_beep_always();
-    return;
-  }
-   
-  
-  // mod0 清除
-  if(get_sm_ss_state(to) == SM_CLOCK_COUNTER_MODIFY_HH && ev == EV_KEY_MOD_PRESS) {
-    timer_set_led_autorefresh(0, TIMER_DISP_MODE_HHMMSS);
-    timer_clr();
-    enter_hhmmss(IS_HOUR);
-    return;
-  }
-}
-*/

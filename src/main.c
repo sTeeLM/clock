@@ -26,6 +26,7 @@
 #include "delay_task.h"
 #include "remote.h"
 #include "indicator.h"
+#include "radio.h"
 #include "misc.h"
 
 
@@ -64,6 +65,7 @@ void main(void)
   
   led_initialize();                             // initialize led display
   power_initialize();                           // initialize power manager
+  radio_initialize();                           // initialize radio
   indicator_initialize();                       // initialize indicator
   key_initialize();                             // initialize keys
   timer_initialize();                           // initialize timer

@@ -22,14 +22,26 @@
 
 #define IS_PS    17
 #define IS_BS    18
-#define IS_MUSIC 19
-#define IS_BEEP  20
-#define IS_MUSIC_TO 21
-#define IS_1224  22
+#define IS_BEEP  19
+#define IS_1224  20
+#define IS_ALARM_DUR 21
 
-#define IS_ALARM0 23
-#define IS_ALARM1 24
-#define IS_COUNTER 25
+#define IS_ALARM0 22
+#define IS_ALARM1 23
+#define IS_COUNTER 24
+
+#define IS_STATION 25
+#define IS_VOLUME  26
+#define IS_FREQUENCY 27
+#define IS_RADIO_MOD 28
+#define IS_RADIO_SSL 29
+#define IS_RADIO_HLSI 30
+#define IS_RADIO_MS 31
+#define IS_RADIO_BL 32
+#define IS_RADIO_HCC 33
+#define IS_RADIO_SNC 34
+#define IS_RADIO_PLLREF 35
+#define IS_RADIO_DTC 36
 
 #define LPRESS_INC_DELAY 2
 #define LPRESS_INC_OVERFLOW 50
@@ -42,9 +54,10 @@ extern unsigned char last_display_s;
 extern unsigned char common_state;
 enum display_logo_type {
   DISPLAY_LOGO_TYPE_CLOCK = 0,
-  DISPLAY_LOGO_TYPE_POWER_PACK = 1,
-  DISPLAY_LOGO_TYPE_FUSE  = 2, 
-  DISPLAY_LOGO_TYPE_GLOBAL_FLAG = 3
+  DISPLAY_LOGO_TYPE_POWER_PACK,
+  DISPLAY_LOGO_TYPE_RADIO,
+  DISPLAY_LOGO_TYPE_FUSE, 
+  DISPLAY_LOGO_TYPE_GLOBAL_FLAG
 };
 
 void display_logo(enum display_logo_type type, unsigned char num);

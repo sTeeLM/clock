@@ -250,7 +250,10 @@ static void inc_password(void)
 
 void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
   indicator_clr();
   indicator_set(INDICATOR_COLOR_RED, INDICATOR_MODE_BLINK);
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 3);
@@ -262,7 +265,9 @@ void sm_fuse_timer_init(unsigned char from, unsigned char to, enum task_events e
 void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
   unsigned char err;
-  CDBG("sm_fuse_timer_submod0 %bu %bu %bu\n", from, to, ev);
+
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   if(ev == EV_KEY_MOD_UP) {
     err = TIMER_ERR_OK;
@@ -318,7 +323,7 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
 // armed
 void sm_fuse_timer_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(to);
   
   if(ev == EV_KEY_V1 || ev == EV_KEY_SET_LPRESS) {
     lt_timer_display(1);
@@ -350,7 +355,8 @@ void sm_fuse_timer_submod1(unsigned char from, unsigned char to, enum task_event
 // verify
 void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(to);
+  
   if(ev == EV_KEY_MOD_PRESS) {
     last_key_s = clock_get_sec_256();
     // 进入密码验证状态
@@ -414,8 +420,9 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
 // dis-armed
 void sm_fuse_timer_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod3 %bu %bu %bu\n", from, to, ev);
-
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   if(ev == EV_KEY_V0 || ev == EV_REMOTE_DISARM) {
     roll_back(1); // 关闭所有传感器
     set_task(EV_KEY_V0);
@@ -428,7 +435,10 @@ void sm_fuse_timer_submod3(unsigned char from, unsigned char to, enum task_event
 // pre-detonate
 void sm_fuse_timer_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_timer_submod4 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
   roll_back(0); // 关闭所有传感器，除了fuse
   display_timer(DISPLAY_TIMER_PREDETONATE);
   set_task(EV_KEY_V0);

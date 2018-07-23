@@ -6,6 +6,7 @@
 #include "debug.h"
 #include "rom.h"
 #include "beeper.h"
+#include "cext.h"
 
 const char * code sm_clock_mod_alarm_ss_name[] = 
 {
@@ -14,7 +15,7 @@ const char * code sm_clock_mod_alarm_ss_name[] =
   "SM_CLOCK_MODIFY_ALARM_MM",
   "SM_CLOCK_MODIFY_ALARM_DAY",
   "SM_CLOCK_MODIFY_ALARM_BS",
-  "SM_CLOCK_MODIFY_ALARM_MUSIC",
+  "SM_CLOCK_MODIFY_ALARM_DUR",
   NULL
 };
 
@@ -22,7 +23,7 @@ const char * code sm_clock_mod_alarm_ss_name[] =
 
 static void update_alarm(unsigned char what, unsigned char day)
 {
-  unsigned char hour, min; 
+  unsigned char hour, min, val; 
   if(what == IS_HOUR || what == IS_MIN) {
     led_set_code(5, 'A');
     led_set_code(4, 'L'); 
@@ -78,14 +79,14 @@ static void update_alarm(unsigned char what, unsigned char day)
       led_set_code(1, 'F');
       led_set_code(0, 'F');
     }
-  } else { // IS_MUSIC
-      led_set_code(5, 'S');
-      led_set_code(4, 'O');
-      led_set_code(3, 'U');
-      led_set_code(2, 'N');
-      led_set_code(1, 'D');  
-      CDBG("beeper_get_music_index return %bu\n", beeper_get_music_index());
-      led_set_code(0, beeper_get_music_index() + 1 + 0x30);
+  } else if(what == IS_ALARM_DUR) {
+    val = alarm0_get_dur();
+    led_set_code(5, 'B');
+    led_set_code(4, 'T');
+    led_set_code(3, 'O');
+    led_set_code(2, LED_CODE_BLACK);
+    led_set_code(1, (val / 10) + 0x30);
+    led_set_code(0, (val / 10) + 0x30);
   }
 }
 
@@ -108,6 +109,10 @@ static void enter_alarm(unsigned char what, unsigned char day)
       led_set_blink(1);
       led_set_blink(0);
       break; 
+    case IS_ALARM_DUR:
+      led_set_blink(1);
+      led_set_blink(0);
+      break;
   }
   update_alarm(what, day);
 }
@@ -131,10 +136,13 @@ static void write_only(unsigned char what)
         led_set_blink(1);
         led_set_blink(0); 
       }
-      rom_write(ROM_ALARM0_HOUR, alarm0_get_min());
+      rom_write(ROM_ALARM0_MIN, alarm0_get_min());
       break;
     case IS_ONOFF:
       rom_write(ROM_ALARM0_DAY_MASK, alarm0_get_day_mask());
+      break;
+    case IS_ALARM_DUR:
+      rom_write(ROM_ALARM0_DUR, alarm0_get_dur());
       break;
   } 
 }
@@ -165,6 +173,9 @@ static void inc_only(unsigned char what)
       }
       alarm0_inc_min();
       break;
+    case IS_ALARM_DUR:
+      alarm0_inc_dur();
+      break;
   }
   update_alarm(what, 0);
 }
@@ -183,23 +194,21 @@ static void toggle_alarm_bs(void)
   update_alarm(IS_BS, 0);
 }
 
-static void toggle_alarm_music(void)
-{
-  beeper_inc_music_index();
-  rom_write(ROM_BEEPER_MUSIC_INDEX, beeper_get_music_index());
-  update_alarm(IS_MUSIC, 0);
-}
-
 void sm_clock_mod_alarm_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
   clock_display(0);
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 2);
 }
 
 void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
  // 切换到修改闹钟
   if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_INIT 
     && ev == EV_KEY_MOD_UP) {
@@ -233,13 +242,14 @@ void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);  
+  
   // mod0进入修改分钟模式
   if(ev == EV_KEY_MOD_PRESS) {
     enter_alarm(IS_MIN, 0);
     return;
   } 
-  
   
   // set0分钟++
   if(ev == EV_KEY_SET_PRESS) {
@@ -267,7 +277,8 @@ void sm_clock_mod_alarm_submod1(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_MM) {
     alarm_index = 1;
@@ -291,26 +302,32 @@ void sm_clock_mod_alarm_submod2(unsigned char from, unsigned char to, enum task_
 
 void sm_clock_mod_alarm_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod3 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   if(ev == EV_KEY_V0) {
     enter_alarm(IS_BS, 0);
+    return;
   }
   
   if(ev == EV_KEY_SET_PRESS) {
     toggle_alarm_bs();
+    return;
   }
 }
 
 void sm_clock_mod_alarm_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_alarm_submod4 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   if(ev == EV_KEY_MOD_PRESS) {
-    enter_alarm(IS_MUSIC, 0);
-  }
+    enter_alarm(IS_ALARM_DUR, 0);
+    return;
+  } 
   
   if(ev == EV_KEY_SET_PRESS) {
-    toggle_alarm_music();
+    inc_write(IS_ALARM_DUR);
+    return;
   }
 }

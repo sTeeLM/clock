@@ -10,11 +10,11 @@ enum delay_task_type {
 };
 
 struct delay_task {
-  unsigned char delay_sec;
+  unsigned int delay_sec;
   DELAY_TASK_PROC task;
 };
 
 void delay_task_initialize(void);
-void delay_task_reg(unsigned char index, DELAY_TASK_PROC task, unsigned char delay_sec);
+void delay_task_reg(unsigned char index, DELAY_TASK_PROC task, unsigned int delay_sec);
 void delay_task_call(void);
 #endif

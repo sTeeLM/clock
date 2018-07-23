@@ -61,7 +61,10 @@ static void test_autoswitch(void)
 
 void sm_clock_display_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
   lt_timer_switch_off();
   alarm_switch_on();
   rtc_set_lt_timer(0);
@@ -71,7 +74,7 @@ void sm_clock_display_init(unsigned char from, unsigned char to, enum task_event
 
 void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod0 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(to);
   
   // 切换到时间显示大模式
   if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
@@ -100,7 +103,9 @@ void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_display_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);  
+  
   // 切换到显示年月日
   if(ev == EV_KEY_MOD_PRESS) {
     //display_yymmdd();
@@ -119,7 +124,9 @@ void sm_clock_display_submod1(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_display_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to); 
+  
   // 切换到显示周几
   if(ev == EV_KEY_MOD_PRESS) {
     //display_week();
@@ -138,7 +145,9 @@ void sm_clock_display_submod2(unsigned char from, unsigned char to, enum task_ev
 
 void sm_clock_display_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_display_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   // 切换到显示温度
   if(ev == EV_KEY_MOD_PRESS) {
     clock_display(0);
@@ -154,100 +163,3 @@ void sm_clock_display_submod3(unsigned char from, unsigned char to, enum task_ev
     return;
   }
 }
-
-/*
-void sm_clock_display(unsigned char from, unsigned char to, enum task_events ev)
-{
-
-  CDBG("sm_clock_display %bu %bu %bu\n", from, to, ev);
-
-  // 按mod1进入显示时间大模式
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_INIT && ev == EV_KEY_MOD_LPRESS) {
-    lt_timer_switch_off();
-    alarm_switch_on();
-    rtc_set_lt_timer(0);
-    display_logo(DISPLAY_LOGO_TYPE_CLOCK, 0);
-    return;
-  }
-  
-  // 切换到时间显示大模式
-  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_INIT 
-    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
-    && ev == EV_KEY_MOD_UP) {
-    led_clear();
-    clock_display(1);
-    clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
-    power_reset_powersave_to();
-    return;
-  }
-    
-  // 切换回时分秒显示，从小模式切过来，或者从pac切过来
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS && 
-    (ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
-    clock_display(1);
-    clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
-    power_reset_powersave_to();
-    return;
-  }  
-  
-  // 1S探测下睡眠超时时间
-  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_HHMMSS 
-    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_HHMMSS
-    && ev == EV_1S) {
-    power_test_powersave_to();
-    return;
-  }
-
-  // 切换到显示年月日
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD && ev == EV_KEY_MOD_PRESS) {
-    //display_yymmdd();
-    clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
-    reset_auto_switch();
-    power_reset_powersave_to();
-    return;
-  } 
-  
-  // 1S探测下自动切回时间
-  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_YYMMDD 
-    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_YYMMDD
-    && ev == EV_1S) {
-    test_autoswitch();
-    return;
-  }
-  
-  // 切换到显示周几
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK && ev == EV_KEY_MOD_PRESS) {
-    //display_week();
-    clock_switch_display_mode(CLOCK_DISPLAY_MODE_WEEK);
-    reset_auto_switch();
-    power_reset_powersave_to();
-    return;
-  }
-  
-  // 1S探测下自动切回时间
-  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_WEEK 
-    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_WEEK
-    && ev == EV_1S) {
-    test_autoswitch();
-    return;
-  }  
-  
-  // 切换到显示温度
-  if(get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP && ev == EV_KEY_MOD_PRESS) {
-    clock_display(0);
-    display_temp();
-    reset_auto_switch();
-    power_reset_powersave_to();
-    return;
-  }  
-   
-  // 1S探测下自动切回时间
-  if(get_sm_ss_state(from) == SM_CLOCK_DISPLAY_TEMP 
-    && get_sm_ss_state(to) == SM_CLOCK_DISPLAY_TEMP
-    && ev == EV_1S) {
-    test_autoswitch();
-    return;
-  }
-
-}
-*/

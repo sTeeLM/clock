@@ -29,12 +29,12 @@ static void rom_dump(void)
   rom_read(ROM_ALARM0_DAY_MASK);
   rom_read(ROM_ALARM0_HOUR);
   rom_read(ROM_ALARM0_MIN);
+  rom_read(ROM_ALARM0_DUR);
   rom_read(ROM_ALARM1_ENABLE);
   
   rom_read(ROM_TIME_IS12);
   rom_read(ROM_BEEPER_MUSIC_INDEX);
   rom_read(ROM_BEEPER_ENABLE);
-  rom_read(ROM_BEEPER_MUSIC_TO);
   rom_read(ROM_POWERSAVE_TO);
   rom_read(ROM_REMOTE_ONOFF);
   
@@ -62,6 +62,16 @@ static void rom_dump(void)
   rom_read(ROM_POWER_FULL_EXP);
   rom_read(ROM_POWER_EMPTY_INT);
   rom_read(ROM_POWER_EMPTY_EXP);
+  
+  rom_read(ROM_RADIO_FREQ_HI);
+  rom_read(ROM_RADIO_FREQ_LO);
+  rom_read(ROM_RADIO_VOLUME);
+  rom_read(ROM_RADIO_HLSI);
+  rom_read(ROM_RADIO_MS);
+  rom_read(ROM_RADIO_BL);
+  rom_read(ROM_RADIO_HCC);
+  rom_read(ROM_RADIO_SNC);
+  rom_read(ROM_RADIO_DTC);
 }
 
 static void rom_reset(void)
@@ -69,12 +79,12 @@ static void rom_reset(void)
   rom_write(ROM_ALARM0_DAY_MASK, 0x7F);
   rom_write(ROM_ALARM0_HOUR, 12);
   rom_write(ROM_ALARM0_MIN, 12);
+  rom_write(ROM_ALARM0_DUR, 15);
   rom_write(ROM_ALARM1_ENABLE, 1);
   
   rom_write(ROM_TIME_IS12, 1);
   rom_write(ROM_BEEPER_MUSIC_INDEX, 0);
   rom_write(ROM_BEEPER_ENABLE, 1);
-  rom_write(ROM_BEEPER_MUSIC_TO, 30);
   //0=off 1=15s 2=30s 
   rom_write(ROM_POWERSAVE_TO, 1);
   rom_write(ROM_REMOTE_ONOFF, 1);
@@ -103,6 +113,16 @@ static void rom_reset(void)
   rom_write(ROM_POWER_FULL_EXP, 20);
   rom_write(ROM_POWER_EMPTY_INT, 3);
   rom_write(ROM_POWER_EMPTY_EXP, 30);
+  
+  rom_write(ROM_RADIO_FREQ_HI, 0);
+  rom_write(ROM_RADIO_FREQ_LO, 0);
+  rom_write(ROM_RADIO_VOLUME, 50);
+  rom_write(ROM_RADIO_HLSI, 0);
+  rom_write(ROM_RADIO_MS, 0);
+  rom_write(ROM_RADIO_BL, 0);
+  rom_write(ROM_RADIO_HCC, 0);
+  rom_write(ROM_RADIO_SNC, 0);
+  rom_write(ROM_RADIO_DTC, 0);
 }
 
 bit rom_is_factory_reset(void)

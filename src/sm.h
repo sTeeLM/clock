@@ -25,6 +25,14 @@ enum sm_states_power_pack
 };
 
 // max 16
+enum sm_states_radio
+{
+  SM_RADIO_DISPLAY = 0,  // 播音，调节电台、音量
+  SM_RADIO_MOD     = 1,  // 其他参数设置
+  SM_RADIO_POWERSAVE = 2,// 节电模式
+};
+
+// max 16
 // SM_FUSE
 enum sm_stats_fuse
 {
@@ -46,9 +54,10 @@ enum sm_states_global_flag
 enum sm_tables
 {
   SM_CLOCK  = 0,
-  SM_POWER_PACK = 1,
-  SM_FUSE   = 2,
-  SM_GLOBAL_FLAG = 3,
+  SM_POWER_PACK,
+  SM_RADIO,
+  SM_FUSE,
+  SM_GLOBAL_FLAG,
   SM_TABLE_CNT
 };
 

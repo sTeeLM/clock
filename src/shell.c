@@ -60,9 +60,7 @@ struct shell_cmds code cmds[] =
                                     "sm sss <sub-state-name>: set sub-state", cmd_sm},
   {"bp", "beeper test", "bp <on|off>: enable/disable\n"
                         "bp be: 'be'\n"
-                        "bp bebe: 'bebe'\n"
-                        "bp next: next music\n"
-                        "bp music: play music", cmd_beeper},
+                        "bp bebe: 'bebe'\n", cmd_beeper},
   {"th", "thermo test", "th : get current temperature\n"
                         "th hi <on|off> : enable/disable hi\n"
                         "th hi: get hi threshold\n"

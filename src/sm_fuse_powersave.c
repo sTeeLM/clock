@@ -7,6 +7,7 @@
 #include "hg.h"
 #include "lt_timer.h"
 #include "remote.h"
+#include "cext.h"
 
 const char * code sm_fuse_powersave_ss_name[] =
 {
@@ -29,12 +30,16 @@ static void roll_back(void)
 
 void sm_fuse_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
 }
 
 void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_submod0 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   if(ev == EV_250MS) {
     // 进入睡眠
     power_enter_powersave();
@@ -45,15 +50,21 @@ void sm_fuse_powersave_submod0(unsigned char from, unsigned char to, enum task_e
 
 void sm_fuse_powersave_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_submod1 %bu %bu %bu\n", from, to, ev);
-    roll_back(); // 关闭所有外围电路，以及lt_timer,准备触发
-    set_task(EV_KEY_V0);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
+  roll_back(); // 关闭所有外围电路，以及lt_timer,准备触发
+  set_task(EV_KEY_V0);
 }
 
 void sm_fuse_powersave_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_powersave_submod2 %bu %bu %bu\n", from, to, ev);
-    roll_back(); // 关闭所有外围电路，以及lt_timer,以及fuse, 准备解除
-    fuse_enable(0);
-    set_task(EV_KEY_V0);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+  
+  roll_back(); // 关闭所有外围电路，以及lt_timer,以及fuse, 准备解除
+  fuse_enable(0);
+  set_task(EV_KEY_V0);
 }

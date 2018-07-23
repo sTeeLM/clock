@@ -15,6 +15,7 @@ struct alarm0_struct {
   unsigned char day_mask;                // 1->enable 0->disable
   unsigned char hour;                    // 0-23
   unsigned char min;                     // 0-59
+  unsigned char dur;                     // 闹铃持续时间，分钟
 };
 
 bit alarm0_test_enable(unsigned char day);
@@ -28,6 +29,10 @@ unsigned char alarm0_get_hour(void);
 void alarm0_inc_hour(void);
 //void alarm0_sync_from_rtc(void);
 void alarm0_sync_to_rtc(void);
+// 闹铃持续时间
+void alarm0_inc_dur(void);
+unsigned char alarm0_get_dur(void);
+
 
 // 闹钟1是整点报时闹钟
 bit alarm1_test_enable(void);
@@ -37,4 +42,7 @@ void alarm1_sync_to_rtc(void);
 void scan_alarm(void);
 void alarm_switch_on(void);
 void alarm_switch_off(void);
+
+void alarm_stop_radio(void);
+bit alarm_play_radio(void);
 #endif

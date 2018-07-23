@@ -16,8 +16,8 @@ const char * code sm_clock_powersave_ss_name[] =
 
 void sm_clock_powersave(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_powersave %bu %bu %bu\n", from, to, ev);
-
+  UNUSED_PARAM(from); 
+  
   // 该进入节电模式了
   if(get_sm_ss_state(to) == SM_CLOCK_POWERSAVE_PS && ev == EV_250MS) {
     // 进入睡眠

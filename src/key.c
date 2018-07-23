@@ -7,6 +7,7 @@
 #include "sm.h"
 #include "cext.h"
 #include "power.h"
+#include "alarm.h"
 #include "beeper.h"
 #include "cext.h"
 
@@ -30,7 +31,7 @@ static void int0_ISR (void) interrupt 0 using 1
     power_clr_flag();
     set_task(EV_KEY_MOD_PRESS); // 为了能唤醒
   }
-  beeper_stop_music();// 按键停止音乐
+  alarm_stop_radio();// 按键停止音乐
   
 }
 
@@ -92,8 +93,6 @@ void scan_key_proc(enum task_events ev)
 
 void mod_proc(enum task_events ev)
 {
-  CDBG("mod_proc %bu\n",ev);
-
   switch (ev) {
     case EV_KEY_MOD_DOWN:
       CDBG("mod_proc EV_KEY_MOD_DOWN\n");
@@ -116,8 +115,6 @@ void mod_proc(enum task_events ev)
 
 void set_proc(enum task_events ev)
 {
-  CDBG("set_proc %bu\n", ev);
-  
   switch (ev) {
     case EV_KEY_SET_DOWN:
       CDBG("set_proc EV_KEY_SET_DOWN\n");
@@ -139,8 +136,6 @@ void set_proc(enum task_events ev)
 
 void mod_set_proc(enum task_events ev)
 {
-  CDBG("mod_set_proc %bu\n", ev);
-  
   switch (ev) {
     case EV_KEY_MOD_SET_PRESS:
       CDBG("mod_set_proc EV_KEY_MOD_SET_PRESS\n");
@@ -155,8 +150,6 @@ void mod_set_proc(enum task_events ev)
 
 void key_initialize (void)
 {
-  CDBG("key_initialize\n");
-
   last_mod_tmr_count = 0;
   last_set_tmr_count = 0;
    
@@ -169,11 +162,11 @@ void key_initialize (void)
 
 void key_enter_powersave(void)
 {
-  CDBG("key_enter_powersave\n");
+  
 }
 
 void key_leave_powersave(void)
 {
-  CDBG("key_leave_powersave\n");
+
 }
 

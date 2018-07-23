@@ -4,14 +4,14 @@
 #define ROM_ALARM0_DAY_MASK 0
 #define ROM_ALARM0_HOUR     1
 #define ROM_ALARM0_MIN      2
-#define ROM_ALARM1_ENABLE   3
+#define ROM_ALARM0_DUR      3
+#define ROM_ALARM1_ENABLE   4
 
 #define ROM_TIME_IS12       10
 #define ROM_BEEPER_MUSIC_INDEX 11
 #define ROM_BEEPER_ENABLE      12
-#define ROM_BEEPER_MUSIC_TO  13
-#define ROM_POWERSAVE_TO    14
-#define ROM_REMOTE_ONOFF    15
+#define ROM_POWERSAVE_TO    13
+#define ROM_REMOTE_ONOFF    14
 
 #define ROM_FUSE_HG_ONOFF   20
 #define ROM_FUSE_MPU        21
@@ -32,6 +32,16 @@
 #define ROM_POWER_FULL_EXP   51
 #define ROM_POWER_EMPTY_INT  52
 #define ROM_POWER_EMPTY_EXP  53
+
+#define ROM_RADIO_FREQ_HI 60
+#define ROM_RADIO_FREQ_LO 61
+#define ROM_RADIO_VOLUME 62
+#define ROM_RADIO_HLSI 63
+#define ROM_RADIO_MS  64
+#define ROM_RADIO_BL  65
+#define ROM_RADIO_HCC 66
+#define ROM_RADIO_SNC 67
+#define ROM_RADIO_DTC 68
 
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);

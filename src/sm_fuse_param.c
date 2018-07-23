@@ -8,6 +8,7 @@
 #include "thermo.h"
 #include "remote.h"
 #include "indicator.h"
+#include "cext.h"
 
 const char * code sm_fuse_param_ss_name[] = 
 {
@@ -254,7 +255,9 @@ static void enter_password(unsigned char index)
 
 void sm_fuse_param_init(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 1);
 
   indicator_clr();
@@ -298,8 +301,9 @@ static void sm_fuse_param_set_time(unsigned char what, unsigned char ev)
 
 
 void sm_fuse_param_submod0(unsigned char from, unsigned char to, enum task_events ev) 
-{
-  CDBG("sm_fuse_param_submod0 %bu %bu %bu\n", from, to, ev);  
+{ 
+  UNUSED_PARAM(to);
+  
   if((ev == EV_KEY_SET_UP && get_sm_ss_state(from) == SM_FUSE_PARAM_INIT)
     || (ev == EV_KEY_V0 && get_sm_ss_state(from) == SM_FUSE_PARAM_PASSWORD)) {
     ev = EV_KEY_MOD_PRESS;
@@ -311,37 +315,48 @@ void sm_fuse_param_submod0(unsigned char from, unsigned char to, enum task_event
 
 void sm_fuse_param_submod1(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_param_set_time(IS_MON, ev);
 }
 
 void sm_fuse_param_submod2(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_param_set_time(IS_DAY, ev);
 }
 
 void sm_fuse_param_submod3(unsigned char from, unsigned char to, enum task_events ev) 
-{
-  CDBG("sm_fuse_param_submod3 %bu %bu %bu\n", from, to, ev);  
+{ 
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_param_set_time(IS_HOUR, ev);
 }
 
 void sm_fuse_param_submod4(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod4 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_param_set_time(IS_MIN, ev);
 }
 
 void sm_fuse_param_submod5(unsigned char from, unsigned char to, enum task_events ev) 
 {
-  CDBG("sm_fuse_param_submod5 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_param_set_time(IS_SEC, ev);
 }
 
 void sm_fuse_param_submod6(unsigned char from, unsigned char to, enum task_events ev) 
-{
-  CDBG("sm_fuse_param_submod6 %bu %bu %bu\n", from, to, ev);
+{ 
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   // 设置password
   if(ev == EV_KEY_MOD_PRESS) {

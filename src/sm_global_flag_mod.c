@@ -9,13 +9,13 @@
 #include "rom.h"
 #include "lt_timer.h"
 #include "remote.h"
+#include "cext.h"
 
 const char * code sm_global_flag_mod_ss_name[] = 
 {
   "SM_GLOBAL_FLAG_MODIFY_INIT",
   "SM_GLOBAL_FLAG_MODIFY_PS",
   "SM_GLOBAL_FLAG_MODIFY_BEEP",
-  "SM_GLOBAL_FLAG_MODIFY_MUSIC_TO",
   "SM_GLOBAL_FLAG_MODIFY_1224",
   "SM_GLOBAL_FLAG_MODIFY_REMOTE",
   NULL
@@ -55,14 +55,6 @@ static void display_global_flag(unsigned char what)
         led_set_code(0, 'F');
       }
       break;
-    case IS_MUSIC_TO:
-      led_set_code(5, 'B');
-      led_set_code(4, 'T');
-      led_set_code(3, 'O');
-      led_set_code(2, LED_CODE_BLACK);
-      led_set_code(1, (beeper_get_music_to() / 10) + 0x30);
-      led_set_code(0, (beeper_get_music_to() % 10) + 0x30);
-      break;
     case IS_1224:
       led_set_code(5, 'D');
       led_set_code(4, 'S');
@@ -79,7 +71,7 @@ static void display_global_flag(unsigned char what)
       led_set_code(5, 'R');
       led_set_code(4, 'A');
       led_set_code(3, LED_CODE_BLACK);
-      if(beeper_get_beep_enable()) {
+      if(remote_get_enable()) {
         led_set_code(2, LED_CODE_BLACK);
         led_set_code(1, 'O');
         led_set_code(0, 'N');        
@@ -103,10 +95,6 @@ static void inc_write(unsigned char what)
     case IS_BEEP:
       beeper_set_beep_enable(!beeper_get_beep_enable());
       rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
-      break;
-    case IS_MUSIC_TO:
-      beeper_inc_music_to();
-      rom_write(ROM_BEEPER_MUSIC_TO, beeper_get_music_to());
       break;
     case IS_1224:
       is12 = rom_read(ROM_TIME_IS12);
@@ -146,30 +134,32 @@ static void sm_global_flag_mod(unsigned char what,  enum task_events ev)
 
 void sm_global_flag_mod_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod0 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_global_flag_mod(IS_PS, ev);
 }
 
 void sm_global_flag_mod_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_global_flag_mod(IS_BEEP, ev);
 }
 
 void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod2 %bu %bu %bu\n", from, to, ev);
-  sm_global_flag_mod(IS_MUSIC_TO, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
+  sm_global_flag_mod(IS_1224, ev);
 }
 
 void sm_global_flag_mod_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_submod3 %bu %bu %bu\n", from, to, ev);
-  sm_global_flag_mod(IS_1224, ev);
-}
-
-void sm_global_flag_mod_submod4(unsigned char from, unsigned char to, enum task_events ev)
-{
-  CDBG("sm_global_flag_mod_submod4 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_global_flag_mod(IS_REMOTE, ev);
 }

@@ -41,6 +41,9 @@ void I2C_Stop()
 {
  unsigned int t = I2C_STOP_WAIT_VALUE;
 
+ I2C_SCL = 0;
+ I2C_Delay();
+  
  I2C_SDA = 0;
  I2C_Delay();
 
@@ -60,6 +63,9 @@ void I2C_Write(unsigned char dat)
 {
 
  unsigned char t ;
+  
+ I2C_SCL = 0;
+ 
  for(t=0;t<8;t++)
  {
 
@@ -137,7 +143,9 @@ bit I2C_GetAck()
 
 void I2C_PutAck(bit ack)
 {
-
+ I2C_SCL = 0;
+ I2C_Delay(); 
+  
  I2C_SDA = ack;
  I2C_Delay();
  I2C_SCL = 1;

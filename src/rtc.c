@@ -120,9 +120,7 @@ void rtc_set_lt_timer(bit enable)
 }
 
 void scan_rtc(void)
-{ 
-  CDBG("scan_rtc\n");
-  
+{   
   if(!is_lt_timer_mode) { // 正常闹钟模式
     scan_alarm();
   } else { // 长期定时器模式
@@ -135,8 +133,6 @@ void rtc_initialize (void)
   unsigned char count;
   unsigned char is12;
 
-  CDBG("rtc_initialize\n");
-  
   CDBG("RTC before initialize:\n");
   rtc_dump_raw();
   rtc_dump();
@@ -811,9 +807,7 @@ bit rtc_test_bsy(void)
 }
 
 void rtc_enter_powersave(void)
-{
-  
-  CDBG("rtc_enter_powersave\n");
+{ 
   // 停止32KHZ输出
   rtc_read_data(RTC_TYPE_CTL);
   rtc_set_en32khz(0);
@@ -823,7 +817,6 @@ void rtc_enter_powersave(void)
 
 void rtc_leave_powersave(void)
 {
-  CDBG("rtc_leave_powersave\n");
   // 启动32KHZ输出
   rtc_read_data(RTC_TYPE_CTL);
   rtc_set_en32khz(1);

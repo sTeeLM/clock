@@ -513,6 +513,11 @@
               <FileType>1</FileType>
               <FilePath>.\indicator.c</FilePath>
             </File>
+            <File>
+              <FileName>radio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\radio.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -567,6 +572,26 @@
               <FileName>sm_power_pack_powersave.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\sm_power_pack_powersave.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>radio</GroupName>
+          <Files>
+            <File>
+              <FileName>sm_radio_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_radio_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_radio_powersave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_radio_powersave.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_radio_mod.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sm_radio_mod.c</FilePath>
             </File>
           </Files>
         </Group>

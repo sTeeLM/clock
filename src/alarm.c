@@ -6,6 +6,7 @@
 #include "power.h"
 #include "rom.h"
 
+#define ALARM0_MAX_DUR_MIN 30 // 30分钟
 
 static struct alarm0_struct alarm0;
 
@@ -67,6 +68,7 @@ static void alarm_load_rom(void)
   alarm0.day_mask = rom_read(ROM_ALARM0_DAY_MASK);
   alarm0.hour = rom_read(ROM_ALARM0_HOUR);
   alarm0.min  = rom_read(ROM_ALARM0_MIN);
+  alarm0.dur  = rom_read(ROM_ALARM0_DUR);
   alarm0_is12 = rom_read(ROM_TIME_IS12);
   alarm1_enable = rom_read(ROM_ALARM1_ENABLE); 
 }
@@ -82,7 +84,7 @@ static void alarm_save_rom(void)
 
 void alarm_initialize (void)
 {
-  CDBG("alarm_initialize\n");
+
 }
 
 void alarm_switch_on(void)
@@ -116,12 +118,12 @@ void alarm_dump(void)
 
 void alarm_enter_powersave(void)
 {
-  CDBG("alarm_enter_powersave\n");
+
 }
 
 void alarm_leave_powersave(void)
 {
-  CDBG("alarm_leave_powersave\n");
+
 }
 
 // day  1-7
@@ -222,4 +224,28 @@ void alarm1_sync_to_rtc(void)
   rtc_enable_alarm_int(RTC_ALARM1, alarm1_enable);
   rtc_clr_alarm_int_flag(RTC_ALARM1);
   rtc_write_data(RTC_TYPE_CTL);
+}
+
+// 5 -> 10 -> 15 -> 20 -> 25 -> 30 -> 5
+void alarm0_inc_dur(void)
+{
+  alarm0.dur += 5;
+  if(alarm0.dur > ALARM0_MAX_DUR_MIN) {
+    alarm0.dur = 5;
+  }
+}
+
+unsigned char alarm0_get_dur(void)
+{
+  return alarm0.dur;
+}
+
+void alarm_stop_radio(void)
+{
+  
+}
+
+bit alarm_play_radio(void)
+{
+  return 1;
 }

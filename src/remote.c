@@ -32,7 +32,6 @@ static void remote_power_on(void)
 void remote_initialize (void)
 {
   unsigned char val;
-  CDBG("remote_initialize\n");
   val = rom_read(ROM_REMOTE_ONOFF);
   if(val) {
     remote_power_on();
@@ -43,12 +42,12 @@ void remote_initialize (void)
 
 void remote_enter_powersave(void)
 {
-  CDBG("remote_enter_powersave\n");
+  
 }
 
 void remote_leave_powersave(void)
 {
-  CDBG("remote_leave_powersave\n");
+
 }
 
 void scan_remote(unsigned int status)

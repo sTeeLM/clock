@@ -7,7 +7,6 @@
 
 char cmd_beeper(char arg1, char arg2)
 {
-  char index;
   if(arg1 != 0 && arg2 == 0 && strcmp("be", shell_buf + arg1) == 0) {
     beeper_beep();
   } else if(arg1 != 0 && arg2 == 0 && strcmp("bebe", shell_buf + arg1) == 0) {
@@ -18,13 +17,6 @@ char cmd_beeper(char arg1, char arg2)
   } else if(arg1 != 0 && arg2 == 0 && strcmp("off", shell_buf + arg1) == 0) {
     beeper_set_beep_enable(0);
     printf("beeper off\n");
-  } else if(arg1 != 0 && arg2 == 0 && strcmp("next", shell_buf + arg1) == 0) {
-    index = beeper_get_music_index();
-    beeper_inc_music_index();
-    printf("set music index : %bu -> %bu\n", index, beeper_get_music_index());
-  } else if(arg1 != 0 && arg2 == 0 && strcmp("music", shell_buf + arg1) == 0) {
-    printf("press MOD or SET key to stop music\n");
-    beeper_play_music();
   }else {
     return 1;
   }

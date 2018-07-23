@@ -3,6 +3,7 @@
 #include "rtc.h"
 #include "clock.h"
 #include "debug.h"
+#include "cext.h"
 
 #include "mod_common.h"
 
@@ -216,7 +217,7 @@ static void sm_clock_mod_time(unsigned char what, enum task_events ev)
 
 void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod0 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(to);
   
   if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_TIME_INIT 
     && ev == EV_KEY_MOD_UP) {
@@ -228,35 +229,40 @@ void sm_clock_mod_time_submod0(unsigned char from, unsigned char to, enum task_e
 
 void sm_clock_mod_time_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod1 %bu %bu %bu\n", from, to, ev);
-  
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+
   sm_clock_mod_time(IS_MIN, ev);
 }
 
 void sm_clock_mod_time_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   sm_clock_mod_time(IS_SEC, ev);
 }
 
 void sm_clock_mod_time_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod3 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
   
   sm_clock_mod_time(IS_YEAR, ev);
 }
 
 void sm_clock_mod_time_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod4 %bu %bu %bu\n", from, to, ev);
-
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_clock_mod_time(IS_MON, ev);
 }
 
 void sm_clock_mod_time_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_submod5 %bu %bu %bu\n", from, to, ev);
-
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_clock_mod_time(IS_DAY, ev);
 }

@@ -64,13 +64,13 @@ static void display_alarm(unsigned char what)
 
 void sm_clock_alarm(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_alarm %bu %bu %bu\n", from, to, ev);
-  
+  UNUSED_PARAM(from);
+
   // 闹钟0到时间了
   if(get_sm_ss_state(to) == SM_CLOCK_ALARM_HIT_ALARM0 && ev == EV_ALARM0) {
     clock_display(0);
     display_alarm(IS_ALARM0);
-    if(!beeper_play_music()) {
+    if(!alarm_play_radio()) {
     // 放完音乐自动切换
       set_task(EV_KEY_SET_PRESS);
     }

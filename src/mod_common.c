@@ -26,6 +26,9 @@ void display_logo(enum display_logo_type type, unsigned char num)
     case DISPLAY_LOGO_TYPE_POWER_PACK:
       led_set_code(5, 'P');
       break;
+    case DISPLAY_LOGO_TYPE_RADIO:
+      led_set_code(5, 'R');
+      break;
     case DISPLAY_LOGO_TYPE_FUSE:
       led_set_code(5, 'F');
       break;

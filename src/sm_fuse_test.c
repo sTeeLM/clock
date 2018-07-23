@@ -13,6 +13,7 @@
 #include "rom.h"
 #include "rtc.h"
 #include "power.h"
+#include "radio.h"
 #include "remote.h"
 #include "indicator.h"
 
@@ -54,12 +55,14 @@ enum sm_fuse_err
 
 void sm_fuse_test_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_init %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   clock_display(0);
   display_logo(DISPLAY_LOGO_TYPE_FUSE, 0);
   lt_timer_switch_on();
   rtc_set_lt_timer(1);
-  power_5v_enable(0);
+  radio_enable(0);
   indicator_clr();
   test_stage = 0;
   test_to    = 0;
@@ -612,7 +615,9 @@ void sm_fuse_test_submod0(unsigned char from, unsigned char to, enum task_events
 
 void sm_fuse_test_submod1(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod1 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_set(IS_THERMO_HI, ev);
 }
 
@@ -623,25 +628,33 @@ void sm_fuse_test_submod1(unsigned char from, unsigned char to, enum task_events
 // 2: 开始下调hi/上调lo
 void sm_fuse_test_submod2(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod2 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_test_thermo(IS_THERMO_HI, ev);
 }
 
 void sm_fuse_test_submod3(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod3 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_set(IS_THERMO_LO, ev);
 }
 
 void sm_fuse_test_submod4(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod4 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_test_thermo(IS_THERMO_LO, ev);
 }
 
 void sm_fuse_test_submod5(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod5 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_set(IS_HG, ev);
 }
 
@@ -652,7 +665,7 @@ void sm_fuse_test_submod5(unsigned char from, unsigned char to, enum task_events
 static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
 {
   unsigned char val;
-    
+  
   if(ev == EV_KEY_MOD_PRESS) {
     // 初始化
     test_to    = 0;
@@ -794,31 +807,41 @@ static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
 
 void sm_fuse_test_submod6(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod6 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_test_hg_mpu_remote(IS_HG, ev);
 }
 
 void sm_fuse_test_submod7(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod7 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_set(IS_MPU, ev);
 }
 
 
 void sm_fuse_test_submod8(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod8 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_test_hg_mpu_remote(IS_MPU, ev);
 }
 
 void sm_fuse_test_submod9(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod9 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_set(IS_REMOTE, ev);
 }
 
 void sm_fuse_test_submod10(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_fuse_test_submod10 %bu %bu %bu\n", from, to, ev);
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_fuse_test_hg_mpu_remote(IS_REMOTE, ev);
 }

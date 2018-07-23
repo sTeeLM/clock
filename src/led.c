@@ -120,7 +120,6 @@ void refresh_led(void)
 void led_initialize (void)
 {
   unsigned char i, j;
-  CDBG("led_initialize\n");
 
   led_powersave = 0;
   led_blink = 0;
@@ -211,8 +210,6 @@ void led_set_code(unsigned char i, char c)
 
 void led_enter_powersave(void)
 {
-  CDBG("led_enter_powersave\n");
-  
   led_powersave = 1;
   
   P0 = 0xFF;
@@ -222,8 +219,7 @@ void led_enter_powersave(void)
 
 void led_leave_powersave(void)
 {
-  CDBG("led_leave_powersave\n");
-  
+
   P0 = 0x0;
   P2 = 0xFF;
   led_clear();

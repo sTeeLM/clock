@@ -24,6 +24,7 @@
 #include "thermo.h"
 #include "i2c.h"
 #include "delay_task.h"
+#include "radio.h"
 
 sbit POWER_3_3V_EN = P3 ^ 5;
 sbit POWER_5V_EN   = P3 ^ 6;
@@ -282,7 +283,7 @@ bit power_test_low_alert(void)
 {
   unsigned char val;
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
-  CDBG("power_test_low_alert return %s\n", (val & 0x2) != 0 ? "1" : "0");
+  CDBG("power_test_low_alert return %s\n", (val & 0x1) != 0 ? "1" : "0");
   return (val & 0x1) != 0;
 }
 
@@ -316,7 +317,6 @@ void scan_power(void)
 
 void power_proc(enum task_events ev)
 {
-  CDBG("power_proc %bu\n", ev);
   run_state_machine(ev);
 }
 
@@ -337,6 +337,7 @@ void power_enter_powersave(void)
   mpu_enter_powersave();
   thermo_enter_powersave();
   remote_enter_powersave();
+  radio_enter_powersave();
   com_enter_powersave();
   while(power_test_flag()) {
 #ifdef __CLOCK_EMULATE__    
@@ -357,6 +358,7 @@ void power_leave_powersave(void)
 {
 
   com_leave_powersave(); 
+  radio_leave_powersave();
   remote_leave_powersave();
   thermo_leave_powersave();
   mpu_leave_powersave();
