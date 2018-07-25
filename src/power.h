@@ -3,10 +3,11 @@
 
 #include "task.h"
 
-enum powersave_time{
+enum powersave_time
+{
   POWERSAVE_OFF  = 0,
-  POWERSAVE_15S  = 1,
-  POWERSAVE_30S  = 2,
+  POWERSAVE_30S  = 1,
+  POWERSAVE_60S  = 2,
   POWERSAVE_CNT
 };
 
@@ -31,6 +32,7 @@ enum powersave_time power_get_powersave_to(void);
 void power_inc_powersave_to();
 bit power_test_powersave_to(void);
 void power_reset_powersave_to(void);
+void power_write_rom_powersave_to(void);
 
 void power_proc(enum task_events ev);
 void scan_power(void);

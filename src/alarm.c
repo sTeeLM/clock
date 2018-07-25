@@ -1,3 +1,4 @@
+#include <intrins.h>
 #include "alarm.h"
 #include "rtc.h"
 #include "debug.h"
@@ -5,6 +6,8 @@
 #include "clock.h"
 #include "power.h"
 #include "rom.h"
+#include "radio.h"
+#include "delay_task.h"
 
 #define ALARM0_MAX_DUR_MIN 30 // 30分钟
 
@@ -12,6 +15,10 @@ static struct alarm0_struct alarm0;
 
 static bit alarm0_is12;
 static bit alarm1_enable;
+
+static bit play_radio_stop;
+
+static unsigned int play_radio_sec_left;
 
 void alarm_proc(enum task_events ev)
 {
@@ -73,14 +80,28 @@ static void alarm_load_rom(void)
   alarm1_enable = rom_read(ROM_ALARM1_ENABLE); 
 }
 
-static void alarm_save_rom(void)
+void alarm_save_rom(enum alarm_sync_type t)
 {
-  rom_write(ROM_ALARM0_DAY_MASK, alarm0.day_mask);
-  rom_write(ROM_ALARM0_HOUR, alarm0.hour);
-  rom_write(ROM_ALARM0_MIN, alarm0.min);
-  rom_write(ROM_TIME_IS12, alarm0_is12 ? 1 : 0);
-  rom_write(ROM_ALARM1_ENABLE, alarm1_enable);
+  switch (t) {
+    case ALARM_SYNC_ALARM0_DAY_MASK:
+      rom_write(ROM_ALARM0_DAY_MASK, alarm0.day_mask);
+    break;
+    case ALARM_SYNC_ALARM0_HOUR:
+      rom_write(ROM_ALARM0_HOUR, alarm0.hour);
+    break;
+    case ALARM_SYNC_ALARM0_MIN:
+      rom_write(ROM_ALARM0_MIN, alarm0.min);
+    break;
+    case ALARM_SYNC_ALARM0_DUR:
+      rom_write(ROM_ALARM0_DUR, alarm0.dur);
+    break;
+    case ALARM_SYNC_ALARM1_ENABLE:
+      rom_write(ROM_ALARM1_ENABLE, alarm1_enable);
+    break;
+  }
 }
+
+
 
 void alarm_initialize (void)
 {
@@ -188,7 +209,6 @@ void alarm0_sync_to_rtc(void)
   CDBG("alarm0_sync_to_rtc!\n");
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_HOUR_MIN_SEC);
-  rtc_alarm_set_hour_12(alarm0_is12);
   rtc_alarm_set_hour(alarm0.hour);
   rtc_alarm_set_min(alarm0.min);
   rtc_alarm_set_sec(0);
@@ -215,7 +235,6 @@ void alarm1_sync_to_rtc(void)
   CDBG("alarm1_sync_to_rtc!\n");
   rtc_read_data(RTC_TYPE_ALARM1);
   rtc_alarm_set_mode(RTC_ALARM1_MOD_MATCH_MIN);
-  rtc_alarm_set_hour_12(alarm0_is12);
   rtc_alarm_set_hour(0);
   rtc_alarm_set_min(0);
   rtc_write_data(RTC_TYPE_ALARM1);
@@ -242,10 +261,29 @@ unsigned char alarm0_get_dur(void)
 
 void alarm_stop_radio(void)
 {
-  
+  play_radio_stop = 1;
 }
 
-bit alarm_play_radio(void)
+#pragma NOAREGS
+void alarm_play_radio_cb(void)
 {
-  return 1;
+  if(play_radio_sec_left == 0)
+    return;
+  
+  if((--play_radio_sec_left ) == 0) {
+    play_radio_stop = 1;
+  }
+}
+#pragma AREGS
+
+void alarm_play_radio(void)
+{
+  radio_enable(1);
+  play_radio_stop = 0;
+  play_radio_sec_left = alarm0.dur * 60;
+  while(!play_radio_stop) {
+    _nop_();
+    CDBG("play_radio_sec_left = %u\n", play_radio_sec_left);
+  }
+  radio_enable(0);
 }

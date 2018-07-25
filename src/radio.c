@@ -9,7 +9,9 @@
 
 static unsigned char data_out[5]; // 待写入
 static unsigned char data_in[5];  // 待读出
+
 static unsigned char volume;
+static unsigned int freqency;
 
 static bit radio_enabled;
 
@@ -26,7 +28,7 @@ static bit radio_enabled;
 static void _radio_read_data(void) // 读出数据到data_in
 {
   unsigned char i;
-  
+#ifndef __CLOCK_EMULATE__  
   I2C_Start();
   I2C_Write(RADIO_I2C_ADDR | 0x1);
   if(I2C_GetAck()) {
@@ -38,6 +40,9 @@ static void _radio_read_data(void) // 读出数据到data_in
     }
     I2C_Stop();
   }
+#else
+  i = 0;
+#endif
 }
 
 static void _radio_set_bit(unsigned char * buf, unsigned char byte, unsigned char n, bit val)
@@ -61,7 +66,7 @@ static bit _radio_get_bit(unsigned char * buf, unsigned char byte, unsigned char
 static void _radio_write_data(void)// data_out数据写入芯片
 {
   unsigned char i;
-  
+#ifndef __CLOCK_EMULATE__ 
   I2C_Start();
   I2C_Write(RADIO_I2C_ADDR);
   if(I2C_GetAck()) {
@@ -75,6 +80,9 @@ static void _radio_write_data(void)// data_out数据写入芯片
     }
     I2C_Stop();
   }
+#else
+  i = 0;
+#endif
 }
 
 // formula for HIGH side LO injection:
@@ -101,7 +109,7 @@ static void _radio_set_pll(unsigned char * buf, unsigned int freq)
   
   tmp = tmp * 4 / 32768;
   
-  CDBG("_radio_set_pll: freq = %u-> PLL word = 0x%08x\n", freq, tmp);
+  CDBG("_radio_set_pll: freq = %u-> PLL word = 0x%08Lx\n", freq, tmp);
   
   buf[1] = (unsigned char)(tmp & 0xFF);
   buf[0] &= 0xC0;
@@ -114,7 +122,7 @@ static unsigned int _radio_get_pll(unsigned char * buf)
   
   tmp = (buf[0] & 0x3F) * 256 + buf[1];
   
-  CDBG("_radio_get_pll: PLL word = 0x%08x", tmp);
+  CDBG("_radio_get_pll: PLL word = 0x%08Lx", tmp);
   
   tmp = tmp * 32768 / 4;
   
@@ -127,6 +135,33 @@ static unsigned int _radio_get_pll(unsigned char * buf)
   CDBG("-> freq = %u\n", (unsigned int) (tmp & 0xFFFF));
   
   return (unsigned int) (tmp & 0xFFFF);
+}
+
+static void radio_set_power(bit val)
+{
+  serial_set_ctl_bit(SERIAL_BIT_RADIO_EN, val);
+  serial_ctl_out();
+}
+
+static void radio_set_pa_mute(bit val)
+{ 
+  serial_set_ctl_bit(SERIAL_BIT_RADIO_MUTE, val);
+  serial_ctl_out();
+}
+
+static void radio_set_pa_sd(bit val)
+{ 
+  serial_set_ctl_bit(SERIAL_BIT_RADIO_SD, !val);
+  serial_ctl_out();
+}
+
+static void radio_set_pa_volume(unsigned char val)
+{
+  unsigned int tmp;
+  tmp = val / 100 * 255;
+#ifndef __CLOCK_EMULATE__  
+  I2C_Put(RADIO_VOLUME_I2C_ADDR, 0, (unsigned char)tmp);
+#endif
 }
 
 static void radio_load_rom(void)
@@ -143,9 +178,10 @@ static void radio_load_rom(void)
   lval = rom_read(ROM_RADIO_FREQ_HI);
   lval = (lval << 8) & 0xFF00;
   lval |= rom_read(ROM_RADIO_FREQ_LO);
-  if(lval < RADIO_MIN_FREQ) lval = RADIO_MIN_FREQ;
-  if(lval > RADIO_MAX_FREQ) lval = RADIO_MAX_FREQ;
-  _radio_set_pll(data_out, lval);
+  freqency = lval;
+  if(freqency < RADIO_MIN_FREQ) freqency = RADIO_MIN_FREQ;
+  if(freqency > RADIO_MAX_FREQ) freqency = RADIO_MAX_FREQ;
+  _radio_set_pll(data_out, freqency);
   _radio_set_bit(data_out, 2, 7, 0); // SUD
   _radio_set_bit(data_out, 2, 6, 0); // SSL
   _radio_set_bit(data_out, 2, 5, 0); // SSL
@@ -172,25 +208,7 @@ static void radio_load_rom(void)
   _radio_set_bit(data_out, 4, 6, sval);
   _radio_write_data();
   
-  radio_set_volume(volume); 
-}
-
-void radio_set_power(bit val)
-{
-  serial_set_ctl_bit(SERIAL_BIT_RADIO_EN, val);
-  serial_ctl_out();
-}
-
-void radio_set_pa_mute(bit val)
-{ 
-  serial_set_ctl_bit(SERIAL_BIT_RADIO_MUTE, val);
-  serial_ctl_out();
-}
-
-void radio_set_pa_sd(bit val)
-{ 
-  serial_set_ctl_bit(SERIAL_BIT_RADIO_SD, !val);
-  serial_ctl_out();
+  radio_set_pa_volume(volume); 
 }
 
 void radio_initialize (void)
@@ -199,6 +217,7 @@ void radio_initialize (void)
   radio_set_pa_mute(1);
   radio_set_pa_sd(1);
   radio_set_power(0);
+  radio_enabled = 0;
 }
 
 void radio_enter_powersave(void)
@@ -221,39 +240,50 @@ void radio_enable(bit enable)
     radio_load_rom();
     radio_set_pa_sd(0);
     radio_set_pa_mute(0);
+    radio_enabled = 1;
   } else if(radio_enabled && !enable){
     radio_set_pa_mute(1);
     radio_set_pa_sd(1);
     radio_set_power(0);
+    radio_enabled = 0;
   }
 }
 
 static unsigned int radio_search_station(bit prev, RADIO_CB_PROC cb)
 {
-  unsigned int freq, ret_freq;
+  unsigned int freq;
   bit found = 0;
+#ifdef __CLOCK_EMULATE__ 
+  unsigned char cnt;
+  cnt = 0;
+#endif
   
-  freq = _radio_get_pll(data_out);
-  while( (prev && freq < RADIO_MAX_FREQ) || (!prev && freq > RADIO_MIN_FREQ) ) {
-    prev ? freq ++ : freq --;
-    cb(freq);
-    _radio_set_pll(data_out, freq);
+  while( (!prev && freqency < RADIO_MAX_FREQ) || (prev && freqency > RADIO_MIN_FREQ) ) {
+    prev ? freqency -- : freqency ++;
+    cb(freqency);
+    _radio_set_pll(data_out, freqency);
     _radio_write_data();
     _radio_read_data();
-    ret_freq = _radio_get_pll(data_in);
-    CDBG("radio_search_station write %u -> read %u status %bu \n", freq, ret_freq, data_in[3]);
+    freq = _radio_get_pll(data_in);
+    CDBG("radio_search_station write %u -> read %u status %bu \n", freqency, freq, data_in[3]);
     if(((data_in[3] & 0xF0 ) >> 4) >= 5) {
       CDBG("radio_%s_station: found %d\n", prev ? "prev" : "next", freq);
       found = 1;
       break;
     }
+#ifdef __CLOCK_EMULATE__ 
+    if( ++ cnt >= 23) {
+      found = 1;
+      break;
+    }
+#endif    
   }
   
   if(!found) {
     CDBG("radio_%s_station: not found!\n", prev ? "prev" : "next");
   }    
   
-  return freq;
+  return freqency;
 }
 
 unsigned int radio_prev_station(RADIO_CB_PROC cb)
@@ -268,16 +298,12 @@ unsigned int radio_next_station(RADIO_CB_PROC cb)
 
 static unsigned int radio_change_frequency(bit dec)
 {
-  unsigned int freq;
+  if(dec && freqency >= RADIO_MAX_FREQ || !dec && freqency <= RADIO_MIN_FREQ) 
+    return freqency;
   
-  freq = _radio_get_pll(data_out);
-  
-  if(dec && freq >= RADIO_MAX_FREQ || !dec && freq <= RADIO_MIN_FREQ) 
-    return freq;
-  
-  _radio_set_pll(data_out, dec ? (--freq) : (++freq));
+  _radio_set_pll(data_out, dec ? (--freqency) : (++freqency));
   _radio_write_data();
-  return freq;
+  return freqency;
 }
 
 unsigned int radio_dec_frequency(void)
@@ -292,16 +318,13 @@ unsigned int radio_inc_frequency(void)
 
 unsigned int radio_get_frequency(void)
 {
-  return _radio_get_pll(data_out);
+  return freqency;
 }
 
 void radio_write_rom_frequency(void)
 {
-  unsigned int freq;
-  _radio_read_data();
-  freq = _radio_get_pll(data_out);
-  rom_write(ROM_RADIO_FREQ_HI, (unsigned char)((freq & 0xFF00) >> 8));
-  rom_write(ROM_RADIO_FREQ_LO, (unsigned char)(freq & 0xFF));
+  rom_write(ROM_RADIO_FREQ_HI, (unsigned char)((freqency & 0xFF00) >> 8));
+  rom_write(ROM_RADIO_FREQ_LO, (unsigned char)(freqency & 0xFF));
 }
 
 unsigned char radio_inc_volume(void)
@@ -331,8 +354,7 @@ unsigned char radio_get_volume(void)
 
 unsigned char radio_set_volume(unsigned char val)
 {
-  unsigned int tmp;
-  
+
   if(volume == 0 && val != 0) {
     _radio_set_bit(data_out, 0, 7, 0);
     _radio_write_data();
@@ -343,8 +365,8 @@ unsigned char radio_set_volume(unsigned char val)
   
   volume = val;
   
-  tmp = val / 100 * 255;
-  I2C_Put(RADIO_VOLUME_I2C_ADDR, 0, (unsigned char)tmp);
+  radio_set_pa_volume(volume);
+  
   return volume;
 }
 

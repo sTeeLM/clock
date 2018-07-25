@@ -64,6 +64,7 @@ static void rtc_dump_raw(void)
 
 void rtc_dump(void)
 {
+  CDBG("rtc_dump:\n");
   rtc_read_data(RTC_TYPE_DATE);
   CDBG("date/day: %02bu-%02bu-%02bu/%bu\n",
     rtc_date_get_year(), rtc_date_get_month(), rtc_date_get_date(),
@@ -131,7 +132,6 @@ void scan_rtc(void)
 void rtc_initialize (void)
 {
   unsigned char count;
-  unsigned char is12;
 
   CDBG("RTC before initialize:\n");
   rtc_dump_raw();
@@ -142,13 +142,13 @@ void rtc_initialize (void)
   memset(rtc_data, 0, sizeof(rtc_data));
 
   // 初始化
-  is12 = rom_read(ROM_TIME_IS12);
-  
+
   rtc_read_data(RTC_TYPE_TIME);
 
   // 12/24格式按照rom设置来，需要转换一次
+  // RTC 内部使用24小时制
   count = rtc_time_get_hour();
-  rtc_time_set_hour_12(is12);
+  rtc_time_set_hour_12(0);
   rtc_time_set_hour(count);
   
   ///// 调试用，2014-08-19, 12:10:30 PM
@@ -188,7 +188,17 @@ void rtc_initialize (void)
   rtc_write_data(RTC_TYPE_DATE);
   
   delay_ms(10);
-   
+  
+  // 闹钟也设置为24小时格式
+  rtc_read_data(RTC_TYPE_ALARM0);
+  rtc_alarm_set_hour_12(0);
+  rtc_write_data(RTC_TYPE_ALARM0);  
+  
+  rtc_read_data(RTC_TYPE_ALARM1);
+  rtc_alarm_set_hour_12(0);
+  rtc_write_data(RTC_TYPE_ALARM1);
+
+  
   // 清除所有闹钟：闹钟配置由alarm自行从rom中读取，写入rtc
   rtc_read_data(RTC_TYPE_CTL);
   rtc_enable_alarm_int(RTC_ALARM0, 0);

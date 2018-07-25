@@ -12,6 +12,8 @@
 #include "lt_timer.h"
 #include "sm.h"
 #include "delay_task.h"
+#include "rom.h"
+#include "alarm.h"
 
 // ISR里不能调带参数函数。。。
 // 2000~2099年
@@ -159,6 +161,7 @@ static void clock_inc_ms39(void)
     clk.sec = (++ clk.sec) % 60;
     lt_timer_dec_sec();
     sec_256 ++;
+    alarm_play_radio_cb();
     set_task(EV_1S);
     if(clk.sec == 0) {
       clk.min = (++ clk.min) % 60;
@@ -351,7 +354,7 @@ void clock_sync_from_rtc(enum clock_sync_type type)
     clk.min  = rtc_time_get_min();    // 0 - 59
     clk.sec  = rtc_time_get_sec();    // 0 - 59
     clk.ms39 = 255;   // 0 - 255
-    clk_is12     = rtc_time_get_hour_12();
+    clk_is12     = rom_read(ROM_TIME_IS12);
   } else if(type == CLOCK_SYNC_DATE) {
     rtc_read_data(RTC_TYPE_DATE);
     clk.year = rtc_date_get_year();          // 0 - 99 (2000 ~ 2099)
@@ -367,7 +370,6 @@ void clock_sync_to_rtc(enum clock_sync_type type)
   clock_enable_interrupt(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
-    rtc_time_set_hour_12(clk_is12);
     rtc_time_set_hour(clk.hour);
     rtc_time_set_min(clk.min);
     rtc_time_set_sec(clk.sec);

@@ -6,8 +6,9 @@
 #include "led.h"
 #include "debug.h"
 #include "cext.h"
+#include "sm_radio_powersave.h"
 
-#define RADIO_SWITCH_TIMEO 3 // 每x秒在电台和音量之间轮换一次
+#define RADIO_SWITCH_TIMEO 7 // 每x秒在电台和音量之间轮换一次
 
 const char * code sm_radio_display_ss_name[] = 
 {
@@ -66,7 +67,7 @@ static void radio_freq_cb(unsigned int freq)
   led_set_code(4, tmp / 100 + 0x30);
   led_set_code(3, (tmp % 100) / 10 + 0x30);
   led_set_code(2, (tmp % 100) % 10 + 0x30);
-  tmp = (unsigned char)(val % 10);
+  tmp = (unsigned char)(freq % 10);
   led_set_code(1, tmp + 0x30);
 }
 
@@ -198,7 +199,11 @@ void sm_radio_display_submod0(unsigned char from, unsigned char to, enum task_ev
   }
   
   if(ev == EV_KEY_MOD_PRESS) {
-    dec_write(IS_STATION);
+    if(from != (SM_RADIO_POWERSAVE<<4|SM_RADIO_POWERSAVE_SLEEP)) {
+      dec_write(IS_STATION);
+    } else {
+      enter_radio(IS_STATION);
+    }
     reset_switch_to();
     power_reset_powersave_to();
     return;
@@ -222,7 +227,11 @@ void sm_radio_display_submod0(unsigned char from, unsigned char to, enum task_ev
   }
   
   if(ev == EV_KEY_SET_PRESS) {
-    inc_write(IS_STATION);
+    if(from != (SM_RADIO_POWERSAVE<<4|SM_RADIO_POWERSAVE_SLEEP)) {
+      inc_write(IS_STATION);
+    } else {
+      enter_radio(IS_STATION);
+    }    
     reset_switch_to();
     power_reset_powersave_to();
     return;

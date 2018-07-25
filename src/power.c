@@ -53,7 +53,7 @@ static bit powersave_flag;
 static bit is_calibration;
 // v[0] = D15~D8, we need D11~D8 as hi 4 bits
 // v[1] = D7~D0, we need D7~D0 as low 8 bits
-static unsigned int power_pack2hex(unsigned char v[2])
+static unsigned int power_pack2hex(unsigned char * v)
 {
   unsigned int val;
   val = (v[0] & 0xF);
@@ -63,7 +63,7 @@ static unsigned int power_pack2hex(unsigned char v[2])
   return val;
 }
 
-static void power_hex2pack(unsigned int val, unsigned char v[2])
+static void power_hex2pack(unsigned int val, unsigned char * v)
 {
   v[0] = (unsigned char)((val & 0xF00) >> 8) & 0xF;
   v[1] = (unsigned char)(val & 0xFF);
@@ -107,6 +107,8 @@ static void power_delay_task(void)
 
 void power_load_rom(void)
 {
+  unsigned char powersave_to;
+  
   CDBG("power_load_rom\n");
   full_int = rom_read(ROM_POWER_FULL_INT);
   full_exp = rom_read(ROM_POWER_FULL_EXP);
@@ -115,18 +117,20 @@ void power_load_rom(void)
   CDBG("battery scale: [%bu.%02bu %bu.%02bu]\n", 
     full_int, full_exp, 
     empty_int, empty_exp);
+  
+  powersave_to = rom_read(ROM_POWERSAVE_TO);
+  switch(powersave_to) {
+    case POWERSAVE_OFF: powersave_to_s = 0;  break;
+    case POWERSAVE_30S: powersave_to_s = 30; break;
+    case POWERSAVE_60S: powersave_to_s = 60; break;
+  }
 }
 
 void power_initialize(void)
 {
-  unsigned char powersave_to;
+
   CDBG("power_initialize\n");
-  powersave_to = rom_read(ROM_POWERSAVE_TO);
-  switch(powersave_to) {
-    case POWERSAVE_OFF: powersave_to_s = 0;  break;
-    case POWERSAVE_15S: powersave_to_s = 15; break;
-    case POWERSAVE_30S: powersave_to_s = 30; break;
-  }
+
   powersave_flag = 0;
   POWER_5V_EN = 0;
   POWER_3_3V_EN = 1;
@@ -151,6 +155,7 @@ void power_initialize(void)
   // VHYST -- Alert Hysteresis Register
   power_set_hyst(0);
 
+#ifndef __CLOCK_EMULATE__   
   // initialize interrupt
   // Cycle Time = 000
   // Alert Hold = 1
@@ -159,6 +164,8 @@ void power_initialize(void)
   // Reserved = 0
   // Polarity = 0 (active low)
   I2C_Put(POWER_I2C_ADDR, 0x2, 0x10);
+#endif  
+  
   
   power_set_cycle(POWER_CYCLE_2048T);
   
@@ -179,29 +186,42 @@ void power_enable_alert(bit enable)
   // Alert Pin Enable = 1 / 0
   // Reserved = 0
   // Polarity = 0 (active low)
+#ifndef __CLOCK_EMULATE__
   I2C_Get(POWER_I2C_ADDR, 0x2, &val);
   val &= ~0x4;
   if(enable)
     val |= 0x4;
   I2C_Put(POWER_I2C_ADDR, 0x2, val);
+#else
+  UNUSED_PARAM(val);
+#endif
 }
 
 void power_set_cycle(enum power_cycle_interval t)
 {
   unsigned char val;
   CDBG("power_set_cycle %bu\n", t);
+#ifndef __CLOCK_EMULATE__  
   I2C_Get(POWER_I2C_ADDR, 0x2, &val);
   val &= ~0xE0;
   val |= ((t << 5) & 0xE0);
   I2C_Put(POWER_I2C_ADDR, 0x2, val);
+#else
+  UNUSED_PARAM(val);
+#endif
 }
 
 enum power_cycle_interval power_get_cycle(void)
 {
   unsigned char val;
+#ifndef __CLOCK_EMULATE__  
   I2C_Get(POWER_I2C_ADDR, 0x2, &val);
   CDBG("power_get_cycle return %bu\n", ((val & 0xE0) >> 5) & 0x7);
   return (val & 0x7);
+#else
+  UNUSED_PARAM(val);
+  return 0;
+#endif
 }
 
 
@@ -210,13 +230,19 @@ void power_set_alert_vhigh(unsigned int val)
   unsigned char v[2];
   CDBG("power_set_alert_vhigh %u\n", val);
   power_hex2pack(val, v);
+#ifndef __CLOCK_EMULATE__ 
   I2C_Puts(POWER_I2C_ADDR, 0x4, 2, v);
+#endif
 }
 
 unsigned int power_get_alert_vhigh(void)
 {
   unsigned char v[2];
+#ifndef __CLOCK_EMULATE__   
   I2C_Gets(POWER_I2C_ADDR, 0x4, 2, v);
+#else
+  v[0] = v[1] = 0;
+#endif
   CDBG("power_get_alert_vhigh 0x%02bx 0x%02bx\n", v[0], v[1]);
   return power_pack2hex(v); 
 }
@@ -226,13 +252,19 @@ void power_set_alert_vlow(unsigned int val)
   unsigned char v[2];
   CDBG("power_set_alert_vlow %bu\n", val);
   power_hex2pack(val, v);
+#ifndef __CLOCK_EMULATE__ 
   I2C_Puts(POWER_I2C_ADDR, 0x3, 2, v);
+#endif
 }
 
 unsigned int power_get_alert_vlow(void)
 {
   unsigned char v[2];
+#ifndef __CLOCK_EMULATE__ 
   I2C_Gets(POWER_I2C_ADDR, 0x3, 2, v);
+#else
+  v[0] = v[1] = 0;
+#endif
   CDBG("power_get_alert_vlow 0x%02bx 0x%02bx\n", v[0], v[1]);
   return power_pack2hex(v); 
 }
@@ -242,13 +274,19 @@ void power_set_hyst(unsigned int val)
   unsigned char v[2];
   CDBG("power_set_hyst %bu\n", val);
   power_hex2pack(val, v); 
+#ifndef __CLOCK_EMULATE__   
   I2C_Puts(POWER_I2C_ADDR, 0x5, 2, v);
+#endif
 }
 
 unsigned int power_get_hyst(void)
 {
   unsigned char v[2];
+#ifndef __CLOCK_EMULATE__   
   I2C_Gets(POWER_I2C_ADDR, 0x5, 2, v);
+#else
+  v[0] = v[1] = 0;
+#endif
   CDBG("power_get_hyst 0x%02bx 0x%02bx\n", v[0], v[1]);
   return power_pack2hex(v); 
 }
@@ -257,24 +295,36 @@ void power_clr_high_alert(void)
 {
   unsigned char val;
   CDBG("power_clr_high_alert\n");
+#ifndef __CLOCK_EMULATE__   
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
   val |= 0x2; // The controller writes a one to this bit. ???
   I2C_Put(POWER_I2C_ADDR, 0x1, val);
+#else
+  UNUSED_PARAM(val);
+#endif
 }
 
 void power_clr_low_alert(void)
 {
   unsigned char val;
   CDBG("power_clr_low_alert\n");
+#ifndef __CLOCK_EMULATE__   
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
   val |= 0x1; // The controller writes a one to this bit. ???
   I2C_Put(POWER_I2C_ADDR, 0x1, val);
+#else
+  UNUSED_PARAM(val);
+#endif
 }
 
 bit power_test_high_alert(void)
 {
   unsigned char val;
+#ifndef __CLOCK_EMULATE__     
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
+#else
+  val = 0;
+#endif
   CDBG("power_test_high_alert return %s\n", (val & 0x2) != 0 ? "1" : "0");
   return (val & 0x2) != 0;
 }
@@ -282,7 +332,11 @@ bit power_test_high_alert(void)
 bit power_test_low_alert(void)
 {
   unsigned char val;
+#ifndef __CLOCK_EMULATE__   
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
+#else
+  val = 0;
+#endif
   CDBG("power_test_low_alert return %s\n", (val & 0x1) != 0 ? "1" : "0");
   return (val & 0x1) != 0;
 }
@@ -384,8 +438,8 @@ enum powersave_time power_get_powersave_to(void)
 {
   switch(powersave_to_s) {
     case 0:  return POWERSAVE_OFF;
-    case 15: return POWERSAVE_15S;
     case 30: return POWERSAVE_30S;
+    case 60: return POWERSAVE_60S;
   }
   return POWERSAVE_OFF;
 }
@@ -400,6 +454,11 @@ void power_inc_powersave_to(void)
     case 30: 
       powersave_to_s = 0; break;
   }
+}
+
+void power_write_rom_powersave_to(void)
+{
+  rom_write(ROM_POWERSAVE_TO, power_get_powersave_to());
 }
 
 bit power_test_powersave_to(void)
@@ -480,6 +539,9 @@ unsigned char power_get_hex(void)
   unsigned int val;
   unsigned long hex;
 #ifdef __CLOCK_EMULATE__
+  UNUSED_PARAM(val);
+  UNUSED_PARAM(hex);
+  UNUSED_PARAM(v[0]);
   return 2705;
 #else
   I2C_Gets(POWER_I2C_ADDR, 0x0, 2, v);

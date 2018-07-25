@@ -90,11 +90,11 @@ static void inc_write(unsigned char what)
   switch(what) {
     case IS_PS:
       power_inc_powersave_to();
-      rom_write(ROM_POWERSAVE_TO, power_get_powersave_to());
+      power_write_rom_powersave_to();
       break;
     case IS_BEEP:
       beeper_set_beep_enable(!beeper_get_beep_enable());
-      rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable() ? 1 : 0);
+      beeper_write_rom_beeper_enable();
       break;
     case IS_1224:
       is12 = rom_read(ROM_TIME_IS12);
@@ -106,7 +106,7 @@ static void inc_write(unsigned char what)
       break;
     case IS_REMOTE:
       remote_enable(!remote_get_enable());
-      rom_write(ROM_REMOTE_ONOFF, remote_get_enable());
+      remote_write_rom_remote_enable();
       break;
   }
 }

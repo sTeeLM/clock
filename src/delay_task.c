@@ -13,7 +13,7 @@ void delay_task_initialize(void)
   memset(delay_tasks, 0, sizeof(delay_tasks));
 }
 
-void delay_task_reg(unsigned char index, DELAY_TASK_PROC task, unsigned int delay_sec)
+void delay_task_reg(enum delay_task_type index, DELAY_TASK_PROC task, unsigned int delay_sec)
 {
   CDBG("delay_task_reg %bu, delay_sec = %u\n", index, delay_sec);
   if(index > DELAY_TASK_CNT) {

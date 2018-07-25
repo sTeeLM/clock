@@ -1,16 +1,6 @@
 #ifndef __CLOCK_I2C_H__
 #define __CLOCK_I2C_H__
 
-#ifdef __OSCILLATO_6T__
-#define I2C_DELAY_VALUE  40  
-#define I2C_STOP_WAIT_VALUE 80 
-#else
-#define I2C_DELAY_VALUE  20  
-#define I2C_STOP_WAIT_VALUE 40  
-#endif
-
-
-void I2C_Init();
 void I2C_Delay();
 void I2C_Start();
 void I2C_Stop();

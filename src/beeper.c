@@ -37,6 +37,11 @@ void beeper_set_beep_enable(bit enable)
   beep_enable = enable;
 }
 
+void beeper_write_rom_beeper_enable(void)
+{
+  rom_write(ROM_BEEPER_ENABLE, beeper_get_beep_enable());
+}
+
 void beeper_beep(void)
 { 
   unsigned char c = 30;

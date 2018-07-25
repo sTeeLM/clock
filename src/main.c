@@ -57,29 +57,45 @@ void main(void)
   com_initialize();                             // initialize interrupt driven serial I/O
   show_version();
   rom_initialize();                             // initialize rom
+  key_initialize();                             // initialize keys
+  led_initialize();                             // initialize led display   
+  rtc_initialize();                             // initialize rtc
+  clock_initialize();                           // initialize clock 
+  alarm_initialize();                           // initialize power alarm manager
+  lt_timer_initialize();                        // initialize lt_timer
+  
   task_initialize();                            // initialize task manager
   sm_initialize();                              // initialize state machine
   delay_task_initialize();                      // initialize delay task
+  
+  led_set_code(5, '0');
+  
   serial_hub_initialize();                      // initialize serial hub
   int_hub_initialize();                         // initialize interrupt hub 
   
-  led_initialize();                             // initialize led display
+  led_set_code(4, '0');
+  
   power_initialize();                           // initialize power manager
   radio_initialize();                           // initialize radio
+  
+  led_set_code(3, '0');
+  
   indicator_initialize();                       // initialize indicator
-  key_initialize();                             // initialize keys
   timer_initialize();                           // initialize timer
   beeper_initialize();                          // initialize beeper
+  
+  led_set_code(2, '0');
+  
   thermo_initialize();                          // initialize thermo
   fuse_initialize();                            // initialize fuse
   hg_initialize();                              // initialize hg
+  
+  led_set_code(1, '0');
+  
   remote_initialize();                          // initialize remote control
   mpu_initialize();                             // initialize mpu
-  rtc_initialize();                             // initialize rtc
-  
-  clock_initialize();                           // initialize clock
-  alarm_initialize();                           // initialize power alarm manager
-  lt_timer_initialize();                        // initialize lt_timer
+
+  led_set_code(0, '0');
 
   while(1) {                                    // loop forever
     run_task();                                 // run task procs

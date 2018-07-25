@@ -79,7 +79,7 @@ static void rom_reset(void)
   rom_write(ROM_ALARM0_DAY_MASK, 0x7F);
   rom_write(ROM_ALARM0_HOUR, 12);
   rom_write(ROM_ALARM0_MIN, 12);
-  rom_write(ROM_ALARM0_DUR, 15);
+  rom_write(ROM_ALARM0_DUR, 5);
   rom_write(ROM_ALARM1_ENABLE, 1);
   
   rom_write(ROM_TIME_IS12, 1);

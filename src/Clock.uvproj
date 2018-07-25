@@ -310,7 +310,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__OSCILLATO_6T__</Define>
+              <Define>__OSCILLATO_6T__,__CLOCK_EMULATE__</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>

@@ -18,6 +18,16 @@ struct alarm0_struct {
   unsigned char dur;                     // 闹铃持续时间，分钟
 };
 
+enum alarm_sync_type {
+  ALARM_SYNC_ALARM0_DAY_MASK,
+  ALARM_SYNC_ALARM0_HOUR,
+  ALARM_SYNC_ALARM0_MIN,
+  ALARM_SYNC_ALARM0_DUR,
+  ALARM_SYNC_ALARM1_ENABLE
+};
+
+void alarm_save_rom(enum alarm_sync_type t);
+
 bit alarm0_test_enable(unsigned char day);
 void alarm0_set_enable(unsigned char day, bit enable);
 unsigned char alarm0_get_day_mask(void);
@@ -44,5 +54,6 @@ void alarm_switch_on(void);
 void alarm_switch_off(void);
 
 void alarm_stop_radio(void);
-bit alarm_play_radio(void);
+void alarm_play_radio(void);
+void alarm_play_radio_cb(void);
 #endif

@@ -519,7 +519,6 @@ void lt_timer_sync_to_rtc(void)
   // 绝对时间写入rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);
-  rtc_alarm_set_hour_12(lt_timer_is_12);
   rtc_alarm_set_date(ltm.date + 1);
   rtc_alarm_set_hour(ltm.hour);
   rtc_alarm_set_min(ltm.min);

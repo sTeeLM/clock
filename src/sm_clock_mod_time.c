@@ -126,25 +126,31 @@ static void inc_and_write(unsigned char what)
 }
 
 
-static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
+static void enter_clock(unsigned char what) // blink hour:0, min:1, sec:2
 {
   clock_display(1);
   led_clr_all_blink();
   switch(what) {
     case IS_HOUR:
+    case IS_YEAR:
       led_set_blink(5);
       led_set_blink(4);    
       break;
     case IS_MIN:
+    case IS_MON:
       led_set_blink(3);
       led_set_blink(2);    
       break;      
     case IS_SEC:
+    case IS_DAY:
       led_set_blink(1);
       led_set_blink(0);    
       break;      
   }
-  clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
+  if(what == IS_HOUR || what == IS_MIN || what == IS_SEC)
+    clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
+  else
+    clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
 }
 
 
@@ -180,15 +186,7 @@ static void sm_clock_mod_time(unsigned char what, enum task_events ev)
 {
   // 按mod0进入新模式
   if(ev == EV_KEY_MOD_PRESS) {
-    if(what == IS_HOUR 
-      || what == IS_MIN 
-      || what == IS_SEC) {
-      enter_hhmmss(what);
-    } else if(what == IS_YEAR 
-      || what == IS_MON 
-      || what == IS_DAY) {
-      enter_yymmdd(what);
-    }
+    enter_clock(what);
     return;
   }
   // set0 分钟++并写入rtc

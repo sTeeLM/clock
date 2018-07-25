@@ -146,7 +146,7 @@ void led_initialize (void)
   led_blink = 0;
   led_index = 0;
   scan_loop_cnt = 0;
-  memset(led_data, 0xFF, sizeof(led_data));
+  memset(led_data, 0x3F|0x80, sizeof(led_data));
   
   P0 = 0xFF; 
   P2 = 0xFF;  

@@ -18,4 +18,5 @@ bit  remote_get_enable(void);
 // 如果打开总电源，是否还额外允许DISARM/DETONATE按钮
 void remote_fuse_enable(bit enable); 
 
+void remote_write_rom_remote_enable(void);
 #endif

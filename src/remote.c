@@ -101,3 +101,8 @@ void remote_fuse_enable(bit enable)
   CDBG("remote_fuse_enable is %bu\n", enable ? 1:0);
   remote_fuse_ctl_enable = enable;
 }
+
+void remote_write_rom_remote_enable(void)
+{
+  rom_write(ROM_REMOTE_ONOFF, remote_enabled);
+}
