@@ -208,6 +208,8 @@ static void radio_load_rom(void)
   _radio_set_bit(data_out, 4, 6, sval);
   _radio_write_data();
   
+  _radio_read_data(); // 填充data_in
+  
   radio_set_pa_volume(volume); 
 }
 
@@ -251,7 +253,6 @@ void radio_enable(bit enable)
 
 static unsigned int radio_search_station(bit prev, RADIO_CB_PROC cb)
 {
-  unsigned int freq;
   bit found = 0;
 #ifdef __CLOCK_EMULATE__ 
   unsigned char cnt;
@@ -260,14 +261,12 @@ static unsigned int radio_search_station(bit prev, RADIO_CB_PROC cb)
   
   while( (!prev && freqency < RADIO_MAX_FREQ) || (prev && freqency > RADIO_MIN_FREQ) ) {
     prev ? freqency -- : freqency ++;
-    cb(freqency);
-    _radio_set_pll(data_out, freqency);
-    _radio_write_data();
-    _radio_read_data();
-    freq = _radio_get_pll(data_in);
-    CDBG("radio_search_station write %u -> read %u status %bu \n", freqency, freq, data_in[3]);
+    radio_set_frequency(freqency);
+    if(cb != NULL) {
+      cb(freqency);
+    }
     if(((data_in[3] & 0xF0 ) >> 4) >= 5) {
-      CDBG("radio_%s_station: found %d\n", prev ? "prev" : "next", freq);
+      CDBG("radio_%s_station: found %u\n", prev ? "prev" : "next", freqency);
       found = 1;
       break;
     }
@@ -296,14 +295,43 @@ unsigned int radio_next_station(RADIO_CB_PROC cb)
   return radio_search_station(0, cb);
 }
 
+void radio_set_frequency(unsigned int freq)
+{
+  unsigned int out_freq;
+  if(freq >= RADIO_MAX_FREQ || freq <= RADIO_MIN_FREQ) 
+    return;
+  freqency = freq;
+  _radio_set_pll(data_out, freq);
+  _radio_write_data();
+  _radio_read_data();
+  out_freq = _radio_get_pll(data_in);
+  CDBG("freqency write: %u\n"
+       "   freqency read: %u\n"
+       "   RF Adc Level: %u\n" 
+       "   IF Adc Level: 0x%02bx\n" 
+       "   Stereo: %s\n"
+    ,freqency
+    ,out_freq
+    ,(data_in[3] & 0xF0 ) >> 4
+    ,data_in[2] & 0x7F
+    ,(data_in[2] & 0x80) != 0 ? "ON" : "OFF"); 
+  return;
+}
+
 static unsigned int radio_change_frequency(bit dec)
 {
   if(dec && freqency >= RADIO_MAX_FREQ || !dec && freqency <= RADIO_MIN_FREQ) 
     return freqency;
   
-  _radio_set_pll(data_out, dec ? (--freqency) : (++freqency));
-  _radio_write_data();
+  dec ? freqency -- : freqency ++;
+  radio_set_frequency(freqency);
+   
   return freqency;
+}
+
+bit radio_get_stereo(void)
+{
+  return _radio_get_bit(data_in, 2, 7);
 }
 
 unsigned int radio_dec_frequency(void)
@@ -383,6 +411,9 @@ bit radio_get_hlsi(void)
 bit radio_set_hlsi(bit val)
 {
   _radio_set_bit(data_out, 2, 4, val);
+  _radio_set_pll(data_out, freqency);
+  _radio_write_data();
+  _radio_read_data(); // 填充data_in
   return val;
 }
 
@@ -399,6 +430,8 @@ bit radio_get_ms(void)
 bit radio_set_ms(bit val)
 {
   _radio_set_bit(data_out, 2, 3, val);
+  _radio_write_data();
+  _radio_read_data(); // 填充data_in
   return val;
 }
 
@@ -422,6 +455,8 @@ enum radio_bl_level radio_inc_bl(void)
 enum radio_bl_level radio_set_bl(enum radio_bl_level val)
 {
   _radio_set_bit(data_out, 3, 5, val);
+  _radio_write_data();
+  _radio_read_data(); // 填充data_in
   return val;
 }
 
@@ -438,6 +473,8 @@ bit radio_get_hcc(void)
 bit radio_set_hcc(bit val)
 {
   _radio_set_bit(data_out, 3, 2, val);
+  _radio_write_data();
+  _radio_read_data(); // 填充data_in
   return val;
 }
 
@@ -454,6 +491,8 @@ bit radio_get_snc(void)
 bit radio_set_snc(bit val)
 {
   _radio_set_bit(data_out, 3, 1, val);
+  _radio_write_data();
+  _radio_read_data(); // 填充data_in
   return val;
 }
 
@@ -465,6 +504,8 @@ void radio_write_rom_snc(void)
 enum radio_dtc_level radio_set_dtc(enum radio_dtc_level val)
 {
   _radio_set_bit(data_out, 4, 6, val);
+  _radio_write_data();
+  _radio_read_data(); // 填充data_in
   return val;
 }
 
@@ -477,11 +518,37 @@ enum radio_dtc_level radio_inc_dtc(void)
 {
   bit val;
   val = _radio_get_bit(data_out, 4, 6);
-  _radio_set_bit(data_out, 4, 6, !val);
-  return !val;
+  return radio_set_dtc(!val);
 }
 
 void radio_write_rom_dtc(void)
 {
   rom_write(ROM_RADIO_DTC, radio_get_dtc());
+}
+
+void radio_dump(void)
+{
+  unsigned char i;
+  CDBG("radio: %s\n", radio_enabled ? "ON" : "OFF");
+  if(radio_enabled) {
+    CDBG("  freq: %u\n", freqency);
+    CDBG("  vol: %bu\n", volume);
+    CDBG("  hlsi: %s\n", radio_get_hlsi() ? "ON" : "OFF");
+    CDBG("  ms: %s\n", radio_get_ms() ?  "ON" : "OFF");
+    CDBG("  bl: %s\n", radio_get_bl() == RADIO_BL_JAPNESE ? "JAPNESE" : "EUROPE");
+    CDBG("  hcc: %s\n", radio_get_hcc() ? "ON" : "OFF");
+    CDBG("  snc: %s\n", radio_get_snc() ? "ON" : "OFF");
+    CDBG("  dtc: %s\n", radio_get_dtc() == RADIO_DTC_75US ? "75us" : "50us"); 
+
+    CDBG("raw data_out:\n");
+    for(i = 0 ; i < 5; i ++) {
+      CDBG("  %02bx\n", data_out[i]);
+    }
+    CDBG("\nraw data_in:\n");
+    for(i = 0 ; i < 5; i ++) {
+      CDBG("  %02bx\n", data_in[i]);
+    }
+    CDBG("\n");
+  }
+ 
 }

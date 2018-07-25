@@ -40,6 +40,11 @@ static void update_radio(unsigned char what)
       led_set_code(1, tmp + 0x30);
       led_set_code(0, '-');
       led_set_dp(2);
+      if(radio_get_stereo()) {
+        led_set_dp(5);
+      } else {
+        led_clr_dp(5);
+      }
     break;
     case IS_VOLUME:
       led_set_code(5, '-');     
@@ -53,7 +58,7 @@ static void update_radio(unsigned char what)
       led_set_code(5, '-');     
       led_set_code(4, '-');
       led_set_code(3, LED_CODE_CEL);
-      led_set_code(2, '-');
+      led_set_code(2, LED_CODE_CEL);
       led_set_code(1, '-');
       led_set_code(0, '-'); 
     break;
@@ -69,6 +74,11 @@ static void radio_freq_cb(unsigned int freq)
   led_set_code(2, (tmp % 100) % 10 + 0x30);
   tmp = (unsigned char)(freq % 10);
   led_set_code(1, tmp + 0x30);
+  if(radio_get_stereo()) {
+    led_set_dp(5);
+  } else {
+    led_clr_dp(5);
+  }
 }
 
 static void enter_radio(unsigned char what)

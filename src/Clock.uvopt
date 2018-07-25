@@ -265,7 +265,7 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>5</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\rtc.c</PathWithFileName>
@@ -577,7 +577,7 @@
 
   <Group>
     <GroupName>clock</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -721,7 +721,7 @@
       <GroupNumber>4</GroupNumber>
       <FileNumber>41</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\sm_radio_powersave.c</PathWithFileName>
@@ -833,7 +833,7 @@
 
   <Group>
     <GroupName>shell</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -973,7 +973,7 @@
       <GroupNumber>7</GroupNumber>
       <FileNumber>60</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\cmd_rtc.c</PathWithFileName>
@@ -990,6 +990,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\cmd_power.c</PathWithFileName>
       <FilenameWithoutPath>cmd_power.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>7</GroupNumber>
+      <FileNumber>62</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\cmd_radio.c</PathWithFileName>
+      <FilenameWithoutPath>cmd_radio.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

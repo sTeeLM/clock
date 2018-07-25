@@ -703,6 +703,11 @@
               <FileType>1</FileType>
               <FilePath>.\cmd_power.c</FilePath>
             </File>
+            <File>
+              <FileName>cmd_radio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cmd_radio.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

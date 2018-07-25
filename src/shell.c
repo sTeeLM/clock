@@ -19,6 +19,7 @@
 #include "cmd_mpu.h"
 #include "cmd_rtc.h"
 #include "cmd_power.h"
+#include "cmd_radio.h"
 #include "cext.h"
 
 #define SHELL_BUFFER_SIZE 41
@@ -77,14 +78,24 @@ struct shell_cmds code cmds[] =
   {"mp", "mpu test",    "mp <on|off>: enable/disable\n"
                         "mp int: read interrupt status\n", cmd_mpu},
   {"rt", "rtc read or write",    "rt : dump status\n", cmd_rtc},  
-  {"pw", "power pack test",    "pw bat: get current battery volume\n"
+  {"pw", "power test",         "pw bat: get current battery volume\n"
                                "pw 5v <on | off>: 5v power on off\n"
                                "pw hi <num>: hi alert voltage\n"
                                "pw lo <num>: lo alert voltage\n"
                                "pw hyst <num>: hysteresis voltage\n"
                                "pw int <clr>: alert status or clear alert\n" 
                                "pw cal <on | off>: alert status or clear alert\n"    
-                              ,cmd_power},  
+                              ,cmd_power}, 
+  {"ra", "radio test",         "ra <on|off>: power on | off radio\n"
+                               "ra station <prev|next|dec|inc|num> prev /next station\n"
+                               "ra vol <num>: set volume\n"
+                               "ra hlsi <hi|lo>: high/low side injection hi|lo\n"
+                               "ra ms <on|off>: mono to stereo on |off \n" 
+                               "ra bl <ja | eu>: band limits is Japanese FM(76~91) or US/Europe FM(87.5~108)\n" 
+                               "ra hcc <on|off>: high cut control on|off \n" 
+                               "ra snc <on|off>: stereo noise cancelling on|off \n"  
+                               "ra dtc <75|50>: de-emphasis time constant is 75 μs or 50 us \n" 
+                              ,cmd_radio},
   {"ex", "quit the shell", "ex", cmd_null},
 }; 
 
