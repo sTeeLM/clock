@@ -48,17 +48,17 @@ static void mpu_device_init(void)
   // ACT_X enable = 1
   // ACT_X enable = 1
   // ACT_Y enable = 1
-  // INACT ac/dc = 1 (ac)
-  // INACT_X enable = 1
-  // INACT_Y enable = 1
-  // INACT_Z enable = 1
-  I2C_Put(MPU_I2C_ADDRESS, 0x27, 0xFF);
+  // INACT ac/dc = 0 (ac)
+  // INACT_X enable = 0
+  // INACT_Y enable = 0
+  // INACT_Z enable = 0
+  I2C_Put(MPU_I2C_ADDRESS, 0x27, 0xF0);
   
-  // Register 0x25—THRESH_INACT (Read/Write) -> 62.5 mg
-  I2C_Put(MPU_I2C_ADDRESS, 0x25, 1);
+  // Register 0x25—THRESH_INACT (Read/Write) -> disable
+  I2C_Put(MPU_I2C_ADDRESS, 0x25, 0);
   
-  // Register 0x26—TIME_INACT (Read/Write) -> 1s
-  I2C_Put(MPU_I2C_ADDRESS, 0x26, 1);
+  // Register 0x26—TIME_INACT (Read/Write) -> disable
+  I2C_Put(MPU_I2C_ADDRESS, 0x26, 0);
 
   // Register 0x2D—POWER_CTL (Read/Write) into stand by
   // 00
@@ -100,14 +100,14 @@ static void mpu_power_on(void)
   val = 0x10;
   I2C_Put(MPU_I2C_ADDRESS, 0x2E, val);
   
-  // Register 0x2D—POWER_CTL (Read/Write), into autosleep
+  // Register 0x2D—POWER_CTL (Read/Write), don't into autosleep
   // 00
-  // Link = 1
-  // AUTO_SLEEP = 1
+  // Link = 0
+  // AUTO_SLEEP = 0
   // Measure Bit = 1
   // Sleep = 0
   // Wakeup = 00
-  val = 0x38;
+  val = 0x08;
   I2C_Put(MPU_I2C_ADDRESS, 0x2D, val);
   
   val = mpu_read_int_status();
@@ -161,12 +161,11 @@ void mpu_initialize (void)
 
 void mpu_enter_powersave(void)
 {
-  CDBG("mpu_enter_powersave\n");
 }
 
 void mpu_leave_powersave(void)
 {
-  CDBG("mpu_leave_powersave\n");
+  
 }
 
 void scan_mpu(void)

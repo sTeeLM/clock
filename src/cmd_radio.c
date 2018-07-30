@@ -15,10 +15,13 @@ char cmd_radio(char arg1, char arg2)
   unsigned int val;
   if(arg1 == 0 && arg2 == 0) {
     radio_dump();
+    return 0;
   } else if(!strcmp(shell_buf + arg1, "on")) {
     radio_enable(1);
+    return 0;
   } else if(!strcmp(shell_buf + arg1, "off")) {
     radio_enable(0);
+    return 0;
   } else if(!strcmp(shell_buf + arg1, "station")) {
     if(arg2 == 0) {
       CDBG("freq: %u\n", radio_get_frequency());
@@ -44,19 +47,15 @@ char cmd_radio(char arg1, char arg2)
       CDBG("vol: %bu\n", radio_get_volume());
     } else {
       val = atoi(shell_buf + arg2);
-      if(val != 0) {
-        radio_set_volume((unsigned char)val);
-        return 0;
-      }
-      return 1;
+      radio_set_volume(val);
     }
     return 0;
   } else if(!strcmp(shell_buf + arg1, "hlsi")) {
     if(arg2 == 0) {
-      CDBG("hisi: %s\n", radio_get_hlsi() ? "ON" : "OFF");
-    } else if(!strcmp(shell_buf + arg2, "on")){
+      CDBG("hisi: %s\n", radio_get_hlsi() ? "HI" : "LO");
+    } else if(!strcmp(shell_buf + arg2, "hi")){
       radio_set_hlsi(1);
-    } else if(!strcmp(shell_buf + arg2, "off")){
+    } else if(!strcmp(shell_buf + arg2, "lo")){
       radio_set_hlsi(0);
     } else {
       return 1;
@@ -75,7 +74,7 @@ char cmd_radio(char arg1, char arg2)
     return 0;
   } else if(!strcmp(shell_buf + arg1, "bl")) {
     if(arg2 == 0) {
-      CDBG("bl: %s\n", radio_get_bl() == RADIO_BL_JAPNESE ? "JAPNESE" : "EUROPE");
+      CDBG("bl: %s\n", radio_get_bl() == RADIO_BL_JAPNESE ? "JA" : "EU");
     } else if(!strcmp(shell_buf + arg2, "ja")){
       radio_set_bl(RADIO_BL_JAPNESE);
     } else if(!strcmp(shell_buf + arg2, "eu")){

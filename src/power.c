@@ -39,10 +39,13 @@ sbit POWER_5V_EN   = P3 ^ 6;
 
 #define POWER_DELAY_INIT_SEC 10
 
-static unsigned char full_int;
-static unsigned char full_exp;
-static unsigned char empty_int;
-static unsigned char empty_exp;
+struct ocv_slot {
+  unsigned int ocv_hex;
+  unsigned char percent;
+};
+
+
+#include "ocv.c"
 
 static unsigned int power_value[POWER_VALUE_SLOT];
 static unsigned char cur_index;
@@ -71,28 +74,25 @@ static void power_hex2pack(unsigned int val, unsigned char * v)
 }
 
 // 浮点数电压表示为hex值
-unsigned int power_float2hex(unsigned char intv, unsigned char exp)
+unsigned int power_float2hex(unsigned int flt)
 {
-  float tmp;
   unsigned int val;
-  tmp = (float)intv + (float)exp / 100.0;
-  val = (tmp / POWER_MILL_VOLTAGE_PER_LSB) * 1000.0;
+  val = (unsigned int)((float)(flt * 10) / POWER_MILL_VOLTAGE_PER_LSB);
   
-  CDBG("power_float2hex %bu.%02bu -> 0x%04x\n", intv, exp, val);
+  CDBG("power_float2hex %u -> 0x%04x\n", flt, val);
   return val;
 }
 
 // hex值表示为浮点数电压
-unsigned char power_hex2float(unsigned int hex, unsigned char * intv)
+unsigned int power_hex2float(unsigned int hex)
 {
   float tmp;
   unsigned int val;
   tmp = hex * POWER_MILL_VOLTAGE_PER_LSB / 10.0;
   val = (unsigned int) tmp;
-  *intv = (unsigned char)(val / 100);
   
-  CDBG("power_hex2float 0x%04x -> %bu.%02bu\n", hex, *intv, (unsigned char)(val % 100));
-  return (unsigned char)(val % 100);
+  CDBG("power_hex2float 0x%04x -> %u\n", hex, val);
+  return val;
 }
 
 static void power_delay_task(void)
@@ -101,22 +101,13 @@ static void power_delay_task(void)
   if(!is_calibration) {
     power_enable_alert(1);
   } else {
-    CDBG("WARN: power monitor is OFF!\n");
+    CDBG("WARN: battery monitor is OFF!\n");
   }
 }
 
 void power_load_rom(void)
 {
   unsigned char powersave_to;
-  
-  CDBG("power_load_rom\n");
-  full_int = rom_read(ROM_POWER_FULL_INT);
-  full_exp = rom_read(ROM_POWER_FULL_EXP);
-  empty_int = rom_read(ROM_POWER_EMPTY_INT);
-  empty_exp = rom_read(ROM_POWER_EMPTY_EXP);
-  CDBG("battery scale: [%bu.%02bu %bu.%02bu]\n", 
-    full_int, full_exp, 
-    empty_int, empty_exp);
   
   powersave_to = rom_read(ROM_POWERSAVE_TO);
   switch(powersave_to) {
@@ -145,12 +136,12 @@ void power_initialize(void)
   I2C_Put(POWER_I2C_ADDR, 0x3, 0);
   
   // VHIGH -- Alert Limit Register - Over Range
-  // 大于5V, 关机！
-  power_set_alert_vhigh(power_float2hex(5, 0));
+  // 大于5.00V, 关机！
+  power_set_alert_vhigh(power_float2hex(500));
   
   // VLOW -- Alert Limit Register - Under Range
-  // 小于3.2V, 关机！
-  power_set_alert_vlow(power_float2hex(3, 20));
+  // 小于3.00V, 关机！
+  power_set_alert_vlow(power_float2hex(300));
   
   // VHYST -- Alert Hysteresis Register
   power_set_hyst(0);
@@ -518,22 +509,55 @@ bit power_5v_get_enable(void)
 
 unsigned char power_hex2percent(unsigned int hex)
 {
+  unsigned char i = 0;
+  unsigned long val = 0;
+  bit found = 0;
+  
+  if(hex >= ocv_table[0].ocv_hex)
+    val =  100;
+  else if(hex < ocv_table[sizeof(ocv_table)/sizeof(struct ocv_slot) - 1].ocv_hex)
+    val =  0;
+  else {
+    for(i = 0 ; i < (sizeof(ocv_table)/sizeof(struct ocv_slot) - 1); i ++) {
+      if(hex < ocv_table[i].ocv_hex && hex >= ocv_table[i + 1].ocv_hex) {
+        found = 1;
+        break;
+      }
+    }
+    if(found) {
+      val = (hex - ocv_table[i + 1].ocv_hex) * 100;
+      val = val / (ocv_table[i].ocv_hex - ocv_table[i + 1].ocv_hex);
+      val = val * (ocv_table[i].percent - ocv_table[i + 1].percent) / 100;
+      val += ocv_table[i + 1].percent;
+    }
+  }
+  CDBG("power_hex2percent: hex %u-> percent %bu\n", hex, (unsigned char)val);
+  return (unsigned char)val;
+}
+/*
+unsigned char power_hex2percent(unsigned int hex)
+{
   unsigned int full;
   unsigned int empty;
   unsigned long val;
   
-  full = power_float2hex(full_int, full_exp);
-  empty = power_float2hex(empty_int, empty_exp);
-  
-  if (hex <= empty) return 0;
-  if (hex >= full) return 100;
-  
-  val = (hex - empty) * 100;
-  
-  return (unsigned char)(val / (full - empty));
+  full = power_float2hex(voltage_full);
+  empty = power_float2hex(voltage_empty);
+ 
+  if (hex <= empty) {
+    val = 0;
+  } else if (hex >= full) {
+    val = 100;
+  } else {
+    val = (hex - empty) * 100;
+    val = val / (full - empty);
+  }
+  CDBG("power_hex2percent: empty = %u, full = %u, hex = %u, val = %Lu\n",
+    empty, full, hex, val);
+  return (unsigned char)(val);
 }
-
-unsigned char power_get_hex(void)
+*/
+unsigned int power_get_hex(void)
 {
   unsigned char v[2];
   unsigned int val;
@@ -542,7 +566,7 @@ unsigned char power_get_hex(void)
   UNUSED_PARAM(val);
   UNUSED_PARAM(hex);
   UNUSED_PARAM(v[0]);
-  return 2705;
+  return 3060;
 #else
   I2C_Gets(POWER_I2C_ADDR, 0x0, 2, v);
   CDBG("adc return %02bx %02bx\n", v[0], v[1]);
@@ -564,17 +588,20 @@ unsigned char power_get_hex(void)
 #endif
 }
 
-unsigned char power_get_voltage(unsigned char * intv)
+unsigned int power_get_voltage(void)
 {
   unsigned int hex;
   hex = power_get_hex();
-  return power_hex2float(hex, intv);
+  return power_hex2float(hex);
 }
 
 // return 0~100
 unsigned char power_get_percent(void)
 { 
   unsigned int hex;
+  unsigned int flt;
   hex = power_get_hex();
+  flt = power_hex2float(hex);
+  CDBG("power_hex2float: %u (10mV)\n", flt);
   return power_hex2percent(hex);
 }

@@ -43,6 +43,7 @@ static void _radio_read_data(void) // 读出数据到data_in
 #else
   i = 0;
 #endif
+  CDBG("_radio_read_data %02bx|%02bx|%02bx|%02bx|%02bx\n", data_in[0], data_in[1],data_in[2],data_in[3],data_in[4]);
 }
 
 static void _radio_set_bit(unsigned char * buf, unsigned char byte, unsigned char n, bit val)
@@ -66,6 +67,7 @@ static bit _radio_get_bit(unsigned char * buf, unsigned char byte, unsigned char
 static void _radio_write_data(void)// data_out数据写入芯片
 {
   unsigned char i;
+  CDBG("_radio_write_data %02bx|%02bx|%02bx|%02bx|%02bx\n", data_out[0], data_out[1],data_out[2],data_out[3],data_out[4]);
 #ifndef __CLOCK_EMULATE__ 
   I2C_Start();
   I2C_Write(RADIO_I2C_ADDR);
@@ -305,22 +307,17 @@ void radio_set_frequency(unsigned int freq)
   _radio_write_data();
   _radio_read_data();
   out_freq = _radio_get_pll(data_in);
-  CDBG("freqency write: %u\n"
-       "   freqency read: %u\n"
-       "   RF Adc Level: %u\n" 
-       "   IF Adc Level: 0x%02bx\n" 
-       "   Stereo: %s\n"
-    ,freqency
-    ,out_freq
-    ,(data_in[3] & 0xF0 ) >> 4
-    ,data_in[2] & 0x7F
-    ,(data_in[2] & 0x80) != 0 ? "ON" : "OFF"); 
+  CDBG("freqency write: %u\n", freqency);
+  CDBG("   freqency read: %u\n", out_freq);
+  CDBG("   RF Adc Level: %u\n" ,((data_in[3] & 0xF0 ) >> 4));
+  CDBG("   IF Level: 0x%02bx\n" ,(data_in[2] & 0x7F));
+  CDBG("   Stereo: %s\n",((data_in[2] & 0x80) != 0) ? "ON" : "OFF"); 
   return;
 }
 
 static unsigned int radio_change_frequency(bit dec)
 {
-  if(dec && freqency >= RADIO_MAX_FREQ || !dec && freqency <= RADIO_MIN_FREQ) 
+  if(dec && freqency <= RADIO_MIN_FREQ || !dec && freqency >= RADIO_MAX_FREQ) 
     return freqency;
   
   dec ? freqency -- : freqency ++;
@@ -382,7 +379,9 @@ unsigned char radio_get_volume(void)
 
 unsigned char radio_set_volume(unsigned char val)
 {
-
+  if(val > 100)
+    val = 100;
+  
   if(volume == 0 && val != 0) {
     _radio_set_bit(data_out, 0, 7, 0);
     _radio_write_data();
@@ -533,7 +532,7 @@ void radio_dump(void)
   if(radio_enabled) {
     CDBG("  freq: %u\n", freqency);
     CDBG("  vol: %bu\n", volume);
-    CDBG("  hlsi: %s\n", radio_get_hlsi() ? "ON" : "OFF");
+    CDBG("  hlsi: %s\n", radio_get_hlsi() ? "HI" : "LO");
     CDBG("  ms: %s\n", radio_get_ms() ?  "ON" : "OFF");
     CDBG("  bl: %s\n", radio_get_bl() == RADIO_BL_JAPNESE ? "JAPNESE" : "EUROPE");
     CDBG("  hcc: %s\n", radio_get_hcc() ? "ON" : "OFF");
@@ -542,11 +541,11 @@ void radio_dump(void)
 
     CDBG("raw data_out:\n");
     for(i = 0 ; i < 5; i ++) {
-      CDBG("  %02bx\n", data_out[i]);
+      CDBG("  %02bx", data_out[i]);
     }
     CDBG("\nraw data_in:\n");
     for(i = 0 ; i < 5; i ++) {
-      CDBG("  %02bx\n", data_in[i]);
+      CDBG("  %02bx", data_in[i]);
     }
     CDBG("\n");
   }

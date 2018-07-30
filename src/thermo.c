@@ -104,7 +104,7 @@ static void thermo_hi_power_off(void)
   // 0|0|0|0|0|0|1|0
   
   // set alert threshold
-  thermo_hi_threshold_reset();  
+  thermo_hi_threshold_set(THERMO_THRESHOLD_INVALID);  
 
   // stop thermo T
   I2C_Put(THERMO_HI_I2C_ADDRESS, 0x22, 0);
@@ -168,7 +168,7 @@ static void thermo_lo_power_off(void)
   I2C_Put(THERMO_LO_I2C_ADDRESS, 0xAC, 0x02);
   
   // set alert threshold
-  thermo_lo_threshold_reset();  
+  thermo_lo_threshold_set(THERMO_THRESHOLD_INVALID);  
 
   // stop thermo T
   I2C_Put(THERMO_LO_I2C_ADDRESS, 0x22, 0);
@@ -193,7 +193,7 @@ static void thermo_lo_power_off(void)
 void thermo_initialize (void)
 {  
   CDBG("thermo_initialize\n");
-//  thermo_reset();
+  thermo_reset();
   thermo_threshold_hi_enabled = 0;
   thermo_threshold_lo_enabled = 0;
   thermo_hi_power_off();
@@ -460,7 +460,7 @@ void thermo_lo_enable(bit enable)
   CDBG("thermo_lo_enable %bu\n", enable ? 1 : 0);
   if(enable && !thermo_threshold_lo_enabled) {
     thermo_lo_power_on();
-  } else if(enable && thermo_threshold_lo_enabled){
+  } else if(!enable && thermo_threshold_lo_enabled){
     thermo_lo_power_off();
   }
 }

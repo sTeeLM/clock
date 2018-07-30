@@ -122,7 +122,6 @@ void shell_dump_cmd(void)
 static void call_cmd(char * buf, char arg1, char arg2)
 {
   char i;
-  printf("buffer is '%s'\n", buf);
   i = shell_search_cmd_by_name(buf);
   if(i != -1) {
     if(cmds[i].proc(arg1, arg2) != 0) { // C212

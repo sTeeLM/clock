@@ -58,11 +58,6 @@ static void rom_dump(void)
   rom_read(ROM_LT_TIMER_MIN);
   rom_read(ROM_LT_TIMER_SEC); 
   
-  rom_read(ROM_POWER_FULL_INT);
-  rom_read(ROM_POWER_FULL_EXP);
-  rom_read(ROM_POWER_EMPTY_INT);
-  rom_read(ROM_POWER_EMPTY_EXP);
-  
   rom_read(ROM_RADIO_FREQ_HI);
   rom_read(ROM_RADIO_FREQ_LO);
   rom_read(ROM_RADIO_VOLUME);
@@ -108,11 +103,6 @@ static void rom_reset(void)
   rom_write(ROM_LT_TIMER_HOUR, 12);
   rom_write(ROM_LT_TIMER_MIN, 15);
   rom_write(ROM_LT_TIMER_SEC, 10); 
-  
-  rom_write(ROM_POWER_FULL_INT, 4);
-  rom_write(ROM_POWER_FULL_EXP, 20);
-  rom_write(ROM_POWER_EMPTY_INT, 3);
-  rom_write(ROM_POWER_EMPTY_EXP, 30);
   
   rom_write(ROM_RADIO_FREQ_HI, 0);
   rom_write(ROM_RADIO_FREQ_LO, 0);

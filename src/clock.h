@@ -28,6 +28,8 @@ struct clock_struct
 };
 
 #define CLOCK_YEAR_BASE 2000
+#define is_leap_year(y) \
+(( ((y%100) !=0) && ((y%4)==0)) || ( (y%400) == 0))
 
 void clock_enable_interrupt(bit enable);
 

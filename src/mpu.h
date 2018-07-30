@@ -4,7 +4,7 @@
 #include "task.h"
 
 #define MPU_THRESHOLD_INVALID 0xFF
-#define MPU_THRESHOLD_MAX (25)
+#define MPU_THRESHOLD_MAX (99)
 #define MPU_THRESHOLD_MIN (1)
 
 void mpu_initialize (void);

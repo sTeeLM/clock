@@ -59,12 +59,12 @@ bit power_test_high_alert(void);
 bit power_test_low_alert(void);
 void power_set_cycle(enum power_cycle_interval t);
 enum power_cycle_interval power_get_cycle(void);
-unsigned int power_float2hex(unsigned char intv, unsigned char exp);
-unsigned char power_hex2float(unsigned int hex, unsigned char * intv);
+unsigned int power_float2hex(unsigned int flt);
+unsigned int power_hex2float(unsigned int hex);
 unsigned char power_hex2percent(unsigned int hex);
 void power_set_calibration(bit enable);
 bit power_get_calibration(void);
 void power_enable_alert(bit enable);
 void power_load_rom(void);
-unsigned char power_get_voltage(unsigned char * intv);
+unsigned int power_get_voltage(void);
 #endif

@@ -16,18 +16,26 @@ const char * code sm_power_pack_display_ss_name[] = {
 
 static void display_power_percent(void)
 {
-  unsigned char val;
-  val = power_get_percent();
-  CDBG("display_power_percent bat is %bu%%\n", val);
-  led_clear();
-  led_set_code(5, 'P');
-  led_set_code(4, 'O');
-  led_set_code(3, '-');
+  unsigned int val;
+  
+  if(power_5v_get_enable()) { // display voltage
+    val = power_get_voltage();
+    led_clear();
+    led_set_code(5, 'P');
+    led_set_code(4, 'O');
+    led_set_code(3, '-');
+    led_set_dp(2);
+  } else { // display percent
+    val = power_get_percent();
+    CDBG("display_power_percent bat is %bu%%\n", (unsigned char)val);
+    led_clear();
+    led_set_code(5, 'P');
+    led_set_code(4, 'E');
+    led_set_code(3, '-');
+  }
   led_set_code(2, val / 100 + 0x30);
   led_set_code(1, (val % 100) / 10 + 0x30);
   led_set_code(0, (val % 100) % 10 + 0x30);
-  if(power_5v_get_enable())
-    led_set_dp(5);
 }
 
 void sm_power_pack_display_init(unsigned char from, unsigned char to, enum task_events ev)
@@ -51,6 +59,7 @@ void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum ta
     power_reset_powersave_to();
     if(ev == EV_KEY_SET_PRESS) { // 开关5v输出
       power_5v_enable(!power_5v_get_enable());
+      display_power_percent();
       if(power_5v_get_enable()) {
         indicator_set(INDICATOR_COLOR_GREEN, INDICATOR_MODE_BLINK);
       } else {
