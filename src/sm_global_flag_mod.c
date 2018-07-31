@@ -28,7 +28,7 @@ static void display_global_flag(unsigned char what)
 
   led_clear();
   
-  CDBG("display_global_flag %bu\n", what);
+  CDBG(("display_global_flag %bu\n", what));
   
   switch(what) {
     case IS_PS:
@@ -115,7 +115,13 @@ static void inc_write(unsigned char what)
 
 void sm_global_flag_mod_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_global_flag_mod_init %bu %bu %bu\n", from, to, ev);
+#ifdef __CLOCK_DEBUG__
+  CDBG(("sm_global_flag_mod_init %bu %bu %bu\n", from, to, ev));
+#else
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+#endif  
   lt_timer_switch_off();
   display_logo(DISPLAY_LOGO_TYPE_GLOBAL_FLAG, 0);
 }

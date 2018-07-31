@@ -12,19 +12,19 @@ static bit beep_enable;
 
 void beeper_initialize (void)
 {
-  CDBG("beeper_initialize\n");
+  CDBG(("beeper_initialize\n"));
   beep_enable = rom_read(ROM_BEEPER_ENABLE);
   beeper_out  = 1;
 }
 
 void beeper_enter_powersave(void)
 {
-  CDBG("beeper_enter_powersave\n");
+  CDBG(("beeper_enter_powersave\n"));
 }
 
 void beeper_leave_powersave(void)
 {
-  CDBG("beeper_leave_powersave\n");
+  CDBG(("beeper_leave_powersave\n"));
 }
 
 bit beeper_get_beep_enable(void)
@@ -45,7 +45,7 @@ void beeper_write_rom_beeper_enable(void)
 void beeper_beep(void)
 { 
   unsigned char c = 30;
-  CDBG("beeper_beep!\n");
+  CDBG(("beeper_beep!\n"));
   if(!beep_enable)
     return;
   beeper_out = 1;
@@ -59,7 +59,7 @@ void beeper_beep(void)
 void beeper_beep_beep_always(void)
 {
   unsigned char c = 30;
-  CDBG("beeper_beep_beep_always!\n");
+  CDBG(("beeper_beep_beep_always!\n"));
   beeper_out = 1;
   while(c --) {
     beeper_out=~beeper_out;
@@ -78,7 +78,7 @@ void beeper_beep_beep_always(void)
 void beeper_beep_beep(void)
 {
   unsigned char c = 30;
-  CDBG("beeper_beep_beep!\n");
+  CDBG(("beeper_beep_beep!\n"));
   if(!beep_enable)
     return;
   beeper_out =0;

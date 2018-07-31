@@ -9,13 +9,13 @@ static struct delay_task delay_tasks[DELAY_TASK_CNT];
 
 void delay_task_initialize(void)
 {
-  CDBG("delay_task_initialize\n");
+  CDBG(("delay_task_initialize\n"));
   memset(delay_tasks, 0, sizeof(delay_tasks));
 }
 
 void delay_task_reg(enum delay_task_type index, DELAY_TASK_PROC task, unsigned int delay_sec)
 {
-  CDBG("delay_task_reg %bu, delay_sec = %u\n", index, delay_sec);
+  CDBG(("delay_task_reg %bu, delay_sec = %u\n", index, delay_sec));
   if(index > DELAY_TASK_CNT) {
     return;
   }
@@ -31,7 +31,7 @@ void delay_task_call(void)
   
   for(i = 0 ; i < DELAY_TASK_CNT ; i++) {
     if(delay_tasks[i].task != NULL && --delay_tasks[i].delay_sec == 0) {
-      CDBG("delay_task_call: index = %bu\n", i);
+      CDBG(("delay_task_call: index = %bu\n", i));
       delay_tasks[i].task(); 
       delay_tasks[i].task = NULL;
     }

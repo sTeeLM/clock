@@ -177,7 +177,7 @@ void task_dump(void)
 {
   unsigned char i;
   for (i = 0 ; i < EV_COUNT; i ++) {
-    CDBG("[%02bd][%s] %c\n", i, task_name[i], test_task(i) ? '1' : '0');
+    CDBG(("[%02bd][%s] %c\n", i, task_name[i], test_task(i) ? '1' : '0'));
   }
 }
 #endif

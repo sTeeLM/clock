@@ -45,18 +45,18 @@ static void thermo_reset(void)
 
 static void thermo_hi_load_config(void)
 {
-  CDBG("thermo_hi_load_config\n");
+  CDBG(("thermo_hi_load_config\n"));
   // 从rom中读取配置
   thermo_threshold_hi = (char)rom_read(ROM_FUSE_THERMO_HI);
-  CDBG("thermo_threshold_hi = %bd\n", thermo_threshold_hi);
+  CDBG(("thermo_threshold_hi = %bd\n", thermo_threshold_hi));
 }
 
 static void thermo_lo_load_config(void)
 {
-  CDBG("thermo_lo_load_config\n");
+  CDBG(("thermo_lo_load_config\n"));
   // 从rom中读取配置
   thermo_threshold_lo = (char)rom_read(ROM_FUSE_THERMO_LO);
-  CDBG("thermo_threshold_lo = %bd\n", thermo_threshold_lo);  
+  CDBG(("thermo_threshold_lo = %bd\n", thermo_threshold_lo));  
 }
 
 static void thermo_hi_power_on(void)
@@ -192,7 +192,7 @@ static void thermo_lo_power_off(void)
 // 读取rom配置，thermo处于节电状态，中断禁止
 void thermo_initialize (void)
 {  
-  CDBG("thermo_initialize\n");
+  CDBG(("thermo_initialize\n"));
   thermo_reset();
   thermo_threshold_hi_enabled = 0;
   thermo_threshold_lo_enabled = 0;
@@ -204,16 +204,16 @@ void scan_thermo(unsigned int status)
 { 
   bit has_event = 0;
   
-  CDBG("scan_thermo 0x%04x\n", status);
+  CDBG(("scan_thermo 0x%04x\n", status));
  
   if((status & 0x80) == 0) {
-    CDBG("EV_THERMO_HI!\n");
+    CDBG(("EV_THERMO_HI!\n"));
     set_task(EV_THERMO_HI);
     has_event = 1;
   }
 
   if((status & 0x100) == 0) {
-    CDBG("EV_THERMO_LO!\n");
+    CDBG(("EV_THERMO_LO!\n"));
     set_task(EV_THERMO_LO);
     has_event = 1;
   }
@@ -228,7 +228,7 @@ static unsigned int thermo_temp_to_hex(char temp)
   unsigned int ret = temp;
   ret &= 0xFF;
   ret <<= 8;
-  CDBG("thermo_temp_to_hex %bd -> 0x%x\n", temp, ret);
+  CDBG(("thermo_temp_to_hex %bd -> 0x%x\n", temp, ret));
   return ret;
 }
 
@@ -236,7 +236,7 @@ static char thermo_hex_to_temp(unsigned int val)
 {
   char temp;
   temp = (val >> 8) & 0xFF;
-  CDBG("thermo_hex_to_temp 0x%x -> %bd\n", val, temp);
+  CDBG(("thermo_hex_to_temp 0x%x -> %bd\n", val, temp));
   return temp;
 }
 
@@ -248,7 +248,7 @@ char thermo_get_current(void)
 #ifdef __CLOCK_EMULATE__
   UNUSED_PARAM(tmp);
   I2C_Gets(THERMO_HI_I2C_ADDRESS, 0xAA, 2, (unsigned char *)&val);
-  CDBG("get current temp return 0x%x\n", val);
+  CDBG(("get current temp return 0x%x\n", val));
   
   return thermo_hex_to_temp(val);;
 #else
@@ -260,7 +260,7 @@ char thermo_get_current(void)
   delay_ms(50); // delay 50 ms
   
   I2C_Gets(THERMO_HI_I2C_ADDRESS, 0x0, 2, (unsigned char *)&val);
-  CDBG("get current temp return 0x%x\n", val);
+  CDBG(("get current temp return 0x%x\n", val));
   
   return thermo_hex_to_temp(val);
 #endif
@@ -302,7 +302,7 @@ char thermo_lo_threshold_get()
 void thermo_hi_threshold_set(char temp)
 {
   unsigned int val;
-  CDBG("thermo_hi_threshold_set %bd\n", temp);
+  CDBG(("thermo_hi_threshold_set %bd\n", temp));
   
   if(temp == (char)THERMO_THRESHOLD_INVALID)
     temp = THERMO_THRESHOLD_MAX_INVALID;
@@ -326,7 +326,7 @@ void thermo_hi_threshold_set(char temp)
 void thermo_lo_threshold_set(char temp)
 {
   unsigned int val;
-  CDBG("thermo_lo_threshold_set %bd\n", temp);
+  CDBG(("thermo_lo_threshold_set %bd\n", temp));
   
   if(temp == (char)THERMO_THRESHOLD_INVALID)
     temp = THERMO_THRESHOLD_MIN_INVALID;
@@ -420,7 +420,7 @@ unsigned char thermo_threshold_inc(unsigned char thres)
   } else {
     ret = (unsigned char) THERMO_THRESHOLD_MIN;
   }
-  CDBG("thermo_threshold_inc from %bd to %bd\n", (char)thres, (char)ret);
+  CDBG(("thermo_threshold_inc from %bd to %bd\n", (char)thres, (char)ret));
   return ret;
 }
 
@@ -447,7 +447,7 @@ bit thermo_lo_threshold_reach_top()
 
 void thermo_hi_enable(bit enable)
 {
-  CDBG("thermo_hi_enable %bu\n", enable ? 1 : 0);
+  CDBG(("thermo_hi_enable %bu\n", enable ? 1 : 0));
   if(enable && !thermo_threshold_hi_enabled) {
     thermo_hi_power_on();
   } else if(!enable && thermo_threshold_hi_enabled){
@@ -457,7 +457,7 @@ void thermo_hi_enable(bit enable)
 
 void thermo_lo_enable(bit enable)
 {
-  CDBG("thermo_lo_enable %bu\n", enable ? 1 : 0);
+  CDBG(("thermo_lo_enable %bu\n", enable ? 1 : 0));
   if(enable && !thermo_threshold_lo_enabled) {
     thermo_lo_power_on();
   } else if(!enable && thermo_threshold_lo_enabled){
@@ -477,16 +477,16 @@ void thermo_lo_threshold_reset(void)
 
 void thermo_proc(enum task_events ev)
 {
-  CDBG("thermo_proc\n");
+  CDBG(("thermo_proc\n"));
   run_state_machine(ev);
 }
 
 void thermo_enter_powersave(void)
 {
-  CDBG("thermo_enter_powersave\n");
+  CDBG(("thermo_enter_powersave\n"));
 }
 
 void thermo_leave_powersave(void)
 {
-  CDBG("thermo_leave_powersave\n");
+  CDBG(("thermo_leave_powersave\n"));
 }

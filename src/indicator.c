@@ -5,13 +5,13 @@
 
 void indicator_initialize (void)
 {
-  CDBG("indicator_initialize\n");
+  CDBG(("indicator_initialize\n"));
   indicator_clr();
 }
 
 void indicator_clr(void)
 {
-  CDBG("indicator_clr\n");
+  CDBG(("indicator_clr\n"));
   serial_set_ctl_bit(SERIAL_BIT_INDICATOR_SW_EN, 1);
   serial_set_ctl_bit(SERIAL_BIT_INDICATOR_RED_EN, 1);  
   serial_set_ctl_bit(SERIAL_BIT_INDICATOR_GREEN_EN, 1);
@@ -21,7 +21,7 @@ void indicator_clr(void)
 void indicator_set(enum indicator_color color, 
   enum indicator_mode mode)
 {
-  CDBG("indicator_set color = %bu, mode = %bu\n", color, mode);
+  CDBG(("indicator_set color = %bu, mode = %bu\n", color, mode));
   switch(color) {
     case INDICATOR_COLOR_RED:
       if(mode == INDICATOR_MODE_BLINK) {

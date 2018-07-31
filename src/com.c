@@ -148,7 +148,7 @@ char com_try_get_key(void)
 
 void com_enter_powersave(void)
 {
-  CDBG("com_enter_powersave\n");
+  CDBG(("com_enter_powersave\n"));
   REN = 0;
   ES = 0;
 }
@@ -157,5 +157,5 @@ void com_leave_powersave(void)
 {
   REN = 1;
   ES = 1;
-  CDBG("com_leave_powersave\n");
+  CDBG(("com_leave_powersave\n"));
 }

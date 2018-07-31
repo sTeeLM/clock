@@ -15,7 +15,7 @@ unsigned char common_state;
 
 void display_logo(enum display_logo_type type, unsigned char num)
 {
-  CDBG("display_logo %bu %bu\n", type, num);
+  CDBG(("display_logo %bu %bu\n", type, num));
   
   led_clear();
   

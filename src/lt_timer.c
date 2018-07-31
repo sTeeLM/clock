@@ -22,7 +22,7 @@ static struct lt_timer_struct idata ltm;
 
 void lt_timer_initialize (void)
 {
-  CDBG("lt_timer_initialize\n");
+  CDBG(("lt_timer_initialize\n"));
   lt_tmr_start    = 0;
   lt_tmr_stopped  = 1;
   lt_tmr_display  = 0;
@@ -42,7 +42,7 @@ void lt_timer_set_hour_12(bit val)
 
 void lt_timer_enter_powersave(void)
 {
-  CDBG("lt_timer_enter_powersave\n");
+  CDBG(("lt_timer_enter_powersave\n"));
   if(rtc_is_lt_timer()) {
     lt_timer_stop_ram();
     lt_timer_start_rtc();
@@ -51,7 +51,7 @@ void lt_timer_enter_powersave(void)
 
 void lt_timer_leave_powersave(void)
 {
-  CDBG("lt_timer_leave_powersave\n");
+  CDBG(("lt_timer_leave_powersave\n"));
   if(rtc_is_lt_timer()) {
     lt_timer_stop_rtc();
     lt_timer_load_from_rom();
@@ -66,7 +66,7 @@ void lt_timer_leave_powersave(void)
 
 void lt_timer_switch_on(void)
 {
-  CDBG("lt_timer_switch_on\n");
+  CDBG(("lt_timer_switch_on\n"));
   lt_timer_load_from_rom();
   lt_timer_sync_to_rtc();
   lt_timer_stop_rtc();
@@ -75,7 +75,7 @@ void lt_timer_switch_on(void)
 
 void lt_timer_switch_off(void)
 {
-  CDBG("lt_timer_switch_off\n");
+  CDBG(("lt_timer_switch_off\n"));
   rtc_read_data(RTC_TYPE_CTL);
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_enable_alarm_int(RTC_ALARM1, 0);
@@ -87,7 +87,7 @@ void scan_lt_timer(void)
 {
   bit alarm0_hit;
   
-  CDBG("scan_lt_timer\n");
+  CDBG(("scan_lt_timer\n"));
   
   rtc_read_data(RTC_TYPE_CTL);
   alarm0_hit = rtc_test_alarm_int_flag(RTC_ALARM0);
@@ -168,7 +168,7 @@ unsigned char lt_timer_get_date(void)
 
 void lt_timer_start_rtc(void)
 {
-  CDBG("lt_timer_start_rtc\n");
+  CDBG(("lt_timer_start_rtc\n"));
   rtc_read_data(RTC_TYPE_CTL);
   rtc_enable_alarm_int(RTC_ALARM0, 1);
   rtc_clr_alarm_int_flag(RTC_ALARM0);
@@ -177,7 +177,7 @@ void lt_timer_start_rtc(void)
 
 void lt_timer_stop_rtc(void)
 {
-  CDBG("lt_timer_stop_rtc\n");
+  CDBG(("lt_timer_stop_rtc\n"));
   rtc_read_data(RTC_TYPE_CTL);
   rtc_enable_alarm_int(RTC_ALARM0, 0);
   rtc_clr_alarm_int_flag(RTC_ALARM0);
@@ -186,26 +186,26 @@ void lt_timer_stop_rtc(void)
 
 void lt_timer_start_ram(void)
 {
-  CDBG("lt_timer_start_ram\n");
+  CDBG(("lt_timer_start_ram\n"));
   lt_tmr_start   = 1;
   lt_tmr_stopped = 0;
 }
 
 void lt_timer_stop_ram(void)
 {
-  CDBG("lt_timer_stop_ram\n");
+  CDBG(("lt_timer_stop_ram\n"));
   lt_tmr_start = 0;
 }
 
 void lt_timer_switch_display(void)
 {
   lt_tmr_disp_day = !lt_tmr_disp_day;
-  CDBG("lt_timer_switch_display %bu\n", lt_tmr_disp_day ? 1 : 0);
+  CDBG(("lt_timer_switch_display %bu\n", lt_tmr_disp_day ? 1 : 0));
 }
 
 void lt_timer_display(bit enable)
 {
-  CDBG("lt_timer_display %bu\n", enable ? 1 : 0);
+  CDBG(("lt_timer_display %bu\n", enable ? 1 : 0));
   lt_tmr_display = enable;
 }
 
@@ -364,7 +364,7 @@ static unsigned char lt_timer_add_date_month_year(unsigned char * date, unsigned
   (*month) = clock_get_month();
   year  = clock_get_year();
   while(*date >= clock_get_mon_date(year, (*month))) {
-     CDBG("date = %bd mon = %bd year = %bd\n", (*date), (*month), year); 
+     CDBG(("date = %bd mon = %bd year = %bd\n", (*date), (*month), year)); 
     (*date) -= clock_get_mon_date(year, (*month));
     (*month) ++;
     if((*month) > 11) {
@@ -447,7 +447,7 @@ void lt_timer_load_from_rom(void)
 // 将绝对时间写入rom！
 void lt_timer_save_to_rom(enum lt_timer_sync_type type)
 {
-  CDBG("lt_timer_save_to_rom type = %bu\n", type);
+  CDBG(("lt_timer_save_to_rom type = %bu\n", type));
   switch (type) { 
     case LT_TIMER_SYNC_YEAR:
       rom_write(ROM_LT_TIMER_YEAR, ltm.year);
@@ -489,22 +489,22 @@ unsigned char lt_timer_get_relative(bit too_close_check)
   lt_timer_sub_date(borrow);
   clock_enable_interrupt(1);
   
-  CDBG("lt_timer_get_relative: ltm.date = %bu, ltm.min = %bu, ltm.sec = %bu\n",
-    ltm.date, ltm.min, ltm.sec);
+  CDBG(("lt_timer_get_relative: ltm.date = %bu, ltm.min = %bu, ltm.sec = %bu\n",
+    ltm.date, ltm.min, ltm.sec));
   
   // 所设置绝对时间已经超时了
   if(ltm.date == 0 && ltm.hour == 0 && ltm.min == 0) {
     if(ltm.sec == 0) {
-      CDBG("lt_timer_get_relative : already triggered!\n");
+      CDBG(("lt_timer_get_relative : already triggered!\n"));
       return 1;
     } else if(ltm.sec < LT_TIMER_MIN_SEC && too_close_check) {
-      CDBG("lt_timer_get_relative : too close!\n");
+      CDBG(("lt_timer_get_relative : too close!\n"));
       return 1;
     } 
   }
   
   if(ltm.date > LT_TIMER_MAX_DAY) {
-    CDBG("lt_timer_get_relative : ltm.date > %bu\n", LT_TIMER_MAX_DAY);
+    CDBG(("lt_timer_get_relative : ltm.date > %bu\n", LT_TIMER_MAX_DAY));
     return 2;
   }
   
@@ -514,8 +514,8 @@ unsigned char lt_timer_get_relative(bit too_close_check)
 // 将ltm里的绝对时间写入RTC
 void lt_timer_sync_to_rtc(void)
 {
-  CDBG("lt_timer_sync_to_rtc : ltm.date = %bu, ltm.hour = %bu, ltm.min = %bu, ltm.sec = %bu\n",
-  ltm.date, ltm.hour, ltm.min, ltm.sec);
+  CDBG(("lt_timer_sync_to_rtc : ltm.date = %bu, ltm.hour = %bu, ltm.min = %bu, ltm.sec = %bu\n",
+  ltm.date, ltm.hour, ltm.min, ltm.sec));
   // 绝对时间写入rtc
   rtc_read_data(RTC_TYPE_ALARM0);
   rtc_alarm_set_mode(RTC_ALARM0_MOD_MATCH_DATE_HOUR_MIN_SEC);

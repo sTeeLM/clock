@@ -13,7 +13,7 @@ static bit remote_fuse_ctl_enable;
 
 static void remote_power_off(void)
 {
-  CDBG("remote_power_off\n");
+  CDBG(("remote_power_off\n"));
   serial_set_ctl_bit(SERIAL_BIT_REMOTE_EN, 1);
   serial_ctl_out();
   remote_enabled = 0;
@@ -22,7 +22,7 @@ static void remote_power_off(void)
 
 static void remote_power_on(void)
 {
-  CDBG("remote_power_on\n");
+  CDBG(("remote_power_on\n"));
   serial_set_ctl_bit(SERIAL_BIT_REMOTE_EN, 0);
   serial_ctl_out();
   remote_enabled = 1;
@@ -53,11 +53,11 @@ void remote_leave_powersave(void)
 void scan_remote(unsigned int status)
 {
   bit has_event = 0;
-  CDBG("scan_remote  0x%04x\n", status);
+  CDBG(("scan_remote  0x%04x\n", status));
   
   if((status & REMOTE_DISARM_MASK) == 0) {
     if(remote_enabled && remote_fuse_ctl_enable) {
-      CDBG("EV_REMOTE_DISARM\n");
+      CDBG(("EV_REMOTE_DISARM\n"));
       set_task(EV_REMOTE_DISARM);
     }
     has_event = 1;
@@ -65,7 +65,7 @@ void scan_remote(unsigned int status)
   
   if((status & REMOTE_DETONATE_MASK) == 0) {
     if(remote_enabled&& remote_fuse_ctl_enable) {
-      CDBG("EV_REMOTE_DETONATE\n");
+      CDBG(("EV_REMOTE_DETONATE\n"));
       set_task(EV_REMOTE_DETONATE);
     }
     has_event = 1;
@@ -78,13 +78,13 @@ void scan_remote(unsigned int status)
 
 void remote_proc(enum task_events ev)
 {
-  CDBG("remote_proc %bu\n", ev);
+  CDBG(("remote_proc %bu\n", ev));
   run_state_machine(ev);
 }
 
 void remote_enable(bit enable)
 {
-  CDBG("remote_enable is %bu\n", enable ? 1:0);
+  CDBG(("remote_enable is %bu\n", enable ? 1:0));
   if(enable && !remote_enabled) {
     remote_power_on();
   } else if(!enable && remote_enabled) {
@@ -98,7 +98,7 @@ bit remote_get_enable(void)
 
 void remote_fuse_enable(bit enable)
 {
-  CDBG("remote_fuse_enable is %bu\n", enable ? 1:0);
+  CDBG(("remote_fuse_enable is %bu\n", enable ? 1:0));
   remote_fuse_ctl_enable = enable;
 }
 

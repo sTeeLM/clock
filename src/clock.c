@@ -130,15 +130,15 @@ static void clock_inc_ms39(void)
 
 void clock_dump(void)
 {
-  CDBG("clk.year = %bu\n", clk.year);
-  CDBG("clk.mon  = %bu\n", clk.mon);
-  CDBG("clk.date = %bu\n", clk.date); 
-  CDBG("clk.day  = %bu\n", clk.day);
-  CDBG("clk.hour = %bu\n", clk.hour);
-  CDBG("clk.min  = %bu\n", clk.min);
-  CDBG("clk.sec  = %bu\n", clk.sec);  
-  CDBG("clk.ms39 = %bu\n", clk.ms39);
-  CDBG("clk.is12 = %s\n", clk_is12 ? "ON" : "OFF"); 
+  CDBG(("clk.year = %bu\n", clk.year));
+  CDBG(("clk.mon  = %bu\n", clk.mon));
+  CDBG(("clk.date = %bu\n", clk.date)); 
+  CDBG(("clk.day  = %bu\n", clk.day));
+  CDBG(("clk.hour = %bu\n", clk.hour));
+  CDBG(("clk.min  = %bu\n", clk.min));
+  CDBG(("clk.sec  = %bu\n", clk.sec));  
+  CDBG(("clk.ms39 = %bu\n", clk.ms39));
+  CDBG(("clk.is12 = %s\n", clk_is12 ? "ON" : "OFF")); 
 }
 
 // 计算某年某月某日星期几,  经典的Zeller公式
@@ -255,7 +255,7 @@ void clock_inc_year(void)
 
 void clock_sync_from_rtc(enum clock_sync_type type)
 {
-  CDBG("clock_sync_from_rtc = %bu\n", type);
+  CDBG(("clock_sync_from_rtc = %bu\n", type));
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     clk.hour = rtc_time_get_hour();   // 0 - 23
@@ -274,7 +274,7 @@ void clock_sync_from_rtc(enum clock_sync_type type)
 
 void clock_sync_to_rtc(enum clock_sync_type type)
 {
-  CDBG("clock_sync_to_rtc = %bu\n", type);
+  CDBG(("clock_sync_to_rtc = %bu\n", type));
   clock_enable_interrupt(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
@@ -338,7 +338,7 @@ void clock_enable_interrupt(bit enable)
 
 void clock_initialize(void)
 {
-  CDBG("clock_initialize\n");
+  CDBG(("clock_initialize\n"));
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
   clock_sync_from_rtc(CLOCK_SYNC_DATE); 
   giff = 0;
@@ -360,13 +360,13 @@ void clock_initialize(void)
 
 void clock_enter_powersave(void)
 {
-  CDBG("clock_enter_powersave\n");
+  CDBG(("clock_enter_powersave\n"));
   clock_enable_interrupt(0);
 }
 
 void clock_leave_powersave(void)
 {
-  CDBG("clock_leave_powersave\n");
+  CDBG(("clock_leave_powersave\n"));
   clock_sync_from_rtc(CLOCK_SYNC_TIME);
   clock_sync_from_rtc(CLOCK_SYNC_DATE);
   clock_enable_interrupt(1);

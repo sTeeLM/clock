@@ -14,14 +14,14 @@ unsigned char rom_read(unsigned char addr)
 {
   unsigned char dat;
   I2C_Get(ROM_I2C_ADDR, addr, &dat);
-  CDBG("rom_read [0x%02bx] return 0x%02bx\n", addr, dat);
+  CDBG(("rom_read [0x%02bx] return 0x%02bx\n", addr, dat));
   return dat;
 }
 
 void rom_write(unsigned char addr, unsigned char val)
 {
   I2C_Put(ROM_I2C_ADDR, addr, val);
-  CDBG("rom_write [0x%02bx] with 0x%02bx\n", addr, val);
+  CDBG(("rom_write [0x%02bx] with 0x%02bx\n", addr, val));
 }
 
 static void rom_dump(void)
@@ -122,9 +122,9 @@ bit rom_is_factory_reset(void)
 
 void rom_initialize(void)
 {
-  CDBG("rom_initialize ROM_RESET = %bu(%s)\n", ROM_RESET == 1 ? 1 : 0, ROM_RESET == 1? "OFF" : "ON");
+  CDBG(("rom_initialize ROM_RESET = %bu(%s)\n", ROM_RESET == 1 ? 1 : 0, ROM_RESET == 1? "OFF" : "ON"));
   if(rom_is_factory_reset()) { // reset rom
-    CDBG("reset rom!\n");
+    CDBG(("reset rom!\n"));
     rom_reset();
   }
   

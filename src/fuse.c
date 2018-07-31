@@ -40,14 +40,14 @@ static void fuse_power_off(void)
 
 void fuse_initialize (void)
 {
-  CDBG("fuse_initialize\n");
+  CDBG(("fuse_initialize\n"));
   fuse_power_off();
 }
 
 
 void fuse_trigger(bit enable)
 {
-  CDBG("fuse_trigger %bu\n", enable ? 1 : 0);
+  CDBG(("fuse_trigger %bu\n", enable ? 1 : 0));
   
   if(!fuse_enabled) return;
   
@@ -62,35 +62,35 @@ void fuse_trigger(bit enable)
 
 void fuse_enter_powersave(void)
 {
-  CDBG("fuse_enter_powersave\n");
+  CDBG(("fuse_enter_powersave\n"));
 }
 
 void fuse_leave_powersave(void)
 {
-  CDBG("fuse_leave_powersave\n");
+  CDBG(("fuse_leave_powersave\n"));
 }
 
 void scan_fuse(unsigned int status)
 {
   bit has_event = 0;
-  CDBG("scan_fuse 0x%04x\n", status);
+  CDBG(("scan_fuse 0x%04x\n", status));
   
   if((status & FUSE0_BROKE_MASK) == 0) {
-    CDBG("EV_FUSE0_BROKE\n");
+    CDBG(("EV_FUSE0_BROKE\n"));
     if(fuse_enabled)
       set_task(EV_FUSE0_BROKE);
     has_event = 1;
   }
   
   if((status & FUSE1_BROKE_MASK) == 0) {
-    CDBG("EV_FUSE1_BROKE\n");
+    CDBG(("EV_FUSE1_BROKE\n"));
     if(fuse_enabled)
       set_task(EV_FUSE1_BROKE);
     has_event = 1;
   }
   
   if((status & TRIPWIRE_HIT_MASK) == 0) {
-    CDBG("EV_FUSE_TRIPWIRE\n");
+    CDBG(("EV_FUSE_TRIPWIRE\n"));
     if(fuse_enabled)
       set_task(EV_FUSE_TRIPWIRE);
     has_event = 1;
@@ -103,14 +103,14 @@ void scan_fuse(unsigned int status)
 
 void fuse_proc(enum task_events ev)
 {
-  CDBG("fuse_proc %bu\n", ev);
+  CDBG(("fuse_proc %bu\n", ev));
   run_state_machine(ev);
 }
 
 
 void fuse_set_fuse_broke(unsigned char index, bit enable)
 {
-  CDBG("fuse_set_fuse_broke %bu %bu\n", index, enable ? 1 : 0);
+  CDBG(("fuse_set_fuse_broke %bu %bu\n", index, enable ? 1 : 0));
   
   if(!fuse_enabled) return;
   
@@ -124,7 +124,7 @@ void fuse_set_fuse_broke(unsigned char index, bit enable)
 
 void fuse_set_tripwire_broke(bit broke)
 {
-  CDBG("fuse_set_tripwire_broke %bu\n", broke ? 1: 0);
+  CDBG(("fuse_set_tripwire_broke %bu\n", broke ? 1: 0));
   
   if(!fuse_enabled) return;
   
@@ -134,7 +134,7 @@ void fuse_set_tripwire_broke(bit broke)
 
 void fuse_enable(bit enable)
 {
-  CDBG("fuse_enable %bu\n", enable ? 1 : 0);
+  CDBG(("fuse_enable %bu\n", enable ? 1 : 0));
   
   if(enable && !fuse_enabled) {
     fuse_power_on();

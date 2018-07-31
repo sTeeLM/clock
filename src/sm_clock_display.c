@@ -33,7 +33,7 @@ static void display_temp(void)
   rtc_read_data(RTC_TYPE_TEMP);
   sign = rtc_get_temperature(&inti, &flt);
   
-  CDBG("display_temp %c%bu.%bu\n", sign? '-':'+', inti, flt);
+  CDBG(("display_temp %c%bu.%bu\n", sign? '-':'+', inti, flt));
   
   led_clear();
   
@@ -56,7 +56,7 @@ static void reset_auto_switch(void)
 static void test_autoswitch(void)
 {
   if(time_diff_now(last_display_s) >= SM_CLOCK_DISPLAY_SWITCH_S) {
-    CDBG("test_autoswitch time out!\n");
+    CDBG(("test_autoswitch time out!\n"));
     set_task(EV_KEY_SET_PRESS);
   }
 }

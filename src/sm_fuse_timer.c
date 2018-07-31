@@ -133,7 +133,7 @@ static unsigned char check_and_set(unsigned char step)
 
 static void roll_back(bit include_fuse)
 {
-  CDBG("roll_back include_fuse = %bu\n", include_fuse ? 1 : 0);
+  CDBG(("roll_back include_fuse = %bu\n", include_fuse ? 1 : 0));
 
   thermo_hi_enable(0);
   thermo_lo_enable(0);
@@ -223,9 +223,9 @@ static void verify_password()
   
   if(res == password_content) {
     verify_state |= (1 << password_index);
-    CDBG("verify_password %bu : %bu <->%bu success\n", password_index, res, password_content);
+    CDBG(("verify_password %bu : %bu <->%bu success\n", password_index, res, password_content));
   } else {
-    CDBG("verify_password %bu : %bu <->%bu failed\n", password_index, res, password_content);
+    CDBG(("verify_password %bu : %bu <->%bu failed\n", password_index, res, password_content));
   }
   return;
 }
@@ -381,14 +381,14 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
         // 如果失败大于等于3次，EV_KEY_V2
         verify_password();
         if((verify_state & 0x3F) == 0x3F) {
-          CDBG("verify pass!\n");
+          CDBG(("verify pass!\n"));
           set_task(EV_KEY_V0); // 校验通过了
         } else if((verify_state & 0xC0) == 0x80) {
-          CDBG("verify failed, to detonate!\n");
+          CDBG(("verify failed, to detonate!\n"));
           set_task(EV_KEY_V2); // 校验多次不OK，挂了
         } else {
           verify_state += 0x40;
-          CDBG("verify failed, count is 0x%02bx!\n", (verify_state & 0xC0));
+          CDBG(("verify failed, count is 0x%02bx!\n", (verify_state & 0xC0)));
           set_task(EV_KEY_V1);
         }
       }
@@ -397,7 +397,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
   }
   
   if(ev == EV_REMOTE_DISARM) {
-    CDBG("dis-armed by remote!\n");
+    CDBG(("dis-armed by remote!\n"));
     set_task(EV_KEY_V0);
     return;
   }
@@ -412,7 +412,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
   if(ev == EV_1S) {
     // 反超时耗电攻击
     if(time_diff_now(last_display_s) >= SM_FUSE_MAX_VERIFY_WAIT_S) {
-      CDBG("wait time out in password verify!\n");
+      CDBG(("wait time out in password verify!\n"));
       set_task(EV_KEY_V1);
     }
     return;

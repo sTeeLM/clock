@@ -65,7 +65,7 @@ static unsigned int power_pack2hex(unsigned char * v)
   val = (v[0] & 0xF);
   val = val << 8;
   val |= v[1];
-  CDBG("power_pack2hex 0x%02bx 0x%02bx -> 0x%04x\n", v[0], v[1], val);
+  CDBG(("power_pack2hex 0x%02bx 0x%02bx -> 0x%04x\n", v[0], v[1], val));
   return val;
 }
 
@@ -73,7 +73,7 @@ static void power_hex2pack(unsigned int val, unsigned char * v)
 {
   v[0] = (unsigned char)((val & 0xF00) >> 8) & 0xF;
   v[1] = (unsigned char)(val & 0xFF);
-  CDBG("power_hex2pack 0x%04x -> 0x%02bx 0x%02bx\n", val, v[0], v[1]);
+  CDBG(("power_hex2pack 0x%04x -> 0x%02bx 0x%02bx\n", val, v[0], v[1]));
 }
 
 // 浮点数电压表示为hex值
@@ -82,7 +82,7 @@ unsigned int power_float2hex(unsigned int flt)
   unsigned int val;
   val = (unsigned int)((float)(flt * 10) / POWER_MILL_VOLTAGE_PER_LSB);
   
-  CDBG("power_float2hex %u -> 0x%04x\n", flt, val);
+  CDBG(("power_float2hex %u -> 0x%04x\n", flt, val));
   return val;
 }
 
@@ -94,17 +94,17 @@ unsigned int power_hex2float(unsigned int hex)
   tmp = hex * POWER_MILL_VOLTAGE_PER_LSB / 10.0;
   val = (unsigned int) tmp;
   
-  CDBG("power_hex2float 0x%04x -> %u\n", hex, val);
+  CDBG(("power_hex2float 0x%04x -> %u\n", hex, val));
   return val;
 }
 
 static void power_delay_task(void)
 {
-  CDBG("power_delay_task\n");
+  CDBG(("power_delay_task\n"));
   if(!is_calibration) {
     power_enable_alert(1);
   } else {
-    CDBG("WARN: battery monitor is OFF!\n");
+    CDBG(("WARN: battery monitor is OFF!\n"));
   }
 }
 
@@ -123,7 +123,7 @@ void power_load_rom(void)
 void power_initialize(void)
 {
 
-  CDBG("power_initialize\n");
+  CDBG(("power_initialize\n"));
 
   powersave_flag = 0;
   POWER_5V_EN = 0;
@@ -172,7 +172,7 @@ void power_initialize(void)
 void power_enable_alert(bit enable)
 {
   unsigned char val;
-  CDBG("power_enable_alert %bu\n", enable ? 1 : 0);
+  CDBG(("power_enable_alert %bu\n", enable ? 1 : 0));
   // Configuration Register, enable interrupt
   // Cycle Time = 111
   // Alert Hold = 1
@@ -188,13 +188,14 @@ void power_enable_alert(bit enable)
   I2C_Put(POWER_I2C_ADDR, 0x2, val);
 #else
   UNUSED_PARAM(val);
+  UNUSED_PARAM(enable);  
 #endif
 }
 
 void power_set_cycle(enum power_cycle_interval t)
 {
   unsigned char val;
-  CDBG("power_set_cycle %bu\n", t);
+  CDBG(("power_set_cycle %bu\n", t));
 #ifndef __CLOCK_EMULATE__  
   I2C_Get(POWER_I2C_ADDR, 0x2, &val);
   val &= ~0xE0;
@@ -202,6 +203,7 @@ void power_set_cycle(enum power_cycle_interval t)
   I2C_Put(POWER_I2C_ADDR, 0x2, val);
 #else
   UNUSED_PARAM(val);
+  UNUSED_PARAM(t);  
 #endif
 }
 
@@ -210,7 +212,7 @@ enum power_cycle_interval power_get_cycle(void)
   unsigned char val;
 #ifndef __CLOCK_EMULATE__  
   I2C_Get(POWER_I2C_ADDR, 0x2, &val);
-  CDBG("power_get_cycle return %bu\n", ((val & 0xE0) >> 5) & 0x7);
+  CDBG(("power_get_cycle return %bu\n", ((val & 0xE0) >> 5) & 0x7));
   return (val & 0x7);
 #else
   UNUSED_PARAM(val);
@@ -222,7 +224,7 @@ enum power_cycle_interval power_get_cycle(void)
 void power_set_alert_vhigh(unsigned int val)
 {
   unsigned char v[2];
-  CDBG("power_set_alert_vhigh %u\n", val);
+  CDBG(("power_set_alert_vhigh %u\n", val));
   power_hex2pack(val, v);
 #ifndef __CLOCK_EMULATE__ 
   I2C_Puts(POWER_I2C_ADDR, 0x4, 2, v);
@@ -237,14 +239,14 @@ unsigned int power_get_alert_vhigh(void)
 #else
   v[0] = v[1] = 0;
 #endif
-  CDBG("power_get_alert_vhigh 0x%02bx 0x%02bx\n", v[0], v[1]);
+  CDBG(("power_get_alert_vhigh 0x%02bx 0x%02bx\n", v[0], v[1]));
   return power_pack2hex(v); 
 }
 
 void power_set_alert_vlow(unsigned int val)
 {
   unsigned char v[2];
-  CDBG("power_set_alert_vlow %bu\n", val);
+  CDBG(("power_set_alert_vlow %bu\n", val));
   power_hex2pack(val, v);
 #ifndef __CLOCK_EMULATE__ 
   I2C_Puts(POWER_I2C_ADDR, 0x3, 2, v);
@@ -259,14 +261,14 @@ unsigned int power_get_alert_vlow(void)
 #else
   v[0] = v[1] = 0;
 #endif
-  CDBG("power_get_alert_vlow 0x%02bx 0x%02bx\n", v[0], v[1]);
+  CDBG(("power_get_alert_vlow 0x%02bx 0x%02bx\n", v[0], v[1]));
   return power_pack2hex(v); 
 }
 
 void power_set_hyst(unsigned int val)
 {
   unsigned char v[2];
-  CDBG("power_set_hyst %bu\n", val);
+  CDBG(("power_set_hyst %bu\n", val));
   power_hex2pack(val, v); 
 #ifndef __CLOCK_EMULATE__   
   I2C_Puts(POWER_I2C_ADDR, 0x5, 2, v);
@@ -281,14 +283,14 @@ unsigned int power_get_hyst(void)
 #else
   v[0] = v[1] = 0;
 #endif
-  CDBG("power_get_hyst 0x%02bx 0x%02bx\n", v[0], v[1]);
+  CDBG(("power_get_hyst 0x%02bx 0x%02bx\n", v[0], v[1]));
   return power_pack2hex(v); 
 }
 
 void power_clr_high_alert(void)
 {
   unsigned char val;
-  CDBG("power_clr_high_alert\n");
+  CDBG(("power_clr_high_alert\n"));
 #ifndef __CLOCK_EMULATE__   
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
   val |= 0x2; // The controller writes a one to this bit. ???
@@ -301,7 +303,7 @@ void power_clr_high_alert(void)
 void power_clr_low_alert(void)
 {
   unsigned char val;
-  CDBG("power_clr_low_alert\n");
+  CDBG(("power_clr_low_alert\n"));
 #ifndef __CLOCK_EMULATE__   
   I2C_Get(POWER_I2C_ADDR, 0x1, &val);
   val |= 0x1; // The controller writes a one to this bit. ???
@@ -319,7 +321,7 @@ bit power_test_high_alert(void)
 #else
   val = 0;
 #endif
-  CDBG("power_test_high_alert return %s\n", (val & 0x2) != 0 ? "1" : "0");
+  CDBG(("power_test_high_alert return %s\n", (val & 0x2) != 0 ? "1" : "0"));
   return (val & 0x2) != 0;
 }
 
@@ -331,13 +333,13 @@ bit power_test_low_alert(void)
 #else
   val = 0;
 #endif
-  CDBG("power_test_low_alert return %s\n", (val & 0x1) != 0 ? "1" : "0");
+  CDBG(("power_test_low_alert return %s\n", (val & 0x1) != 0 ? "1" : "0"));
   return (val & 0x1) != 0;
 }
 
 void power_set_calibration(bit enable)
 {
-  CDBG("power_set_calibration %bu\n", enable ? 1 : 0);
+  CDBG(("power_set_calibration %bu\n", enable ? 1 : 0));
   is_calibration = enable;
 }
 
@@ -348,17 +350,17 @@ bit power_get_calibration(void)
 
 void scan_power(void)
 {
-  CDBG("scan_power\n");
+  CDBG(("scan_power\n"));
   
   if(power_test_high_alert()) {
     power_clr_high_alert();
-    CDBG("HIGH POWER -> POWER OFF!\n");
+    CDBG(("HIGH POWER -> POWER OFF!\n"));
     power_3_3v_enable(0);
   }
   
   if(power_test_low_alert()) {
     power_clr_low_alert();
-    CDBG("LOW POWER -> POWER OFF!\n");
+    CDBG(("LOW POWER -> POWER OFF!\n"));
     power_3_3v_enable(0);
   }
 }
@@ -370,7 +372,7 @@ void power_proc(enum task_events ev)
 
 void power_enter_powersave(void)
 {
-  CDBG("power_enter_powersave\n");
+  CDBG(("power_enter_powersave\n"));
   power_set_flag();
   led_enter_powersave(); 
   timer_enter_powersave(); 
@@ -420,7 +422,7 @@ void power_leave_powersave(void)
   lt_timer_leave_powersave();
   timer_leave_powersave();
   led_leave_powersave();
-  CDBG("power_leave_powersave\n");
+  CDBG(("power_leave_powersave\n"));
 }
 
 unsigned char power_get_powersave_to_s(void)
@@ -459,7 +461,7 @@ bit power_test_powersave_to(void)
 {
   if(powersave_to_s != 0 
     && time_diff_now(last_ps_s) >= powersave_to_s) {
-      CDBG("test_powersave_to time out!\n");
+      CDBG(("test_powersave_to time out!\n"));
       set_task(EV_POWER_SAVE);
       return 1;
   }
@@ -488,7 +490,7 @@ void power_reset_powersave_to(void)
 
 void power_3_3v_enable(bit enable)
 {
-  CDBG("power_3_3v_enable %bu\n", enable ? 1 : 0);
+  CDBG(("power_3_3v_enable %bu\n", enable ? 1 : 0));
   
   POWER_3_3V_EN = enable;
 }
@@ -500,7 +502,7 @@ bit power_3_3v_get_enable(void)
 
 void power_5v_enable(bit enable)
 {
-  CDBG("power_5v_enable %bu\n", enable ? 1 : 0);
+  CDBG(("power_5v_enable %bu\n", enable ? 1 : 0));
   
   POWER_5V_EN = enable;
 }
@@ -534,7 +536,7 @@ unsigned char power_hex2percent(unsigned int hex)
       val += ocv_table[i + 1].percent;
     }
   }
-  CDBG("power_hex2percent: hex %u-> percent %bu\n", hex, (unsigned char)val);
+  CDBG(("power_hex2percent: hex %u-> percent %bu\n", hex, (unsigned char)val));
   return (unsigned char)val;
 }
 /*
@@ -572,10 +574,10 @@ unsigned int power_get_hex(void)
   return 3060;
 #else
   I2C_Gets(POWER_I2C_ADDR, 0x0, 2, v);
-  CDBG("adc return %02bx %02bx\n", v[0], v[1]);
+  CDBG(("adc return %02bx %02bx\n", v[0], v[1]));
   
   val = power_pack2hex(v);
-  CDBG("power_pack2hex return 0x%04x\n", val);
+  CDBG(("power_pack2hex return 0x%04x\n", val));
   
   power_value[cur_index] = val;
   cur_index = (++cur_index) % POWER_VALUE_SLOT;
@@ -586,7 +588,7 @@ unsigned int power_get_hex(void)
     hex += power_value[val];
   }
   hex = hex / POWER_VALUE_SLOT;
-  CDBG("power_get_hex return 0x%04x\n", (unsigned int)hex);
+  CDBG(("power_get_hex return 0x%04x\n", (unsigned int)hex));
   return (unsigned int)hex;
 #endif
 }
@@ -605,6 +607,6 @@ unsigned char power_get_percent(void)
   unsigned int flt;
   hex = power_get_hex();
   flt = power_hex2float(hex);
-  CDBG("power_hex2float: %u (10mV)\n", flt);
+  CDBG(("power_hex2float: %u (10mV)\n", flt));
   return power_hex2percent(hex);
 }

@@ -161,7 +161,7 @@ static void update_time(unsigned char what)
     led_set_dp(2);
     led_set_dp(4);
 
-    CDBG("update_yymmdd %bu-%bu-%bu\n", year, mon, date);
+    CDBG(("update_yymmdd %bu-%bu-%bu\n", year, mon, date));
     
     if((year / 10) != 0) {
       led_set_code(5, (year / 10) + 0x30);
@@ -195,7 +195,7 @@ static void update_time(unsigned char what)
     }
     
     
-    CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
+    CDBG(("update_hhmmss %bu:%bu:%bu\n", hour, min, sec));  
     
     if((hour / 10) != 0) {
       led_set_code(5, (hour / 10) + 0x30);

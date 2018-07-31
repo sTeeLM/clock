@@ -36,24 +36,15 @@
 static void show_version(void)
 {
   
-  printf("++++++++++++++++++++++++++++++++++++++++\n");
-  printf("+        tiny OS  %s              +\n", __CLOCK__VERSION__);
-  printf("+        %s                       +\n", 
+  CDBG(("++++++++++++++++++++++++++++++++++++++++\n"));
+  CDBG(("+        tiny OS  %s              +\n", __CLOCK__VERSION__));
+  CDBG(("+        %s                       +\n", 
 #ifdef __CLOCK_EMULATE__
   "emulate"
 #else
   "       "
 #endif
-  );
-  printf("+        %s                       +\n",
-#ifdef __CLOCK_DEBUG__
-  "debug  "
-#else
-  "       "
-#endif
-  );
-  printf("++++++++++++++++++++++++++++++++++++++++\n");
-  
+  ));
 }
 
 void main(void)

@@ -97,7 +97,7 @@ static void update_hhmmss(void)
   led_set_dp(3);
   led_set_dp(4); 
   
-  CDBG("update_hhmmss %bu:%bu:%bu\n", hour, min, sec);  
+  CDBG(("update_hhmmss %bu:%bu:%bu\n", hour, min, sec));  
   
   led_set_code(5, (hour / 10) + 0x30);
   led_set_code(4, (hour % 10) + 0x30);

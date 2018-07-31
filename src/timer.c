@@ -84,7 +84,7 @@ void timer_inc_ms39(void)
 
 void timer_initialize(void)
 {
-  CDBG("clock_initialize\n");
+  CDBG(("clock_initialize\n"));
 
   tmr_display = 0;
   tmr_countdown_stop = 1;
@@ -94,13 +94,13 @@ void timer_initialize(void)
 
 void timer_enter_powersave(void)
 {
-  CDBG("timer_enter_powersave\n");
+  CDBG(("timer_enter_powersave\n"));
   timer_clr(); // 一旦进入节电模式，自动清0，节电模式无法用！
 }
 
 void timer_leave_powersave(void)
 {
-  CDBG("timer_leave_powersave\n");
+  CDBG(("timer_leave_powersave\n"));
 }
 
 void timer_set_led_autorefresh(bit enable, enum timer_display_mode mode)
@@ -120,7 +120,7 @@ void timer_set_mode(enum timer_mode mode)
 
 void timer_start(void)
 {
-  CDBG("timer_start mode is %bu\n", tmr_mode);
+  CDBG(("timer_start mode is %bu\n", tmr_mode));
   tmr_countdown_stop = 0;
   tmr_start = 1;
 }

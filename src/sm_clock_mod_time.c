@@ -155,31 +155,15 @@ static void enter_clock(unsigned char what) // blink hour:0, min:1, sec:2
     clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
 }
 
-
-static void enter_yymmdd(unsigned char what) // blink year:0, month:1, day:2
-{
-  clock_display(1);
-  led_clr_all_blink();
-  switch(what) {
-    case IS_YEAR:
-      led_set_blink(5);
-      led_set_blink(4);    
-      break;
-    case IS_MON:
-      led_set_blink(3);
-      led_set_blink(2);    
-      break;      
-    case IS_DAY:
-      led_set_blink(1);
-      led_set_blink(0);    
-      break;      
-  }
-  clock_switch_display_mode(CLOCK_DISPLAY_MODE_YYMMDD);
-}
-
 void sm_clock_mod_time_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_clock_mod_time_init %bu %bu %bu\n", from, to, ev);
+#ifdef __CLOCK__DEBUG__
+  CDBG(("sm_clock_mod_time_init %bu %bu %bu\n", from, to, ev));
+#else
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+#endif
   clock_display(0);
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 1);
 }

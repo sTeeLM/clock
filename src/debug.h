@@ -8,9 +8,9 @@ void debug_initialize(void);
 
 #ifdef __CLOCK_DEBUG__
 void debug_printf(const char * fmt, ...);
-#define CDBG debug_printf
+#define CDBG(exp) debug_printf exp
 #else
-#define CDBG
+#define CDBG(exp)
 #endif
 
 #endif

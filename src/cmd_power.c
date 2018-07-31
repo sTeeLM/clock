@@ -20,7 +20,7 @@ char cmd_power(char arg1, char arg2)
           power_5v_enable(0);
         } 
       } else {
-        CDBG("power 5v is %s\n", power_5v_get_enable()? "ON" : "OFF");
+        CDBG(("power 5v is %s\n", power_5v_get_enable()? "ON" : "OFF"));
       }
       return 0;
     } else if(strcmp(shell_buf + arg1, "hi") == 0) {
@@ -78,7 +78,7 @@ char cmd_power(char arg1, char arg2)
       return 0;
     } else if(strcmp(shell_buf + arg1, "cal") == 0) {
       if(arg2 == 0) {
-        CDBG("power: calibration is %s\n", power_get_calibration() ? "ON" : "OFF");
+        CDBG(("power: calibration is %s\n", power_get_calibration() ? "ON" : "OFF"));
       } else if(strcmp(shell_buf + arg2, "on") == 0) {
         power_set_calibration(1);
       } else if(strcmp(shell_buf + arg2, "off") == 0) {
@@ -89,7 +89,7 @@ char cmd_power(char arg1, char arg2)
       return 0;
     } else if(strcmp(shell_buf + arg1, "bat") == 0 && arg2 == 0) {
       flt = power_get_voltage();
-      CDBG("battery is %bu%% %bu.%bu V\n", power_get_percent(), (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+      CDBG(("battery is %bu%% %bu.%bu V\n", power_get_percent(), (unsigned char)(flt / 100), (unsigned char)(flt % 100)));
       return 0;
     } else {
       return 1;

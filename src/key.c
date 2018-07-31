@@ -95,17 +95,17 @@ void mod_proc(enum task_events ev)
 {
   switch (ev) {
     case EV_KEY_MOD_DOWN:
-      CDBG("mod_proc EV_KEY_MOD_DOWN\n");
+      CDBG(("mod_proc EV_KEY_MOD_DOWN\n"));
       beeper_beep();
       break;
     case EV_KEY_MOD_UP:
-      CDBG("mod_proc EV_KEY_MOD_UP\n");
+      CDBG(("mod_proc EV_KEY_MOD_UP\n"));
       break; 
     case EV_KEY_MOD_PRESS:
-      CDBG("mod_proc EV_KEY_MOD_PRESS\n");
+      CDBG(("mod_proc EV_KEY_MOD_PRESS\n"));
       break;
     case EV_KEY_MOD_LPRESS:
-      CDBG("mod_proc EV_KEY_MOD_LPRESS\n");
+      CDBG(("mod_proc EV_KEY_MOD_LPRESS\n"));
       break;     
   }
   
@@ -117,17 +117,17 @@ void set_proc(enum task_events ev)
 {
   switch (ev) {
     case EV_KEY_SET_DOWN:
-      CDBG("set_proc EV_KEY_SET_DOWN\n");
+      CDBG(("set_proc EV_KEY_SET_DOWN\n"));
       beeper_beep();
       break;
     case EV_KEY_SET_UP:
-      CDBG("set_proc EV_KEY_SET_UP\n");
+      CDBG(("set_proc EV_KEY_SET_UP\n"));
       break; 
     case EV_KEY_SET_PRESS:
-      CDBG("set_proc EV_KEY_SET_PRESS\n");
+      CDBG(("set_proc EV_KEY_SET_PRESS\n"));
       break;
     case EV_KEY_SET_LPRESS:
-      CDBG("set_proc EV_KEY_SET_LPRESS\n");
+      CDBG(("set_proc EV_KEY_SET_LPRESS\n"));
       break;     
   }
   
@@ -138,10 +138,10 @@ void mod_set_proc(enum task_events ev)
 {
   switch (ev) {
     case EV_KEY_MOD_SET_PRESS:
-      CDBG("mod_set_proc EV_KEY_MOD_SET_PRESS\n");
+      CDBG(("mod_set_proc EV_KEY_MOD_SET_PRESS\n"));
       break;
     case EV_KEY_MOD_SET_LPRESS:
-      CDBG("mod_set_proc EV_KEY_MOD_SET_LPRESS\n");
+      CDBG(("mod_set_proc EV_KEY_MOD_SET_LPRESS\n"));
       break;    
   }
 

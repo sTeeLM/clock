@@ -14,25 +14,25 @@ static unsigned char ctl_buffer[2];
 
 void serial_dump(void)
 {
-  CDBG("++++++serial_dump begin++++++\n");
-  CDBG("ctl_buffer[0] = %02bx ctl_buffer[1] = %02bx\n", ctl_buffer[0], ctl_buffer[1]);
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_FUSE_EN, serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_HG_EN, serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_REMOTE_EN, serial_test_ctl_bit(SERIAL_BIT_REMOTE_EN) ? '1' : '0', "SERIAL_BIT_REMOTE_EN");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_RADIO_EN, serial_test_ctl_bit(SERIAL_BIT_RADIO_EN) ? '1' : '0', "SERIAL_BIT_RADIO_EN");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_UNUSE0, serial_test_ctl_bit(SERIAL_BIT_UNUSE0) ? '1' : '0', "SERIAL_BIT_UNUSE0");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_FUSE0_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_FUSE1_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGER");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_FUSE0_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_BROKE_TEST");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_FUSE1_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_BROKE_TEST");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_TRIPWIRE_TEST, serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_TEST");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_INDICATOR_SW_EN, serial_test_ctl_bit(SERIAL_BIT_INDICATOR_SW_EN) ? '1' : '0', "SERIAL_BIT_INDICATOR_SW_EN"); 
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_INDICATOR_RED_EN, serial_test_ctl_bit(SERIAL_BIT_INDICATOR_RED_EN) ? '1' : '0', "SERIAL_BIT_INDICATOR_RED_EN");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_INDICATOR_GREEN_EN, serial_test_ctl_bit(SERIAL_BIT_INDICATOR_GREEN_EN) ? '1' : '0', "SERIAL_BIT_INDICATOR_GREEN_EN");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_RADIO_SD, serial_test_ctl_bit(SERIAL_BIT_RADIO_SD) ? '1' : '0', "SERIAL_BIT_RADIO_SD");
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_RADIO_MUTE, serial_test_ctl_bit(SERIAL_BIT_RADIO_MUTE) ? '1' : '0', "SERIAL_BIT_RADIO_MUTE"); 
-  CDBG("[%02bu] %c %s\n", SERIAL_BIT_UNUSE1, serial_test_ctl_bit(SERIAL_BIT_UNUSE1) ? '1' : '0', "SERIAL_BIT_UNUSE1");
-  CDBG("++++++serial_dump end++++++++\n");
+  CDBG(("++++++serial_dump begin++++++\n"));
+  CDBG(("ctl_buffer[0] = %02bx ctl_buffer[1] = %02bx\n", ctl_buffer[0], ctl_buffer[1]));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_FUSE_EN, serial_test_ctl_bit(SERIAL_BIT_FUSE_EN) ? '1' : '0', "SERIAL_BIT_FUSE_EN"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_HG_EN, serial_test_ctl_bit(SERIAL_BIT_HG_EN) ? '1' : '0', "SERIAL_BIT_HG_EN"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_REMOTE_EN, serial_test_ctl_bit(SERIAL_BIT_REMOTE_EN) ? '1' : '0', "SERIAL_BIT_REMOTE_EN"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_RADIO_EN, serial_test_ctl_bit(SERIAL_BIT_RADIO_EN) ? '1' : '0', "SERIAL_BIT_RADIO_EN"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_UNUSE0, serial_test_ctl_bit(SERIAL_BIT_UNUSE0) ? '1' : '0', "SERIAL_BIT_UNUSE0"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_FUSE0_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE0_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE0_TRIGGER"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_FUSE1_TRIGGER, serial_test_ctl_bit(SERIAL_BIT_FUSE1_TRIGGER) ? '1' : '0', "SERIAL_BIT_FUSE1_TRIGGER"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_FUSE0_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE0_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE0_BROKE_TEST"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_FUSE1_BROKE_TEST, serial_test_ctl_bit(SERIAL_BIT_FUSE1_BROKE_TEST) ? '1' : '0', "SERIAL_BIT_FUSE1_BROKE_TEST"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_TRIPWIRE_TEST, serial_test_ctl_bit(SERIAL_BIT_TRIPWIRE_TEST) ? '1' : '0', "SERIAL_BIT_TRIPWIRE_TEST"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_INDICATOR_SW_EN, serial_test_ctl_bit(SERIAL_BIT_INDICATOR_SW_EN) ? '1' : '0', "SERIAL_BIT_INDICATOR_SW_EN")); 
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_INDICATOR_RED_EN, serial_test_ctl_bit(SERIAL_BIT_INDICATOR_RED_EN) ? '1' : '0', "SERIAL_BIT_INDICATOR_RED_EN"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_INDICATOR_GREEN_EN, serial_test_ctl_bit(SERIAL_BIT_INDICATOR_GREEN_EN) ? '1' : '0', "SERIAL_BIT_INDICATOR_GREEN_EN"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_RADIO_SD, serial_test_ctl_bit(SERIAL_BIT_RADIO_SD) ? '1' : '0', "SERIAL_BIT_RADIO_SD"));
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_RADIO_MUTE, serial_test_ctl_bit(SERIAL_BIT_RADIO_MUTE) ? '1' : '0', "SERIAL_BIT_RADIO_MUTE")); 
+  CDBG(("[%02bu] %c %s\n", SERIAL_BIT_UNUSE1, serial_test_ctl_bit(SERIAL_BIT_UNUSE1) ? '1' : '0', "SERIAL_BIT_UNUSE1"));
+  CDBG(("++++++serial_dump end++++++++\n"));
 }
 
 void serial_ctl_out(void)
@@ -64,7 +64,7 @@ bit serial_test_ctl_bit(unsigned char index)
 
 void serial_hub_initialize(void)
 {
-  CDBG("serial_hub_initialize\n");
+  CDBG(("serial_hub_initialize\n"));
 
   ctl_buffer[0] = ctl_buffer[1] = 0xFF;
   

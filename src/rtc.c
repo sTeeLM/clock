@@ -26,7 +26,7 @@ static unsigned char rtc_data[4];
 static unsigned char last_read;
 static bit is_lt_timer_mode;
 
-
+#ifdef __CLOCK_DEBUG__
 static const char * code rtc_alarm_mode_str[] = 
 {
   "RTC_ALARM0_MOD_PER_SEC",
@@ -51,63 +51,65 @@ static const char * code rtc_square_rate_str[] =
   "RTC_SQUARE_RATE_8192HZ"
 };
 
+#endif
+
 static void rtc_dump_raw(void)
 {
   unsigned char addr;
   unsigned char c;
-  CDBG("RTC raw content:\n");
+  CDBG(("RTC raw content:\n"));
   for(addr = 0; addr < 0x15; addr ++) {
     I2C_Get(RTC_I2C_ADDRESS, addr, &c);
-    CDBG("rtc [%02bx] = 0x%02bx\n", addr,  c);
+    CDBG(("rtc [%02bx] = 0x%02bx\n", addr,  c));
   }
 }
 
 void rtc_dump(void)
 {
-  CDBG("rtc_dump:\n");
+  CDBG(("rtc_dump:\n"));
   rtc_read_data(RTC_TYPE_DATE);
-  CDBG("date/day: %02bu-%02bu-%02bu/%bu\n",
+  CDBG(("date/day: %02bu-%02bu-%02bu/%bu\n",
     rtc_date_get_year(), rtc_date_get_month(), rtc_date_get_date(),
     rtc_date_get_day()
-  );
+  ));
   
   rtc_read_data(RTC_TYPE_TIME);
-  CDBG("time: %02bu:%02bu:%02bu, is12: %s\n",
+  CDBG(("time: %02bu:%02bu:%02bu, is12: %s\n",
     rtc_time_get_hour(), rtc_time_get_min(), rtc_time_get_sec(),
     rtc_time_get_hour_12() ? "ON" : "OFF"
-  );
+  ));
   
   rtc_read_data(RTC_TYPE_ALARM0);
-  CDBG("alarm0 mode: %s\n", rtc_alarm_get_mod_str());
-  CDBG("  day:%02bu\n", rtc_alarm_get_day());
-  CDBG("  date:%02bu\n", rtc_alarm_get_date());  
-  CDBG("  hour:%02bu\n", rtc_alarm_get_hour());
-  CDBG("  min:%02bu\n", rtc_alarm_get_min());  
-  CDBG("  sec:%02bu\n", rtc_alarm_get_sec());
-  CDBG("  is12:%s\n", rtc_alarm_get_hour_12() ? "ON" : "OFF");  
+  CDBG(("alarm0 mode: %s\n", rtc_alarm_get_mod_str()));
+  CDBG(("  day:%02bu\n", rtc_alarm_get_day()));
+  CDBG(("  date:%02bu\n", rtc_alarm_get_date()));  
+  CDBG(("  hour:%02bu\n", rtc_alarm_get_hour()));
+  CDBG(("  min:%02bu\n", rtc_alarm_get_min()));  
+  CDBG(("  sec:%02bu\n", rtc_alarm_get_sec()));
+  CDBG(("  is12:%s\n", rtc_alarm_get_hour_12() ? "ON" : "OFF"));  
 
   rtc_read_data(RTC_TYPE_ALARM1);
-  CDBG("alarm1 mode: %s\n", rtc_alarm_get_mod_str());
-  CDBG("  day:%02bu\n", rtc_alarm_get_day());
-  CDBG("  date:%02bu\n", rtc_alarm_get_date());  
-  CDBG("  hour:%02bu\n", rtc_alarm_get_hour());
-  CDBG("  min:%02bu\n", rtc_alarm_get_min());  
-  CDBG("  is12:%s\n", rtc_alarm_get_hour_12() ? "ON" : "OFF");
+  CDBG(("alarm1 mode: %s\n", rtc_alarm_get_mod_str()));
+  CDBG(("  day:%02bu\n", rtc_alarm_get_day()));
+  CDBG(("  date:%02bu\n", rtc_alarm_get_date()));  
+  CDBG(("  hour:%02bu\n", rtc_alarm_get_hour()));
+  CDBG(("  min:%02bu\n", rtc_alarm_get_min()));  
+  CDBG(("  is12:%s\n", rtc_alarm_get_hour_12() ? "ON" : "OFF"));
   
   rtc_read_data(RTC_TYPE_CTL);
-  CDBG("control:\n");
-  CDBG("  alarm0 int enable:%s\n", rtc_test_alarm_int(RTC_ALARM0) ? "ON" : "OFF");
-  CDBG("  alarm1 int enable:%s\n", rtc_test_alarm_int(RTC_ALARM1) ? "ON" : "OFF");
-  CDBG("  alarm0 int flag:%s\n", rtc_test_alarm_int_flag(RTC_ALARM0) ? "ON" : "OFF");
-  CDBG("  alarm1 int flag:%s\n", rtc_test_alarm_int_flag(RTC_ALARM1) ? "ON" : "OFF");
-  CDBG("  eosc:%c\n", rtc_test_eosc() ? '1' : '0');  
-  CDBG("  bbsqw:%c\n", rtc_test_bbsqw() ? '1' : '0');  
-  CDBG("  conv:%c\n", rtc_test_conv() ? '1' : '0');  
-  CDBG("  square_rate:%s\n", rtc_get_square_rate_str());
-  CDBG("  intcn:%c\n", rtc_test_intcn() ? '1' : '0');  
-  CDBG("  osf:%c\n", rtc_test_osf() ? '1' : '0');  
-  CDBG("  en32khz:%c\n", rtc_test_en32khz() ? '1' : '0');  
-  CDBG("  bsy:%c\n", rtc_test_bsy() ? '1' : '0');  
+  CDBG(("control:\n"));
+  CDBG(("  alarm0 int enable:%s\n", rtc_test_alarm_int(RTC_ALARM0) ? "ON" : "OFF"));
+  CDBG(("  alarm1 int enable:%s\n", rtc_test_alarm_int(RTC_ALARM1) ? "ON" : "OFF"));
+  CDBG(("  alarm0 int flag:%s\n", rtc_test_alarm_int_flag(RTC_ALARM0) ? "ON" : "OFF"));
+  CDBG(("  alarm1 int flag:%s\n", rtc_test_alarm_int_flag(RTC_ALARM1) ? "ON" : "OFF"));
+  CDBG(("  eosc:%c\n", rtc_test_eosc() ? '1' : '0'));  
+  CDBG(("  bbsqw:%c\n", rtc_test_bbsqw() ? '1' : '0'));  
+  CDBG(("  conv:%c\n", rtc_test_conv() ? '1' : '0'));  
+  CDBG(("  square_rate:%s\n", rtc_get_square_rate_str()));
+  CDBG(("  intcn:%c\n", rtc_test_intcn() ? '1' : '0'));  
+  CDBG(("  osf:%c\n", rtc_test_osf() ? '1' : '0'));  
+  CDBG(("  en32khz:%c\n", rtc_test_en32khz() ? '1' : '0'));  
+  CDBG(("  bsy:%c\n", rtc_test_bsy() ? '1' : '0'));  
 }
 
 bit rtc_is_lt_timer(void)
@@ -133,7 +135,7 @@ void rtc_initialize (void)
 {
   unsigned char count;
 
-  CDBG("RTC before initialize:\n");
+  CDBG(("RTC before initialize:\n"));
   rtc_dump_raw();
   rtc_dump();
   
@@ -215,7 +217,7 @@ void rtc_initialize (void)
   rtc_set_bbsqw(0);
   rtc_write_data(RTC_TYPE_CTL); 
   
-  CDBG("RTC after initialize:\n");
+  CDBG(("RTC after initialize:\n"));
   rtc_dump_raw();
   rtc_dump();
 }
@@ -426,7 +428,7 @@ bit rtc_date_set_date(unsigned char date)
 {
   char mon = rtc_date_get_month();
   
-  CDBG("rtc_date_set_day, valid check...\n");
+  CDBG(("rtc_date_set_day, valid check...\n"));
   if(mon == 1 || mon == 3 || mon == 5 || mon == 7 
     || mon == 8 || mon == 10 || mon == 12) {
     if(date > 32) return 1;
@@ -439,7 +441,7 @@ bit rtc_date_set_date(unsigned char date)
     }
   }
   
-  CDBG("rtc_date_set_day, valid check...OK\n");
+  CDBG(("rtc_date_set_day, valid check...OK\n"));
   _rtc_set_date(date, &rtc_data[1]);
 
   return 0;  
@@ -633,12 +635,12 @@ void rtc_alarm_set_mode(enum rtc_alarm_mode mode)
     }
   }
 }
-
+#ifdef __CLOCK_DEBUG__
 const char * rtc_alarm_get_mod_str(void)
 {
   return rtc_alarm_mode_str[rtc_alarm_get_mode()];
 }
-
+#endif
 // 在rtc_read_data(RTC_TYPE_TEMP)之后调用
 bit rtc_get_temperature(unsigned char * integer, unsigned char * flt)
 {
@@ -770,10 +772,12 @@ void rtc_set_square_rate(enum rtc_square_rate rt)
   rtc_data[0] |= val << 3;
 }
 
+#ifdef __CLOCK_DEBUG__
 const char * rtc_get_square_rate_str(void)
 {
   return rtc_square_rate_str[rtc_get_square_rate()];
 }
+#endif
 
 bit rtc_test_intcn(void)
 {

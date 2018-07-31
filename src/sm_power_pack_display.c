@@ -7,6 +7,7 @@
 #include "power.h"
 #include "alarm.h"
 #include "indicator.h"
+#include "cext.h"
 
 #ifdef __CLOCK_DEBUG__
 const char * code sm_power_pack_display_ss_name[] = {
@@ -29,7 +30,7 @@ static void display_power_percent(void)
     led_set_dp(2);
   } else { // display percent
     val = power_get_percent();
-    CDBG("display_power_percent bat is %bu%%\n", (unsigned char)val);
+    CDBG(("display_power_percent bat is %bu%%\n", (unsigned char)val));
     led_clear();
     led_set_code(5, 'P');
     led_set_code(4, 'E');
@@ -42,7 +43,13 @@ static void display_power_percent(void)
 
 void sm_power_pack_display_init(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_power_pack_display_init %bu %bu %bu\n", from, to, ev);
+#ifdef __CLOCK__DEBUG__
+  CDBG(("sm_power_pack_display_init %bu %bu %bu\n", from, to, ev));
+#else
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  UNUSED_PARAM(ev);
+#endif
   clock_display(0);
   alarm_switch_off();
   indicator_clr();
@@ -51,7 +58,12 @@ void sm_power_pack_display_init(unsigned char from, unsigned char to, enum task_
 
 void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum task_events ev)
 {
-  CDBG("sm_power_pack_display_submod0 %bu %bu %bu\n", from, to, ev);
+#ifdef __CLOCK__DEBUG__
+  CDBG(("sm_power_pack_display_submod0 %bu %bu %bu\n", from, to, ev));
+#else
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+#endif
   if(ev == EV_KEY_MOD_UP || ev == EV_KEY_SET_UP) {
     power_reset_powersave_to();
     return;

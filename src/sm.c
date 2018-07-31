@@ -900,7 +900,7 @@ void run_state_machine(enum task_events ev)
 
 void sm_initialize (void) 
 {
-  CDBG("sm_initialize\n");
+  CDBG(("sm_initialize\n"));
   sm_state = SM_CLOCK_DISPLAY|SM_CLOCK_DISPLAY_INIT;
   sm_curr_table = SM_CLOCK;
   
