@@ -7,6 +7,8 @@
 #include "power.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_reboot(char arg1, char arg2)
 {
   SHELL_CMD_PROC fuck;
@@ -36,3 +38,5 @@ char cmd_reboot(char arg1, char arg2)
   }
   return 1;
 }
+
+#endif

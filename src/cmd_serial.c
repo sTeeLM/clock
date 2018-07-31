@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "serial_hub.h"
 
+#ifdef __CLOCK_DEBUG__
 
 char cmd_serial(char arg1, char arg2)
 {
@@ -24,3 +25,5 @@ char cmd_serial(char arg1, char arg2)
   }
   return 0;
 }
+
+#endif

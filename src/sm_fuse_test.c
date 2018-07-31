@@ -20,6 +20,7 @@
 #define FUSE_TEST_TIMEO 5
 #define FUSE_MANUAL_TIMEO   30
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_fuse_test_ss_name[] = 
 {
   "SM_FUSE_TEST_INIT",
@@ -36,7 +37,7 @@ const char * code sm_fuse_test_ss_name[] =
   "SM_FUSE_TEST_REMOTE",
   NULL
 };
-
+#endif
 
 #define test_stage lpress_start   // use lpress_start 作为测试状态指示
 #define test_to    last_display_s // use last_display_s作为超时起始时间

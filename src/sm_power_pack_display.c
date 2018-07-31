@@ -8,11 +8,13 @@
 #include "alarm.h"
 #include "indicator.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_power_pack_display_ss_name[] = {
   "SM_POWER_PACK_DISPLAY_INIT",
   "SM_POWER_PACK_DISPLAY_POWER",
   NULL
 };
+#endif
 
 static void display_power_percent(void)
 {

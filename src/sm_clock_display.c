@@ -13,6 +13,7 @@
 
 #define SM_CLOCK_DISPLAY_SWITCH_S 3 // 5s
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_display_ss_name[] = 
 {
   "SM_CLOCK_DISPLAY_INIT",
@@ -22,6 +23,7 @@ const char * code sm_clock_display_ss_name[] =
   "SM_CLOCK_DISPLAY_TEMP",
   NULL
 };
+#endif
 
 static void display_temp(void)
 {

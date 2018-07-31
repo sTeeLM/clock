@@ -2,11 +2,13 @@
 #include "power.h"
 #include "debug.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_power_pack_powersave_ss_name[] = {
   "SM_POWER_PACK_POWERSAVE_INIT",
   "SM_POWER_PACK_POWERSAVE_SLEEP",
   NULL
 };
+#endif
 
 void sm_power_pack_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
 {

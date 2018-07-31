@@ -7,6 +7,7 @@
 
 #include "mod_common.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_mod_time_name[] =
 {
   "SM_CLOCK_MODIFY_TIME_INIT",
@@ -18,6 +19,7 @@ const char * code sm_clock_mod_time_name[] =
   "SM_CLOCK_MODIFY_TIME_DD",
   NULL
 };
+#endif
 
 static void inc_only(unsigned char what)
 {

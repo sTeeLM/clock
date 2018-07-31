@@ -36,16 +36,23 @@
 static void show_version(void)
 {
   
-  CDBG("++++++++++++++++++++++++++++++++++++++++\n");
-  CDBG("+        tiny OS  %s              +\n", __CLOCK__VERSION__);
-  CDBG("+        %s                       +\n", 
+  printf("++++++++++++++++++++++++++++++++++++++++\n");
+  printf("+        tiny OS  %s              +\n", __CLOCK__VERSION__);
+  printf("+        %s                       +\n", 
 #ifdef __CLOCK_EMULATE__
   "emulate"
 #else
   "       "
 #endif
   );
-  CDBG("++++++++++++++++++++++++++++++++++++++++\n");
+  printf("+        %s                       +\n",
+#ifdef __CLOCK_DEBUG__
+  "debug  "
+#else
+  "       "
+#endif
+  );
+  printf("++++++++++++++++++++++++++++++++++++++++\n");
   
 }
 
@@ -99,6 +106,8 @@ void main(void)
 
   while(1) {                                    // loop forever
     run_task();                                 // run task procs
+#ifdef __CLOCK_DEBUG__
     run_shell();                                // run shell
+#endif
   }
 }

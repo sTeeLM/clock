@@ -10,6 +10,7 @@
 #include "indicator.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_fuse_param_ss_name[] = 
 {
   "SM_FUSE_PARAM_INIT",
@@ -22,6 +23,7 @@ const char * code sm_fuse_param_ss_name[] =
   "SM_FUSE_PARAM_PASSWORD",
   NULL
 };
+#endif
 
 #define password_index common_state
 #define last_index     last_display_s

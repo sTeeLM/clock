@@ -5,6 +5,8 @@
 #include "cmd_beeper.h"
 #include "beeper.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_beeper(char arg1, char arg2)
 {
   if(arg1 != 0 && arg2 == 0 && strcmp("be", shell_buf + arg1) == 0) {
@@ -22,3 +24,5 @@ char cmd_beeper(char arg1, char arg2)
   }
   return 0;
 }
+
+#endif

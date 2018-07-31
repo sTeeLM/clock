@@ -9,12 +9,14 @@
 #include "mod_common.h"
 #include "timer.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_alarm_ss_name[] = 
 {
   "SM_CLOCK_ALARM_HIT_ALARM0",
   "SM_CLOCK_ALARM_HIT_ALARM1",
   NULL
 };
+#endif
 
 static void display_alarm(unsigned char what)
 {

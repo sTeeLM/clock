@@ -3,11 +3,13 @@
 #include "debug.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_radio_powersave_ss_name[] = {
   "SM_RADIO_POWERSAVE_INIT",
   "SM_RADIO_POWERSAVE_SLEEP",
   NULL
 };
+#endif
 
 void sm_radio_powersave_init(unsigned char from, unsigned char to, enum task_events ev)
 {

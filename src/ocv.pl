@@ -14,10 +14,10 @@ ocv = [
   [368, 10],
   [350, 5],
   [330, 0],
-];
+]
 
 def voltohex(a) :
-	return (int) (a * 10 / 1.3675213);
+	return (int) (a * 10 / 1.3675213)
 
 print "static struct ocv_slot code ocv_table[] = {"
 
@@ -25,3 +25,5 @@ for i in ocv :
 	print ("  {%d,%d},"%(voltohex(i[0]), i[1]))
 
 print "};"
+
+exit(0)

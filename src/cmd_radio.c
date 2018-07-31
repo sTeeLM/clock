@@ -5,6 +5,8 @@
 #include "debug.h"
 #include "radio.h"
 
+#ifdef __CLOCK_DEBUG__
+
 static void cmd_radio_cb(unsigned int freq)
 {
   CDBG("freq %u, stereo %s\n", freq, radio_get_stereo() ? "ON" : "OFF");
@@ -119,3 +121,5 @@ char cmd_radio(char arg1, char arg2)
   }
   return 1;
 }
+
+#endif

@@ -3,6 +3,8 @@
 #include "shell.h"
 #include "task.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_task(char arg1, char arg2)
 {
   
@@ -28,3 +30,5 @@ char cmd_task(char arg1, char arg2)
   
   return 1;
 }
+
+#endif

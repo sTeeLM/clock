@@ -9,6 +9,7 @@
 #include "remote.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_fuse_powersave_ss_name[] =
 {
   "SM_FUSE_POWERSAVE_INIT",
@@ -17,6 +18,7 @@ const char * code sm_fuse_powersave_ss_name[] =
   "SM_FUSE_POWERSAVE_DISARM",
   NULL
 };
+#endif
 
 static void roll_back(void)
 {

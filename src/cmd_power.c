@@ -5,6 +5,8 @@
 #include "debug.h"
 #include "power.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_power(char arg1, char arg2)
 {
   unsigned int flt;
@@ -95,3 +97,5 @@ char cmd_power(char arg1, char arg2)
   }
   return 1;
 }
+
+#endif

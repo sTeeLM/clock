@@ -10,6 +10,7 @@
 
 #define RADIO_SWITCH_TIMEO 7 // 每x秒在电台和音量之间轮换一次
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_radio_display_ss_name[] = 
 {
   "SM_RADIO_DISPLAY_INIT",
@@ -18,6 +19,7 @@ const char * code sm_radio_display_ss_name[] =
   "SM_RADIO_DISPLAY_MOD",
   NULL
 };
+#endif
 
 #define radio_display_lock lpress_lock_year_hour
 #define switch_to common_state

@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_radio_mod_ss_name[] = {
   "SM_RADIO_MOD_INIT",
   "SM_RADIO_MOD_HLSI",
@@ -15,6 +16,7 @@ const char * code sm_radio_mod_ss_name[] = {
   "SM_RADIO_MOD_DTC",
   NULL
 };
+#endif
 
 #define val common_state
 

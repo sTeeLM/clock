@@ -22,6 +22,8 @@
 #include "cmd_radio.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
+
 #define SHELL_BUFFER_SIZE 41
 
 char shell_buf[SHELL_BUFFER_SIZE];
@@ -206,3 +208,5 @@ void run_shell(void)
   led_restore();
   clock_leave_shell();  
 }
+
+#endif

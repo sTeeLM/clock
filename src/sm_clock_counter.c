@@ -7,6 +7,7 @@
 #include "cext.h"
 
 // 倒计时功能
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_counter_ss_name[] = 
 {
   "SM_CLOCK_COUNTER_INIT",
@@ -18,7 +19,7 @@ const char * code sm_clock_counter_ss_name[] =
   "SM_CLOCK_COUNTER_STOP",
   NULL
 };
-
+#endif
 static void inc_only(unsigned char what)
 {
   switch (what) {

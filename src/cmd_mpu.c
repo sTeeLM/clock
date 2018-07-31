@@ -6,6 +6,7 @@
 #include "mpu.h"
 #include "com.h"
 
+#ifdef __CLOCK_DEBUG__
 
 char cmd_mpu(char arg1, char arg2)
 {
@@ -20,3 +21,5 @@ char cmd_mpu(char arg1, char arg2)
   }
   return 0;
 }
+
+#endif

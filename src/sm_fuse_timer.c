@@ -22,6 +22,7 @@
 static unsigned char last_key_s;
 #define SM_FUSE_MAX_VERIFY_WAIT_S 10 // 验证密码时，两次按键之间最多等10s
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_fuse_timer_ss_name[] = 
 {
   "SM_FUSE_TIMER_INIT",
@@ -32,6 +33,7 @@ const char * code sm_fuse_timer_ss_name[] =
   "SM_FUSE_TIMER_PREDETONATE",
   NULL
 };
+#endif
 
 enum timer_arm_step {
   TIMER_ARM_FUSE = 0, 

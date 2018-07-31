@@ -73,10 +73,10 @@ a[45] = 10
 #define ROM_POWER_EMPTY_INT  52
 #define ROM_POWER_EMPTY_EXP  53
 
-a[50] = 4
-a[51] = 20
-a[52] = 3
-a[53] = 30
+#a[50] = 4
+#a[51] = 20
+#a[52] = 3
+#a[53] = 30
 
 #define ROM_RADIO_FREQ_HI 60
 #define ROM_RADIO_FREQ_LO 61

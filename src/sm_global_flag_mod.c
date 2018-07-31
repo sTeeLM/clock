@@ -11,6 +11,7 @@
 #include "remote.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_global_flag_mod_ss_name[] = 
 {
   "SM_GLOBAL_FLAG_MODIFY_INIT",
@@ -20,6 +21,7 @@ const char * code sm_global_flag_mod_ss_name[] =
   "SM_GLOBAL_FLAG_MODIFY_REMOTE",
   NULL
 };
+#endif
 
 static void display_global_flag(unsigned char what)
 {

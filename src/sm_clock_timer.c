@@ -8,7 +8,7 @@
 #include "cext.h"
 
 // 跑表功能
-
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_timer_ss_name[] = 
 {
   "SM_CLOCK_TIMER_INIT",
@@ -17,6 +17,7 @@ const char * code sm_clock_timer_ss_name[] =
   "SM_CLOCK_TIMER_STOP",
   NULL
 };
+#endif
 
 static void show_slot_title(unsigned char slot)
 {

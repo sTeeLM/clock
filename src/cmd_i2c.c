@@ -5,6 +5,8 @@
 #include "shell.h"
 #include "cmd_i2c.h"
 
+#ifdef __CLOCK_DEBUG__
+
 static unsigned char write_addr;
 
 static char i2c_read(char arg1, char arg2)
@@ -70,3 +72,5 @@ char cmd_i2c(char arg1, char arg2)
   }
   return 1;
 }
+
+#endif

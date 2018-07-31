@@ -39,6 +39,9 @@ sbit POWER_5V_EN   = P3 ^ 6;
 
 #define POWER_DELAY_INIT_SEC 10
 
+#define POWER_HIGH_ALERT_VOLTAGE 500 // 5.0V
+#define POWER_LOW_ALERT_VOLTAGE  300 // 3.0V
+
 struct ocv_slot {
   unsigned int ocv_hex;
   unsigned char percent;
@@ -137,11 +140,11 @@ void power_initialize(void)
   
   // VHIGH -- Alert Limit Register - Over Range
   // 大于5.00V, 关机！
-  power_set_alert_vhigh(power_float2hex(500));
+  power_set_alert_vhigh(power_float2hex(POWER_HIGH_ALERT_VOLTAGE));
   
   // VLOW -- Alert Limit Register - Under Range
   // 小于3.00V, 关机！
-  power_set_alert_vlow(power_float2hex(300));
+  power_set_alert_vlow(power_float2hex(POWER_LOW_ALERT_VOLTAGE));
   
   // VHYST -- Alert Hysteresis Register
   power_set_hyst(0);

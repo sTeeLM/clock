@@ -7,12 +7,14 @@
 #include "mod_common.h"
 #include "timer.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_powersave_ss_name[] = 
 {
   "SM_CLOCK_POWERSAVE_INIT",
   "SM_CLOCK_POWERSAVE_PS",
   NULL
 };
+#endif
 
 void sm_clock_powersave(unsigned char from, unsigned char to, enum task_events ev)
 {

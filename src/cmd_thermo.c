@@ -5,6 +5,8 @@
 #include "cmd_thermo.h"
 #include "thermo.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_thermo(char arg1, char arg2)
 {
   char val;
@@ -58,3 +60,5 @@ char cmd_thermo(char arg1, char arg2)
   }
   return 0;
 }
+
+#endif

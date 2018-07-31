@@ -4,6 +4,8 @@
 #include "int_hub.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_int(char arg1, char arg2)
 {
   unsigned int status;
@@ -21,3 +23,5 @@ char cmd_int(char arg1, char arg2)
   
   return 0;
 }
+
+#endif

@@ -787,6 +787,7 @@ static const struct sm_trans_group * code sm_trans_table[] = {
   sm_group_global_flag
 };
 
+#ifdef __CLOCK_DEBUG__
 
 struct sm_state_names
 {
@@ -851,6 +852,8 @@ static const struct sm_table_names code sm_names[] =
   {NULL, NULL}
 };
 
+#endif
+
 static unsigned char sm_state;  // curent state hi 4 bits : state, lo 4 bits: sub-state 
 unsigned char sm_curr_table; // current table
 unsigned char sm_new_table; // new table
@@ -874,6 +877,7 @@ void run_state_machine(enum task_events ev)
       && sm_curr_table == sm_trans_table[sm_curr_table][index].table[c].from_table) {
       newstate = sm_trans_table[sm_curr_table][index].table[c].to_state;
       sm_new_table = sm_trans_table[sm_curr_table][index].table[c].to_table;
+#ifdef __CLOCK_DEBUG__
       CDBG("SM [%s] [%s][%s][%s] -> [%s][%s][%s]\n",
         task_name[ev], 
         sm_names[sm_curr_table].table_name,
@@ -883,6 +887,7 @@ void run_state_machine(enum task_events ev)
         sm_names[sm_new_table].state_names[get_sm_state(newstate)].state_name, 
         sm_names[sm_new_table].state_names[get_sm_state(newstate)].sub_state_names[get_sm_ss_state(newstate)]
         );
+#endif
       sm_trans_table[sm_curr_table][index].table[c].sm_proc(sm_state, newstate, ev);
       sm_state = newstate;
       sm_curr_table = sm_new_table;
@@ -905,6 +910,8 @@ void sm_initialize (void)
 
   set_task(EV_KEY_MOD_UP);
 }
+
+#ifdef __CLOCK_DEBUG__
 
 void sm_show_current(void)
 {
@@ -957,6 +964,20 @@ void sm_dump_sub_state(void)
 }
 
 
+static void sm_set_state(unsigned char state)
+{
+  sm_state &= 0x0F; // remove state
+  sm_state |= (state & 0x0F) << 4;
+}
+
+static void sm_set_sub_state(unsigned char sub_state)
+{
+  sm_state &= 0xF0; // remove sub-state
+  sm_state |= sub_state & 0x0F;
+}
+
+
+
 bit sm_set_table_by_name(const char * table_name)
 {
   char i;
@@ -977,18 +998,6 @@ bit sm_set_table_by_name(const char * table_name)
     }
   }
   return 1;
-}
-
-static void sm_set_state(unsigned char state)
-{
-  sm_state &= 0x0F; // remove state
-  sm_state |= (state & 0x0F) << 4;
-}
-
-static void sm_set_sub_state(unsigned char sub_state)
-{
-  sm_state &= 0xF0; // remove sub-state
-  sm_state |= sub_state & 0x0F;
 }
 
 bit sm_set_state_by_name(const char * state_name)
@@ -1026,3 +1035,5 @@ bit sm_set_sub_state_by_name(const char * sub_state_name)
   }
   return 1;
 }
+
+#endif

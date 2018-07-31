@@ -5,6 +5,8 @@
 #include "debug.h"
 #include "rtc.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_rtc(char arg1, char arg2)
 {
   if(arg1 == 0 && arg2 == 0) {
@@ -13,3 +15,5 @@ char cmd_rtc(char arg1, char arg2)
   }    
   return 1;
 }
+
+#endif

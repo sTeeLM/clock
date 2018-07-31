@@ -7,6 +7,7 @@
 #include "beeper.h"
 #include "cext.h"
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_clock_mod_alarm_ss_name[] = 
 {
   "SM_CLOCK_MODIFY_ALARM_INIT",
@@ -17,6 +18,7 @@ const char * code sm_clock_mod_alarm_ss_name[] =
   "SM_CLOCK_MODIFY_ALARM_DUR",
   NULL
 };
+#endif
 
 #define alarm_index common_state
 

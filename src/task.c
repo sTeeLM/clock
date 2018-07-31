@@ -58,7 +58,7 @@
   EV_REMOTE_DETONATE  = 29, // 遥控器按下 detonate
   EV_COUNT  
 */
-
+#ifdef __CLOCK_DEBUG__
 const char * code task_name[] =
 {
   "EV_250MS",
@@ -92,6 +92,7 @@ const char * code task_name[] =
   "EV_REMOTE_DISARM",
   "EV_REMOTE_DETONATE"
 };
+#endif
 
 static const TASK_PROC code task_procs[EV_COUNT] = 
 {
@@ -157,8 +158,11 @@ void task_initialize (void)
 void run_task()
 {
   unsigned char c;
-    
+#ifdef __CLOCK_DEBUG__
   while(com_try_get_key() == 0) {
+#else
+  while(1) {
+#endif
     for(c = 0; c < EV_COUNT; c++) {
       if(test_task(c)) {
         clr_task(c);
@@ -168,7 +172,7 @@ void run_task()
   }
   
 }
-
+#ifdef __CLOCK_DEBUG__
 void task_dump(void)
 {
   unsigned char i;
@@ -176,4 +180,5 @@ void task_dump(void)
     CDBG("[%02bd][%s] %c\n", i, task_name[i], test_task(i) ? '1' : '0');
   }
 }
+#endif
 

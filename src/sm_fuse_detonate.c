@@ -9,12 +9,14 @@
 
 #define MAX_FUSE_CHARGE_TIME 30 //s
 
+#ifdef __CLOCK_DEBUG__
 const char * code sm_fuse_detonate_ss_name[] = 
 {
   "SM_FUSE_DETONATE_INIT",
   "SM_FUSE_DETONATE_CHARGE",
   NULL
 };
+#endif
 
 static void display_detonate(void)
 {

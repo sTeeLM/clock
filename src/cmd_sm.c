@@ -5,6 +5,8 @@
 #include "shell.h"
 #include "sm.h"
 
+#ifdef __CLOCK_DEBUG__
+
 char cmd_sm(char arg1, char arg2)
 {
   if(arg1 == 0) { // show current table, state, sub-state
@@ -36,3 +38,5 @@ char cmd_sm(char arg1, char arg2)
   }
   return 0;
 }
+
+#endif
