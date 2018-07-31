@@ -27,13 +27,13 @@ char cmd_power(char arg1, char arg2)
       if(arg2 == 0) {
         val = power_get_alert_vhigh();
         flt = power_hex2float(val);
-        CDBG("power alert hi is 0x%04x, %bu.%02bu V\n", 
-            val, (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+        CDBG(("power alert hi is 0x%04x, %bu.%02bu V\n", 
+            val, (unsigned char)(flt / 100), (unsigned char)(flt % 100) ));
       } else {
         val = atoi(shell_buf + arg2);
         flt = power_hex2float(val);
-        CDBG("power alert hi set to 0x%04x, %bu.%02bu V\n", 
-          val, (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+        CDBG(("power alert hi set to 0x%04x, %bu.%02bu V\n", 
+          val, (unsigned char)(flt / 100), (unsigned char)(flt % 100) ));
         power_set_alert_vhigh(val);
       }
       return 0;
@@ -41,13 +41,13 @@ char cmd_power(char arg1, char arg2)
       if(arg2 == 0) {
         val = power_get_alert_vlow();
         flt = power_hex2float(val);
-        CDBG("power alert low is 0x%04x, %bu.%02bu V\n", 
-            val, (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+        CDBG(("power alert low is 0x%04x, %bu.%02bu V\n", 
+            val, (unsigned char)(flt / 100), (unsigned char)(flt % 100)));
       } else {
         val = atoi(shell_buf + arg2);
         flt = power_hex2float(val);
-        CDBG("power alert low set to 0x%04x, %bu.%02bu V\n", 
-          val, (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+        CDBG(("power alert low set to 0x%04x, %bu.%02bu V\n", 
+          val, (unsigned char)(flt / 100), (unsigned char)(flt % 100)));
         power_set_alert_vlow(val);
       }
       return 0;
@@ -55,20 +55,20 @@ char cmd_power(char arg1, char arg2)
       if(arg2 == 0) {
         val = power_get_hyst();
         flt = power_hex2float(val);
-        CDBG("power hyst is 0x%04x, %bu.%02bu V\n", 
-            val, (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+        CDBG(("power hyst is 0x%04x, %bu.%02bu V\n", 
+            val, (unsigned char)(flt / 100), (unsigned char)(flt % 100)));
       } else {
         val = atoi(shell_buf + arg2);
         flt = power_hex2float(val);
-        CDBG("power hyst set to 0x%04x, %bu.%02bu V\n", 
-          val, (unsigned char)(flt / 100), (unsigned char)(flt % 100));
+        CDBG(("power hyst set to 0x%04x, %bu.%02bu V\n", 
+          val, (unsigned char)(flt / 100), (unsigned char)(flt % 100)));
         power_set_hyst(val);
       }
       return 0;
     } else if(strcmp(shell_buf + arg1, "int") == 0) {
       if(arg2 == 0) {
-        CDBG("alert: hi = %s lo = %s\n", power_test_high_alert() ? "1" : "0", 
-        power_test_low_alert() ? "1" : "0");
+        CDBG(("alert: hi = %s lo = %s\n", power_test_high_alert() ? "1" : "0", 
+        power_test_low_alert() ? "1" : "0"));
       } else if(strcmp(shell_buf + arg2, "clr") == 0) {
         power_clr_high_alert();
         power_clr_low_alert();

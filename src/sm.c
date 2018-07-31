@@ -878,7 +878,7 @@ void run_state_machine(enum task_events ev)
       newstate = sm_trans_table[sm_curr_table][index].table[c].to_state;
       sm_new_table = sm_trans_table[sm_curr_table][index].table[c].to_table;
 #ifdef __CLOCK_DEBUG__
-      CDBG("SM [%s] [%s][%s][%s] -> [%s][%s][%s]\n",
+      CDBG(("SM [%s] [%s][%s][%s] -> [%s][%s][%s]\n",
         task_name[ev], 
         sm_names[sm_curr_table].table_name,
         sm_names[sm_curr_table].state_names[index].state_name, 
@@ -886,7 +886,7 @@ void run_state_machine(enum task_events ev)
         sm_names[sm_new_table].table_name,
         sm_names[sm_new_table].state_names[get_sm_state(newstate)].state_name, 
         sm_names[sm_new_table].state_names[get_sm_state(newstate)].sub_state_names[get_sm_ss_state(newstate)]
-        );
+        ));
 #endif
       sm_trans_table[sm_curr_table][index].table[c].sm_proc(sm_state, newstate, ev);
       sm_state = newstate;

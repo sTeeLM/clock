@@ -38,13 +38,7 @@ static void show_version(void)
   
   CDBG(("++++++++++++++++++++++++++++++++++++++++\n"));
   CDBG(("+        tiny OS  %s              +\n", __CLOCK__VERSION__));
-  CDBG(("+        %s                       +\n", 
-#ifdef __CLOCK_EMULATE__
-  "emulate"
-#else
-  "       "
-#endif
-  ));
+  CDBG(("++++++++++++++++++++++++++++++++++++++++\n"));
 }
 
 void main(void)
