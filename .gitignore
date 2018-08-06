@@ -39,7 +39,7 @@
 *.ORC
 *.M51
 Clock
-Clock_em
+Clock_debug
 
 # Debug files
 *.dSYM/

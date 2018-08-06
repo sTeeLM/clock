@@ -126,7 +126,7 @@ void power_initialize(void)
   CDBG(("power_initialize\n"));
 
   powersave_flag = 0;
-  POWER_5V_EN = 0;
+  POWER_5V_EN = 1;
   POWER_3_3V_EN = 1;
   
   cur_index = 0;
@@ -504,12 +504,12 @@ void power_5v_enable(bit enable)
 {
   CDBG(("power_5v_enable %bu\n", enable ? 1 : 0));
   
-  POWER_5V_EN = enable;
+  POWER_5V_EN = !enable;
 }
 
 bit power_5v_get_enable(void)
 {
-  return POWER_5V_EN;
+  return !POWER_5V_EN;
 }
 
 unsigned char power_hex2percent(unsigned int hex)
