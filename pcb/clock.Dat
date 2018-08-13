@@ -1,137 +1,261 @@
-﻿Field=#~Integer~#~50|Field=Comment~String~Comment~100|Field=Description~String~Description~100|Field=Designator~String~Designator~100|Field=Footprint~String~Footprint~100|Field=LibRef~String~LibRef~100|Field=Quantity~Integer~Quantity~100|Field=Value~String~Value~100|ReportField=Currency~<none>|ReportField=ProductionQuantity~1|ReportField=ProjectFileName~clock.PrjPcb|ReportField=ProjectFullPath~\\vmware-host\Shared Folders\下载\clock\pcb\clock.PrjPcb|ReportField=Title~Bill of Materials For Project [clock.PrjPcb] (No PCB Document Selected)|ReportField=TotalQuantity~248|ReportField=ReportTime~21:16:51|ReportField=ReportDate~2018/7/18|ReportField=ReportDateTime~2018/7/18 21:16:51|ReportField=OutputName~Bill of Materials|ReportField=OutputType~BOM_PartType|ReportField=GeneratorName~BOM|ReportField=GeneratorDescription~Bill of Materials|ReportField=VariantName~None|ReportField=Address1~|ReportField=Address2~|ReportField=Address3~|ReportField=Address4~|ReportField=Application_BuildNumber~|ReportField=ApprovedBy~|ReportField=Author~|ReportField=CheckedBy~|ReportField=CompanyName~|ReportField=CurrentDate~2018/7/18|ReportField=CurrentTime~21:06:30|ReportField=Date~|ReportField=DocumentFullPathAndName~\\vmware-host\Shared Folders\下载\clock\pcb\5V.SchDoc|ReportField=DocumentName~5V.SchDoc|ReportField=DocumentNumber~|ReportField=DrawnBy~|ReportField=Engineer~|ReportField=ImagePath~|ReportField=ModifiedDate~2018/7/18|ReportField=Organization~|ReportField=ProjectName~clock.PrjPcb|ReportField=Revision~|ReportField=Rule~|ReportField=SheetNumber~|ReportField=SheetTotal~|ReportField=Time~|ReportField=Title~|ReportField=DataSourceFileName~clock.PrjPcb|ReportField=DataSourceFullPath~\\vmware-host\Shared Folders\下载\clock\pcb\clock.PrjPcb|ReportField=PCBConfigurationName~Default Configuration|ReportField=Item~|ReportField=ItemRevision~|ReportField=ItemAndRevision~|ReportField=ItemRevisionBase~|ReportField=ItemRevisionLevel1~|ReportField=ItemRevisionLevel2~|ReportField=ItemRevisionLevel1AndBase~|ReportField=ItemRevisionLevel2AndLevel1~
-1|7SEG-CA|||7SEC-CA-56|7SEG-CA|6|
-2|Cap Semi|Capacitor (Semiconductor SIM Model)||C1206|Cap Semi|1|47pF
-3|Battery|Multicell Battery|BT1|BAT-2|Battery|1|
-4|Battery|Multicell Battery|BT?|BAT-2|Battery|1|
-5|Cap Semi|Capacitor (Semiconductor SIM Model)|C2|C1206|Cap Semi|1|10uF
-6|Cap Semi|Capacitor (Semiconductor SIM Model)|C15|C1206|Cap Semi|1|10uF
-7|Cap Semi|Capacitor (Semiconductor SIM Model)|C18|C1206|Cap Semi|1|10uF
-8|Cap Semi|Capacitor (Semiconductor SIM Model)|C19|C1206|Cap Semi|1|47pF
-9|Cap Semi|Capacitor (Semiconductor SIM Model)|C20|C1206|Cap Semi|1|10uF
-10|Cap Semi|Capacitor (Semiconductor SIM Model)|C21|C1206|Cap Semi|1|10uF
-11|Cap Pol3|Polarized Capacitor (Surface Mount)|C?|C2225|Cap Pol3|1|47uF
-12|Cap Pol3|Polarized Capacitor (Surface Mount)|C?|C2225|Cap Pol3|5|100uF
-13|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|0.01uF
-14|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|100nF
-15|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|10uF
-16|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|1uF
-17|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|2200pF
-18|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|3.3uF
-19|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|1|470nF
-20|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|2|1000pF
-21|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|2|220nF
-22|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|5|0.1uF
-23|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|5|1nF
-24|Cap Semi|Capacitor (Semiconductor SIM Model)|C?|C1206|Cap Semi|5|22uF
-25|Diode 1N4148|1 Amp General Purpose Rectifier|D13|DO-41|Diode 1N4005|1|
-26|Diode 1N4148|1 Amp General Purpose Rectifier|D14|DO-41|Diode 1N4005|1|
-27|Diode 1N4148|1 Amp General Purpose Rectifier|D15|DO-41|Diode 1N4005|1|
-28|Diode 1N4148|1 Amp General Purpose Rectifier|D18|DO-41|Diode 1N4005|1|
-29|Diode 1N4148|1 Amp General Purpose Rectifier|D19|DO-41|Diode 1N4005|1|
-30|Diode 1N4007|1 Amp General Purpose Rectifier|D21|DO-41|Diode 1N4005|1|
-31|Blue|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-32|DETONATE|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-33|Diode 1N4148|1 Amp General Purpose Rectifier|D?|DO-41|Diode 1N4005|3|
-34|Diode 1N5817|1 Amp General Purpose Rectifier|D?|DO-41|Diode 1N4005|1|
-35|DIS_ARM|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-36|EXT|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-37|FUSE0|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-38|FUSE1|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-39|Green|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-40|MPU|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-41|POWER|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-42|Red|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-43|REMOTE|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-44|RTC|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-45|TRIP|Typical RED, GREEN, YELLOW, AMBER GaAs LED|D?|3.2X1.6X1.1|LED2|1|
-46|Relay-DPDT|Dual-Pole Dual-Throw Relay|K?|DIP-P8|Relay-DPDT|2|
-47|Inductor|Inductor|L3|0402-A|Inductor|1|4.7uH
-48|Inductor|Inductor|L?|0402-A|Inductor|1|3.3uH 8A
-49|Inductor|Inductor|L?|0402-A|Inductor|1|600R@100M
-50|Inductor|Inductor|L?|0402-A|Inductor|4|1000R@100M,400MA
-51|Bell|Electrical Bell|LS?|PIN2|Bell|1|
-52|Hard Reset|Header, 2-Pin|P?|HDR1X2|Header 2|1|
-53|Header 2X2|Header, 2-Pin, Dual row|P?|HDR2X2|Header 2X2|2|
-54|Header 5|Header, 5-Pin|P?|HDR1X5|Header 5|1|
-55|Test|Header, 2-Pin|P?|HDR1X2|Header 2|1|
-56|Tripwire|Header, 2-Pin|P?|HDR1X2|Header 2|1|
-57|2N3906|PNP Bipolar Transistor|Q21|SOT-23B_N|PNP|1|
-58|2N3906|PNP Bipolar Transistor|Q22|SOT-23B_N|PNP|1|
-59|2N3906|PNP Bipolar Transistor|Q23|SOT-23B_N|PNP|1|
-60|2N3906|PNP Bipolar Transistor|Q24|SOT-23B_N|PNP|1|
-61|2N3906|PNP Bipolar Transistor|Q25|SOT-23B_N|PNP|1|
-62|2N3906|PNP Bipolar Transistor|Q26|SOT-23B_N|PNP|1|
-63|AO3401|P-Channel MOSFET|Q27|E3|MOSFET-P|1|
-64|2N3904|NPN General Purpose Amplifier|Q?|TO-92A|2N3904|1|
-65|2N3906|PNP Bipolar Transistor|Q?|SOT-23B_N|PNP|6|
-66|AO3401|P-Channel MOSFET|Q?|E3|MOSFET-P|7|
-67|Res3|Resistor|R1|12Z-2010|Res3|1|1.2K
-68|Res3|Resistor|R56|12Z-2010|Res3|1|6.8K
-69|Res3|Resistor|R58|12Z-2010|Res3|1|6.8K
-70|Res3|Resistor|R59|12Z-2010|Res3|1|6.8K
-71|Res3|Resistor|R60|12Z-2010|Res3|1|6.8K
-72|Res3|Resistor|R61|12Z-2010|Res3|1|4.7K
-73|Res3|Resistor|R62|12Z-2010|Res3|1|4.7K
-74|Res Pack3|Isolated Resistor Network|R63|SO-16_N|Res Pack3|1|1K
-75|Res3|Resistor|R64|12Z-2010|Res3|1|4.7K
-76|Res3|Resistor|R65|12Z-2010|Res3|1|4.7K
-77|Res3|Resistor|R66|12Z-2010|Res3|1|4.7K
-78|Res3|Resistor|R67|12Z-2010|Res3|1|4.7K
-79|Res3|Resistor|R70|12Z-2010|Res3|1|300
-80|Res3|Resistor|R71|12Z-2010|Res3|1|10K
-81|Res3|Resistor|R73|12Z-2010|Res3|1|1K
-82|Res3|Resistor|R74|12Z-2010|Res3|1|330K
-83|Res3|Resistor|R78|12Z-2010|Res3|1|100K
-84|Res3|Resistor|R?|12Z-2010|Res3|1|1.2K
-85|Res3|Resistor|R?|12Z-2010|Res3|1|1.5k
-86|Res3|Resistor|R?|12Z-2010|Res3|1|20
-87|Res3|Resistor|R?|12Z-2010|Res3|1|510K
-88|Res3|Resistor|R?|12Z-2010|Res3|1|5K
-89|Res3|Resistor|R?|12Z-2010|Res3|1|680K
-90|Res3|Resistor|R?|12Z-2010|Res3|1|68K
-91|Res3|Resistor|R?|12Z-2010|Res3|15|330K
-92|Res3|Resistor|R?|12Z-2010|Res3|17|1K
-93|Res3|Resistor|R?|12Z-2010|Res3|2|10
-94|Res3|Resistor|R?|12Z-2010|Res3|2|10K
-95|Res3|Resistor|R?|12Z-2010|Res3|2|27
-96|Res3|Resistor|R?|12Z-2010|Res3|2|33K
-97|Res3|Resistor|R?|12Z-2010|Res3|2|5
-98|Res3|Resistor|R?|12Z-2010|Res3|24|100K
-99|Res3|Resistor|R?|12Z-2010|Res3|3|1
-100|Res3|Resistor|R?|12Z-2010|Res3|3|1M
-101|Res3|Resistor|R?|12Z-2010|Res3|3|4.7K
-102|RPot|Potentiometer|R?|VR5|RPot|1|50K
-103|RPot|Potentiometer|R?|VR5|RPot|2|1M
-104|MOD|Switch|S1|SPST-2|SW-PB|1|
-105|SET|Switch|S2|SPST-2|SW-PB|1|
-106|POWER|Switch|S?|SPST-2|SW-PB|1|
-107|SW-SPDT|SPDT Subminiature Toggle Switch, Right Angle Mounting, Vertical Actuation|S?|TL36WW15050|SW-SPDT|1|
-108|TP4056||U1|SOP8|TP4056|1|
-109|TPS62745DSSR|Imported|U2|DSS0012A|TPS62745DSSR|1|Value
-110|8SWITCH||U?||8SWITCH|1|
-111|74HC05||U?||74HC05|2|
-112|AD5245||U?||AD5245|1|
-113|ADC121C021CIMK||U?||ADC121C021CIMK|1|
-114|ADXL345||U?||ADXL345|1|
-115|AT24C02||U?||AT24C02|1|
-116|DS3231||U?|SOP16|DS3231|1|
-117|FP6277||U?||FP6277|1|
-118|HEADPHONE||U?||HEADPHONE|1|
-119|HGswitch||U?||HGswitch|4|
-120|ICM7555||U?||ICM7555|1|
-121|LP2980IM5X||U?||LP2980IM5X|1|
-122|MPU-6050||U?|QFN24_4X4_N|MPU-6050|1|
-123|NS4268||U?||NS4268|1|
-124|PL2303SA||U?||PL2303SA|1|
-125|RADIO||U?||RADIO|1|
-126|SC2272M4||U?||SC2272M4|1|
-127|SN74HC244||U?||SN74HC244|1|
-128|SPEAKER-L||U?||SPEAKER|1|
-129|SPEAKER-R||U?||SPEAKER|1|
-130|STC89LE516RD+HD||U?|LQLPF44|STC89LE516RD+HD|1|
-131|TCA9535||U?||TCA9535|2|
-132|TEA5767||U?||TEA5767|1|
-133|TJ4230||U?||TJ4230|1|
-134|TMP101|Imported|U?|DBV6|TMP101|2|Value
-135|TP4056||U?|SOP8|TP4056|1|
-136|XTAL|Crystal Oscillator|Y1|R38|XTAL|1|
+﻿Field=#~Integer~#~50|Field=Comment~String~Comment~100|Field=Designator~String~Designator~100|Field=Footprint~String~Footprint~100|Field=LibRef~String~LibRef~100|Field=Quantity~Integer~Quantity~100|Field=Value~String~Value~100|ReportField=Currency~<none>|ReportField=ProductionQuantity~1|ReportField=ProjectFileName~clock.PrjPcb|ReportField=ProjectFullPath~\\vmware-host\Shared Folders\下载\clock\pcb\clock.PrjPcb|ReportField=Title~Bill of Materials For Project [clock.PrjPcb] (No PCB Document Selected)|ReportField=TotalQuantity~260|ReportField=ReportTime~23:19:13|ReportField=ReportDate~2018/8/13|ReportField=ReportDateTime~2018/8/13 23:19:13|ReportField=OutputName~Bill of Materials|ReportField=OutputType~BOM_PartType|ReportField=GeneratorName~BOM|ReportField=GeneratorDescription~Bill of Materials|ReportField=VariantName~None|ReportField=Address1~|ReportField=Address2~|ReportField=Address3~|ReportField=Address4~|ReportField=Application_BuildNumber~|ReportField=ApprovedBy~|ReportField=Author~|ReportField=CheckedBy~|ReportField=CompanyName~|ReportField=CurrentDate~2018/8/13|ReportField=CurrentTime~22:44:03|ReportField=Date~|ReportField=DocumentFullPathAndName~\\vmware-host\Shared Folders\下载\clock\pcb\Main.SchDoc|ReportField=DocumentName~Main.SchDoc|ReportField=DocumentNumber~|ReportField=DrawnBy~|ReportField=Engineer~|ReportField=ImagePath~|ReportField=ModifiedDate~2018/8/13|ReportField=Organization~|ReportField=ProjectName~clock.PrjPcb|ReportField=Revision~|ReportField=Rule~|ReportField=SheetNumber~|ReportField=SheetTotal~|ReportField=Time~|ReportField=Title~|ReportField=DataSourceFileName~clock.PrjPcb|ReportField=DataSourceFullPath~\\vmware-host\Shared Folders\下载\clock\pcb\clock.PrjPcb|ReportField=PCBConfigurationName~Default Configuration|ReportField=Item~|ReportField=ItemRevision~|ReportField=ItemAndRevision~|ReportField=ItemRevisionBase~|ReportField=ItemRevisionLevel1~|ReportField=ItemRevisionLevel2~|ReportField=ItemRevisionLevel1AndBase~|ReportField=ItemRevisionLevel2AndLevel1~
+1|ML2032/CR2032|BT1|battery|Battery|1|
+2|Battery|BT2|18650X4|Battery|1|
+3|Cap Semi|C1|0603|Cap Semi|1|1000pF
+4|Cap Semi|C2|0603|Cap Semi|1|1000pF
+5|Cap Semi|C3|0604|Cap Semi|1|3.3uF
+6|Cap Semi|C4|0603|Cap Semi|1|0.01uF
+7|Cap Semi|C5|0603|Cap Semi|1|0.1uF
+8|Cap Semi|C6|0603|Cap Semi|1|0.1uF
+9|Cap Semi|C7|0603|Cap Semi|1|10uF
+10|Cap Semi|C8|0603|Cap Semi|1|10uF
+11|Cap Semi|C9|0603|Cap Semi|1|47pF
+12|Cap Semi|C10|0603|Cap Semi|1|47pF
+13|Cap Semi|C11|0603|Cap Semi|1|10uF
+14|Cap Semi|C12|1210|Cap Semi|1|47uF
+15|Cap Semi|C13|1210|Cap Semi|1|47uF
+16|Cap Semi|C14|0603|Cap Semi|1|1uF
+17|Cap Semi|C15|0603|Cap Semi|1|10uF
+18|Cap Semi|C16|0603|Cap Semi|1|10uF
+19|Cap Pol3|C17|TC7343-2917|Cap Pol3|1|100uF
+20|Cap Semi|C18|0603|Cap Semi|1|10uF
+21|Cap Pol3|C19|TC7343-2917|Cap Pol3|1|100uF
+22|Cap Pol3|C20|TC7343-2917|Cap Pol3|1|100uF
+23|Cap Semi|C21|0603|Cap Semi|1|470nF
+24|Cap Semi|C22|0603|Cap Semi|1|1nF
+25|Cap Semi|C23|1206|Cap Semi|1|22uF
+26|Cap Semi|C24|1206|Cap Semi|1|22uF
+27|Cap Pol3|C25|TC7343-2917|Cap Pol3|1|100uF
+28|Cap Semi|C26|1210|Cap Semi|1|22uF
+29|Cap Semi|C27|0603|Cap Semi|1|220nF
+30|Cap Semi|C28|0603|Cap Semi|1|220nF
+31|Cap Semi|C29|0603|Cap Semi|1|1nF
+32|Cap Semi|C30|0603|Cap Semi|1|1nF
+33|Cap Semi|C31|0603|Cap Semi|1|1nF
+34|Cap Semi|C32|0603|Cap Semi|1|1nF
+35|Cap Semi|C33|0603|Cap Semi|1|1uF
+36|Cap Semi|C34|1206|Cap Semi|1|22uF
+37|Cap Semi|C35|0603|Cap Semi|1|100nF
+38|Diode 1N4148|D1|0603D|Diode 1N4005|1|
+39|Diode 1N4148|D2|0603D|Diode 1N4005|1|
+40|Diode 1N4148|D3|0603D|Diode 1N4005|1|
+41|Diode 1N4148|D4|0603D|Diode 1N4005|1|
+42|DISARM|D5|0603D|LED2|1|
+43|DETONATE|D6|0603D|LED2|1|
+44|POWER|D7|0603D|LED2|1|
+45|MPU|D8|0603D|LED2|1|
+46|RTC|D9|0603D|LED2|1|
+47|EXT|D10|0603D|LED2|1|
+48|FUSE0|D11|0603D|LED2|1|
+49|FUSE1|D12|0603D|LED2|1|
+50|TRIP|D13|0603D|LED2|1|
+51|Diode 1N5817|D14|SMA|Diode 1N4005|1|
+52|Diode 1N5817|D15|SMA|Diode 1N4005|1|
+53|Diode 1N5817|D16|SMA|Diode 1N4005|1|
+54|Diode 1N4148|D17|1206|Diode 1N4005|1|
+55|Diode 1N4148|D18|1206D|Diode 1N4005|1|
+56|Diode 1N5817|D19|SMA|Diode 1N4005|1|
+57|Diode 1N4007|D20|SMA|Diode 1N4005|1|
+58|REMOTE|D21|0603D|LED2|1|
+59|Diode 1N4148|D22|1206D|Diode 1N4005|1|
+60|Diode 1N4148|D23|1206D|Diode 1N4005|1|
+61|Relay-DPDT|K1|G6K2PY|Relay-DPDT|1|
+62|Relay-DPDT|K2|G6K2PY|Relay-DPDT|1|
+63|Inductor|L1|CD127|Inductor|1|2.2uH
+64|Inductor|L2|0603|Inductor|1|4.7uH
+65|Inductor|L3|AXIAL-0.6|Inductor|1|600R@100M 2A
+66|Inductor|L4|0805|Inductor|1|1000R@100M,400MA
+67|Inductor|L5|0805|Inductor|1|1000R@100M,400MA
+68|Inductor|L6|0805|Inductor|1|1000R@100M,400MA
+69|Inductor|L7|0805|Inductor|1|1000R@100M,400MA
+70|Bell|LS1|BEEPER|Bell|1|
+71|SPEAKER|LS2|SPEAKER|SPEAKER|1|
+72|SPEAKER|LS3|SPEAKER|SPEAKER|1|
+73|Tripwire|P1|HDR1X2|Header 2|1|
+74|Header 2X2|P2|HDR2X2|Header 2X2|1|
+75|Header 2X2|P3|HDR2X2|Header 2X2|1|
+76|Header 24|P4|HDR1X24|Header 24|1|
+77|Header 24|P5|HDR1X24|Header 24|1|
+78|MMBT3906|Q1|SOT23-3-PNP|PNP|1|
+79|AO3401|Q2|SOT23-3-PMOS|MOSFET-P|1|
+80|MMBT3906|Q3|SOT23-3-PNP|PNP|1|
+81|AO3401|Q4|SOT23-3-PMOS|MOSFET-P|1|
+82|MMBT3906|Q5|SOT23-3-PNP|PNP|1|
+83|MMBT3906|Q6|SOT23-3-PNP|PNP|1|
+84|AO3401|Q7|SOT23-3-PMOS|MOSFET-P|1|
+85|AO3401|Q8|SOT23-3-PMOS|MOSFET-P|1|
+86|MMBT3906|Q9|SOT23-3-PNP|PNP|1|
+87|MMBT3906|Q10|SOT23-3-PNP|PNP|1|
+88|AO3401|Q11|SOT23-3-PMOS|MOSFET-P|1|
+89|AO3401|Q12|SOT23-3-PMOS|MOSFET-P|1|
+90|IRF4905S|Q13|D2PAK|MOSFET-P|1|
+91|AO3401|Q14|SOT23-3-PMOS|MOSFET-P|1|
+92|AO3401|Q15|SOT23-3-PMOS|MOSFET-P|1|
+93|AO3401|Q16|SOT23-3-PMOS|MOSFET-P|1|
+94|MMBT3906|Q17|SOT23-3-PNP|PNP|1|
+95|MMBT3906|Q18|SOT23-3-PNP|PNP|1|
+96|MMBT3906|Q19|SOT23-3-PNP|PNP|1|
+97|MMBT3906|Q20|SOT23-3-PNP|PNP|1|
+98|MMBT3906|Q21|SOT23-3-PNP|PNP|1|
+99|MMBT3906|Q22|SOT23-3-PNP|PNP|1|
+100|AO3401|Q23|SOT23-3-PMOS|MOSFET-P|1|
+101|MMBT3904|Q24|SOT23-3-NPN|2N3904|1|
+102|Res3|R1|0603|Res3|1|4.7K
+103|Res3|R2|0603|Res3|1|20
+104|Res3|R3|0603|Res3|1|330K
+105|Res3|R4|0603|Res3|1|330K
+106|Res3|R5|0603|Res3|1|330K
+107|Res3|R6|0603|Res3|1|330K
+108|Res3|R7|0603|Res3|1|100K
+109|Res3|R8|0603|Res3|1|100K
+110|Res3|R9|0603|Res3|1|100K
+111|Res3|R10|0603|Res3|1|100K
+112|Res3|R11|0603|Res3|1|6.8K
+113|Res3|R12|0603|Res3|1|100K
+114|Res3|R13|0603|Res3|1|100K
+115|Res3|R14|0603|Res3|1|1K
+116|Res3|R15|0603|Res3|1|1K
+117|Res3|R16|0603|Res3|1|1K
+118|Res3|R17|0603|Res3|1|1K
+119|Res3|R18|0603|Res3|1|1K
+120|Res3|R19|0603|Res3|1|1K
+121|Res3|R20|0603|Res3|1|1K
+122|Res3|R21|0603|Res3|1|1K
+123|Res3|R22|0603|Res3|1|1K
+124|Res3|R23|0603|Res3|1|100K
+125|Res3|R24|0603|Res3|1|100K
+126|Res3|R25|0603|Res3|1|100K
+127|Res3|R26|0603|Res3|1|100K
+128|Res3|R27|0603|Res3|1|680
+129|Res3|R28|0603|Res3|1|100K
+130|Res3|R29|0603|Res3|1|100K
+131|Res3|R30|0603|Res3|1|330K
+132|Res3|R31|0603|Res3|1|330K
+133|Res3|R32|0603|Res3|1|1M
+134|Res3|R33|0603|Res3|1|330K
+135|Res3|R34|0603|Res3|1|330K
+136|Res3|R35|0603|Res3|1|1M
+137|Res3|R36|0603|Res3|1|1M
+138|Res3|R37|0603|Res3|1|330K
+139|Res3|R38|0603|Res3|1|4.7K
+140|Res3|R39|0603|Res3|1|330K
+141|Res3|R40|0603|Res3|1|4.7K
+142|Res3|R41|2512|Res3|1|5
+143|Res3|R42|2512|Res3|1|5
+144|Res3|R43|0603|Res3|1|330K
+145|Res3|R44|0603|Res3|1|330K
+146|Res3|R45|0603|Res3|1|1K
+147|RPot|R46|VR5|RPot|1|1M
+148|Res3|R47|0603|Res3|1|100K
+149|Res3|R48|0603|Res3|1|100K
+150|Res3|R49|0603|Res3|1|100K
+151|Res3|R50|0603|Res3|1|1K
+152|Res3|R51|0603|Res3|1|1K
+153|Res3|R52|0603|Res3|1|1K
+154|Res3|R53|0603|Res3|1|1K
+155|Res3|R54|0603|Res3|1|1.5k
+156|Res3|R55|0603|Res3|1|27
+157|Res3|R56|0603|Res3|1|27
+158|Res3|R57|0603|Res3|1|300
+159|Res3|R58|0603|Res3|1|100K
+160|Res3|R59|0603|Res3|1|100K
+161|Res3|R60|0603|Res3|1|10K
+162|Res3|R61|0603|Res3|1|100K
+163|Res3|R62|0603|Res3|1|10K
+164|Res3|R63|0603|Res3|1|0
+165|Res3|R64|0603|Res3|1|3.3
+166|Res3|R65|0603|Res3|1|330K
+167|Res3|R66|0603|Res3|1|100K
+168|Res3|R67|0603|Res3|1|330K
+169|Res3|R68|0603|Res3|1|51K
+170|Res3|R69|0603|Res3|1|75K
+171|Res3|R70|0603|Res3|1|51K
+172|Res3|R71|0603|Res3|1|43K
+173|Res3|R72|0603|Res3|1|330K
+174|Res3|R73|2512|Res3|1|0.4
+175|Res3|R74|0603|Res3|1|1K
+176|Res3|R75|0603|Res3|1|1.2K
+177|Res3|R76|0603|Res3|1|330K
+178|Res3|R77|0603|Res3|1|330K
+179|Res3|R78|0603|Res3|1|1.2K
+180|Res3|R79|0603|Res3|1|10
+181|Res3|R80|0603|Res3|1|1K
+182|RPot|R81|VR5|RPot|1|50K
+183|Res3|R82|0603|Res3|1|1K
+184|Res3|R83|0603|Res3|1|330K
+185|Res3|R84|0603|Res3|1|100K
+186|Res3|R85|0603|Res3|1|100K
+187|Res3|R86|0603|Res3|1|680K
+188|Res3|R87|0603|Res3|1|1K
+189|Res3|R88|0603|Res3|1|100K
+190|Res3|R89|0603|Res3|1|100K
+191|Res3|R90|0603|Res3|1|100K
+192|RPot|R91|VR5|RPot|1|1M
+193|Res3|R92|0603|Res3|1|4.7K
+194|Res3|R93|0603|Res3|1|4.7K
+195|Res3|R94|0603|Res3|1|1K
+196|Res3|R95|0603|Res3|1|1K
+197|Res3|R96|0603|Res3|1|1K
+198|Res3|R97|0603|Res3|1|1K
+199|Res3|R98|0603|Res3|1|1K
+200|Res3|R99|0603|Res3|1|1K
+201|Res3|R100|0603|Res3|1|1K
+202|Res3|R101|0603|Res3|1|1K
+203|Res3|R102|0603|Res3|1|4.7K
+204|Res3|R103|0603|Res3|1|4.7K
+205|Res3|R104|0603|Res3|1|4.7K
+206|Res3|R105|0603|Res3|1|4.7K
+207|Res3|R106|0603|Res3|1|330K
+208|Res3|R107|0603|Res3|1|6.8K
+209|Res3|R108|0603|Res3|1|6.8K
+210|Res3|R109|0603|Res3|1|6.8K
+211|Res3|R110|0603|Res3|1|100K
+212|Res3|R111|0603|Res3|1|330K
+213|Res3|R112|0603|Res3|1|33K
+214|SW-SPDT|S1|SW-SPDT|SW-SPDT|1|
+215|SW-DPDT|S2|SW-DPDT|SW-DPDT|1|
+216|SW-SPDT|S3|SW-SPDT|SW-SPDT|1|
+217|POWER|S4|SWITCH|SW-PB|1|
+218|MOD|S5|SWITCH|SW-PB|1|
+219|SET|S6|SWITCH|SW-PB|1|
+220|HGswitch|U1|HG-V|HGswitch|1|
+221|HGswitch|U2|HG-H|HGswitch|1|
+222|HGswitch|U3|HG-H|HGswitch|1|
+223|HGswitch|U4|HG-H|HGswitch|1|
+224|TCA9535|U5|TSSOP24|TCA9535|1|
+225|SN74HC244|U6|TSSOP20|SN74HC244|1|
+226|DS3231|U7|WSO16_M|DS3231|1|
+227|TCA9535|U8|TSSOP24|TCA9535|1|
+228|TMP101|U9|SOT23-6|TMP101|1|Value
+229|TMP101|U10|SOT23-6|TMP101|1|Value
+230|ICM7555|U11|SOP8|ICM7555|1|
+231|74HC05|U12|TSSOP14|74HC05|1|
+232|3ColorLED|U13|3COLOR-LED|3ColorLED|1|
+233|USB-Micro|U14|USB-Micro|USB-Micro|1|
+234|PL2303SA|U15|SOP8|PL2303SA|1|
+235|STC89LE516RD+|U16|LQLPF44|STC89LE516RD+|1|
+236|AT24C02|U17|SOP8|AT24C02|1|
+237|ADXL345|U18|ALX|ADXL345|1|
+238|G5177C|U19|SOP8-PAD|G5177C|1|
+239|USB-A|U20|USB-A|USB-A|1|
+240|TP4056|U21|SOP8-PAD|TP4056|1|
+241|TPS62745DSSR|U22|DSS0012A|TPS62745DSSR|1|Value
+242|TP4056|U23|SOP8-PAD|TP4056|1|
+243|HEADPHONE|U24|HEADPHONE|HEADPHONE|1|
+244|TJ4230|U25|SOP8-PAD|TJ4230|1|
+245|NS4268|U26|SOP16|NS4268|1|
+246|TEA5767|U27|TEA5767|TEA5767|1|
+247|AD5245|U28|SOT23-8|AD5245|1|
+248|8SWITCH|U29|DSDT08LSGET|8SWITCH|1|
+249|SC2272M4|U30|SOP20|SC2272M4|1|
+250|RADIO|U31|RADIO|RADIO|1|
+251|74HC05|U32|TSSOP14|74HC05|1|
+252|LP2980IM5X|U33|DDC-5|LP2980IM5X|1|
+253|ADC121C021CIMK|U34|DDC-6|ADC121C021CIMK|1|
+254|7SEG-CA|U35|8SEC-CA-28|7SEG-CA|1|
+255|7SEG-CA|U36|8SEC-CA-28|7SEG-CA|1|
+256|7SEG-CA|U37|8SEC-CA-28|7SEG-CA|1|
+257|7SEG-CA|U38|8SEC-CA-28|7SEG-CA|1|
+258|7SEG-CA|U39|8SEC-CA-28|7SEG-CA|1|
+259|7SEG-CA|U40|8SEC-CA-28|7SEG-CA|1|
+260|XTAL|Y1|XTAL|XTAL|1|

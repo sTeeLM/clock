@@ -1,0 +1,24 @@
+Power：
+0.4om 功率电阻
+
+Power_Adc：
+
+MCU：
+
+RTC：
+纽扣BAT
+
+Control:
+
+Fuse：
+5om 功率电阻
+
+MCU：
+
+Hg：
+
+Beeper：
+
+Remote：
+
+Radio：

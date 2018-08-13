@@ -154,3 +154,12 @@
 [0804/205938:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0805/201333:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0806/101007:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0806/181925:ERROR:ssl_client_socket_openssl.cc(1132)] handshake failed; returned -1, SSL error code 1, net_error -101
+[0806/232739:INFO:CONSOLE(990)] "Uncaught TypeError: window.AppPrivacyBar is not a constructor", source: https://www.altium.com/documentation/ (990)
+[0806/232745:INFO:CONSOLE(1)] "Uncaught SyntaxError: Unexpected identifier", source: https://sp.analytics.yahoo.com/sp.pl?a=10001942155268&jsonp=YAHOO.ywa.I13N.handleJSONResponse&d=Mon%2C%2006%20Aug%202018%2015%3A27%3A44%20GMT&n=-8&b=Altium%20Documentation%20%7C%20Online%20Documentation%20for%20Altium%20Products&.yp=429165&f=https%3A%2F%2Fwww.altium.com%2Fdocumentation%2F&enc=UTF-8 (1)
+[0807/123838:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/123838:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0807/123838:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0808/144539:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0809/160407:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0813/092040:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.

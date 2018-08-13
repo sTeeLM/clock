@@ -220,7 +220,7 @@ void radio_initialize (void)
   CDBG(("radio_initialize\n"));
   radio_set_pa_mute(1);
   radio_set_pa_sd(1);
-  radio_set_power(0);
+  radio_set_power(1);
   radio_enabled = 0;
 }
 
@@ -240,7 +240,7 @@ void radio_enable(bit enable)
   if(!radio_enabled && enable) {
     radio_set_pa_mute(1);
     radio_set_pa_sd(1);
-    radio_set_power(1);
+    radio_set_power(0);
     radio_load_rom();
     radio_set_pa_sd(0);
     radio_set_pa_mute(0);
@@ -248,7 +248,7 @@ void radio_enable(bit enable)
   } else if(radio_enabled && !enable){
     radio_set_pa_mute(1);
     radio_set_pa_sd(1);
-    radio_set_power(0);
+    radio_set_power(1);
     radio_enabled = 0;
   }
 }
