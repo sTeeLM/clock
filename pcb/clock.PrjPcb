@@ -1,6 +1,6 @@
 [Design]
 Version=1.0
-HierarchyMode=3
+HierarchyMode=2
 ChannelRoomNamingStyle=0
 ReleasesFolder=
 ChannelDesignatorFormatString=$Component_$RoomName
@@ -446,22 +446,6 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LMXGTKAW
-
-[GeneratedDocument1]
-DocumentPath=Project Outputs for clock\Control.BOM
-DItemRevisionGUID=
-
-[GeneratedDocument2]
-DocumentPath=Project Outputs for clock\Control.CSV
-DItemRevisionGUID=
-
-[GeneratedDocument3]
-DocumentPath=Project Outputs for clock\Radio.BOM
-DItemRevisionGUID=
-
-[GeneratedDocument4]
-DocumentPath=Project Outputs for clock\Radio.CSV
-DItemRevisionGUID=
 
 [Configuration1]
 Name=Default Configuration
