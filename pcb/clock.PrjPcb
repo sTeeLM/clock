@@ -363,6 +363,23 @@ GenerateClassCluster=0
 DocumentUniqueId=
 
 [Document20]
+DocumentPath=Main.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=XQIIXWSL
+
+[Document21]
 DocumentPath=DSS0012A.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -379,7 +396,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=SIXSBCFN
 
-[Document21]
+[Document22]
 DocumentPath=DRC0010G.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -396,7 +413,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YYUXMGRR
 
-[Document22]
+[Document23]
 DocumentPath=DBV6.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -413,7 +430,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FWWNMUXG
 
-[Document23]
+[Document24]
 DocumentPath=sot23.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -430,7 +447,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=CKYFRHDT
 
-[Document24]
+[Document25]
 DocumentPath=QFN24.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
