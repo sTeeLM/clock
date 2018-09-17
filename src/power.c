@@ -40,7 +40,8 @@ sbit POWER_5V_EN   = P3 ^ 6;
 #define POWER_DELAY_INIT_SEC 10
 
 #define POWER_HIGH_ALERT_VOLTAGE 500 // 5.0V
-#define POWER_LOW_ALERT_VOLTAGE  300 // 3.0V
+#define POWER_LOW_ALERT_VOLTAGE  330 // 3.3V
+#define POWER_LOW_POWERPACK_ALERT_VOLTAGE 300 // 3.0V
 
 struct ocv_slot {
   unsigned int ocv_hex;
@@ -504,7 +505,13 @@ void power_5v_enable(bit enable)
 {
   CDBG(("power_5v_enable %bu\n", enable ? 1 : 0));
   
-  POWER_5V_EN = !enable;
+  if(enable) {
+    power_set_alert_vlow(power_float2hex(POWER_LOW_POWERPACK_ALERT_VOLTAGE));
+    POWER_5V_EN = !enable;
+  } else {
+    POWER_5V_EN = !enable;
+    power_set_alert_vlow(power_float2hex(POWER_LOW_ALERT_VOLTAGE));
+  }
 }
 
 bit power_5v_get_enable(void)
