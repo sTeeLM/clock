@@ -260,14 +260,17 @@ static unsigned int radio_search_station(bit prev, RADIO_CB_PROC cb)
   unsigned char cnt;
   cnt = 0;
 #endif
-  
+  unsigned char adc;
+	
   while( (!prev && freqency < RADIO_MAX_FREQ) || (prev && freqency > RADIO_MIN_FREQ) ) {
     prev ? freqency -- : freqency ++;
     radio_set_frequency(freqency);
     if(cb != NULL) {
       cb(freqency);
     }
-    if(((data_in[3] & 0xF0 ) >> 4) >= 5) {
+		adc = ((data_in[3] & 0xF0 ) >> 4);
+		CDBG(("adc level %bu\n", adc));
+    if( adc >= 5) {
       CDBG(("radio_%s_station: found %u\n", prev ? "prev" : "next", freqency));
       found = 1;
       break;
@@ -309,7 +312,7 @@ void radio_set_frequency(unsigned int freq)
   out_freq = _radio_get_pll(data_in);
   CDBG(("freqency write: %u\n", freqency));
   CDBG(("   freqency read: %u\n", out_freq));
-  CDBG(("   RF Adc Level: %u\n" ,((data_in[3] & 0xF0 ) >> 4)));
+  CDBG(("   RF Adc Level: %bu\n" ,((data_in[3] & 0xF0 ) >> 4)));
   CDBG(("   IF Level: 0x%02bx\n" ,(data_in[2] & 0x7F)));
   CDBG(("   Stereo: %s\n",((data_in[2] & 0x80) != 0) ? "ON" : "OFF")); 
   return;
