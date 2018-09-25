@@ -188,3 +188,19 @@
 [0916/170044:ERROR:cache_creator.cc(129)] Unable to create cache
 [0916/203256:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0917/100619:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0921/103553:ERROR:backend_impl.cc(2020)] Corrupt Index file
+[0921/103553:ERROR:cache_util_win.cc(20)] Unable to move the cache: 5
+[0921/103553:ERROR:cache_util.cc(134)] Unable to move cache folder C:\ProgramData\Altium\Altium Designer {3BD9F925-F878-4D5A-A43C-432EC6F2DD85}\BrowserCache to C:\ProgramData\Altium\Altium Designer {3BD9F925-F878-4D5A-A43C-432EC6F2DD85}\old_BrowserCache_000
+[0921/103553:ERROR:cache_creator.cc(129)] Unable to create cache
+[0921/122933:INFO:CONSOLE(131)] "Uncaught ReferenceError: $ is not defined", source: https://www.altium.com/ad-start/ (131)
+[0922/075304:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0923/000354:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0923/060639:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0923/120930:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0923/181305:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0924/001631:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0924/021837:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0924/042042:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0924/125119:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0924/165417:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0925/025911:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
