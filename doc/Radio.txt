@@ -1,0 +1,5 @@
+VIN         MUTE SD            VORN
+EN                             VORP
+SDA                            VOLP
+SCL                            VOLN
+GND

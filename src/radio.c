@@ -153,7 +153,7 @@ static void radio_set_pa_mute(bit val)
 
 static void radio_set_pa_sd(bit val)
 { 
-  serial_set_ctl_bit(SERIAL_BIT_RADIO_SD, !val);
+  serial_set_ctl_bit(SERIAL_BIT_RADIO_SD, val);
   serial_ctl_out();
 }
 
@@ -218,8 +218,8 @@ static void radio_load_rom(void)
 void radio_initialize (void)
 {
   CDBG(("radio_initialize\n"));
-  radio_set_pa_mute(1);
-  radio_set_pa_sd(1);
+  radio_set_pa_mute(0);
+  radio_set_pa_sd(0);
   radio_set_power(1);
   radio_enabled = 0;
 }
@@ -238,16 +238,16 @@ void radio_enable(bit enable)
 {
   CDBG(("radio_enable %bu\n", enable ? 1 : 0));
   if(!radio_enabled && enable) {
-    radio_set_pa_mute(1);
-    radio_set_pa_sd(1);
+    radio_set_pa_mute(0);
+    radio_set_pa_sd(0);
     radio_set_power(0);
     radio_load_rom();
-    radio_set_pa_sd(0);
-    radio_set_pa_mute(0);
+    radio_set_pa_sd(1);
+    radio_set_pa_mute(1);
     radio_enabled = 1;
   } else if(radio_enabled && !enable){
-    radio_set_pa_mute(1);
-    radio_set_pa_sd(1);
+    radio_set_pa_mute(0);
+    radio_set_pa_sd(0);
     radio_set_power(1);
     radio_enabled = 0;
   }
