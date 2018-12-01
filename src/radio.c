@@ -16,13 +16,16 @@ static unsigned int freqency;
 static bit radio_enabled;
 
 #define RADIO_I2C_ADDR   0xC0
-#define RADIO_VOLUME_I2C_ADDR 0x58 //01011000
+#define RADIO_VOLUME_I2C_ADDR_L 0x5A //01011010
+#define RADIO_VOLUME_I2C_ADDR_R 0x58 //01011000
                        
 #define RADIO_MAX_FREQ 1085 // 108.5MHz
 #define RADIO_MIN_FREQ 700  // 70.0MHz
 
 #define RADIO_MAX_VOLUME 100
 #define RADIO_MIN_VOLUME 0  // VOLUME == 0 is MUTE
+
+#define RADIO_MAX_VOL_SCALE 128 // 最大255， 因为调到最大会爆音，所以调小
 
 // 这些函数用来修改radio_data，不对外暴露
 static void _radio_read_data(void) // 读出数据到data_in
@@ -160,9 +163,10 @@ static void radio_set_pa_sd(bit val)
 static void radio_set_pa_volume(unsigned char val)
 {
   unsigned int tmp;
-  tmp = val / 100 * 255;
+  tmp = val * RADIO_MAX_VOL_SCALE / 100;
 #ifndef __CLOCK_EMULATE__  
-  I2C_Put(RADIO_VOLUME_I2C_ADDR, 0, (unsigned char)tmp);
+  I2C_Put(RADIO_VOLUME_I2C_ADDR_L, 0, (unsigned char)tmp);
+  I2C_Put(RADIO_VOLUME_I2C_ADDR_R, 0, (unsigned char)tmp);	
 #endif
 }
 
@@ -357,21 +361,24 @@ void radio_write_rom_frequency(void)
 
 unsigned char radio_inc_volume(void)
 {
+	unsigned char tmp;
   if(volume >= RADIO_MAX_VOLUME)
     return volume;
-  
-  volume ++;
-  radio_set_volume(volume);
+  tmp = volume;
+  tmp ++;
+  radio_set_volume(tmp);
   return volume;
 }
 
 unsigned char radio_dec_volume(void)
 {
+	unsigned char tmp;
   if(volume <= RADIO_MIN_VOLUME)
     return volume;
   
-  volume --;
-  radio_set_volume(volume);
+  tmp = volume;
+  tmp --;
+  radio_set_volume(tmp);
   return volume;
 }
 
@@ -384,19 +391,23 @@ unsigned char radio_set_volume(unsigned char val)
 {
   if(val > 100)
     val = 100;
+	
+	CDBG(("radio_set_volume %bu -> %bu\n", volume, val));
+  
+  radio_set_pa_volume(val);
   
   if(volume == 0 && val != 0) {
-    _radio_set_bit(data_out, 0, 7, 0);
-    _radio_write_data();
+		radio_set_pa_mute(1);
+    //_radio_set_bit(data_out, 0, 7, 0);
+    //_radio_write_data();
   } else if(volume != 0 && val == 0) {
-    _radio_set_bit(data_out, 0, 7, 1);
-    _radio_write_data();
+		radio_set_pa_mute(0);
+    //_radio_set_bit(data_out, 0, 7, 1);
+    //_radio_write_data();
   }
   
-  volume = val;
-  
-  radio_set_pa_volume(volume);
-  
+	volume = val;
+	
   return volume;
 }
 
