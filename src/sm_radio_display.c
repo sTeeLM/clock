@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "cext.h"
 #include "sm_radio_powersave.h"
+#include "indicator.h"
 
 #define RADIO_SWITCH_TIMEO 7 // 每x秒在电台和音量之间轮换一次
 
@@ -195,6 +196,7 @@ void sm_radio_display_init(unsigned char from, unsigned char to, enum task_event
   UNUSED_PARAM(ev);
   display_logo(DISPLAY_LOGO_TYPE_RADIO, 0);
   power_5v_enable(0);
+	indicator_set(INDICATOR_COLOR_GREEN, INDICATOR_MODE_OFF);
   radio_enable(1);
   power_reset_powersave_to();
 }

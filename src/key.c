@@ -29,7 +29,7 @@ static void int0_ISR (void) interrupt 0 using 1
   IE0 = 0; // 清除中断标志位
   if(power_test_flag()) {
     power_clr_flag();
-    set_task(EV_KEY_MOD_PRESS); // 为了能唤醒
+//    set_task(EV_KEY_MOD_PRESS); // 为了能唤醒
   }
   alarm_stop_radio();// 按键停止音乐
   

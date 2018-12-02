@@ -4,6 +4,7 @@
 #include "rom.h"
 #include "i2c.h"
 #include "serial_hub.h"
+#include "misc.h"
 
 
 
@@ -174,16 +175,20 @@ static void radio_load_rom(void)
 {
   unsigned int lval;
   bit sval; 
+	unsigned char val1, val2;
+	
 
   memset(data_out, 0, sizeof(data_out));
   
   volume = rom_read(ROM_RADIO_VOLUME);
+	val1 = rom_read(ROM_RADIO_FREQ_HI);
+	val2 = rom_read(ROM_RADIO_FREQ_LO);
   
   _radio_set_bit(data_out, 0, 7, volume == 0 ? 1: 0); // MUTE
   _radio_set_bit(data_out, 0, 6, 0); // SM
-  lval = rom_read(ROM_RADIO_FREQ_HI);
+  lval = val1;
   lval = (lval << 8) & 0xFF00;
-  lval |= rom_read(ROM_RADIO_FREQ_LO);
+  lval |= val2;
   freqency = lval;
   if(freqency < RADIO_MIN_FREQ) freqency = RADIO_MIN_FREQ;
   if(freqency > RADIO_MAX_FREQ) freqency = RADIO_MAX_FREQ;
@@ -213,7 +218,7 @@ static void radio_load_rom(void)
   sval  = rom_read(ROM_RADIO_DTC);
   _radio_set_bit(data_out, 4, 6, sval);
   _radio_write_data();
-  
+  delay_ms(10);
   _radio_read_data(); // 填充data_in
   
   radio_set_pa_volume(volume); 
@@ -274,7 +279,7 @@ static unsigned int radio_search_station(bit prev, RADIO_CB_PROC cb)
     }
 		adc = ((data_in[3] & 0xF0 ) >> 4);
 		CDBG(("adc level %bu\n", adc));
-    if( adc >= 5) {
+    if( adc >= 6) {
       CDBG(("radio_%s_station: found %u\n", prev ? "prev" : "next", freqency));
       found = 1;
       break;
@@ -312,6 +317,7 @@ void radio_set_frequency(unsigned int freq)
   freqency = freq;
   _radio_set_pll(data_out, freq);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data();
   out_freq = _radio_get_pll(data_in);
   CDBG(("freqency write: %u\n", freqency));
@@ -355,8 +361,12 @@ unsigned int radio_get_frequency(void)
 
 void radio_write_rom_frequency(void)
 {
-  rom_write(ROM_RADIO_FREQ_HI, (unsigned char)((freqency & 0xFF00) >> 8));
-  rom_write(ROM_RADIO_FREQ_LO, (unsigned char)(freqency & 0xFF));
+	unsigned char val1, val2;
+	val1 = (freqency & 0xFF00) >> 8;
+	val2 = (freqency & 0xFF);
+
+  rom_write(ROM_RADIO_FREQ_LO, val2);
+	rom_write(ROM_RADIO_FREQ_HI, val1);
 }
 
 unsigned char radio_inc_volume(void)
@@ -426,6 +436,7 @@ bit radio_set_hlsi(bit val)
   _radio_set_bit(data_out, 2, 4, val);
   _radio_set_pll(data_out, freqency);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data(); // 填充data_in
   return val;
 }
@@ -444,6 +455,7 @@ bit radio_set_ms(bit val)
 {
   _radio_set_bit(data_out, 2, 3, val);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data(); // 填充data_in
   return val;
 }
@@ -469,6 +481,7 @@ enum radio_bl_level radio_set_bl(enum radio_bl_level val)
 {
   _radio_set_bit(data_out, 3, 5, val);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data(); // 填充data_in
   return val;
 }
@@ -487,6 +500,7 @@ bit radio_set_hcc(bit val)
 {
   _radio_set_bit(data_out, 3, 2, val);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data(); // 填充data_in
   return val;
 }
@@ -505,6 +519,7 @@ bit radio_set_snc(bit val)
 {
   _radio_set_bit(data_out, 3, 1, val);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data(); // 填充data_in
   return val;
 }
@@ -518,6 +533,7 @@ enum radio_dtc_level radio_set_dtc(enum radio_dtc_level val)
 {
   _radio_set_bit(data_out, 4, 6, val);
   _radio_write_data();
+	delay_ms(10);
   _radio_read_data(); // 填充data_in
   return val;
 }

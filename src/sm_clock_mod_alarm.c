@@ -234,8 +234,8 @@ void sm_clock_mod_alarm_submod0(unsigned char from, unsigned char to, enum task_
   UNUSED_PARAM(to);
   
  // 切换到修改闹钟
-  if(get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_INIT 
-    && ev == EV_KEY_MOD_UP) {
+  if((get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_INIT 
+    && ev == EV_KEY_MOD_UP) || (get_sm_ss_state(from) == SM_CLOCK_MODIFY_ALARM_DUR && ev == EV_KEY_MOD_PRESS)) {
     enter_alarm(IS_HOUR, 0);
     return;
   }

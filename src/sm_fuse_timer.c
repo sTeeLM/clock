@@ -11,6 +11,7 @@
 #include "power.h"
 #include "remote.h"
 #include "indicator.h"
+#include "misc.h"
 #include "cext.h"
 
 #define next_arm_step       last_display_s
@@ -100,6 +101,7 @@ static unsigned char check_and_set(unsigned char step)
         if(val != THERMO_THRESHOLD_INVALID) {
           thermo_hi_enable(1);
         }
+				delay_ms(10);
         if(val1 != THERMO_THRESHOLD_INVALID) {
           thermo_lo_enable(1);
         }    
@@ -150,7 +152,8 @@ static void roll_back(bit include_fuse)
   TIMER_ARM_MPU,
   TIMER_ARM_HG,
   TIMER_ARM_THERMO,
-  TIMER_ARM_LT_TIMER
+  TIMER_ARM_REMOTE,
+  TIMER_ARM_LT_TIMER,
   TIMER_ARM_DELAY0,
   TIMER_ARM_DELAY1,
   TIMER_ARM_DELAY2,
@@ -159,7 +162,8 @@ static void roll_back(bit include_fuse)
 static void display_prearm(unsigned char step, unsigned char err)
 {
   led_clear();
-  
+  CDBG(("display_prearm step = %bu, err = %bu\n", step, err));
+	delay_ms(10);
   switch(step) {
     case TIMER_ARM_FUSE:
       led_set_code(5, 'F');
@@ -176,6 +180,9 @@ static void display_prearm(unsigned char step, unsigned char err)
     case TIMER_ARM_THERMO:
       led_set_code(5, 'T');
       led_set_code(4, 'H');
+		case TIMER_ARM_REMOTE:
+      led_set_code(5, 'R');
+      led_set_code(4, 'A');
     break;
     case TIMER_ARM_LT_TIMER:
       led_set_code(5, 'L');
@@ -286,7 +293,6 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
       if(err != TIMER_ERR_OK) {
         in_rollback = 1;
         roll_back(1);
-        set_task(EV_KEY_V0); // 设置传感器出错，进入sm_fuse_test
         return;
       }
       next_arm_step ++;
@@ -300,7 +306,8 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
       || ev == EV_MOT_MPU || ev == EV_ROTATE_HG || ev == EV_FUSE_TRIPWIRE
       || ev == EV_THERMO_HI || ev == EV_THERMO_LO 
       || ev == EV_REMOTE_DISARM || ev == EV_REMOTE_DETONATE) && in_rollback == 0) {
-      switch(ev)
+      err = 0;
+			switch(ev)
       {
         case EV_COUNTER:     err = TIMER_ERR_LT_TIMER_HIT; break;
         case EV_FUSE0_BROKE: err = TIMER_ERR_FUSE0_BROKE; break;
@@ -314,12 +321,19 @@ void sm_fuse_timer_submod0(unsigned char from, unsigned char to, enum task_event
         case EV_REMOTE_DETONATE:           
           err = TIMER_ERR_REMOTE; break;
       }
-      display_prearm(next_arm_step, err);
+      display_prearm(next_arm_step - 1, err);
       in_rollback = 1;
       roll_back(1);
-      set_task(EV_KEY_V0); // 设置传感器出错，进入sm_fuse_test
+      // set_task(EV_KEY_V0); // 设置传感器出错，进入sm_fuse_test
+			CDBG(("sm_fuse_timer_submod0 step = %bu err = %bu\n", next_arm_step - 1, err));
     return;
   }
+			
+	if((ev == EV_KEY_MOD_PRESS || ev == EV_KEY_SET_PRESS) && in_rollback == 1) {
+		in_rollback = 0;
+		set_task(EV_KEY_V0);
+		return;
+	}
 }
 
 // armed
@@ -361,6 +375,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
   
   if(ev == EV_KEY_MOD_PRESS) {
     last_key_s = clock_get_sec_256();
+		CDBG(("sm_fuse_timer_submod2 last_key_s is %bu\n", last_key_s));
     // 进入密码验证状态
     if(get_sm_ss_state(from) == SM_FUSE_TIMER_ARMED) {
       password_index   = 5;
@@ -411,7 +426,7 @@ void sm_fuse_timer_submod2(unsigned char from, unsigned char to, enum task_event
   
   if(ev == EV_1S) {
     // 反超时耗电攻击
-    if(time_diff_now(last_display_s) >= SM_FUSE_MAX_VERIFY_WAIT_S) {
+    if(time_diff_now(last_key_s) >= SM_FUSE_MAX_VERIFY_WAIT_S) {
       CDBG(("wait time out in password verify!\n"));
       set_task(EV_KEY_V1);
     }

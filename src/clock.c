@@ -32,6 +32,7 @@ static bit display_enable;
 static unsigned char display_mode;
 
 static bit in_shell;
+static bit clock_tick_enabled;
 
 void clock_display(bit enable)
 {
@@ -256,6 +257,7 @@ void clock_inc_year(void)
 void clock_sync_from_rtc(enum clock_sync_type type)
 {
   CDBG(("clock_sync_from_rtc = %bu\n", type));
+	clock_enable_tick(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     clk.hour = rtc_time_get_hour();   // 0 - 23
@@ -270,12 +272,13 @@ void clock_sync_from_rtc(enum clock_sync_type type)
     clk.date = rtc_date_get_date() - 1;      // 0 - 30(29/28/27)
     clk.day  = rtc_date_get_day() - 1;       // 0 - 6
   }
+	clock_enable_tick(1);
 }
 
 void clock_sync_to_rtc(enum clock_sync_type type)
 {
   CDBG(("clock_sync_to_rtc = %bu\n", type));
-  clock_enable_interrupt(0);
+  clock_enable_tick(0);
   if(type == CLOCK_SYNC_TIME) {
     rtc_read_data(RTC_TYPE_TIME);
     rtc_time_set_hour(clk.hour);
@@ -287,9 +290,10 @@ void clock_sync_to_rtc(enum clock_sync_type type)
     rtc_date_set_year(clk.year);             // 0 - 99 (2000 ~ 2099)
     rtc_date_set_month(clk.mon + 1);         // 0 - 11
     rtc_date_set_date(clk.date + 1);         // 0 - 30(29/28/27)
+		rtc_date_set_day(clk.day + 1);
     rtc_write_data(RTC_TYPE_DATE);
   }
-  clock_enable_interrupt(1);
+  clock_enable_tick(1);
 }
 
 static void clock0_ISR (void) interrupt 1 using 1
@@ -302,7 +306,7 @@ static void clock0_ISR (void) interrupt 1 using 1
     TF0 = 0;
     return;
   }
-  if(giff % 2) {
+  if((giff % 2) && clock_tick_enabled) {
     clock_inc_ms39();
     timer_inc_ms39();
   }
@@ -336,6 +340,11 @@ void clock_enable_interrupt(bit enable)
   TR0 = enable;
 }
 
+void clock_enable_tick(bit enable)
+{
+	clock_tick_enabled = enable;
+}
+
 void clock_initialize(void)
 {
   CDBG(("clock_initialize\n"));
@@ -353,7 +362,7 @@ void clock_initialize(void)
   display_mode = CLOCK_DISPLAY_MODE_HHMMSS;
   display_enable = 0;
   clock_enable_interrupt(1);
-
+	clock_enable_tick(1);
   clock_dump();
 }
 

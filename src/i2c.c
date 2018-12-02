@@ -48,6 +48,7 @@ void I2C_Stop()
   I2C_Delay();
   I2C_Delay();
   I2C_Delay();
+	delay_ms(5);
 }
 
 

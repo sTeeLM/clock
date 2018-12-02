@@ -762,7 +762,7 @@ static void sm_fuse_test_hg_mpu_remote(unsigned char what, enum task_events ev)
           hg_mask |= 2; break;
       }
       display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_MANUAL);
-      if((hg_mask & 0x7) == 0x7) {
+      if((hg_mask & 0x3) == 0x3) {
         // 测试成功
         display_test(IS_REMOTE, test_stage, hg_mask, FUSE_ERR_OK);
         test_stage = 0;

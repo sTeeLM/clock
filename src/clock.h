@@ -32,6 +32,7 @@ struct clock_struct
 (( ((y%100) !=0) && ((y%4)==0)) || ( (y%400) == 0))
 
 void clock_enable_interrupt(bit enable);
+void clock_enable_tick(bit enable);
 
 bit clock_get_hour_12();
 void clock_set_hour_12(bit enable);

@@ -110,6 +110,8 @@ static void mpu_power_on(void)
   val = 0x08;
   I2C_Put(MPU_I2C_ADDRESS, 0x2D, val);
   
+	delay_ms(10);
+	
   val = mpu_read_int_status();
   
 #endif
@@ -146,6 +148,8 @@ static void mpu_power_off(void)
   val = 0x40;
   I2C_Put(MPU_I2C_ADDRESS, 0x2D, val);
   
+	delay_ms(10);
+	
   mpu_read_int_status();
   
 #endif
@@ -156,6 +160,8 @@ void mpu_initialize (void)
 {
   CDBG(("mpu_initialize\n"));
   mpu_device_init();
+	mpu_power_on();
+	delay_ms(10);
   mpu_power_off();
 }
 

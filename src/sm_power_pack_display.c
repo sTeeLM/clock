@@ -8,6 +8,7 @@
 #include "alarm.h"
 #include "indicator.h"
 #include "cext.h"
+#include "sm_power_pack_powersave.h"
 
 #ifdef __CLOCK_DEBUG__
 const char * code sm_power_pack_display_ss_name[] = {
@@ -71,7 +72,7 @@ void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum ta
   
   if(ev == EV_KEY_MOD_PRESS || ev == EV_KEY_SET_PRESS) {
     power_reset_powersave_to();
-    if(ev == EV_KEY_SET_PRESS) { // 开关5v输出
+    if(ev == EV_KEY_SET_PRESS && from != (SM_POWER_PACK_POWERSAVE<<4|SM_POWER_PACK_POWERSAVE_SLEEP)) { // 开关5v输出
       power_5v_enable(!power_5v_get_enable());
       display_power_percent();
       if(power_5v_get_enable()) {

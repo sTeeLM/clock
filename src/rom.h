@@ -28,15 +28,15 @@
 #define ROM_LT_TIMER_MIN   44
 #define ROM_LT_TIMER_SEC   45
 
-#define ROM_RADIO_FREQ_HI 60
-#define ROM_RADIO_FREQ_LO 61
-#define ROM_RADIO_VOLUME 62
-#define ROM_RADIO_HLSI 63
-#define ROM_RADIO_MS  64
-#define ROM_RADIO_BL  65
-#define ROM_RADIO_HCC 66
-#define ROM_RADIO_SNC 67
-#define ROM_RADIO_DTC 68
+#define ROM_RADIO_FREQ_HI 50
+#define ROM_RADIO_FREQ_LO 51
+#define ROM_RADIO_VOLUME 52
+#define ROM_RADIO_HLSI 53
+#define ROM_RADIO_MS  54
+#define ROM_RADIO_BL  55
+#define ROM_RADIO_HCC 56
+#define ROM_RADIO_SNC 57
+#define ROM_RADIO_DTC 58
 
 unsigned char rom_read(unsigned char addr);
 void rom_write(unsigned char addr, unsigned char val);
