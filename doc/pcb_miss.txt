@@ -1,5 +1,4 @@
 Power：
-0.4om 功率电阻
 
 Power_Adc：
 
@@ -9,9 +8,10 @@ RTC：
 纽扣BAT
 
 Control:
+LED确认管脚对应
+
 
 Fuse：
-5om 功率电阻
 
 MCU：
 
@@ -22,3 +22,4 @@ Beeper：
 Remote：
 
 Radio：
+Speaker，电解电容

@@ -94,7 +94,7 @@ static code char led_scan[6] =
 void refresh_led(void)
 {
   P0 = 0xFF;
-  
+  P2 = 0xFF;  
   if(led_powersave) return;
   
   if(led_blink & (1 << led_index)) { // 如果要求闪阿闪
