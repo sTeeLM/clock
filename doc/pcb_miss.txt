@@ -1,25 +1,5 @@
-Power：
-
-Power_Adc：
-
-MCU：
-
-RTC：
-纽扣BAT
-
-Control:
-LED确认管脚对应
-
-
-Fuse：
-
-MCU：
-
-Hg：
-
-Beeper：
-
-Remote：
-
-Radio：
-Speaker，电解电容
+1. 拨码开关的管脚
+2. 二极管SS14、SS34 SMA的管脚太长？
+3. Micro-USB需要突出边缘
+4. control两边的插接尺寸
+5. control的板子，最上的接线口应该靠边
