@@ -481,6 +481,10 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LMXGTKAW
 
+[GeneratedDocument1]
+DocumentPath=Project Outputs for clock\Design Rule Check - Main.html
+DItemRevisionGUID=
+
 [Configuration1]
 Name=Default Configuration
 ParameterCount=0
