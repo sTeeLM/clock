@@ -89,6 +89,11 @@ void hg_enable(bit enable)
   }
 }
 
+bit hg_get_enable(void)
+{
+	return hg_enabled;
+}
+
 unsigned char hg_get_state(void)
 {
   CDBG(("hg_get_state return %02bx\n", hg_state));

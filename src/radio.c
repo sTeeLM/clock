@@ -26,7 +26,7 @@ static bit radio_enabled;
 #define RADIO_MAX_VOLUME 100
 #define RADIO_MIN_VOLUME 0  // VOLUME == 0 is MUTE
 
-#define RADIO_MAX_VOL_SCALE 128 // 最大255， 因为调到最大会爆音，所以调小
+#define RADIO_MAX_VOL_SCALE 255 // 最大255， 因为调到最大会爆音，所以调小
 
 // 这些函数用来修改radio_data，不对外暴露
 static void _radio_read_data(void) // 读出数据到data_in

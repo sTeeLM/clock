@@ -198,6 +198,7 @@ void sm_radio_display_init(unsigned char from, unsigned char to, enum task_event
   power_5v_enable(0);
 	indicator_set(INDICATOR_COLOR_GREEN, INDICATOR_MODE_OFF);
   radio_enable(1);
+	led_test_set_auto_light_enable();
   power_reset_powersave_to();
 }
 
@@ -250,6 +251,12 @@ void sm_radio_display_submod0(unsigned char from, unsigned char to, enum task_ev
     power_reset_powersave_to();
     return;
   }
+	
+	if(ev == EV_ROTATE_HG){
+    reset_switch_to();
+    power_reset_powersave_to();
+		return;
+	}
   
   if(ev == EV_KEY_SET_LPRESS) {
     if((lpress_start % LPRESS_INC_DELAY) == 0) {

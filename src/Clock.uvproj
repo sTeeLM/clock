@@ -310,7 +310,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__OSCILLATO_6T__,__CLOCK_DEBUG_</Define>
+              <Define>__OSCILLATO_6T__</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -500,14 +500,14 @@
               <FilePath>.\mpu.c</FilePath>
             </File>
             <File>
-              <FileName>remote.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\remote.c</FilePath>
-            </File>
-            <File>
               <FileName>indicator.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\indicator.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\remote.c</FilePath>
             </File>
             <File>
               <FileName>radio.c</FileName>
@@ -1206,14 +1206,14 @@
               <FilePath>.\mpu.c</FilePath>
             </File>
             <File>
-              <FileName>remote.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\remote.c</FilePath>
-            </File>
-            <File>
               <FileName>indicator.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\indicator.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\remote.c</FilePath>
             </File>
             <File>
               <FileName>radio.c</FileName>

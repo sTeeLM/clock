@@ -160,6 +160,7 @@ void rtc_initialize (void)
   /////
   
   if(rom_is_factory_reset()) { //2014-08-19, 12:10:30 PM
+		CDBG(("RTC factory reset time\n"));
     rtc_time_set_hour(12);
     rtc_time_set_min(10);
     rtc_time_set_sec(30); 
@@ -177,6 +178,7 @@ void rtc_initialize (void)
   /////
   
   if(rom_is_factory_reset()) { // 2000-1-1
+		CDBG(("RTC factory reset date\n"));
     rtc_date_set_year(14);
     rtc_date_set_month(8);
     rtc_date_set_date(19);

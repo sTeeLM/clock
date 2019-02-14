@@ -14,6 +14,7 @@
 #include "misc.h"
 #include "cext.h"
 
+#define display_switch_to   last_display_s
 #define next_arm_step       last_display_s
 #define in_rollback         lpress_lock_year_hour
 #define password_index      lpress_start   // current password index
@@ -348,17 +349,23 @@ void sm_fuse_timer_submod1(unsigned char from, unsigned char to, enum task_event
       verify_state   = 0;
     }
     power_reset_powersave_to();
+		display_switch_to = 1;
     return;
   }
   
   if(ev == EV_1S) {
     power_test_powersave_to();
+		display_switch_to = (++display_switch_to) % 5;
+		if((display_switch_to) == 0) {
+			lt_timer_switch_display();
+		}
     return;
   }
   
   if(ev == EV_KEY_SET_PRESS) {
     power_reset_powersave_to();
     lt_timer_switch_display();
+		display_switch_to = 1;
     return;
   }
   

@@ -38,6 +38,7 @@ static void rom_dump(void)
   rom_read(ROM_BEEPER_ENABLE);
   rom_read(ROM_POWERSAVE_TO);
   rom_read(ROM_REMOTE_ONOFF);
+  rom_read(ROM_AUTO_LIGHT_ONOFF);	
   
   rom_read(ROM_FUSE_HG_ONOFF);
   rom_read(ROM_FUSE_MPU);
@@ -84,6 +85,7 @@ static void rom_reset(void)
   //0=off 1=15s 2=30s 
   rom_write(ROM_POWERSAVE_TO, 1);
   rom_write(ROM_REMOTE_ONOFF, 1);
+  rom_write(ROM_AUTO_LIGHT_ONOFF, 1);
   
   rom_write(ROM_FUSE_HG_ONOFF, 1);
   rom_write(ROM_FUSE_MPU, 10);

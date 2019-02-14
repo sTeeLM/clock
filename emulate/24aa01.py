@@ -27,11 +27,13 @@ a[4] = 1
 # 0=off 1=15s 2=30s
 #define ROM_POWERSAVE_TO    13
 #define ROM_REMOTE_ONOFF    14
+#define ROM_AUTO_LIGHT_ONOFF    15
 a[10] = 1
 a[11] = 0
 a[12] = 1
 a[13] = 1
 a[14] = 1
+a[15] = 1
 
 #define ROM_FUSE_HG_ONOFF   20
 #define ROM_FUSE_MPU        21

@@ -54,6 +54,7 @@ void sm_power_pack_display_init(unsigned char from, unsigned char to, enum task_
   clock_display(0);
   alarm_switch_off();
   indicator_clr();
+	led_test_set_auto_light_enable();
   display_logo(DISPLAY_LOGO_TYPE_POWER_PACK, 0);
 }
 
@@ -65,7 +66,7 @@ void sm_power_pack_display_submod0(unsigned char from, unsigned char to, enum ta
   UNUSED_PARAM(from);
   UNUSED_PARAM(to);
 #endif
-  if(ev == EV_KEY_MOD_UP || ev == EV_KEY_SET_UP) {
+  if(ev == EV_KEY_MOD_UP || ev == EV_KEY_SET_UP || ev == EV_ROTATE_HG) {
     power_reset_powersave_to();
     return;
   }

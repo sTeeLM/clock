@@ -71,6 +71,7 @@ void sm_clock_display_init(unsigned char from, unsigned char to, enum task_event
   alarm_switch_on();
   rtc_set_lt_timer(0);
   power_5v_enable(0);
+	led_test_set_auto_light_enable();
   display_logo(DISPLAY_LOGO_TYPE_CLOCK, 0);
 }
 
@@ -85,11 +86,12 @@ void sm_clock_display_submod0(unsigned char from, unsigned char to, enum task_ev
     clock_display(1);
     clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
     power_reset_powersave_to();
+	  led_test_set_auto_light_enable();
     return;
   }
     
   // 切换回时分秒显示，从小模式切过来，或者从pac切过来
-  if((ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS)) {
+  if((ev == EV_KEY_SET_PRESS || ev == EV_KEY_MOD_PRESS || ev == EV_ROTATE_HG)) {
     clock_display(1);
     clock_switch_display_mode(CLOCK_DISPLAY_MODE_HHMMSS);
     power_reset_powersave_to();

@@ -5,6 +5,7 @@ void hg_initialize (void);
 void scan_hg(unsigned int status);
 
 void hg_enable(bit enable);
+bit hg_get_enable(void);
 unsigned char hg_get_state(void);
 
 void hg_enter_powersave(void);

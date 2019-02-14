@@ -8,6 +8,12 @@
 #define LED_CODE_CEL   0 // degree Celsius
 
 void led_initialize (void);
+
+void led_test_set_auto_light_enable(void);
+void led_set_auto_light_enable(bit enable);
+bit led_get_auto_light_enable(void);
+void led_write_rom_auto_light_enable();
+
 void led_enter_powersave(void);
 void led_leave_powersave(void);
 void led_clear(void);

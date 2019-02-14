@@ -20,6 +20,33 @@ const char * code sm_clock_counter_ss_name[] =
   NULL
 };
 #endif
+
+static void update_hhmmss(void)
+{
+  unsigned char hour, min, sec;
+  
+  hour = timer_get_hour(0);
+  min  = timer_get_min(0);
+  sec  = timer_get_sec(0);
+  
+  // 两个“:”号
+  led_set_dp(1);
+  led_set_dp(2);
+  led_set_dp(3);
+  led_set_dp(4); 
+  
+  CDBG(("update_hhmmss %bu:%bu:%bu\n", hour, min, sec));  
+  
+  led_set_code(5, (hour / 10) + 0x30);
+  led_set_code(4, (hour % 10) + 0x30);
+  led_set_code(3, (min / 10)+ 0x30);
+  led_set_code(2, (min % 10) + 0x30);
+  led_set_code(1, (sec / 10) + 0x30);
+  led_set_code(0, (sec % 10) + 0x30);
+
+}
+
+
 static void inc_only(unsigned char what)
 {
   switch (what) {
@@ -48,6 +75,7 @@ static void inc_only(unsigned char what)
       timer_inc_sec(0);
       break;
   }
+	update_hhmmss();
 }
 
 static void write_only(unsigned char what)
@@ -83,30 +111,6 @@ static void inc_and_write(unsigned char what)
   write_only(what);
 }
 
-static void update_hhmmss(void)
-{
-  unsigned char hour, min, sec;
-  
-  hour = timer_get_hour(0);
-  min  = timer_get_min(0);
-  sec  = timer_get_sec(0);
-  
-  // 两个“:”号
-  led_set_dp(1);
-  led_set_dp(2);
-  led_set_dp(3);
-  led_set_dp(4); 
-  
-  CDBG(("update_hhmmss %bu:%bu:%bu\n", hour, min, sec));  
-  
-  led_set_code(5, (hour / 10) + 0x30);
-  led_set_code(4, (hour % 10) + 0x30);
-  led_set_code(3, (min / 10)+ 0x30);
-  led_set_code(2, (min % 10) + 0x30);
-  led_set_code(1, (sec / 10) + 0x30);
-  led_set_code(0, (sec % 10) + 0x30);
-
-}
 
 static void enter_hhmmss(unsigned char what) // blink hour:0, min:1, sec:2
 {
@@ -152,7 +156,7 @@ void sm_clock_counter_submod0(unsigned char from, unsigned char to, enum task_ev
   
   // 刷新显示
   if(ev == EV_250MS) {
-    update_hhmmss();
+    //update_hhmmss();
     return;
   } 
   
@@ -195,7 +199,7 @@ void sm_clock_counter_submod1(unsigned char from, unsigned char to, enum task_ev
   
   // 刷新显示
   if(ev == EV_250MS) {
-    update_hhmmss();
+    //update_hhmmss();
     return;
   }   
   
@@ -236,7 +240,7 @@ void sm_clock_counter_submod2(unsigned char from, unsigned char to, enum task_ev
   
   // 刷新显示
   if(ev == EV_250MS) {
-    update_hhmmss();
+    //update_hhmmss();
     return;
   }    
   

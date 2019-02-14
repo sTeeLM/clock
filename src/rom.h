@@ -12,6 +12,7 @@
 #define ROM_BEEPER_ENABLE      12
 #define ROM_POWERSAVE_TO    13
 #define ROM_REMOTE_ONOFF    14
+#define ROM_AUTO_LIGHT_ONOFF    15
 
 #define ROM_FUSE_HG_ONOFF   20
 #define ROM_FUSE_MPU        21

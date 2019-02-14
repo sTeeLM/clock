@@ -64,6 +64,7 @@ void sm_fuse_test_init(unsigned char from, unsigned char to, enum task_events ev
   lt_timer_switch_on();
   rtc_set_lt_timer(1);
   radio_enable(0);
+	led_set_auto_light_enable(0);
   indicator_clr();
   test_stage = 0;
   test_to    = 0;

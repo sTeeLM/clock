@@ -41,7 +41,7 @@ sbit POWER_5V_EN   = P3 ^ 6;
 
 #define POWER_HIGH_ALERT_VOLTAGE 500 // 5.0V
 #define POWER_LOW_ALERT_VOLTAGE  330 // 3.3V
-#define POWER_LOW_POWERPACK_ALERT_VOLTAGE 2.30 // 2.3V
+#define POWER_LOW_POWERPACK_ALERT_VOLTAGE 230 // 2.3V
 
 struct ocv_slot {
   unsigned int ocv_hex;

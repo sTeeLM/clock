@@ -97,7 +97,7 @@ void scan_lt_timer(void)
   if(alarm0_hit) {
     rtc_read_data(RTC_TYPE_DATE);
     if(rtc_date_get_year() == lt_timer_get_year() 
-      && rtc_date_get_month()== lt_timer_get_month()) {
+      && rtc_date_get_month() == lt_timer_get_month()) {
       if(power_test_flag()) {
         power_clr_flag();
       }
@@ -219,7 +219,7 @@ void lt_timer_reset(void)
   lt_tmr_disp_day = 0;  
 }
 
-//////// sub year/month/date/hour/min/sec and clk, 结果放在ltm
+//////// sub year/month/date/hour/min/sec and clk, 结果是相对时间，放在ltm
 // return borrow min
 static bit lt_timer_sub_sec_min(void)
 {
@@ -387,7 +387,8 @@ void lt_timer_dec_sec(void)
   if(!lt_tmr_stopped) {
     if(ltm.sec != 0
       || ltm.min != 0
-      || ltm.hour != 0) {
+      || ltm.hour != 0
+		  || ltm.date != 0) {
       ltm.sec --;
       if(ltm.sec == 255) {
         ltm.sec = 59;

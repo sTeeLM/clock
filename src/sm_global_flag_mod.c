@@ -16,6 +16,7 @@ const char * code sm_global_flag_mod_ss_name[] =
 {
   "SM_GLOBAL_FLAG_MODIFY_INIT",
   "SM_GLOBAL_FLAG_MODIFY_PS",
+  "SM_GLOBAL_FLAG_MODIFY_AUTOLIGHT",	
   "SM_GLOBAL_FLAG_MODIFY_BEEP",
   "SM_GLOBAL_FLAG_MODIFY_1224",
   "SM_GLOBAL_FLAG_MODIFY_REMOTE",
@@ -43,6 +44,20 @@ static void display_global_flag(unsigned char what)
         led_set_code(0, (power_get_powersave_to_s() % 10) + 0x30);
       }
       break;
+		case IS_AUTOLIGHT:
+      led_set_code(5, 'A');
+      led_set_code(4, 'U');
+      led_set_code(3, 'L');
+      if(led_get_auto_light_enable()) {
+        led_set_code(2, LED_CODE_BLACK);
+        led_set_code(1, 'O');
+        led_set_code(0, 'N');        
+      } else {
+        led_set_code(2, 'O');
+        led_set_code(1, 'F');
+        led_set_code(0, 'F');
+      }
+			break;			
     case IS_BEEP:
       led_set_code(5, 'B');
       led_set_code(4, 'E');
@@ -94,6 +109,10 @@ static void inc_write(unsigned char what)
       power_inc_powersave_to();
       power_write_rom_powersave_to();
       break;
+		case IS_AUTOLIGHT:
+			led_set_auto_light_enable(!led_get_auto_light_enable());
+			led_write_rom_auto_light_enable();
+			break;
     case IS_BEEP:
       beeper_set_beep_enable(!beeper_get_beep_enable());
       beeper_write_rom_beeper_enable();
@@ -123,6 +142,7 @@ void sm_global_flag_mod_init(unsigned char from, unsigned char to, enum task_eve
   UNUSED_PARAM(ev);
 #endif  
   lt_timer_switch_off();
+	led_test_set_auto_light_enable();
   display_logo(DISPLAY_LOGO_TYPE_GLOBAL_FLAG, 0);
 }
 
@@ -153,7 +173,7 @@ void sm_global_flag_mod_submod1(unsigned char from, unsigned char to, enum task_
   UNUSED_PARAM(from);
   UNUSED_PARAM(to);
   
-  sm_global_flag_mod(IS_BEEP, ev);
+  sm_global_flag_mod(IS_AUTOLIGHT, ev);
 }
 
 void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_events ev)
@@ -161,7 +181,7 @@ void sm_global_flag_mod_submod2(unsigned char from, unsigned char to, enum task_
   UNUSED_PARAM(from);
   UNUSED_PARAM(to);
   
-  sm_global_flag_mod(IS_1224, ev);
+  sm_global_flag_mod(IS_BEEP, ev);
 }
 
 void sm_global_flag_mod_submod3(unsigned char from, unsigned char to, enum task_events ev)
@@ -169,5 +189,15 @@ void sm_global_flag_mod_submod3(unsigned char from, unsigned char to, enum task_
   UNUSED_PARAM(from);
   UNUSED_PARAM(to);
   
+  sm_global_flag_mod(IS_1224, ev);
+}
+
+void sm_global_flag_mod_submod4(unsigned char from, unsigned char to, enum task_events ev)
+{
+  UNUSED_PARAM(from);
+  UNUSED_PARAM(to);
+  
   sm_global_flag_mod(IS_REMOTE, ev);
 }
+
+

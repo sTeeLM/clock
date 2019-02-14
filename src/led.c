@@ -4,6 +4,8 @@
 #include "led.h"
 #include "task.h"
 #include "misc.h"
+#include "rom.h"
+#include "hg.h"
 #include "clock.h"
 #include "debug.h"
 
@@ -241,4 +243,25 @@ void led_restore(void)
   led_blink = saved_led_blink;
   led_index = saved_led_index;
   scan_loop_cnt = saved_scan_loop_cnt;
+}
+
+void led_test_set_auto_light_enable(void)
+{
+	unsigned char val = rom_read(ROM_AUTO_LIGHT_ONOFF);
+	hg_enable(val != 0);
+}
+
+void led_set_auto_light_enable(bit enable)
+{
+	hg_enable(enable);
+}
+
+bit led_get_auto_light_enable(void)
+{
+	return hg_get_enable();
+}
+
+void led_write_rom_auto_light_enable()
+{
+	
 }
