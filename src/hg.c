@@ -57,6 +57,14 @@ void scan_hg(unsigned int status)
   
 }
 
+static void hg_power_on_no_wait(void)
+{
+  serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
+  serial_ctl_out();
+  hg_state = 0xF;
+	hg_enabled = 1;
+}
+
 static void hg_power_on(void)
 {
   serial_set_ctl_bit(SERIAL_BIT_HG_EN, 0);  
@@ -84,6 +92,16 @@ void hg_enable(bit enable)
   if(enable && !hg_enabled) {
     hg_power_on();
     // hg_enabled = 1 set by hg_cb_set_enable
+  } else if(!enable && hg_enabled){
+    hg_power_off();
+  }
+}
+
+void hg_enable_no_wait(bit enable)
+{
+  CDBG(("hg_enable_no_wait %bu\n", enable ? 1 : 0));
+  if(enable && !hg_enabled) {
+    hg_power_on_no_wait();
   } else if(!enable && hg_enabled){
     hg_power_off();
   }
