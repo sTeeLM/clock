@@ -4,8 +4,7 @@
 typedef void (code *DELAY_TASK_PROC)(void);
 
 enum delay_task_type { // 在一般上下文调用
-  DELAY_TASK_HG = 0,
-  DELAY_TASK_POWER,
+  DELAY_TASK_POWER = 0,
   DELAY_TASK_CNT
 };
 

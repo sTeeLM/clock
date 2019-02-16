@@ -5,7 +5,7 @@
 
 void int_hub_initialize (void);
 void scan_int_hub_proc (enum task_events ev);
-
+unsigned int int_hub_get_status(void);
 enum int_hub_state {
   INT_HUB_FUSE0_BROKE=0,
   INT_HUB_FUSE1_BROKE,

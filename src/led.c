@@ -248,12 +248,12 @@ void led_restore(void)
 void led_test_set_auto_light_enable(void)
 {
 	unsigned char val = rom_read(ROM_AUTO_LIGHT_ONOFF);
-	hg_enable_no_wait(val != 0);
+	hg_enable(val != 0);
 }
 
 void led_set_auto_light_enable(bit enable)
 {
-	hg_enable_no_wait(enable);
+	hg_enable(enable);
 }
 
 bit led_get_auto_light_enable(void)
